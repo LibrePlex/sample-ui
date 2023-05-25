@@ -1,6 +1,6 @@
 /* tslint:disable:no-empty */
 import Link from 'next/link';
-import Text from '../Text';
+import {Text} from "@chakra-ui/react";
 import { cn } from '../../utils';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
@@ -52,7 +52,7 @@ const NavElement = ({
             onClick={() => navigationStarts()}
         >
             <div className="flex flex-row items-center gap-3">
-                <Text variant="nav-heading"> {label} </Text>
+                <Text color="white" variant="nav-heading"> {label} </Text>
             </div>
             <div ref={divRef} />
         </Link>
