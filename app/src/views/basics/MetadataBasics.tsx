@@ -19,7 +19,7 @@ import { StyledTabs } from "components/tabs/Tabs";
 export const MetadataBasics: FC = ({}) => {
   return (
     <Box>
-        <Heading fontSize="xl">Unchanged</Heading>
+        <Heading fontSize="xl" style={{paddingTop: '15px'}}>Unchanged</Heading>
       
       <Box>
         <OrderedList
@@ -33,7 +33,7 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </OrderedList>
       </Box>
-      <Heading fontSize="xl">Propose to change</Heading>
+      <Heading fontSize="xl" style={{paddingTop: '15px'}}>Propose to change</Heading>
       
       <Box>
         <OrderedList
@@ -51,7 +51,7 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>Royalties (handled independently from creators)</ListItem>
         </OrderedList>
       </Box>
-      <Heading fontSize="xl">New</Heading>
+      <Heading fontSize="xl" style={{paddingTop: '15px'}}>New</Heading>
       <Box>
         <OrderedList
           sx={{
@@ -68,7 +68,7 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>URL to allow base64 and ordinals</ListItem>
         </OrderedList>
       </Box>
-      <Heading fontSize="xl">Active discussion</Heading>
+      <Heading fontSize="xl" style={{paddingTop: '15px'}}>Active discussion</Heading>
       <Box>
         <OrderedList
           sx={{
