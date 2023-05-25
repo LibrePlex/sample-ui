@@ -4,6 +4,7 @@ import { SendTransaction } from "../../components/SendTransaction";
 import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
+  Heading,
   ListItem,
   OrderedList,
   Tab,
@@ -31,7 +32,7 @@ export const CollectionBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </UnorderedList>
       </Box> */}
-      <h3 className="text-2xl">Changed</h3>
+      <Heading fontSize="xl">Propose to change</Heading>
       <Box>
         <OrderedList
           sx={{
@@ -43,12 +44,21 @@ export const CollectionBasics: FC = ({}) => {
         >
           <ListItem>Collection mints removed</ListItem>
           <ListItem>Collection account introduced</ListItem>
-          <ListItem>Update authority held at collection level (w/ optional overrides at mint level)</ListItem>
-          <ListItem>Royalties specified at collection level (w/ optional overrides at mint level)</ListItem>
-          <ListItem>Royalty bps (formerly seller_fee_basis_points at collection level) (w/ optional overrides at mint level)</ListItem>
+          <ListItem>
+            Update authority held at collection level (w/ optional overrides at
+            mint level)
+          </ListItem>
+          <ListItem>
+            Royalties specified at collection level (w/ optional overrides at
+            mint level)
+          </ListItem>
+          <ListItem>
+            Royalty bps (formerly seller_fee_basis_points at collection level)
+            (w/ optional overrides at mint level)
+          </ListItem>
         </OrderedList>
       </Box>
-{/*      
+      {/*      
       <h3 className="text-2xl">Under discussion</h3>
       <Box>
         <UnorderedList
