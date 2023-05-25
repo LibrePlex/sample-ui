@@ -42,7 +42,7 @@ export const Mission = () => {
             Mission
           </h1>
           <p className="text-slate-500 text-2x1 leading-relaxed">
-            The mission of Libreplex is to provide a community-driven, open
+            The mission of LibrePlex is to provide a community-driven, open
             license protocol to the Solana SPL Token and NFT community. The
             protocol must meet the following criteria:
           </p>
