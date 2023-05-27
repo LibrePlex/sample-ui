@@ -42,9 +42,6 @@ export const useGenericTransactionClick = <P extends unknown>({
       onSuccess && onSuccess(msg);
     },
     (msg) => {
-      // notify(msg || "", {
-      //   variant: "error",
-      // });
       onError && onError(msg);
     },
     undefined, 
@@ -72,6 +69,7 @@ export const GenericTransactionButton = <P extends unknown>({
     ButtonProps,
     "onError"
   >) => {
+
   const { onClick, isExecuting } = useGenericTransactionClick({
     params,
     beforeClick,

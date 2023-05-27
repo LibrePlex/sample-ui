@@ -33,8 +33,6 @@ export const useExecutor = <P extends unknown>(
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
 
   const {connection} = useContext(ConnectionContext);
-
-
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
   const onClick = useCallback(async () => {
     if (publicKey && signAllTransactions) {
