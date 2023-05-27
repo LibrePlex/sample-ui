@@ -6,6 +6,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { IExecutorParams } from "components/executor/Executor";
+import { Text } from "@chakra-ui/react";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
@@ -14,9 +15,9 @@ import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 import { createDeleteCollectionInstruction } from "generated/libreplex";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useEffect, useState } from "react";
-import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
-import { usePermissionsByAuthority } from "stores/accounts/usePermissionsByAuthority";
+import { useState } from "react";
+import useDeletedKeysStore from "stores/useDeletedKeyStore";
+// import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
 export interface INftCollectionData {
   royaltyBps: number;
@@ -84,35 +85,17 @@ export const DeleteCollectionTransactionButton = (
     "transactionGenerator"
   >
 ) => {
-  const { publicKey } = useWallet();
-  const { collection } = props.params;
+  const { addDeletedKey } = useDeletedKeysStore();
 
-  const { connection } = useConnection();
-
-  const {
-    items: permissions,
-  } = usePermissionsByAuthority(publicKey, connection);
-
-
-  const {
-    items: collections,
-    removeCollection,
-    isFetching,
-    clear,
-  } = usePermissionsHydratedWithCollections(permissions, connection);
-
-
-  const [deleted, setDeleted] = useState<boolean>(false);
   return (
     <>
       <GenericTransactionButton<IDeleteCollection>
-        disabled={deleted}
         text={"Delete"}
         transactionGenerator={deleteCollection}
         {...props}
         onSuccess={(msg) => {
-          setDeleted(true);
-          removeCollection(collection);
+          addDeletedKey(props.params.collection);
+          props.onSuccess && props.onSuccess(msg);
         }}
       />
     </>
