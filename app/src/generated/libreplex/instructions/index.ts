@@ -1,4 +1,5 @@
 export * from './createCollection'
 export * from './createMetadata'
 export * from './deleteCollection'
+export * from './deleteCollectionPermissions'
 export * from './deleteMetadata'

@@ -11,25 +11,26 @@ import { useQuery } from "react-query";
 
 export const fetchGpa = <T extends unknown>(
   programId: PublicKey,
-  filters: GetProgramAccountsFilter[],
+  filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
   decode: (buf: Buffer, key: PublicKey) => T
 ) => ({
   fetcher: async () => {
     const _items: IRpcObject<T>[] = [];
-    const results = await connection.getProgramAccounts(programId, {
-      filters,
-    });
-
-    for (const result of results.values()) {
-      const obj = decode(result.account.data, result.pubkey);
-
-      _items.push({
-        pubkey: result.pubkey,
-        item: obj
+    if (filters) {
+      const results = await connection.getProgramAccounts(programId, {
+        filters,
       });
-    }
 
+      for (const result of results.values()) {
+        const obj = decode(result.account.data, result.pubkey);
+
+        _items.push({
+          pubkey: result.pubkey,
+          item: obj,
+        });
+      }
+    }
     return _items;
   },
   listener: {
@@ -48,7 +49,7 @@ export const fetchGpa = <T extends unknown>(
 
 export const useGpa = <T extends unknown>(
   programId: PublicKey,
-  filters: GetProgramAccountsFilter[],
+  filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
   decode: (buf: Buffer, key: PublicKey) => T,
   key: string[]
@@ -70,24 +71,24 @@ export const useGpa = <T extends unknown>(
   /// intercept account changes and refetch as needed
   useEffect(() => {
     const i = listener.add((accountInfo) => {
-      const found = items.find((item) =>
-        item.pubkey.equals(accountInfo.accountId)
-      );
+      // const found = items.find((item) =>
+      //   item.pubkey.equals(accountInfo.accountId)
+      // );
 
-      const newOrUpdatedItem = {
-        pubkey: accountInfo.accountId,
-        item: decode(accountInfo.accountInfo.data, accountInfo.accountId),
-      };
+      // const newOrUpdatedItem = {
+      //   pubkey: accountInfo.accountId,
+      //   item: decode(accountInfo.accountInfo.data, accountInfo.accountId),
+      // };
 
-      if (addedItems.find((item) => item.pubkey === accountInfo.accountId)) {
-        setAddedItems((old) =>
-          old.map((item) =>
-            item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
-          )
-        );
-      } else {
-        setAddedItems((old) => [...old, newOrUpdatedItem]);
-      }
+      // if (addedItems.find((item) => item.pubkey === accountInfo.accountId)) {
+      //   setAddedItems((old) =>
+      //     old.map((item) =>
+      //       item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
+      //     )
+      //   );
+      // } else {
+      //   setAddedItems((old) => [...old, newOrUpdatedItem]);
+      // }
     });
     return () => {
       listener.remove(i);
@@ -102,14 +103,14 @@ export const useGpa = <T extends unknown>(
   const allItems = useMemo(
     () => [
       ...(items?.filter((item) => !addedKeys.has(item.pubkey)) ?? []),
-      ...(addedItems ?? []),
+      // ...(addedItems ?? []),
     ],
     [items, addedItems, addedKeys]
   );
 
-  useEffect(()=>{
-    console.log({addedItems})
-  },[addedItems])
+  useEffect(() => {
+    console.log({ addedItems });
+  }, [addedItems]);
 
   return {
     ...q,
