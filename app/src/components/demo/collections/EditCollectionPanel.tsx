@@ -1,4 +1,4 @@
-import { AddIcon, CalendarIcon, DeleteIcon } from "@chakra-ui/icons";
+import { AddIcon, CalendarIcon, DeleteIcon, AttachmentIcon } from "@chakra-ui/icons";
 import { useMemo, useState } from "react";
 
 import {
@@ -92,7 +92,7 @@ export const EditCollectionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
       )}
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <CalendarIcon color="gray.300" />
+          <Text color="gray.300" >S</Text>
         </InputLeftElement>
         <Input
           placeholder="Symbol name"
@@ -106,7 +106,7 @@ export const EditCollectionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
 
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <CalendarIcon color="gray.300" />
+          <AttachmentIcon color="gray.300" />
         </InputLeftElement>
         <Input
           placeholder="URL"

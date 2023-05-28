@@ -1,42 +1,71 @@
+import { Idl, Program } from "@project-serum/anchor";
 import {
   Connection,
   GetProgramAccountsFilter,
+  KeyedAccountInfo,
   ProgramAccountChangeCallback,
   PublicKey,
 } from "@solana/web3.js";
 import { IRpcObject } from "components/executor/IRpcObject";
+import useQueryContext from "hooks/useQueryContext";
 
-import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
+import { DecodeType } from "./multiAccountInfo";
 
-export const fetchGpa = <T extends unknown>(
-  programId: PublicKey,
+
+
+const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, P>, program: Program<P>,
+  queryClient: QueryClient, key: any) =>
+  (accountInfo: KeyedAccountInfo)=> {
+    console.log({ queryClient });
+    console.log("Account updated", accountInfo);
+
+    const newOrUpdatedItem = decode(
+      accountInfo.accountInfo.data,
+      program,
+      accountInfo.accountId
+    );
+    console.log({key})
+    
+    queryClient.setQueryData(key, (old: IRpcObject<T>[]) => {
+      const found = (old ?? []).find((item) =>
+        item.pubkey.equals(accountInfo.accountId)
+      );
+      console.log({ found, old });
+      return found
+        ? old.map((item) =>
+            item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
+          )
+        : [...(old ?? []), newOrUpdatedItem];
+    });
+  }
+
+
+export const fetchGpa = <T extends unknown, P extends Idl>(
   filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
-  decode: (buf: Buffer, key: PublicKey) => T
+  decode: (buf: Buffer, program: Program<P>, pubkey: PublicKey) => IRpcObject<T>
 ) => ({
-  fetcher: async () => {
+  getFetcher: (program: Program<P>) => async () => {
     const _items: IRpcObject<T>[] = [];
     if (filters) {
-      const results = await connection.getProgramAccounts(programId, {
+      const results = await connection.getProgramAccounts(program.programId, {
         filters,
       });
 
       for (const result of results.values()) {
-        const obj = decode(result.account.data, result.pubkey);
+        const obj = decode(result.account.data, program, result.pubkey);
 
-        _items.push({
-          pubkey: result.pubkey,
-          item: obj,
-        });
+        _items.push(obj);
       }
     }
     return _items;
   },
   listener: {
-    add: (onAccountChange: ProgramAccountChangeCallback) =>
+    add: (onAccountChange: ProgramAccountChangeCallback, program: Program<P>) =>
       connection.onProgramAccountChange(
-        programId,
+        program.programId,
         onAccountChange,
         "processed",
         filters
@@ -47,75 +76,54 @@ export const fetchGpa = <T extends unknown>(
   },
 });
 
-export const useGpa = <T extends unknown>(
-  programId: PublicKey,
+export const useGpa = <T extends unknown, P extends Idl>(
+  program: Program<P>,
   filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
-  decode: (buf: Buffer, key: PublicKey) => T,
-  key: string[]
+  decode: (
+    buf: Buffer,
+    program: Program<P>,
+    pubkey: PublicKey
+  ) => IRpcObject<T>,
+  key: any
 ) => {
-  const { fetcher, listener } = useMemo(
-    () => fetchGpa(programId, filters, connection, decode),
+  const { getFetcher, listener } = useMemo(
+    () => fetchGpa(filters, connection, decode),
 
-    [programId, filters, connection, decode]
+    [program, filters, connection, decode]
   );
 
-  const q = useQuery(key, fetcher);
 
-  const { data: items, refetch } = q;
+    
+  const queryClient = useQueryClient();
 
-  const [addedItems, setAddedItems] = useState<
-    { pubkey: PublicKey; item: T }[]
-  >([]);
+  const fetcher = useMemo(
+    () =>
+      getFetcher && program
+        ? { key, fetcher: getFetcher(program) }
+        : { key: "DUMMY", fetcher: () => [] },
+    [getFetcher, program, key]
+  );
+
+  // useEffect(()=>{
+  //   console.log({fetcherKey: fetcher.key});
+  // },[fetcher.key])
+
+  const q = useQuery<IRpcObject<T>[]>(fetcher.key, fetcher.fetcher);
+
 
   /// intercept account changes and refetch as needed
   useEffect(() => {
-    const i = listener.add((accountInfo) => {
-      // const found = items.find((item) =>
-      //   item.pubkey.equals(accountInfo.accountId)
-      // );
-
-      // const newOrUpdatedItem = {
-      //   pubkey: accountInfo.accountId,
-      //   item: decode(accountInfo.accountInfo.data, accountInfo.accountId),
-      // };
-
-      // if (addedItems.find((item) => item.pubkey === accountInfo.accountId)) {
-      //   setAddedItems((old) =>
-      //     old.map((item) =>
-      //       item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
-      //     )
-      //   );
-      // } else {
-      //   setAddedItems((old) => [...old, newOrUpdatedItem]);
-      // }
-    });
+    let i: any;
+    if (program) {
+      i = listener.add(accountUpdater(decode, program, queryClient, fetcher.key), program);
+    }
     return () => {
-      listener.remove(i);
+      if (i !== undefined) {
+        listener.remove(i);
+      }
     };
-  }, [listener, items, addedItems]);
+  }, [listener, program, decode, queryClient, fetcher.key]);
 
-  const addedKeys = useMemo(
-    () => new Set([...addedItems.map((item) => item.pubkey)]),
-    [addedItems]
-  );
-
-  const allItems = useMemo(
-    () => [
-      ...(items?.filter((item) => !addedKeys.has(item.pubkey)) ?? []),
-      // ...(addedItems ?? []),
-    ],
-    [items, addedItems, addedKeys]
-  );
-
-  useEffect(() => {
-    console.log({ addedItems });
-  }, [addedItems]);
-
-  return {
-    ...q,
-    data: allItems,
-    /// maybe move these to a redux store?
-    // markAsDeleted,
-  };
+  return q
 };
