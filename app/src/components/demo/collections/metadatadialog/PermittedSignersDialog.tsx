@@ -54,8 +54,8 @@ export const PermittedSignersDialog = ({
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {permittedSigners.map((item) => (
-                        <Tr>
+                      {permittedSigners.map((item, idx) => (
+                        <Tr key={idx}>
                           <Td>
                             <CopyPublicKeyButton publicKey={item.toBase58()} />
                           </Td>

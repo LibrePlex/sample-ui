@@ -55,8 +55,8 @@ export const RoyaltiesDialog = ({
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {royalties.map((item) => (
-                        <Tr>
+                      {royalties.map((item, idx) => (
+                        <Tr key={idx}>
                           <Td>
                             <CopyPublicKeyButton publicKey={item.recipient.toBase58()} />
                           </Td>
