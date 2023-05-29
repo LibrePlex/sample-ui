@@ -1,13 +1,6 @@
-import {
-  BorshCoder,
-  IdlAccounts,
-  Program
-} from "@project-serum/anchor";
+import { BorshCoder, IdlAccounts, Program } from "@project-serum/anchor";
 import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import {
-  Connection,
-  PublicKey
-} from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import { sha256 } from "js-sha256";
 import { useGpa } from "query/gpa";
@@ -17,23 +10,25 @@ import { Libreplex } from "types/libreplex";
 export type CollectionPermissions =
   IdlAccounts<Libreplex>["collectionPermissions"];
 
-export const decodeCollectionPermission = (
-  buffer: Buffer,
-  program: Program<Libreplex>,
-  pubkey: PublicKey
-) => {
-  const coder = new BorshCoder(program.idl);
+export const decodeCollectionPermission =
+  (program: Program<Libreplex>) =>
+  (
+    buffer: Buffer,
 
-  const collectionPermissions = coder.accounts.decode<CollectionPermissions>(
-    "collectionPermissions",
-    buffer
-  );
+    pubkey: PublicKey
+  ) => {
+    const coder = new BorshCoder(program.idl);
 
-  return {
-    item: collectionPermissions ?? null,
-    pubkey,
+    const collectionPermissions = coder.accounts.decode<CollectionPermissions>(
+      "collectionPermissions",
+      buffer
+    );
+
+    return {
+      item: collectionPermissions ?? null,
+      pubkey,
+    };
   };
-};
 
 export const usePermissionsByUser = (
   publicKey: PublicKey | undefined,
@@ -67,8 +62,11 @@ export const usePermissionsByUser = (
       return null;
     }
   }, [publicKey]);
-
-  return useGpa(program, filters, connection, decodeCollectionPermission, [
+  const d = useMemo(
+    () => decodeCollectionPermission(program),
+    [program, decodeCollectionPermission]
+  );
+  return useGpa(program.programId, filters, connection, d, [
     publicKey?.toBase58() ?? "",
     "collectionpermissions",
   ]);

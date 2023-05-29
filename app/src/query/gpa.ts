@@ -15,7 +15,7 @@ import { DecodeType } from "./multiAccountInfo";
 
 
 
-const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, P>, program: Program<P>,
+const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, P>, 
   queryClient: QueryClient, key: any) =>
   (accountInfo: KeyedAccountInfo)=> {
     console.log({ queryClient });
@@ -23,7 +23,6 @@ const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, 
 
     const newOrUpdatedItem = decode(
       accountInfo.accountInfo.data,
-      program,
       accountInfo.accountId
     );
     console.log({key})
@@ -45,17 +44,17 @@ const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, 
 export const fetchGpa = <T extends unknown, P extends Idl>(
   filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
-  decode: (buf: Buffer, program: Program<P>, pubkey: PublicKey) => IRpcObject<T>
+  decode: (buf: Buffer, pubkey: PublicKey) => IRpcObject<T>
 ) => ({
-  getFetcher: (program: Program<P>) => async () => {
+  getFetcher: (programId: PublicKey) => async () => {
     const _items: IRpcObject<T>[] = [];
     if (filters) {
-      const results = await connection.getProgramAccounts(program.programId, {
+      const results = await connection.getProgramAccounts(programId, {
         filters,
       });
 
       for (const result of results.values()) {
-        const obj = decode(result.account.data, program, result.pubkey);
+        const obj = decode(result.account.data, result.pubkey);
 
         _items.push(obj);
       }
@@ -63,9 +62,9 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
     return _items;
   },
   listener: {
-    add: (onAccountChange: ProgramAccountChangeCallback, program: Program<P>) =>
+    add: (onAccountChange: ProgramAccountChangeCallback, programId: PublicKey) =>
       connection.onProgramAccountChange(
-        program.programId,
+        programId,
         onAccountChange,
         "processed",
         filters
@@ -77,20 +76,16 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
 });
 
 export const useGpa = <T extends unknown, P extends Idl>(
-  program: Program<P>,
+  programId: PublicKey,
   filters: GetProgramAccountsFilter[] | null,
   connection: Connection,
-  decode: (
-    buf: Buffer,
-    program: Program<P>,
-    pubkey: PublicKey
-  ) => IRpcObject<T>,
+  decode: DecodeType<T, P>,
   key: any
 ) => {
   const { getFetcher, listener } = useMemo(
     () => fetchGpa(filters, connection, decode),
 
-    [program, filters, connection, decode]
+    [filters, connection, decode]
   );
 
 
@@ -99,10 +94,10 @@ export const useGpa = <T extends unknown, P extends Idl>(
 
   const fetcher = useMemo(
     () =>
-      getFetcher && program
-        ? { key, fetcher: getFetcher(program) }
+      getFetcher && programId
+        ? { key, fetcher: getFetcher(programId) }
         : { key: "DUMMY", fetcher: () => [] },
-    [getFetcher, program, key]
+    [getFetcher, programId, key]
   );
 
   // useEffect(()=>{
@@ -115,15 +110,16 @@ export const useGpa = <T extends unknown, P extends Idl>(
   /// intercept account changes and refetch as needed
   useEffect(() => {
     let i: any;
-    if (program) {
-      i = listener.add(accountUpdater(decode, program, queryClient, fetcher.key), program);
+    if (programId) {
+      i = listener.add(accountUpdater(decode,  
+        queryClient, fetcher.key), programId);
     }
     return () => {
       if (i !== undefined) {
         listener.remove(i);
       }
     };
-  }, [listener, program, decode, queryClient, fetcher.key]);
+  }, [listener, programId, decode, queryClient, fetcher.key]);
 
   return q
 };

@@ -7,6 +7,7 @@ import { ContentContainer } from "../components/ContentContainer";
 import { Footer } from "../components/Footer";
 import Notifications from "../components/Notification";
 import { LibrePlexProgramProvider } from "anchor/LibrePlexProgramContext";
+import { PortalManager } from "@chakra-ui/react";
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 
@@ -22,9 +23,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <Notifications />
           <AppBar />
           <ContentContainer>
+            <PortalManager>
             
               <Component {...pageProps} />
               <Footer />
+              </PortalManager>
               
           </ContentContainer>
         </div>

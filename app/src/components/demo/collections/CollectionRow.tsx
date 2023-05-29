@@ -7,6 +7,9 @@ import { Collection } from "query/collections";
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 import { PublicKey } from "@solana/web3.js";
+import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
+import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
+import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 
 export const CollectionRow = ({
   item,
@@ -28,7 +31,6 @@ export const CollectionRow = ({
     >
       <Td>
         <Center>
-
           <Checkbox
             isChecked={selectedCollections.has(item.pubkey)}
             onChange={(e) => {
@@ -41,18 +43,48 @@ export const CollectionRow = ({
         <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
       </Td>
       <Td>{item.item.name}</Td>
-      <Td isNumeric>{item.item.itemCount.toString()}</Td>
-      <Td isNumeric>{item.item.symbol}</Td>
       <Td isNumeric>
-        {item &&
-          permissions &&
-          Number(item.item.itemCount.toString()) === 0 &&
-          (deletedKeys.has(item.pubkey) ? (
-            <Text>Deleted</Text>
-          ) : (
-            <></>
-          ))}
+        <Center>{item.item.itemCount.toString()}</Center>
       </Td>
+      <Td isNumeric>
+        <Center>{item.item.symbol}</Center>
+      </Td>
+      <Td isNumeric>
+        <Center>{item.item.nftCollectionData?.royaltyBps}</Center>
+      </Td>
+      <Td isNumeric>
+        <Center>
+          {item.item.nftCollectionData?.royaltyShares && (
+            <RoyaltiesDialog
+              royalties={item.item.nftCollectionData?.royaltyShares}
+            />
+          )}
+        </Center>
+      </Td>
+
+      <Td isNumeric>
+        <Center>
+          {item.item.nftCollectionData?.royaltyShares && (
+            <PermittedSignersDialog
+              permittedSigners={item.item.nftCollectionData?.permittedSigners}
+            />
+          )}
+        </Center>
+      </Td>
+
+      <Td isNumeric>
+        <Center>
+          {item &&
+            permissions &&
+            Number(item.item.itemCount.toString()) === 0 &&
+            (deletedKeys.has(item.pubkey) ? (
+              <Text>Deleted</Text>
+            ) : (
+              <AddMetadataButton collection={item} />
+            ))}
+        </Center>
+      </Td>
+      
     </Tr>
   );
 };
