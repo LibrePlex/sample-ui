@@ -109,7 +109,7 @@ export const AttributesPanel = ({
         </Button>
       </InputGroup>
       {nameExists && (
-        <Text colorScheme="red">Attribute "{name}" already exists</Text>
+        <Text colorScheme="red">Attribute {name} already exists</Text>
       )}
       <InputGroup>
         <InputLeftElement pointerEvents="none">
@@ -126,8 +126,8 @@ export const AttributesPanel = ({
       <Box display="flex" gap={1}>
         
 
-        {sortedAttributes.map((item) => (
-          <Tag onClick={() => {}}>{item}</Tag>
+        {sortedAttributes.map((item, idx) => (
+          <Tag key={idx} onClick={() => {}}>{item}</Tag>
         ))}
       </Box>
       <Box p={1}>
