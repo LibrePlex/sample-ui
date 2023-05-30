@@ -1,3 +1,4 @@
+import { ChakraProvider } from "@chakra-ui/react";
 import { WalletAdapterNetwork, WalletError } from "@solana/wallet-adapter-base";
 import {
   ConnectionProvider,
@@ -10,17 +11,15 @@ import {
   SolongWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
+import theme from "components/theme/LIbrePlexTheme";
+import dynamic from "next/dynamic";
 import { FC, ReactNode, useCallback, useMemo } from "react";
-import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 import { notify } from "../utils/notifications";
+import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./NetworkConfigurationProvider";
-import dynamic from "next/dynamic";
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "components/theme/LIbrePlexTheme";
-import { Wallet } from "@project-serum/anchor";
 
 const ReactUIWalletModalProviderDynamic = dynamic(
   async () =>
@@ -28,11 +27,13 @@ const ReactUIWalletModalProviderDynamic = dynamic(
   { ssr: false }
 );
 
-const getRpcUrlFromNetwork = (network: WalletAdapterNetwork) => {
+const getRpcUrlFromNetwork = (network: WalletAdapterNetwork | "local") => {
   if (network === WalletAdapterNetwork.Devnet) {
     return process.env.NEXT_PUBLIC_DEVNET_URL ?? clusterApiUrl(network);
   } else if (network === WalletAdapterNetwork.Mainnet) {
     return process.env.NEXT_PUBLIC_MAINNET_URL ?? clusterApiUrl(network);
+  } else if (network === "local") {
+    return process.env.NEXT_PUBLIC_LOCALNET_URL ?? "http://localhost:8899";
   } else {
     return clusterApiUrl(network);
   }
@@ -41,7 +42,7 @@ const getRpcUrlFromNetwork = (network: WalletAdapterNetwork) => {
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
-  const network = networkConfiguration as WalletAdapterNetwork;
+  const network = networkConfiguration as WalletAdapterNetwork | "local";
   const endpoint = useMemo(() => getRpcUrlFromNetwork(network), [network]);
 
   console.log(network);

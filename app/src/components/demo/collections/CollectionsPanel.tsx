@@ -35,7 +35,7 @@ import {
 import { CollectionPermissions, usePermissionsByUser } from "query/permissions";
 import useSelectedCollections from "./useSelectedCollections";
 import { CollectionRow } from "./CollectionRow";
-import { EditCollectionDialog } from "./EditCollectionDialog";
+import { EditCollectionDialog } from "./editCollectionDialog/EditCollectionDialog";
 
 export const CollectionsPanel = () => {
   const { publicKey } = useWallet();
@@ -240,6 +240,9 @@ export const CollectionsPanel = () => {
               </Th>
               <Th>
                   <Center>Signers</Center>
+              </Th>
+              <Th>
+                  <Center>Attributes</Center>
               </Th>
             </Tr>
           </Thead>

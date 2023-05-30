@@ -15,21 +15,16 @@ import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
 import { getCollectionPda } from "pdas/getCollectionPda";
 import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
+import { Collection } from "query/collections";
+import { notify } from "utils/notifications";
 
-export interface INftCollectionData {
-  royaltyBps: number;
-  royaltyShares: {
-    recipient: PublicKey;
-    share: number;
-  }[];
-  permittedSigners;
-}
+
 
 export interface ICreateCollection {
   name: string;
   symbol: string;
   collectionUrl: string;
-  nftCollectionData: INftCollectionData;
+  nftCollectionData: Collection["nftCollectionData"];
 }
 
 export const createCollection = async (
@@ -74,12 +69,21 @@ export const createCollection = async (
 
   const { symbol, name, collectionUrl, nftCollectionData } = params;
 
+  console.log({nftCollectionData})
+
   const instruction = await librePlexProgram.methods
     .createCollection({
       name,
       symbol,
-      collectionUrl,
-      nftCollectionData: params.nftCollectionData,
+      nftCollectionData,
+      collectionRenderMode: {
+          url: {collectionUrl}
+      }, 
+      metadataRenderMode: {
+        url: {
+          baseUrlConfiguration: null
+        }
+      }
     })
     .accounts({
       authority: wallet.publicKey,
@@ -116,6 +120,7 @@ export const CreateCollectionTransactionButton = (
       <GenericTransactionButton<ICreateCollection>
         text={"Create collection"}
         transactionGenerator={createCollection}
+        onError={(msg)=>notify({message: msg})}
         {...props}
       />
     </>
