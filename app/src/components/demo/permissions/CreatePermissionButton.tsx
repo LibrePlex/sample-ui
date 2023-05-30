@@ -74,24 +74,24 @@ export const createCollection = async (
 
   const { symbol, name, collectionUrl, nftCollectionData } = params;
 
-  const instruction = await librePlexProgram.methods
-    .createCollection({
-      name,
-      symbol,
-      collectionUrl,
-      nftCollectionData: params.nftCollectionData,
-    })
-    .accounts({
-      authority: wallet.publicKey,
-      userPermissions,
-      collection,
-      seed: seed.publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .instruction();
+  // const instruction = await librePlexProgram.methods
+  //   .createCollection({
+  //     name,
+  //     symbol,
+  //     collectionUrl,
+  //     nftCollectionData: params.nftCollectionData,
+  //   })
+  //   .accounts({
+  //     authority: wallet.publicKey,
+  //     userPermissions,
+  //     collection,
+  //     seed: seed.publicKey,
+  //     systemProgram: SystemProgram.programId,
+  //   })
+  //   .instruction();
 
   let instructions: TransactionInstruction[] = [];
-  instructions.push(instruction);
+  // instructions.push(instruction);
   data.push({
     instructions,
     description: `Create collection`,
