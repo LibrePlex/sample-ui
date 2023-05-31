@@ -20,7 +20,7 @@ export const AttributesDisplay = ({
       <Tbody>
        
         {[...attributes].map((item, idx) => 
-          <AttributeDisplayRow item={item} idx={idx} collection={collection}/>
+          <AttributeDisplayRow key={idx} item={item} idx={idx} collection={collection}/>
         )}
       </Tbody>
     </Table>

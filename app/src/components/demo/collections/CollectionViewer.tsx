@@ -22,8 +22,8 @@ export const CollectionViewer = ({
     <Box>
       <Text>Items ({items?.length ?? "-"})</Text>
       <Box display="flex" gap={2} flexWrap={"wrap"}>
-        {items?.map((item) => (
-          <MetadataCard item={item} collection={collection}/>
+        {items?.map((item, idx) => (
+          <MetadataCard key={idx} item={item} collection={collection}/>
         ))}
       </Box>
     </Box>
