@@ -10,60 +10,60 @@ import { sha256 } from "js-sha256";
 import bs58 from "bs58";
 import { useGpa } from "./gpa";
 
-export type Collection = IdlAccounts<Libreplex>["collection"];
+export type Metadata = IdlAccounts<Libreplex>["metadata"];
 
-export const decodeCollection = (program: Program<Libreplex>) => (
+export const decodeMetadata = (program: Program<Libreplex>) => (
   buffer: Buffer,
   pubkey: PublicKey
 ) => {
   const coder = new BorshCoder(program.idl);
 
-  const collection = coder.accounts.decode<Collection>(
+  const metadata = coder.accounts.decode<Metadata>(
     "collection",
     buffer
   );
 
   return {
-    item: collection ?? null,
+    item: metadata ?? null,
     pubkey,
   };
 };
 
-export const useCollectionsById = (
-  collectionKeys: PublicKey[],
+export const useMetadataById = (
+  metadataKeys: PublicKey[],
   connection: Connection
 ) => {
   const { program } = useContext(LibrePlexProgramContext);
 
   return useFetchMultiAccounts(
     program,
-    collectionKeys,
-    decodeCollection(program),
+    metadataKeys,
+    decodeMetadata(program),
     connection,
   );
 
   // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
 };
 
-export const useCollectionsByCreator = (
-  creator: PublicKey | undefined,
+export const useMetadataByCollection = (
+  collection: PublicKey | undefined,
   connection: Connection
 ) => {
   const { program } = useContext(LibrePlexProgramContext);
 
   const filters = useMemo(() => {
-    if (creator) {
+    if (collection) {
       const filters = [
         {
           memcmp: {
             offset: 40,
-            bytes: creator.toBase58(),
+            bytes: collection.toBase58(),
           },
         },
         {
           memcmp: {
             offset: 0,
-            bytes: bs58.encode(sha256.array("account:Collection").slice(0, 8)),
+            bytes: bs58.encode(sha256.array("account:Metadata").slice(0, 8)),
           },
         },
       ];
@@ -71,12 +71,12 @@ export const useCollectionsByCreator = (
     } else {
       return null;
     }
-  }, [creator]);
+  }, [collection]);
 
-  const d = useMemo(()=>decodeCollection(program),[decodeCollection, program])
+  const d = useMemo(()=>decodeMetadata(program),[decodeMetadata, program])
 
   return useGpa(program.programId, filters, connection, d, [
-    creator?.toBase58() ?? "",
-    "collection",
+    collection?.toBase58() ?? "",
+    "metadata-by-collection",
   ]);
 };

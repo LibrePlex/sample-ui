@@ -229,7 +229,9 @@ export const CollectionsPanel = () => {
                   />
                 </Center>
               </Th>
+              <Th>Add items</Th>
               <Th>Collection</Th>
+              
               <Th>Name</Th>
               <Th>Items</Th>
 
