@@ -1,6 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { ContextProvider } from "../contexts/ContextProvider";
 import { AppBar } from "../components/AppBar";
 import { ContentContainer } from "../components/ContentContainer";
@@ -12,6 +12,8 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
+
+  const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <>
       <Head>
@@ -21,8 +23,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       <ContextProvider>
         <div className="flex flex-col h-screen">
           <Notifications />
-          <AppBar />
-          <ContentContainer>
+          <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen}/>
+          <ContentContainer isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen}>
             <PortalManager>
             
               <Component {...pageProps} />

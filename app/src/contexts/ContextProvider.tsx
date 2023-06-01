@@ -45,8 +45,6 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const network = networkConfiguration as WalletAdapterNetwork | "local";
   const endpoint = useMemo(() => getRpcUrlFromNetwork(network), [network]);
 
-  console.log(network);
-
   const wallets = useMemo(
     () => [
       new SolflareWalletAdapter(),

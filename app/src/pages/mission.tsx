@@ -6,7 +6,6 @@ function Feature({ title, desc, ...rest }) {
       p={5}
       shadow="md"
       borderWidth="1px"
-      sx={{ minWidth: "600px", maxWidth: "600px" }}
       {...rest}
     >
       <Heading fontSize="xl">{title}</Heading>
@@ -76,7 +75,7 @@ export const Mission = () => {
 
         <Feature
           title="Permissive license"
-          desc="Contracts & SDK released under MIT."
+          desc="Contracts & SDK released under MIT. License will be held by Trust / Foundation."
         />
       </Box>
     </Box>
