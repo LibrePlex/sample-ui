@@ -15,7 +15,7 @@ export const AttributeTypeRow = ({
   return (
     <Tr>
       <Td>{item.name}</Td>
-      <Td>{item.permittedValues.map(val=><Tag>{val}</Tag>)}</Td>
+      <Td>{item.permittedValues.map((val, idx)=><Tag key={idx}>{val}</Tag>)}</Td>
       <Td><Button onClick={()=>{
         setAttributeTypes(old=>old.filter(at=>at.name !== item.name))
       }}size={'sm'} colorScheme='red'><MinusIcon/></Button></Td>
