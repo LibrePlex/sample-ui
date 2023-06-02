@@ -20,6 +20,7 @@ import { RoyalOverridePanel } from "./RoyaltyOverridePanel";
 import { AttributeSelectorPanel } from "./AttributeSelectorPanel";
 import { generateKey } from "crypto";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
+import { MintImageUploader } from "components/shadowdrive/MintImageUploader";
 
 enum Status {
   NotStarted,
@@ -27,6 +28,10 @@ enum Status {
   Success,
 }
 
+enum UrlMode {
+  Shadow,
+  String
+}
 export const MintNewToCollection = ({
   collection,
 }: {
@@ -49,6 +54,9 @@ export const MintNewToCollection = ({
     () => collection?.item?.nftCollectionData?.attributeTypes?.length ?? 0,
     [collection]
   );
+
+
+  const [urlMode, setUrlMode] = useState<UrlMode>(UrlMode.Shadow);
 
   useEffect(() => {
     setStatus(Status.NotStarted);
@@ -80,17 +88,20 @@ export const MintNewToCollection = ({
           onChange={(e) => setName(e.currentTarget.value)}
         />
       </InputGroup>
-
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <AttachmentIcon color="gray.300" />
-        </InputLeftElement>
-        <Input
-          placeholder="URL"
-          value={url}
-          onChange={(e) => setUrl(e.currentTarget.value)}
-        />
-      </InputGroup>
+      {urlMode === UrlMode.String ? (
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <AttachmentIcon color="gray.300" />
+          </InputLeftElement>
+          <Input
+            placeholder="URL"
+            value={url}
+            onChange={(e) => setUrl(e.currentTarget.value)}
+          />
+        </InputGroup>
+      ) : (
+        <MintImageUploader mintId={generatedMint.publicKey.toBase58()} fileId={"file.png"} afterUpdate={ () =>{} } />
+      )}
 
       <Box
         display="flex"
@@ -120,12 +131,10 @@ export const MintNewToCollection = ({
         <RoyalOverridePanel />
       </Collapse>
 
-
       <KeyGenerator
         generatedMint={generatedMint}
         setGeneratedMint={setGeneratedMint}
       />
-
 
       <CreateMetadataButton
         beforeClick={() => {
