@@ -57,7 +57,6 @@ export const CollectionsPanel = () => {
       _permissionsByCollection[permission.item.collection.toBase58()] = {
         pubkey: permission.pubkey,
         item: permission.item,
-        deleted: false,
       };
     }
     return _permissionsByCollection;
@@ -68,10 +67,21 @@ export const CollectionsPanel = () => {
     connection
   );
 
+  const orderedCollections = useMemo(
+    () =>
+      collections
+        ? [...collections].sort((a, b) =>
+            a.item.name.localeCompare(b.item.name)
+          )
+        : [],
+    [collections]
+  );
+
   const deletedKeys = useDeletedKeysStore((state) => state.deletedKeys);
 
   return (
     <Box>
+      {collections?.length} /{permissions?.length}
       <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
         {isFetching && <Spinner />}
       </Box>
@@ -96,7 +106,7 @@ export const CollectionsPanel = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {collections?.map((item, idx) => (
+            {orderedCollections?.map((item, idx) => (
               <Tr
                 key={idx}
                 sx={{
@@ -114,9 +124,9 @@ export const CollectionsPanel = () => {
                     permissionsByCollection &&
                     permissionsByCollection[item.pubkey.toBase58()] &&
                     Number(item.item.itemCount.toString()) === 0 &&
-                    (deletedKeys.has(item.pubkey) ?  (
-                        <Text>Deleted</Text>
-                      ) : (
+                    (deletedKeys.has(item.pubkey) ? (
+                      <Text>Deleted</Text>
+                    ) : (
                       <DeleteCollectionTransactionButton
                         onSuccess={(msg) => {
                           // markAsDeleted(permissionsByCollection[item.pubkey.toBase58()].pubkey)

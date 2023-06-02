@@ -26,8 +26,7 @@ export const fetchGpa = <T extends unknown>(
 
       _items.push({
         pubkey: result.pubkey,
-        item: obj,
-        deleted: false,
+        item: obj
       });
     }
 
@@ -80,18 +79,12 @@ export const useGpa = <T extends unknown>(
         item: decode(accountInfo.accountInfo.data, accountInfo.accountId),
       };
 
-      if (found) {
-        // is in added, if so update there
-
-        if (addedItems.find((item) => item.pubkey === accountInfo.accountId)) {
-          setAddedItems((old) =>
-            old.map((item) =>
-              item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
-            )
-          );
-        } else {
-          setAddedItems((old) => [...old, newOrUpdatedItem]);
-        }
+      if (addedItems.find((item) => item.pubkey === accountInfo.accountId)) {
+        setAddedItems((old) =>
+          old.map((item) =>
+            item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
+          )
+        );
       } else {
         setAddedItems((old) => [...old, newOrUpdatedItem]);
       }
@@ -101,7 +94,6 @@ export const useGpa = <T extends unknown>(
     };
   }, [listener, items, addedItems]);
 
-  
   const addedKeys = useMemo(
     () => new Set([...addedItems.map((item) => item.pubkey)]),
     [addedItems]
@@ -114,6 +106,10 @@ export const useGpa = <T extends unknown>(
     ],
     [items, addedItems, addedKeys]
   );
+
+  useEffect(()=>{
+    console.log({addedItems})
+  },[addedItems])
 
   return {
     ...q,
