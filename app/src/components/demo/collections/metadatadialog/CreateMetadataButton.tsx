@@ -118,7 +118,6 @@ export const createMetadata = async (
     })
     .accounts({
       signer: wallet.publicKey,
-      mintSigner: mint.publicKey,
       signerCollectionPermissions,
       collection,
       metadata,
