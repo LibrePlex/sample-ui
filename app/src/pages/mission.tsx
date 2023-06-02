@@ -53,7 +53,7 @@ export const Mission = () => {
               on the protocol."
         />
         <Feature
-          title="Open license held by a Trust"
+          title="Open license held by a Trust / Foundation"
           desc="The licensing must ensure that any applications utilising the
           protocol can do so knowing that the nature of the protocol remains
           constant, to minimise uncertainty and maximise transparency."
