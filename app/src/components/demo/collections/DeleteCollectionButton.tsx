@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import {
   Connection,
   Keypair,
@@ -6,7 +5,6 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
 import { IExecutorParams } from "components/executor/Executor";
 import {
   GenericTransactionButton,
@@ -15,9 +13,10 @@ import {
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 import { createDeleteCollectionInstruction } from "generated/libreplex";
 
-import { getCollectionPda } from "pdas/getCollectionPda";
-import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
-import { useState } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useState } from "react";
+import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
+import { usePermissionsByAuthority } from "stores/accounts/usePermissionsByAuthority";
 
 export interface INftCollectionData {
   royaltyBps: number;
@@ -54,23 +53,6 @@ export const deleteCollection = async (
 
   const seed = Keypair.generate();
 
-  // const a = createDeleteCollectionInstruction({
-  //   authority: wallet.publicKey,
-  //       collectionData: collectionPda,
-  //       collectionSeed: seed.publicKey,
-  //       receiver: wallet.publicKey,
-  //       systemProgram: SystemProgram.programId,
-  // }, {
-  //   bumpCollectionData: 1
-  // })
-
-  // console.log({a});
-
-  // const librePlexProgram = getProgramInstance(connection, {
-  //   ...wallet,
-  //   payer: Keypair.generate(),
-  // });
-
   const { collection, collectionPermissions } = params;
 
   const instruction = createDeleteCollectionInstruction({
@@ -80,22 +62,6 @@ export const deleteCollection = async (
     receiver: wallet.publicKey,
     systemProgram: SystemProgram.programId,
   });
-
-  // const instruction = await librePlexProgram.methods
-  //   .createCollection({
-  //     name,
-  //     symbol,
-  //     collectionUrl,
-  //     nftCollectionData: params.nftCollectionData,
-  //   })
-  //   .accounts({
-  //     authority: wallet.publicKey,
-  //     userPermissions,
-  //     collection,
-  //     seed: seed.publicKey,
-  //     systemProgram: SystemProgram.programId,
-  //   })
-  //   .instruction();
 
   let instructions: TransactionInstruction[] = [];
   instructions.push(instruction);
@@ -118,18 +84,36 @@ export const DeleteCollectionTransactionButton = (
     "transactionGenerator"
   >
 ) => {
+  const { publicKey } = useWallet();
+  const { collection } = props.params;
+
+  const { connection } = useConnection();
+
+  const {
+    items: permissions,
+  } = usePermissionsByAuthority(publicKey, connection);
+
+
+  const {
+    items: collections,
+    removeCollection,
+    isFetching,
+    clear,
+  } = usePermissionsHydratedWithCollections(permissions, connection);
+
+
   const [deleted, setDeleted] = useState<boolean>(false);
   return (
     <>
       <GenericTransactionButton<IDeleteCollection>
-        onSuccess={(msg) => {
-          setDeleted(true);
-        }}
-        
         disabled={deleted}
         text={"Delete"}
         transactionGenerator={deleteCollection}
         {...props}
+        onSuccess={(msg) => {
+          setDeleted(true);
+          removeCollection(collection);
+        }}
       />
     </>
   );
