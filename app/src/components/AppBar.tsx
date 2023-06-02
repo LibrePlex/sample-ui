@@ -75,6 +75,12 @@ export const AppBar = ({isNavOpen, setIsNavOpen}:{isNavOpen: boolean, setIsNavOp
             href="/why"
             navigationStarts={() => setIsNavOpen(false)}
           />
+          <NavElement
+            label="Costs"
+            href="/costs"
+            navigationStarts={() => setIsNavOpen(false)}
+          />
+          
           
           <NavElement
             label="Demo"
