@@ -6,10 +6,10 @@ const Home: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>Solana Scaffold</title>
+        <title>LibrePlex</title>
         <meta
           name="description"
-          content="Solana Scaffold"
+          content="LibrePlex digital asset standard for Solana"
         />
       </Head>
       <HomeView />
