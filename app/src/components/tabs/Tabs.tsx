@@ -16,7 +16,6 @@ const colorfulVariant = definePartsStyle((props) => {
   return {
     tab: {
       border: "2px solid",
-      minWidth :"200px",
       borderColor: "transparent",
       // use colorScheme to change background color with dark and light mode options
       bg: mode(`${c}.100`, `${c}.600`)(props),
@@ -52,5 +51,5 @@ export const tabsTheme = defineMultiStyleConfig({ variants });
 
 // now we can use the `colorful` variant with a different color Scheme
 export const StyledTabs = (props: TabsProps) => (
-  <Tabs variant="colorful" colorScheme="purple" {...props} />
+  <Tabs isFitted variant="colorful" colorScheme="purple" {...props} />
 );

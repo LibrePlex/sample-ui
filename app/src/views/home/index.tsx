@@ -50,15 +50,21 @@ export const HomeView: FC = ({}) => {
           <div className="max-w-xl mx-auto mockup-code bg-primary border-2 border-[#5252529f] p-6 px-10 my-2">
             <pre data-prefix=">">
               <code className="truncate">
-                {`git clone git@github.com:LibrePlex/sample-ui.git`}{" "}
+                {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
               </code>
             </pre>
           </div>
         </div>
-       
 
         <Box
-          sx={{ maxWidth: "600px", display: "flex", flexDirection: "column", alignItems :"center" }}
+          p={"10px"}
+          sx={{
+            maxWidth: "600px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            alignContent: 'center'
+          }}
         >
           <Heading size="md" my="2">
             Want to help out?
@@ -73,7 +79,7 @@ export const HomeView: FC = ({}) => {
           </Text>
         </Box>
 
-        <Box display="flex" columnGap={2}>
+        <Box display="flex" flexDirection="column" alignItems="center" columnGap={2}>
           <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
             <Heading size="md" my="2">
               <LinkOverlay href="https://discord.gg/wmpfBZhd">
@@ -95,7 +101,7 @@ export const HomeView: FC = ({}) => {
             <Text>https://discord.gg/wmpfBZhd</Text>
           </LinkBox>
         </Box>
-        <h3 style={{paddingTop: '30px'}}>Free DEV SOL below!</h3>
+        <Box sx={{width :"100%", display :"flex", justifyContent :"center"}}><h3 style={{ paddingTop: "30px" }}>Free DEV SOL below!</h3></Box>
         <div className="flex flex-col mt-2">
           <RequestAirdrop />
           <h4 className="md:w-full text-2xl text-slate-300 my-2">
