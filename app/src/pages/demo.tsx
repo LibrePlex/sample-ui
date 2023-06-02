@@ -14,7 +14,6 @@ import { SendTransaction } from "components/SendTransaction";
 import { SendVersionedTransaction } from "components/SendVersionedTransaction";
 import { SignMessage } from "components/SignMessage";
 import Link from "next/link";
-import { PROGRAM_ID } from "sdk/src";
 
 const Demo = () => {
   // Here is a wallet adapter
@@ -24,7 +23,6 @@ const Demo = () => {
   const connection = useConnection();
 
   // The Solita client can be imported via yarn workspace
-  const id = PROGRAM_ID;
 
   return (
     <Box
@@ -51,7 +49,7 @@ const Demo = () => {
         </h1>
 
         <p className="text-2xl">
-          By Saturday 27 May, this space will host reference web implementations built on top of
+          Over the coming days, this space will host reference web implementations built on top of
           the LibrePlex contracts. Source repos below:
         </p>
 
