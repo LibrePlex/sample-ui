@@ -1,41 +1,48 @@
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import useCollectionsByAuthority from "./useCollectionsByAuthority";
-import { useEffect } from "react";
 import { RepeatIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
-  Spinner,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
+    Box,
+    Button,
+    Spinner,
+    Table,
+    TableCaption,
+    TableContainer,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr
 } from "@chakra-ui/react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
+import {
+    usePermissionsHydratedWithCollections
+} from "stores/accounts/useCollectionsById";
+import { usePermissionsByAuthority } from "stores/accounts/usePermissionsByAuthority";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 
 export const CollectionsPanel = () => {
   const { publicKey } = useWallet();
 
-  const {
-    getCollectionsByAuthority,
-    collections,
-    isFetching,
-    clearCollections,
-  } = useCollectionsByAuthority();
+  //   const {
+  //     getCollectionsByAuthority,
+  //     collections,
+  //     isFetching,
+  //     clearCollections,
+  //   } = useCollectionsByAuthority();
 
   const { connection } = useConnection();
 
-  useEffect(() => {
-    if (!isFetching && !collections) {
-      getCollectionsByAuthority(publicKey, connection);
-    }
-  }, [publicKey, isFetching, collections]);
+  const {
+    items: permissions,
+  } = usePermissionsByAuthority(publicKey, connection);
+
+  const {
+    items: collections,
+    removeCollection,
+    isFetching,
+    clear,
+  } = usePermissionsHydratedWithCollections(permissions, connection);
+
 
   return (
     <Box>
@@ -54,7 +61,7 @@ export const CollectionsPanel = () => {
               <Th>
                 <Button
                   onClick={() => {
-                    clearCollections();
+                    clear();
                   }}
                 >
                   <RepeatIcon />

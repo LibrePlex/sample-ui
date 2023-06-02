@@ -20,6 +20,7 @@ import {
  */
 export type CollectionArgs = {
   seed: web3.PublicKey
+  creator: web3.PublicKey
   name: string
   symbol: string
   url: string
@@ -38,6 +39,7 @@ export const collectionDiscriminator = [48, 160, 232, 205, 191, 207, 26, 141]
 export class Collection implements CollectionArgs {
   private constructor(
     readonly seed: web3.PublicKey,
+    readonly creator: web3.PublicKey,
     readonly name: string,
     readonly symbol: string,
     readonly url: string,
@@ -51,6 +53,7 @@ export class Collection implements CollectionArgs {
   static fromArgs(args: CollectionArgs) {
     return new Collection(
       args.seed,
+      args.creator,
       args.name,
       args.symbol,
       args.url,
@@ -165,6 +168,7 @@ export class Collection implements CollectionArgs {
   pretty() {
     return {
       seed: this.seed.toBase58(),
+      creator: this.creator.toBase58(),
       name: this.name,
       symbol: this.symbol,
       url: this.url,
@@ -197,6 +201,7 @@ export const collectionBeet = new beet.FixableBeetStruct<
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['seed', beetSolana.publicKey],
+    ['creator', beetSolana.publicKey],
     ['name', beet.utf8String],
     ['symbol', beet.utf8String],
     ['url', beet.utf8String],
