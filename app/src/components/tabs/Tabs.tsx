@@ -53,3 +53,4 @@ export const tabsTheme = defineMultiStyleConfig({ variants });
 export const StyledTabs = (props: TabsProps) => (
   <Tabs isFitted variant="colorful" colorScheme="purple" {...props} />
 );
+

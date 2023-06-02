@@ -20,7 +20,7 @@ import {
 import dynamic from "next/dynamic";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "components/theme/LIbrePlexTheme";
-
+import { Wallet } from "@project-serum/anchor";
 
 const ReactUIWalletModalProviderDynamic = dynamic(
   async () =>
@@ -28,11 +28,21 @@ const ReactUIWalletModalProviderDynamic = dynamic(
   { ssr: false }
 );
 
+const getRpcUrlFromNetwork = (network: WalletAdapterNetwork) => {
+  if (network === WalletAdapterNetwork.Devnet) {
+    return process.env.NEXT_PUBLIC_DEVNET_URL ?? clusterApiUrl(network);
+  } else if (network === WalletAdapterNetwork.Mainnet) {
+    return process.env.NEXT_PUBLIC_MAINNET_URL ?? clusterApiUrl(network);
+  } else {
+    return clusterApiUrl(network);
+  }
+};
+
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
   const network = networkConfiguration as WalletAdapterNetwork;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => getRpcUrlFromNetwork(network), [network]);
 
   console.log(network);
 
