@@ -19,7 +19,6 @@ export const EditCollectionDialog = ({
   return (
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
-      <EditCollectionPanel onSuccess={onClose}/>
       <ModalContent>
         <ModalHeader>Create Collection</ModalHeader>
         <ModalCloseButton />

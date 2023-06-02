@@ -11,12 +11,10 @@ import { QueryClient, useQuery, useQueryClient } from "react-query";
 
 export type DecodeType<T extends unknown, P extends Idl> = (
   buf: Buffer,
-  program: Program<P>,
   pubkey: PublicKey
 ) => IRpcObject<T>;
 
 export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
-  program: Program<P>,
   accountKeys: PublicKey[],
   decoder: DecodeType<T, P>,
   connection: Connection,
@@ -33,7 +31,7 @@ export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
 
       for (const [idx, result] of results.entries()) {
         if (result?.data) {
-          const obj = decoder(result.data, program, accountKeys[idx]);
+          const obj = decoder(result.data, accountKeys[idx]);
           if (obj) {
             _items.push(obj);
           }
@@ -73,7 +71,7 @@ const accountUpdater =
       */
 
     } else {
-      const newOrUpdatedItem = decode(accountInfo.data, program, accountId);
+      const newOrUpdatedItem = decode(accountInfo.data, accountId);
       queryClient.setQueryData(key, (old: IRpcObject<T>[]) => {
         const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
         console.log({ found, old, key});
@@ -98,13 +96,12 @@ export const useFetchMultiAccounts = <T extends unknown, P extends Idl>(
   */
   decode: (
     buf: Buffer,
-    program: Program<P>,
     pubkey: PublicKey
   ) => IRpcObject<T>,
   connection: Connection,
 ) => {
   const { fetcher, listener } = useMemo(
-    () => fetchMultiAccounts(program, accountIds, decode, connection),
+    () => fetchMultiAccounts(accountIds, decode, connection),
     [accountIds, decode, connection, program]
   );
 

@@ -12,9 +12,8 @@ import { useGpa } from "./gpa";
 
 export type Collection = IdlAccounts<Libreplex>["collection"];
 
-export const decodeCollection = (
+export const decodeCollection = (program: Program<Libreplex>) => (
   buffer: Buffer,
-  program: Program<Libreplex>,
   pubkey: PublicKey
 ) => {
   const coder = new BorshCoder(program.idl);
@@ -39,7 +38,7 @@ export const useCollectionsById = (
   return useFetchMultiAccounts(
     program,
     collectionKeys,
-    decodeCollection,
+    decodeCollection(program),
     connection,
   );
 
@@ -74,7 +73,9 @@ export const useCollectionsByCreator = (
     }
   }, [creator]);
 
-  return useGpa(program, filters, connection, decodeCollection, [
+  const d = useMemo(()=>decodeCollection(program),[decodeCollection, program])
+
+  return useGpa(program.programId, filters, connection, d, [
     creator?.toBase58() ?? "",
     "collection",
   ]);

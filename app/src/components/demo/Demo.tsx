@@ -1,32 +1,19 @@
 import {
-  Box,
-  BoxProps,
-  Button,
-  Collapse,
-  Heading,
-  LinkBox,
-  LinkOverlay,
-  Tab,
-  TabPanels,
-  Text,
-  useMediaQuery,
+    Box,
+    BoxProps,
+    Button,
+    Collapse,
+    Heading,
+    LinkBox,
+    LinkOverlay,
+    Text,
+    useMediaQuery
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { StyledTabs } from "components/tabs/Tabs";
-import { Collection } from "generated/libreplex";
-import {
-  decodeCollectionPermission,
-  usePermissionsByUser,
-} from "query/permissions";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useState } from "react";
 import { CollectionsPanel } from "./collections/CollectionsPanel";
-import { EditCollectionDialog } from "./collections/EditCollectionDialog";
-import { DeleteCollectionPermissionsTransactionButton } from "./permissions/DeleteCollectionPermissionsTransactionButton";
 import { PermissionsPanel } from "./permissions/PermissionsPanel";
 import useSelectedPermissions from "./permissions/useSelectedPermissions";
-import { DeleteCollectionTransactionButton } from "./collections/DeleteCollectionButton";
-import useSelectedCollections from "./collections/useSelectedCollections";
-import { decodeCollection } from "query/collections";
 
 enum View {
   Collections = "Collections",
@@ -58,7 +45,7 @@ export const Demo = () => {
 
   const { connection } = useConnection();
 
-//   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
+  //   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
   const [view, setView] = useState<View>(View.Collections);
@@ -70,7 +57,6 @@ export const Demo = () => {
         flexDirection: "column",
         alignItems: "center",
       }}
-      w={[400, 600, 800]}
       rowGap={3}
     >
       <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-10 pb-5">
@@ -80,8 +66,9 @@ export const Demo = () => {
       <Box
         display="flex"
         flexDirection={isSmallerThan800 ? "column" : "row"}
+        justifyContent={'center'}
         columnGap={2}
-        w={[400, 600, 800]}
+        w={[300, 300, 800]}
       >
         <Button
           colorScheme="teal"
@@ -101,15 +88,7 @@ export const Demo = () => {
         >
           Permissions
         </Button>
-        <Button
-          colorScheme="teal"
-          variant={view === View.Metadata ? "solid" : "outline"}
-          onClick={() => {
-            setView(View.Metadata);
-          }}
-        >
-          Metadata
-        </Button>
+
         <Button
           colorScheme="teal"
           variant={view === View.Repos ? "solid" : "outline"}
@@ -142,12 +121,14 @@ export const Demo = () => {
       >
         <PermissionsPanel />
       </TabPanel>
+
       <TabPanel open={view === View.Repos}>
         <Box
           display="flex"
           columnGap={2}
           flexDirection={isSmallerThan800 ? "column" : "row"}
           alignItems={isSmallerThan800 ? "center" : "row"}
+          justifyContent={"center"}
         >
           <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
             <Heading size="md" my="2">
