@@ -15,7 +15,6 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { Collection } from "query/collections";
 import { useState } from "react";
 
@@ -60,10 +59,10 @@ export const AttributesDialog = ({
                         <Tr key={idx}>
                           <Td>{item.name}</Td>
                           <Td>
-                            <Box display='flex' gap={1}>
-                            {item.permittedValues.map((item) => (
-                              <Tag>{item}</Tag>
-                            ))}
+                            <Box display="flex" gap={1}>
+                              {item.permittedValues.map((item, idx) => (
+                                <Tag key={idx}>{item}</Tag>
+                              ))}
                             </Box>
                           </Td>
                         </Tr>
