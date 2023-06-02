@@ -5,13 +5,13 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
+import { getProgramInstance } from "anchor/getProgramInstance";
 import { IExecutorParams } from "components/executor/Executor";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
-import { createDeleteCollectionPermissionsInstruction } from "generated/libreplex";
 
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 
@@ -41,15 +41,20 @@ export const deleteCollection = async (
 
   const seed = Keypair.generate();
 
+  const librePlexProgram = getProgramInstance(connection, {
+    ...wallet,
+    payer: Keypair.generate(),
+  });
+
   for (const param of params) {
     const { collectionPermissions, collection } = param;
-    const instruction = createDeleteCollectionPermissionsInstruction({
+    const instruction = await librePlexProgram.methods.deleteCollectionPermissions().accounts({
       signer: wallet.publicKey,
       signerCollectionPermissions: collectionPermissions,
       collection,
       receiver: wallet.publicKey,
       systemProgram: SystemProgram.programId,
-    });
+    }).instruction();
 
     let instructions: TransactionInstruction[] = [];
     instructions.push(instruction);

@@ -35,11 +35,7 @@ export const LibrePlexProgramProvider = ({
     });
   }, [wallet, connection]);
 
-  useEffect(()=>{
-    console.log({program})
-  },[program])
-
-  return program ? (
+  return program?.program?.programId ? (
     <LibrePlexProgramContext.Provider value={program}>
       {children}
     </LibrePlexProgramContext.Provider>

@@ -47,10 +47,10 @@ export const CollectionsPanel = () => {
     connection
   );
 
-//   const { data: createdCollections } = useCollectionsByCreator(
-//     publicKey,
-//     connection
-//   );
+  //   const { data: createdCollections } = useCollectionsByCreator(
+  //     publicKey,
+  //     connection
+  //   );
 
   const distinctCollectionKeys = useMemo(
     () => [
@@ -61,8 +61,9 @@ export const CollectionsPanel = () => {
         // ...(createdCollections?.map((item) => item.pubkey) ?? []),
       ]),
     ],
-    [permissions
-        // , createdCollections
+    [
+      permissions,
+      // , createdCollections
     ]
   );
 
@@ -122,7 +123,7 @@ export const CollectionsPanel = () => {
 
   const collectionDict = useMemo(() => {
     const _collectionDict: {
-      [key: string]: ReturnType<typeof decodeCollection>;
+      [key: string]: ReturnType<ReturnType<typeof decodeCollection>>;
     } = {};
 
     for (const collection of collections ?? []) {
@@ -163,9 +164,10 @@ export const CollectionsPanel = () => {
         flexDirection: "column",
         width: "100%",
         justifyContent: "center",
+        alignItems: "center",
       }}
-    >{permissions?.length} / {distinctCollectionKeys.length}
-      <Box sx={{ display: "flex" }}>
+    >
+      <Box sx={{ display: "flex" }} columnGap={2}>
         <Button
           onClick={() => setEditorStatus({ open: true, collection: undefined })}
         >
@@ -187,12 +189,34 @@ export const CollectionsPanel = () => {
             });
           }}
         />
+        <Button
+          onClick={() => {
+            refetch();
+          }}
+        >
+          <RepeatIcon />
+        </Button>
       </Box>
       {/* <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
         {isFetching && <Spinner />}
       </Box> */}
       <TableContainer sx={{ width: "100%" }}>
         <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th></Th>
+              <Th></Th>
+              <Th></Th>
+              <Th></Th>
+
+              <Th></Th>
+              <Th colSpan={2}>
+                <Center>Royalties</Center>
+              </Th>
+
+              <Th></Th>
+            </Tr>
+          </Thead>
           <Thead>
             <Tr>
               <Th>
@@ -207,16 +231,15 @@ export const CollectionsPanel = () => {
               </Th>
               <Th>Collection</Th>
               <Th>Name</Th>
-              <Th isNumeric>Items</Th>
-              <Th isNumeric>Symbol</Th>
+              <Th>Items</Th>
+
+              <Th>Symbol</Th>
+              <Th>bps</Th>
               <Th>
-                <Button
-                  onClick={() => {
-                    refetch();
-                  }}
-                >
-                  <RepeatIcon />
-                </Button>
+                <Center>Recipients</Center>
+              </Th>
+              <Th>
+                  <Center>Signers</Center>
               </Th>
             </Tr>
           </Thead>

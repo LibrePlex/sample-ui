@@ -73,7 +73,7 @@ export const PermissionsPanel = () => {
 
   const permissionDict = useMemo(() => {
     const _permissionDict: {
-      [key: string]: ReturnType<typeof decodeCollectionPermission>;
+      [key: string]: ReturnType<ReturnType<typeof decodeCollectionPermission>>;
     } = {};
 
     for (const permission of permissions ?? []) {
@@ -101,7 +101,7 @@ export const PermissionsPanel = () => {
 
   return (
     <Box sx={{ maxHeight: "50vh", overflow: "auto", width: "100%" }}>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -121,7 +121,7 @@ export const PermissionsPanel = () => {
             formatting={{}}
           />
         )}
-      </Box>
+      </Box> */}
 
       <EditCollectionDialog
         open={editorStatus.open}
