@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import Link from "next/link";
 import Text from "./Text";
 import NavElement from "./nav-element";
@@ -6,14 +6,27 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const ContentContainer: React.FC<Props> = ({ children }) => {
+export const ContentContainer: React.FC<Props> = ({
+  isNavOpen,
+  setIsNavOpen,
+  children,
+}: {
+  children: ReactNode;
+  isNavOpen: boolean;
+  setIsNavOpen: (b: boolean) => any;
+}) => {
   return (
     <div className="flex-1 drawer h-52">
-      <input id="my-drawer" type="checkbox" className="grow drawer-toggle" />
+      <input
+        id="my-drawer"
+        type="checkbox"
+        className="grow drawer-toggle"
+        onClick={() => setIsNavOpen(!isNavOpen)}
+      />
       <div className="items-center  drawer-content">{children}</div>
       {/* SideBar / Drawer */}
       <div className="drawer-side">
-        <label htmlFor="my-drawer" className="drawer-overlay gap-6"></label>
+        <label htmlFor="my-drawer" className={`drawer-overlay gap-6`}></label>
 
         <ul className="p-4 overflow-y-auto menu w-80 bg-base-100 gap-10 sm:flex items-center">
           <li>
@@ -27,30 +40,18 @@ export const ContentContainer: React.FC<Props> = ({ children }) => {
           <li>
             <NavElement label="Home" href="/" />
           </li>
-          
+
           <li>
-            <NavElement
-              label="Mission"
-              href="/mission"
-            />
+            <NavElement label="Mission" href="/mission" />
           </li>
           <li>
-            <NavElement
-              label="Design"
-              href="/design"
-            />
+            <NavElement label="Design" href="/design" />
           </li>
           <li>
-            <NavElement
-              label="Why"
-              href="/why"
-            />
+            <NavElement label="Why" href="/why" />
           </li>
           <li>
-            <NavElement
-              label="Demo"
-              href="/demo"
-            />
+            <NavElement label="Demo" href="/demo" />
           </li>
         </ul>
       </div>

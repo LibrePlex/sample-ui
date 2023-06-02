@@ -54,9 +54,6 @@ export const Footer: FC = () => {
                                     </svg>
                                 </a>
                             </div>
-                            <div className="mb-6 m-1 sm:text-left place-items-start items-start font-normal tracking-tight text-secondary">
-                                        © 2023 Solana Foundation
-                            </div>
                         </div>
 
                         <div className="mb-6 items-center mx-auto max-w-screen-lg">

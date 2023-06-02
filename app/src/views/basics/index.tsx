@@ -28,17 +28,19 @@ export const BasicsView: FC = ({}) => {
         </h1>
         {/* CONTENT GOES HERE */}
 
-        <Box display="flex" columnGap={"20px"} sx={{mt: '10px', maxWidth: "800px"}}>
+        <Box display="flex" columnGap={"20px"} sx={{mt: '10px', maxWidth: "800px"}} flexDirection='column'>
           <Box display="flex" flexDirection={"column"}>
             <h5 className="text-center text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mb-8">
               Objectives
             </h5>
             <Box
               sx={{
+                mt: 0,
+                pt: 0,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                pb: 3,
+                pb: 5,
               }}
             >
               <UnorderedList
