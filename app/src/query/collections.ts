@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo } from "react";
 import { fetchMultiAccounts, useFetchMultiAccounts } from "./multiAccountInfo";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useQuery } from "react-query";
-import { BorshCoder, IdlAccounts, Program } from "@project-serum/anchor";
+import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Libreplex } from "types/libreplex";
 import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import { IRpcObject } from "components/executor/IRpcObject";

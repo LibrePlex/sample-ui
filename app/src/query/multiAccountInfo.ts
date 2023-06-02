@@ -1,4 +1,4 @@
-import { Idl, Program } from "@project-serum/anchor";
+import { Idl, Program } from "@coral-xyz/anchor";
 import {
   AccountChangeCallback,
   AccountInfo,

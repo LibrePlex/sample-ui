@@ -10,6 +10,7 @@ import { PublicKey } from "@solana/web3.js";
 import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
+import { AttributesDialog } from "./AttributesDialog";
 
 export const CollectionRow = ({
   item,
@@ -71,7 +72,9 @@ export const CollectionRow = ({
           )}
         </Center>
       </Td>
-
+          <Td isNumeric>
+            <AttributesDialog attributeTypes={item.item.nftCollectionData?.attributeTypes??[]}/>
+          </Td>
       <Td isNumeric>
         <Center>
           {item &&

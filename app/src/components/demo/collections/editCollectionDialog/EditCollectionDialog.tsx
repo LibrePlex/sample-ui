@@ -23,7 +23,10 @@ export const EditCollectionDialog = ({
         <ModalHeader>Create Collection</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <EditCollectionPanel onSuccess={onClose}/>
+          <EditCollectionPanel onSuccess={()=>{}
+            // ()=>alert('success')
+            // onClose
+            }/>
         </ModalBody>
       </ModalContent>
     </Modal>
