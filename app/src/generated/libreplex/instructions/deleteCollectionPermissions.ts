@@ -10,55 +10,54 @@ import * as web3 from '@solana/web3.js'
 
 /**
  * @category Instructions
- * @category DeleteCollection
+ * @category DeleteCollectionPermissions
  * @category generated
  */
-export const deleteCollectionStruct = new beet.BeetArgsStruct<{
+export const deleteCollectionPermissionsStruct = new beet.BeetArgsStruct<{
   instructionDiscriminator: number[] /* size: 8 */
 }>(
   [['instructionDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)]],
-  'DeleteCollectionInstructionArgs'
+  'DeleteCollectionPermissionsInstructionArgs'
 )
 /**
- * Accounts required by the _deleteCollection_ instruction
+ * Accounts required by the _deleteCollectionPermissions_ instruction
  *
  * @property [**signer**] signer
  * @property [_writable_] signerCollectionPermissions
- * @property [] creator
  * @property [_writable_] collection
  * @property [_writable_] receiver
  * @category Instructions
- * @category DeleteCollection
+ * @category DeleteCollectionPermissions
  * @category generated
  */
-export type DeleteCollectionInstructionAccounts = {
+export type DeleteCollectionPermissionsInstructionAccounts = {
   signer: web3.PublicKey
   signerCollectionPermissions: web3.PublicKey
-  creator: web3.PublicKey
   collection: web3.PublicKey
   receiver: web3.PublicKey
   systemProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
 
-export const deleteCollectionInstructionDiscriminator = [
-  168, 123, 246, 0, 137, 80, 242, 19,
+export const deleteCollectionPermissionsInstructionDiscriminator = [
+  241, 48, 34, 15, 32, 1, 151, 218,
 ]
 
 /**
- * Creates a _DeleteCollection_ instruction.
+ * Creates a _DeleteCollectionPermissions_ instruction.
  *
  * @param accounts that will be accessed while the instruction is processed
  * @category Instructions
- * @category DeleteCollection
+ * @category DeleteCollectionPermissions
  * @category generated
  */
-export function createDeleteCollectionInstruction(
-  accounts: DeleteCollectionInstructionAccounts,
+export function createDeleteCollectionPermissionsInstruction(
+  accounts: DeleteCollectionPermissionsInstructionAccounts,
   programId = new web3.PublicKey('AJ5Hh5q4HegZWWu1ScY7ZRA6zELXmRzEWS5EXFSKqBC6')
 ) {
-  const [data] = deleteCollectionStruct.serialize({
-    instructionDiscriminator: deleteCollectionInstructionDiscriminator,
+  const [data] = deleteCollectionPermissionsStruct.serialize({
+    instructionDiscriminator:
+      deleteCollectionPermissionsInstructionDiscriminator,
   })
   const keys: web3.AccountMeta[] = [
     {
@@ -69,11 +68,6 @@ export function createDeleteCollectionInstruction(
     {
       pubkey: accounts.signerCollectionPermissions,
       isWritable: true,
-      isSigner: false,
-    },
-    {
-      pubkey: accounts.creator,
-      isWritable: false,
       isSigner: false,
     },
     {

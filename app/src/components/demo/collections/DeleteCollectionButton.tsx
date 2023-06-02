@@ -30,6 +30,7 @@ export interface INftCollectionData {
 
 export interface IDeleteCollection {
   collection: PublicKey;
+  creator: PublicKey; // the creator of the collection (close account rent gets sent here)
   collectionPermissions: PublicKey;
 }
 
@@ -54,12 +55,13 @@ export const deleteCollection = async (
 
   const seed = Keypair.generate();
 
-  const { collection, collectionPermissions } = params;
+  const { collection, collectionPermissions, creator } = params;
 
   const instruction = createDeleteCollectionInstruction({
     signer: wallet.publicKey,
     signerCollectionPermissions: collectionPermissions,
     collection,
+    creator,
     receiver: wallet.publicKey,
     systemProgram: SystemProgram.programId,
   });

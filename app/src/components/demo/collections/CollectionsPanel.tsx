@@ -81,10 +81,10 @@ export const CollectionsPanel = () => {
 
   return (
     <Box>
-      {collections?.length} /{permissions?.length}
       <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
         {isFetching && <Spinner />}
       </Box>
+      {/* {permissions.length} */}
       <TableContainer>
         <Table variant="simple">
           <TableCaption>Your collections</TableCaption>
@@ -128,12 +128,9 @@ export const CollectionsPanel = () => {
                       <Text>Deleted</Text>
                     ) : (
                       <DeleteCollectionTransactionButton
-                        onSuccess={(msg) => {
-                          // markAsDeleted(permissionsByCollection[item.pubkey.toBase58()].pubkey)
-                          // removeCollection(collection);
-                        }}
                         params={{
                           collection: item.pubkey,
+                          creator: item.item.creator,
                           collectionPermissions:
                             permissionsByCollection[item.pubkey.toBase58()]
                               .pubkey,

@@ -38,9 +38,9 @@ export const usePermissions = (
       ];
       return filters;
     } else {
-      return [];
+      return null;
     }
-  }, []);
+  }, [publicKey]);
 
   return useGpa(PROGRAM_ID, filters, connection, decodeCollectionPermission, [
     publicKey?.toBase58() ?? '',
