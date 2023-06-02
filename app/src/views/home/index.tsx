@@ -41,7 +41,7 @@ export const HomeView: FC = ({}) => {
         <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
           {/* <p>Unleash the full power of blockchain with Solana and Next.js 13.</p> */}
           <p className="text-slate-500 text-2x1 leading-relaxed">
-            The mission of Libreplex is to provide a community-driven, open
+            The mission of LibrePlex is to provide a community-driven, open
             license protocol to the Solana SPL Token and NFT community.
           </p>
         </h4>
