@@ -6,7 +6,6 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { IExecutorParams } from "components/executor/Executor";
-import { Text } from "@chakra-ui/react";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
@@ -14,8 +13,6 @@ import {
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 import { createDeleteCollectionInstruction } from "generated/libreplex";
 
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useState } from "react";
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 // import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
@@ -35,7 +32,7 @@ export interface IDeleteCollection {
 }
 
 export const deleteCollection = async (
-  { wallet, params }: IExecutorParams<IDeleteCollection>,
+  { wallet, params }: IExecutorParams<IDeleteCollection[]>,
   connection: Connection
 ): Promise<{
   data?: ITransactionTemplate[];
@@ -55,27 +52,28 @@ export const deleteCollection = async (
 
   const seed = Keypair.generate();
 
-  const { collection, collectionPermissions, creator } = params;
+  for (const collectionToDelete of params) {
+    const { collection, collectionPermissions, creator } = collectionToDelete;
 
-  const instruction = createDeleteCollectionInstruction({
-    signer: wallet.publicKey,
-    signerCollectionPermissions: collectionPermissions,
-    collection,
-    creator,
-    receiver: wallet.publicKey,
-    systemProgram: SystemProgram.programId,
-  });
+    const instruction = createDeleteCollectionInstruction({
+      signer: wallet.publicKey,
+      signerCollectionPermissions: collectionPermissions,
+      collection,
+      creator,
+      receiver: wallet.publicKey,
+      systemProgram: SystemProgram.programId,
+    });
 
-  let instructions: TransactionInstruction[] = [];
-  instructions.push(instruction);
-  data.push({
-    instructions,
-    description: `Delete collection`,
-    signers: [],
-  });
+    let instructions: TransactionInstruction[] = [];
+    instructions.push(instruction);
+    data.push({
+      instructions,
+      description: `Delete collection`,
+      signers: [],
+    });
 
-  console.log({ data });
-
+    console.log({ data });
+  }
   return {
     data,
   };
@@ -83,7 +81,7 @@ export const deleteCollection = async (
 
 export const DeleteCollectionTransactionButton = (
   props: Omit<
-    GenericTransactionButtonProps<IDeleteCollection>,
+    GenericTransactionButtonProps<IDeleteCollection[]>,
     "transactionGenerator"
   >
 ) => {
@@ -91,12 +89,14 @@ export const DeleteCollectionTransactionButton = (
 
   return (
     <>
-      <GenericTransactionButton<IDeleteCollection>
-        text={"Delete"}
+      <GenericTransactionButton<IDeleteCollection[]>
+        text={`Delete (${props.params.length})` }
         transactionGenerator={deleteCollection}
         {...props}
         onSuccess={(msg) => {
-          addDeletedKey(props.params.collection);
+          for( const collection of props.params) {
+            addDeletedKey(collection.collection);
+          }
           props.onSuccess && props.onSuccess(msg);
         }}
       />

@@ -16,6 +16,7 @@ import { SignMessage } from "components/SignMessage";
 import { Demo } from "components/demo/Demo";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Link from "next/link";
+import { LibrePlexProgramProvider } from "anchor/LibrePlexProgramContext";
 
 const DemoPage = () => {
   // Here is a wallet adapter
@@ -39,7 +40,9 @@ const DemoPage = () => {
           justifyContent: "center",
         }}
       >
-        <Demo />
+        <LibrePlexProgramProvider>
+          <Demo />
+        </LibrePlexProgramProvider>
       </Box>
     </QueryClientProvider>
   );

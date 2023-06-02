@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "copy-idl": "rm -rf ./src/types/libreplex.ts && rm -rf ./src/idl  && cp -p -r ../../metadata/target/types/*  ./src/types && cp -p -r ../../metadata/target/idl/* ./src/idl",
-    "copy-solita": "rm -rf ./src/generated/* && cp -p -r ../../metadata/src/generated/*  ./src/generated/"
+    "copy-idl": "rm -rf ./src/types/libreplex.ts && rm -rf ./src/idl  && cp -p -r ../../metadata/target/types/*  ./src/types && cp -p -r ../../metadata/target/idl/* ./src/idl"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",

@@ -1,20 +1,10 @@
-import { FC } from "react";
-import { SignMessage } from "../../components/SignMessage";
-import { SendTransaction } from "../../components/SendTransaction";
-import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
   Heading,
   ListItem,
-  OrderedList,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  UnorderedList,
+  OrderedList
 } from "@chakra-ui/react";
-import { StyledTabs } from "components/tabs/Tabs";
+import { FC } from "react";
 
 export const CollectionBasics: FC = ({}) => {
   return (
@@ -32,7 +22,9 @@ export const CollectionBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </UnorderedList>
       </Box> */}
-      <Heading fontSize="xl" style={{paddingTop: '15px'}}>Propose to change</Heading>
+      <Heading fontSize="xl" style={{ paddingTop: "15px" }}>
+        Propose to change
+      </Heading>
       <Box>
         <OrderedList
           sx={{

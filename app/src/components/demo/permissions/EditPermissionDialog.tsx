@@ -7,7 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { EditCollectionPanel } from "./EditCollectionPanel";
+import { EditCollectionPanel } from "./EditPermissionPanel";
 
 export const EditCollectionDialog = ({
   open,

@@ -1,32 +1,58 @@
+import {
+  BorshCoder,
+  IdlAccounts,
+  Program
+} from "@project-serum/anchor";
 import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import {
   Connection,
-  ProgramAccountChangeCallback,
-  PublicKey,
+  PublicKey
 } from "@solana/web3.js";
-import { CollectionPermissions, PROGRAM_ID } from "generated/libreplex";
+import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import { sha256 } from "js-sha256";
-import { fetchGpa, useGpa } from "query/gpa";
-import { useMemo } from "react";
+import { useGpa } from "query/gpa";
+import { useContext, useEffect, useMemo } from "react";
+import { Libreplex } from "types/libreplex";
+
+export type CollectionPermissions =
+  IdlAccounts<Libreplex>["collectionPermissions"];
 
 export const decodeCollectionPermission = (
-  buffer: Buffer
-): CollectionPermissions | null => {
-  const collectionPermission = CollectionPermissions.deserialize(buffer);
-  return collectionPermission[0] ?? null;
+  buffer: Buffer,
+  program: Program<Libreplex>,
+  pubkey: PublicKey
+) => {
+  const coder = new BorshCoder(program.idl);
+
+  const collectionPermissions = coder.accounts.decode<CollectionPermissions>(
+    "collectionPermissions",
+    buffer
+  );
+
+  return {
+    item: collectionPermissions ?? null,
+    pubkey,
+  };
 };
 
-export const usePermissions = (
+export const usePermissionsByUser = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
+  const { program } = useContext(LibrePlexProgramContext);
+
+  useEffect(() => {
+    console.log({ program });
+  }, [program]);
   const filters = useMemo(() => {
     if (publicKey) {
-      const gpaBuilder = CollectionPermissions.gpaBuilder();
-      const userFilter = gpaBuilder.addFilter("user", publicKey).config.filters;
-
       const filters = [
-        ...userFilter,
+        {
+          memcmp: {
+            offset: 40,
+            bytes: publicKey.toBase58(),
+          },
+        },
         {
           memcmp: {
             offset: 0,
@@ -42,8 +68,8 @@ export const usePermissions = (
     }
   }, [publicKey]);
 
-  return useGpa(PROGRAM_ID, filters, connection, decodeCollectionPermission, [
-    publicKey?.toBase58() ?? '',
+  return useGpa(program, filters, connection, decodeCollectionPermission, [
+    publicKey?.toBase58() ?? "",
     "collectionpermissions",
   ]);
 };

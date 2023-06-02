@@ -3,14 +3,14 @@ import { Center, Checkbox, Td, Tr } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { CollectionPermissions } from "generated/libreplex";
+
 import { Dispatch, SetStateAction } from "react";
 import { DeleteCollectionPermissionsTransactionButton } from "./DeleteCollectionPermissionsTransactionButton";
+import { CollectionPermissions } from "query/permissions";
 
 export const PermissionsRow = ({
   item,
   selectedPermissions,
-  //   setSelectedPermissions,
   toggleSelectedPermission,
 }: {
   selectedPermissions: Set<PublicKey>;
@@ -54,7 +54,7 @@ export const PermissionsRow = ({
 
       <Td align={"center"}>
         <Center>
-          <CopyPublicKeyButton publicKey={item.item.collection.toBase58()} />
+          {item.item.collection && <CopyPublicKeyButton publicKey={item.item.collection.toBase58()} />}
         </Center>
       </Td>
 
