@@ -11,11 +11,70 @@ import pkg from "../../../package.json";
 
 // Store
 import useUserSOLBalanceStore from "../../stores/useUserSOLBalanceStore";
-import { Box, Heading, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  LinkBox,
+  LinkOverlay,
+  Spacer,
+  Stack,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from "@chakra-ui/react";
+import Background from "components/Background";
+import { WhatMakesGreatGrid } from "components/tables/WhatMakesGreatGrid";
+import router from "next/router";
+
+const info = [
+  {
+    id: 1,
+    header: "Distributed Deployment Keys",
+    text: "No single entity can unilaterally make changes that impact or jeopardise the integrity of the applications that depend on the protocol.",
+  },
+  {
+    id: 2,
+    header: "Open license held by a Trust",
+    text: "The licensing must ensure that any applications utilising the protocol can do so knowing that the nature of the protocol remains constant, to minimise uncertainty and maximise transparency.",
+  },
+  {
+    id: 3,
+    header: "Guaranteed fees-free for life",
+    text: "Applications built on top of the protocol may introduce fees, but LibrePlex protocol will never do so. This establishes a level playing field to all and enforces predictability and transparency.",
+  },
+  {
+    id: 4,
+    header: "Open Source",
+    text: "The source of the protocol will be made available on github or similar. After initial launch, any changes will be subject to 30-day vetting and a community vote.",
+  },
+  {
+    id: 4,
+    header: "Permissive license",
+    text: "Contracts & SDK released under MIT.",
+  },
+];
 
 export const HomeView: FC = ({}) => {
   const wallet = useWallet();
   const { connection } = useConnection();
+  const handleClickCosts = () => {
+    event.preventDefault();
+    router.push("/costs");
+  };
 
   const balance = useUserSOLBalanceStore((s) => s.balance);
   const { getUserSOLBalance } = useUserSOLBalanceStore();
@@ -28,91 +87,233 @@ export const HomeView: FC = ({}) => {
   }, [wallet.publicKey, connection, getUserSOLBalance]);
 
   return (
-    <div className="md:hero mx-auto p-4">
-      <div className="md:hero-content flex flex-col">
-        <div className="mt-6">
-          <div className="text-sm font-normal align-bottom text-right text-slate-600 mt-4">
-            v{pkg.version}
-          </div>
-          <h1 className="text-center text-5xl md:pl-12 font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mb-4">
-            LibrePlex
-          </h1>
-        </div>
-        <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
-          {/* <p>Unleash the full power of blockchain with Solana and Next.js 13.</p> */}
-          <p className="text-slate-500 text-2x1 leading-relaxed">
-            The mission of LibrePlex is to provide a community-driven, open
-            license protocol to the Solana SPL Token and NFT community.
-          </p>
-        </h4>
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-indigo-500 rounded-lg blur opacity-40 animate-tilt"></div>
-          <div className="max-w-xl mx-auto mockup-code bg-primary border-2 border-[#5252529f] p-6 px-10 my-2">
-            <pre data-prefix=">">
-              <code className="truncate">
-                {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
-              </code>
-            </pre>
-          </div>
-        </div>
+    <div style={{ overflow: "hidden" }}>
+      <Background imageUrl={"heroImage.png"}>
+        <VStack display={"flex"} margin={"auto"}>
+          <Box>
+            <Grid
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+              mt={"5.5vh"}
+              gap={4}
+              // mb={10}
+            >
+              <GridItem
+                colSpan={{ base: 0, md: 1 }}
+                display={"flex"}
+                justifySelf={{ base: "center", md: "flex-end" }}
+                mr={2}
+              >
+                <Box width={"100%"} maxW={"450px"} hideBelow={"md"}>
+                  <img src="LibreL.png" height={"100%"} width={"100%"} />
+                </Box>
+              </GridItem>
+              <GridItem
+                display={"flex"}
+                textAlign={{ base: "center", md: "left" }}
+                mr={{ base: "45vw", md: "0px" }}
+                colSpan={1}
+              >
+                <Box margin={"auto"}>
+                  <Heading size={{ base: "xl", md: "2xl" }} my="3">
+                    Community-driven.
+                  </Heading>
+                  <Heading size={{ base: "xl", md: "2xl" }} my="3">
+                    Open Protocol.
+                  </Heading>
+                  <Heading size={{ base: "xl", md: "2xl" }} my="3">
+                    Developer Friendly.
+                  </Heading>
+                </Box>
+              </GridItem>
+            </Grid>
+          </Box>{" "}
 
+          {/* CANT GET THIS TO BE MOBILE FRIENDLY */}
+          <Box>
+            <div className=" mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
+              <pre data-prefix=">">
+                <code className="truncate">
+                  {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
+                </code>
+              </pre>
+            </div>
+          </Box>
+        </VStack>
+      </Background>
+      <div>
+        {/* What makes us great. */}
         <Box
-          p={"10px"}
-          sx={{
-            maxWidth: "600px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            alignContent: 'center'
-          }}
+          maxWidth={"1250px"}
+          p={{ base: "15px", md: "25px" }}
+          display={"flex"}
+          margin={"auto"}
+          flexDir={"column"}
+          mt={{ base: "4vh", md: "10vh" }}
         >
-          <Heading size="md" my="2">
-            Want to help out?
-          </Heading>
-          <Text>
-            We are NOT a team, but a collection of teams across the Solana
-            ecosystem. We are independent of commercial interests. We depend on
-            contributions from technologists, influencers, designers,
-            documenters and anybody else who wants to lend a hand. Despite and
-            because of our independence, we have already secured the support of
-            wallets, utility providers and launchpads across Solana.
-          </Text>
+          <Heading size="2xl">What makes us great.</Heading>
+          <Box mt={2} sx={{ maxWidth: "700px" }}>
+            <Text fontSize={"md"} color={"gray.400"}>
+              The mission of LibrePlex is to provide a community-driven, open
+              license protocol to the Solana SPL Token and NFT community. The
+              protocol must meet the following criteria:
+            </Text>
+          </Box>
+          <Box width={"100%"} mt={5}>
+            <Grid
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+              gap={{ base: 3, md: 6 }}
+            >
+              {info.map((info) => (
+                <WhatMakesGreatGrid
+                  key={info.id}
+                  header={info.header}
+                  text={info.text}
+                />
+              ))}
+            </Grid>
+          </Box>
         </Box>
 
-        <Box display="flex" flexDirection="column" alignItems="center" columnGap={2}>
-          <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
-            <Heading size="md" my="2">
-              <LinkOverlay href="https://discord.gg/wmpfBZhd">
-                Join us on discord
-              </LinkOverlay>
+        {/* From private ownership... */}
+        <div style={{ position: "relative" }}>
+          <div
+            style={{
+              position: "absolute",
+              margin: "auto",
+              top: 0,
+              right: 0,
+              bottom: 150,
+              left: 450,
+              width: "200px",
+              height: "200px",
+              borderRadius: "100%",
+              filter: "blur(120px)", // Adjust the blur effect as per your preference
+              background:
+                "linear-gradient(138deg, rgba(168,21,208,1) 0%, rgba(73,57,184,1) 100%)",
+              opacity: "70%",
+              zIndex: -1,
+            }}
+          />
+          <Box
+            maxWidth={"1250px"}
+            p={{ base: "15px", md: "25px" }}
+            display={"flex"}
+            margin={"auto"}
+            flexDir={"column"}
+            mt={"5vh"}
+          >
+            <Heading size="2xl">From private ownership...</Heading>
+            <Box mt={2} sx={{ maxWidth: "700px" }}>
+              <Text fontSize={"md"} color={"gray.400"}>
+                Metadata Token Program, the key Solana NFT contract program that
+                ultimately governs the ownership of digital assets, is owned and
+                maintained by a private company. This poses a risk to the
+                existing ecosystem in terms of increased fees, unilateral design
+                changes and even loss of control of assets.
+              </Text>
+            </Box>
+            <Heading textAlign={"right"} mt={4} size="2xl">
+              ...to shared control.
             </Heading>
-            <Text></Text>
-
-            <Text>https://discord.gg/wmpfBZhd</Text>
-          </LinkBox>
-          <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
-            <Heading size="md" my="2">
-              <LinkOverlay href="https://discord.gg/wmpfBZhd">
-                Follow us on twitter
-              </LinkOverlay>
-            </Heading>
-            <Text></Text>
-
-            <Text>https://discord.gg/wmpfBZhd</Text>
-          </LinkBox>
-        </Box>
-        <Box sx={{width :"100%", display :"flex", justifyContent :"center"}}><h3 style={{ paddingTop: "30px" }}>Free DEV SOL below!</h3></Box>
-        <div className="flex flex-col mt-2">
-          <RequestAirdrop />
-          <h4 className="md:w-full text-2xl text-slate-300 my-2">
-            {wallet && (
-              <div className="flex flex-row justify-center">
-                <div>{(balance || 0).toLocaleString()}</div>
-                <div className="text-slate-600 ml-2">SOL</div>
-              </div>
-            )}
-          </h4>
+            <Box
+              mt={2}
+              display={"flex"}
+              alignSelf={"end"}
+              sx={{ maxWidth: "700px" }}
+            >
+              <Text textAlign={"right"} fontSize={"md"} color={"gray.400"}>
+                LibrePlex aims to mitigate this problem by introducing a fully
+                community-driven Metadata protocol that is free of commercial
+                interests. The new protocol will be owned by a consortium with
+                distributed deployment keys. In practice this means that unlike
+                today, no single entity can make fundamental changes to the
+                ecosystem that we all depend on.
+              </Text>
+            </Box>
+            <Button
+              onClick={handleClickCosts}
+              mt={5}
+              size={"lg"}
+              alignSelf={"flex-end"}
+              variant={"outline"}
+            >
+              Compare Prices
+            </Button>
+          </Box>
         </div>
+
+        {/* Want to help out? */}
+        <Box
+          backgroundColor={"black"}
+          display={"flex"}
+          p={{ base: "15px", md: "25px" }}
+          mt={"10vh"}
+          borderTop={"1px"}
+          borderBottom={"1px"}
+          justifyContent={"center"}
+        >
+          <Grid
+            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(5, 1fr)" }}
+            maxW={"1100px"}
+            gap={4}
+          >
+            <GridItem colSpan={3}>
+              <Box>
+                <Heading size="lg" my="2" textAlign={"center"}>
+                  Want to help out?
+                </Heading>
+                <Text textAlign={"center"}>
+                  We are NOT a team, but a collection of teams across the Solana
+                  ecosystem. We are independent of commercial interests. We
+                  depend on contributions from technologists, influencers,
+                  designers, documenters and anybody else who wants to lend a
+                  hand. Despite and because of our independence, we have already
+                  secured the support of wallets, utility providers and
+                  launchpads across Solana.
+                </Text>
+              </Box>
+            </GridItem>
+            <GridItem colSpan={2} margin={"auto"}>
+              <Stack>
+                <Button
+                  variant={"outline"}
+                  w={"100%"}
+                  h={"fit-content"}
+                  p={3}
+                  mb={1}
+                  as={"a"}
+                  href="https://discord.gg/wmpfBZhd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <VStack>
+                    <Heading size={"md"}>Join us on Discord</Heading>
+                    {/* LINK IS BROKEN, NEED NEW ONE */}
+                    <Text color={"gray.400"}>https://discord.gg/wmpfBZhd</Text>
+                  </VStack>
+                </Button>
+                <Button
+                  variant={"outline"}
+                  h={"fit-content"}
+                  w={"100%"}
+                  mt={5}
+                  p={3}
+                  as={"a"}
+                  href="https://twitter.com/LibrePlex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <VStack>
+                    <Heading size={"md"}>Follow us on Twitter</Heading>
+                    <Text color={"gray.400"}>
+                      https://twitter.com/LibrePlex
+                    </Text>
+                  </VStack>
+                </Button>
+              </Stack>
+            </GridItem>
+          </Grid>
+        </Box>
       </div>
     </div>
   );

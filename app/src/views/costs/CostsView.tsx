@@ -35,12 +35,15 @@ export const CostsView: FC = ({}) => {
         >
           Libreplex -v- Legacy
         </h1>
-
+        <Heading textAlign={"center"} mb={7} size="2xl">
+            Cost Comparison
+          </Heading>
         <Box
           display="flex"
           columnGap={"20px"}
           sx={{ mt: "10px", maxWidth: "600px" }}
         >
+          
           <Table>
             <Thead>
               <Tr>

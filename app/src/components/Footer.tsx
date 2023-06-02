@@ -9,11 +9,11 @@ export const Footer: FC = () => {
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-8 md:space-x-12 relative">
                         <div className='flex flex-col col-span-2 mx-4 items-center md:items-start'>
                             <div className='flex flex-row ml-1'>
-                                <Link href="https://solana.com" target="_blank" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
+                                <Link href="/" target="_blank" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
                                     <div className='flex flex-row ml-1'>
                                         <Image
-                                            src="/solanaLogo.png"
-                                            alt="solana icon"
+                                            src="/LibrePlexLongLogo.png"
+                                            alt="LibrePlex Icon"
                                             width={156}
                                             height={96}
                                         />
