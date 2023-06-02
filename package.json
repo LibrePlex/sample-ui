@@ -1,0 +1,30 @@
+{
+  "name": "@libreplex/metadata",
+  "version": "0.0.0",
+  "sideEffects": false,
+  "private": true,
+  "workspaces": [
+    "app",
+    "sdk"
+  ],
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "yarn --cwd sdk tsc",
+    "build2": "yarn --cwd solita solita && yarn --cwd sdk tsc && yarn --cwd app build",
+    "libreplex:deploy:devnet": "anchor build -p libreplex && anchor deploy -p libreplex --provider.cluster https://api.devnet.solana.com --provider.wallet ~/.config/solana/libreplex-deployer.json",
+    "libreplex:deploy:mainnet": "anchor build -p libreplex && anchor deploy -p libreplex --provider.cluster  https://api.mainnet-beta.solana.com --provider.wallet ~/.config/solana/libreplex-deployer.json"
+  },
+  "dependencies": {
+    "@types/node": "20.2.3",
+    "eslint": "8.41.0",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.2.3",
+    "typescript": "5.0.4"
+  }
+}
