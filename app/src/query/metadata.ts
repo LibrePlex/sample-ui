@@ -19,7 +19,7 @@ export const decodeMetadata = (program: Program<Libreplex>) => (
   const coder = new BorshCoder(program.idl);
 
   const metadata = coder.accounts.decode<Metadata>(
-    "collection",
+    "metadata",
     buffer
   );
 
@@ -56,7 +56,7 @@ export const useMetadataByCollection = (
       const filters = [
         {
           memcmp: {
-            offset: 40,
+            offset: 8,
             bytes: collection.toBase58(),
           },
         },

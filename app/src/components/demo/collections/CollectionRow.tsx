@@ -1,4 +1,4 @@
-import { Td, Tr, Text, Center, Checkbox } from "@chakra-ui/react";
+import { Td, Tr, Text, Center, Checkbox, Button } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
 import { CollectionPermissions } from "query/permissions";
@@ -11,13 +11,18 @@ import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { AttributesDialog } from "./AttributesDialog";
+import { Dispatch, SetStateAction } from "react";
 
 export const CollectionRow = ({
   item,
   permissions,
   selectedCollections,
   toggleSelectedCollection,
+  setActiveCollection,
+  activeCollection,
 }: {
+  activeCollection: IRpcObject<Collection> | undefined;
+  setActiveCollection: Dispatch<SetStateAction<IRpcObject<Collection>>>;
   permissions: IRpcObject<CollectionPermissions> | undefined;
   item: IRpcObject<Collection>;
   selectedCollections: Set<PublicKey>;
@@ -30,7 +35,10 @@ export const CollectionRow = ({
         background: deletedKeys.has(item.pubkey) ? "#fee" : "none",
       }}
     >
-      <Td>
+      <Td
+      borderLeft={`10px solid ${activeCollection?.pubkey?.equals(item.pubkey)?'teal':'none'}`}
+        
+      >
         <Center>
           <Checkbox
             isChecked={selectedCollections.has(item.pubkey)}
@@ -40,6 +48,7 @@ export const CollectionRow = ({
           />
         </Center>
       </Td>
+      <Td>{item.item.name}</Td>
       <Td>
         <Center>
           {item &&
@@ -51,13 +60,22 @@ export const CollectionRow = ({
             ))}
         </Center>
       </Td>
+
+      <Td>
+        <Center>
+          <Button
+            onClick={() => {
+              setActiveCollection(item);
+            }}
+          >
+            {item.item.itemCount.toString()}
+          </Button>
+        </Center>
+      </Td>
       <Td>
         <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
       </Td>
-      <Td>{item.item.name}</Td>
-      <Td isNumeric>
-        <Center>{item.item.itemCount.toString()}</Center>
-      </Td>
+
       <Td isNumeric>
         <Center>{item.item.symbol}</Center>
       </Td>

@@ -36,6 +36,7 @@ import { CollectionPermissions, usePermissionsByUser } from "query/permissions";
 import useSelectedCollections from "./useSelectedCollections";
 import { CollectionRow } from "./CollectionRow";
 import { EditCollectionDialog } from "./editCollectionDialog/EditCollectionDialog";
+import { CollectionViewer } from "./CollectionViewer";
 
 export const CollectionsPanel = () => {
   const { publicKey } = useWallet();
@@ -157,6 +158,8 @@ export const CollectionsPanel = () => {
         [];
   }, [selectedCollectionKeys, collectionDict]);
 
+  const [collection, setCollection] = useState<IRpcObject<Collection>>()
+
   return (
     <Box
       sx={{
@@ -229,11 +232,13 @@ export const CollectionsPanel = () => {
                   />
                 </Center>
               </Th>
+              <Th>Name</Th>
               <Th>Add items</Th>
+              <Th><Center>Items</Center></Th>
               <Th>Collection</Th>
               
-              <Th>Name</Th>
-              <Th>Items</Th>
+              
+              
 
               <Th>Symbol</Th>
               <Th>bps</Th>
@@ -256,11 +261,14 @@ export const CollectionsPanel = () => {
                 item={item}
                 selectedCollections={selectedCollectionKeys}
                 toggleSelectedCollection={toggleSelectedCollection}
+                activeCollection={collection}
+                setActiveCollection={setCollection}
               />
             ))}
           </Tbody>
         </Table>
       </TableContainer>
+      <CollectionViewer collection={collection} setCollection={setCollection}/>
     </Box>
   );
 };
