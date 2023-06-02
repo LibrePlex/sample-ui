@@ -6,7 +6,6 @@ import {
   Checkbox,
   Spinner,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Text,
@@ -21,11 +20,12 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useMemo, useState } from "react";
 
-import { usePermissions } from "query/permissions";
+import { decodeCollectionPermission, usePermissionsByUser } from "query/permissions";
 import { PermissionsRow } from "./PermissionsRow";
 import useSelectedPermissions from "./useSelectedPermissions";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { CollectionPermissions } from "generated/libreplex";
+import { DeleteCollectionPermissionsTransactionButton } from "./DeleteCollectionPermissionsTransactionButton";
+import { EditCollectionDialog } from "./EditPermissionDialog";
+import { Collection } from "query/collections";
 
 export const PermissionsPanel = () => {
   const { publicKey } = useWallet();
@@ -47,7 +47,7 @@ export const PermissionsPanel = () => {
     data: permissions,
     isFetching,
     refetch,
-  } = usePermissions(publicKey, connection);
+  } = usePermissionsByUser(publicKey, connection);
 
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
@@ -62,18 +62,76 @@ export const PermissionsPanel = () => {
     [permissions]
   );
 
-  // const params = useMemo(
-  //   () =>
-  //     [...selectedPermissionKeys].map((pubkey) => ({
-  //       collectionPermissions: pubkey,
-  //       collection: permissionDict[pubkey.toBase58()].pubkey,
-  //     })),
-  //   [selectedPermissionKeys, permissionDict]
-  // );
+  const [editorStatus, setEditorStatus] = useState<{
+    open: boolean;
+    collection: Collection | undefined;
+  }>({
+    open: false,
+    collection: undefined,
+  });
+
+
+  const permissionDict = useMemo(() => {
+    const _permissionDict: {
+      [key: string]: ReturnType<typeof decodeCollectionPermission>;
+    } = {};
+
+    for (const permission of permissions ?? []) {
+      if (permission) {
+        _permissionDict[permission?.pubkey?.toBase58()] = permission;
+      }
+    }
+    return _permissionDict;
+  }, [permissions]);
+
+ 
+
+  const deleteSelectionParams = useMemo(() => {
+    console.log({ selectedPermissionKeys });
+    return selectedPermissionKeys
+      ? [...selectedPermissionKeys]
+          .filter((item) => permissionDict[item.toBase58()])
+          .map((pubkey) => ({
+            collectionPermissions: pubkey,
+            collection: permissionDict[pubkey.toBase58()].item.collection,
+          }))
+      : [];
+  }, [selectedPermissionKeys, permissionDict]);
+
 
   return (
-    <Box sx={{ maxHeight: "50vh", overflowY: "auto", maxWidth: "800px" }}>
-      
+    <Box sx={{ maxHeight: "50vh", overflow: "auto", width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "start",
+        }}
+      >
+        <Button
+        // onClick={() =>
+        //   setEditorStatus({ open: true, collection: undefined })
+        // }
+        >
+          Create Permission
+        </Button>
+        {selectedPermissionKeys.size > 0 && (
+          <DeleteCollectionPermissionsTransactionButton
+            params={deleteSelectionParams}
+            formatting={{}}
+          />
+        )}
+      </Box>
+
+      <EditCollectionDialog
+        open={editorStatus.open}
+        onClose={() => {
+          setEditorStatus({
+            open: false,
+            collection: undefined,
+          });
+        }}
+      />
       <Box p={2}>
         <Text>
           In LibrePlex, permissions can be allocated at collection level or mint
@@ -88,7 +146,7 @@ export const PermissionsPanel = () => {
           assets in a collection.
         </Text>
       </Box>
-      <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         {isFetching && <Spinner />}
       </Box>
       <TableContainer>

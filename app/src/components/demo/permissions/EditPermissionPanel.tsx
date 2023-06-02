@@ -24,7 +24,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
 import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
 import { abbreviateKey } from "shared/abbreviateKey";
-import { CreateCollectionTransactionButton } from "./CreateCollectionButton";
+import { CreateCollectionTransactionButton } from "./CreatePermissionButton";
 
 export const EditCollectionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
   const [name, setName] = useState<string>("");

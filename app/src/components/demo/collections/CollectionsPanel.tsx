@@ -1,7 +1,9 @@
-import { RepeatIcon } from "@chakra-ui/icons";
+import { RepeatIcon, AttachmentIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Center,
+  Checkbox,
   Spinner,
   Table,
   TableCaption,
@@ -20,32 +22,48 @@ import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 // } from "stores/accounts/useCollectionsById";
 import { PublicKey } from "@solana/web3.js";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 
 import { IRpcObject } from "components/executor/IRpcObject";
-import { CollectionPermissions } from "generated/libreplex";
-import { useQuery } from "react-query";
-import { useCollectionsById } from "query/useCollectionsById";
-import { usePermissions } from "query/permissions";
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
+import {
+  Collection,
+  decodeCollection,
+  useCollectionsByCreator,
+  useCollectionsById,
+} from "query/collections";
+import { CollectionPermissions, usePermissionsByUser } from "query/permissions";
+import useSelectedCollections from "./useSelectedCollections";
+import { CollectionRow } from "./CollectionRow";
+import { EditCollectionDialog } from "./EditCollectionDialog";
 
 export const CollectionsPanel = () => {
   const { publicKey } = useWallet();
 
   const { connection } = useConnection();
 
-  const { data: permissions, refetch } = usePermissions(publicKey, connection);
+  const { data: permissions, refetch } = usePermissionsByUser(
+    publicKey,
+    connection
+  );
+
+//   const { data: createdCollections } = useCollectionsByCreator(
+//     publicKey,
+//     connection
+//   );
 
   const distinctCollectionKeys = useMemo(
     () => [
-      ...new Set<PublicKey>(
-        permissions
+      ...new Set<PublicKey>([
+        ...(permissions
           ?.filter((item) => item.item)
-          .map((item) => item.item.collection) ?? []
-      ),
+          .map((item) => item.item.collection) ?? []),
+        // ...(createdCollections?.map((item) => item.pubkey) ?? []),
+      ]),
     ],
-    [permissions]
+    [permissions
+        // , createdCollections
+    ]
   );
 
   const permissionsByCollection = useMemo(() => {
@@ -54,10 +72,12 @@ export const CollectionsPanel = () => {
     } = {};
 
     for (const permission of permissions ?? []) {
-      _permissionsByCollection[permission.item.collection.toBase58()] = {
-        pubkey: permission.pubkey,
-        item: permission.item,
-      };
+      if (permission.item.collection) {
+        _permissionsByCollection[permission.item.collection.toBase58()] = {
+          pubkey: permission.pubkey,
+          item: permission.item,
+        };
+      }
     }
     return _permissionsByCollection;
   }, [permissions]);
@@ -77,19 +97,114 @@ export const CollectionsPanel = () => {
     [collections]
   );
 
-  const deletedKeys = useDeletedKeysStore((state) => state.deletedKeys);
+  const selectedCollectionKeys = useSelectedCollections(
+    (state) => state.selectedCollectionKeys
+  );
+  const toggleSelectedCollection = useSelectedCollections(
+    (state) => state.toggleSelectedCollection
+  );
+
+  const setSelectedCollectionKeys = useSelectedCollections(
+    (state) => state.setSelectedCollectionKeys
+  );
+
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+
+  const toggleSelectAll = useCallback(
+    (_selectAll: boolean) => {
+      setSelectedCollectionKeys(
+        new Set(_selectAll ? collections.map((item) => item.pubkey) : [])
+      );
+      setSelectAll(_selectAll);
+    },
+    [collections]
+  );
+
+  const collectionDict = useMemo(() => {
+    const _collectionDict: {
+      [key: string]: ReturnType<typeof decodeCollection>;
+    } = {};
+
+    for (const collection of collections ?? []) {
+      if (collection) {
+        _collectionDict[collection?.pubkey?.toBase58()] = collection;
+      }
+    }
+    return _collectionDict;
+  }, [collections]);
+  const [editorStatus, setEditorStatus] = useState<{
+    open: boolean;
+    collection: Collection | undefined;
+  }>({
+    open: false,
+    collection: undefined,
+  });
+
+  const deleteCollectionParams = useMemo(() => {
+    return selectedCollectionKeys
+      ? [...selectedCollectionKeys]
+          .filter((item) => collectionDict[item.toBase58()])
+          .map((pubkey) => ({
+            creator: collectionDict[pubkey.toBase58()].item.creator,
+            collectionPermissions:
+              permissionsByCollection[pubkey.toBase58()].pubkey,
+            collection: pubkey,
+          }))
+      : //           collection: PublicKey;
+        //   creator: PublicKey; // the creator of the collection (close account rent gets sent here)
+        //   collectionPermissions: PublicKey;
+        [];
+  }, [selectedCollectionKeys, collectionDict]);
 
   return (
-    <Box>
-      <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-        {isFetching && <Spinner />}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        justifyContent: "center",
+      }}
+    >{permissions?.length} / {distinctCollectionKeys.length}
+      <Box sx={{ display: "flex" }}>
+        <Button
+          onClick={() => setEditorStatus({ open: true, collection: undefined })}
+        >
+          Create Collection
+        </Button>
+        {deleteCollectionParams.length > 0 && (
+          <DeleteCollectionTransactionButton
+            params={deleteCollectionParams}
+            formatting={{}}
+          />
+        )}
+
+        <EditCollectionDialog
+          open={editorStatus.open}
+          onClose={() => {
+            setEditorStatus({
+              open: false,
+              collection: undefined,
+            });
+          }}
+        />
       </Box>
-      {/* {permissions.length} */}
-      <TableContainer>
+      {/* <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
+        {isFetching && <Spinner />}
+      </Box> */}
+      <TableContainer sx={{ width: "100%" }}>
         <Table variant="simple">
-          <TableCaption>Your collections</TableCaption>
           <Thead>
             <Tr>
+              <Th>
+                <Center>
+                  <Checkbox
+                    checked={selectAll}
+                    onChange={(e) => {
+                      toggleSelectAll(e.currentTarget.checked);
+                    }}
+                  />
+                </Center>
+              </Th>
               <Th>Collection</Th>
               <Th>Name</Th>
               <Th isNumeric>Items</Th>
@@ -107,39 +222,13 @@ export const CollectionsPanel = () => {
           </Thead>
           <Tbody>
             {orderedCollections?.map((item, idx) => (
-              <Tr
+              <CollectionRow
                 key={idx}
-                sx={{
-                  background: deletedKeys.has(item.pubkey) ? "#fee" : "none",
-                }}
-              >
-                <Td>
-                  <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
-                </Td>
-                <Td>{item.item.name}</Td>
-                <Td isNumeric>{item.item.itemCount.toString()}</Td>
-                <Td isNumeric>{item.item.symbol}</Td>
-                <Td isNumeric>
-                  {item &&
-                    permissionsByCollection &&
-                    permissionsByCollection[item.pubkey.toBase58()] &&
-                    Number(item.item.itemCount.toString()) === 0 &&
-                    (deletedKeys.has(item.pubkey) ? (
-                      <Text>Deleted</Text>
-                    ) : (
-                      <DeleteCollectionTransactionButton
-                        params={{
-                          collection: item.pubkey,
-                          creator: item.item.creator,
-                          collectionPermissions:
-                            permissionsByCollection[item.pubkey.toBase58()]
-                              .pubkey,
-                        }}
-                        formatting={{ size: "sm", colorScheme: "teal" }}
-                      />
-                    ))}
-                </Td>
-              </Tr>
+                permissions={permissionsByCollection[item.pubkey.toBase58()]}
+                item={item}
+                selectedCollections={selectedCollectionKeys}
+                toggleSelectedCollection={toggleSelectedCollection}
+              />
             ))}
           </Tbody>
         </Table>
