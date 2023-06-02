@@ -4,6 +4,7 @@ import { SendTransaction } from "../../components/SendTransaction";
 import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
+  Heading,
   List,
   ListItem,
   OrderedList,
@@ -32,7 +33,7 @@ export const RoyaltiesBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </UnorderedList>
       </Box> */}
-      <h3 className="text-2xl">Changed</h3>
+      <Heading fontSize="xl">Propose to change</Heading>
       <Box>
         <OrderedList>
           <ListItem>
