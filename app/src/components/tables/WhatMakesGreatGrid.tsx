@@ -15,7 +15,7 @@ import {
             <Heading fontSize={{base: "md", md: "xl"}}>
               {props.header}
             </Heading>
-            <Text fontSize={{base: "xs", md: "sm"}} color={"gray.400"}>
+            <Text fontSize={{base: "xs", md: "sm"}} color={"gray.200"}>
               {props.text}
             </Text>
           </Stack>

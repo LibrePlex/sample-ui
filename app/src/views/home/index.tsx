@@ -153,7 +153,7 @@ export const HomeView: FC = ({}) => {
         >
           <Heading size="2xl">The Mission.</Heading>
           <Box mt={2} sx={{ maxWidth: "700px" }}>
-            <Text fontSize={"md"} color={"gray.400"}>
+            <Text fontSize={"md"} color={"gray.100"}>
               To provide a community-driven, open
               license protocol to the Solana SPL Token and NFT community. The
               protocol must meet the following criteria:
@@ -205,7 +205,7 @@ export const HomeView: FC = ({}) => {
           >
             <Heading size="2xl">From private ownership...</Heading>
             <Box mt={2} sx={{ maxWidth: "700px" }}>
-              <Text fontSize={"md"} color={"gray.400"}>
+              <Text fontSize={"md"} color={"gray.200"}>
                 Metadata Token Program, the key Solana NFT contract program that
                 ultimately governs the ownership of digital assets, is owned and
                 maintained by a private company. This poses a risk to the
@@ -222,7 +222,7 @@ export const HomeView: FC = ({}) => {
               alignSelf={"end"}
               sx={{ maxWidth: "700px" }}
             >
-              <Text textAlign={"right"} fontSize={"md"} color={"gray.400"}>
+              <Text textAlign={"right"} fontSize={"md"} color={"gray.200"}>
                 LibrePlex aims to mitigate this problem by introducing a fully
                 community-driven Metadata protocol that is free of commercial
                 interests. The new protocol will be owned by a consortium with
@@ -306,7 +306,7 @@ export const HomeView: FC = ({}) => {
                 >
                   <VStack>
                     <Heading size={"md"}>Follow us on Twitter</Heading>
-                    <Text color={"gray.400"}>
+                    <Text color={"gray.200"}>
                       https://twitter.com/LibrePlex
                     </Text>
                   </VStack>
