@@ -41,7 +41,7 @@ export const MutableInfoPanel = () => {
                   will be fixed for all eternity. This may be useful if you want
                   to link the mint to an item in permanent storage. For most
                   mints you should leave this box ticked. If you untick it, make
-                  sure you spell everything correctly as there's no going back!
+                  sure you spell everything correctly as there is no going back!
                 </Text>
               </Box>
             </Box>
