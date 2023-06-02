@@ -283,14 +283,14 @@ export const HomeView: FC = ({}) => {
                   p={3}
                   mb={1}
                   as={"a"}
-                  href="https://discord.gg/wmpfBZhd"
+                  href="https://discord.gg/6tDfht4qdB"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <VStack>
                     <Heading size={"md"}>Join us on Discord</Heading>
                     {/* LINK IS BROKEN, NEED NEW ONE */}
-                    <Text color={"gray.400"}>https://discord.gg/wmpfBZhd</Text>
+                    <Text color={"gray.400"}>https://discord.gg/6tDfht4qdB</Text>
                   </VStack>
                 </Button>
                 <Button
