@@ -32,6 +32,13 @@ export const AddMintToCollection = ({
 
   return (
     <Box display="flex" rowGap={1} flexDirection="column">
+      <Box display='flex'  justifyContent={'center'}>
+        {collection.item.nftCollectionData ? (
+          <Text sx={{ fontSize: "18px" }}>Nft collection</Text>
+        ) : (
+          <Text sx={{ fontSize: "18px" }}>Spl collection</Text>
+        )}
+      </Box>
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <CalendarIcon color="gray.300" />
@@ -77,19 +84,14 @@ export const AddMintToCollection = ({
           onChange={(e) => setUrl(e.currentTarget.value)}
         />
       </InputGroup>
-      <Box>
-        {collection.item.nftCollectionData ? (
-          <Text sx={{ fontSize: "24px" }}>Nft collection</Text>
-        ) : (
-          <Text sx={{ fontSize: "24px" }}>Spl collection</Text>
-        )}
-      </Box>
-      <Box 
-        display="flex" 
-        alignItems="center" 
-        flexDirection="row" 
-        sx={{justifyContent: "space-between"}}
-        columnGap={2}>
+
+      <Box
+        display="flex"
+        alignItems="center"
+        flexDirection="row"
+        sx={{ justifyContent: "space-between" }}
+        columnGap={2}
+      >
         <Checkbox
           checked={isMutable}
           onChange={(e) => {
