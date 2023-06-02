@@ -22,15 +22,16 @@ export const BasicsView: FC = ({}) => {
   return (
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
-        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
-          Basics
+        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8"
+        style={{paddingBottom: "10px"}}>
+          Key Design Concepts
         </h1>
         {/* CONTENT GOES HERE */}
 
-        <Box display="flex" columnGap={"20px"}>
+        <Box display="flex" columnGap={"20px"} sx={{mt: '10px'}}>
           <Box display="flex" flexDirection={"column"}>
             <h5 className="text-center text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mb-8">
-              Design objectives
+              Objectives
             </h5>
             <Box
               sx={{

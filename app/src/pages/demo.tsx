@@ -49,7 +49,7 @@ const Demo = () => {
         </h1>
 
         <p className="text-2xl">
-          Over the coming days, this space will host reference web implementations built on top of
+          WEN??? Over the coming days, this space will host reference web implementations built on top of
           the LibrePlex contracts. Source repos below:
         </p>
 

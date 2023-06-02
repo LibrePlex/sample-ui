@@ -32,7 +32,7 @@ export const CollectionBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </UnorderedList>
       </Box> */}
-      <Heading fontSize="xl">Propose to change</Heading>
+      <Heading fontSize="xl" style={{paddingTop: '15px'}}>Propose to change</Heading>
       <Box>
         <OrderedList
           sx={{
