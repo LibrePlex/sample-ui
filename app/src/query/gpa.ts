@@ -34,7 +34,7 @@ const accountUpdater = <T extends unknown, P extends Idl>(decode: DecodeType<T, 
       console.log({ found, old });
       return found
         ? old.map((item) =>
-            item.pubkey === accountInfo.accountId ? newOrUpdatedItem : item
+            item.pubkey.equals(accountInfo.accountId) ? newOrUpdatedItem : item
           )
         : [...(old ?? []), newOrUpdatedItem];
     });

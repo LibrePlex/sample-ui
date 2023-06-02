@@ -41,6 +41,17 @@ export const CollectionRow = ({
         </Center>
       </Td>
       <Td>
+        <Center>
+          {item &&
+            permissions &&
+            (deletedKeys.has(item.pubkey) ? (
+              <Text>Deleted</Text>
+            ) : (
+              <AddMetadataButton size="sm" collection={item} />
+            ))}
+        </Center>
+      </Td>
+      <Td>
         <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
       </Td>
       <Td>{item.item.name}</Td>
@@ -72,22 +83,11 @@ export const CollectionRow = ({
           )}
         </Center>
       </Td>
-          <Td isNumeric>
-            <AttributesDialog attributeTypes={item.item.nftCollectionData?.attributeTypes??[]}/>
-          </Td>
       <Td isNumeric>
-        <Center>
-          {item &&
-            permissions &&
-            Number(item.item.itemCount.toString()) === 0 &&
-            (deletedKeys.has(item.pubkey) ? (
-              <Text>Deleted</Text>
-            ) : (
-              <AddMetadataButton collection={item} />
-            ))}
-        </Center>
+        <AttributesDialog
+          attributeTypes={item.item.nftCollectionData?.attributeTypes ?? []}
+        />
       </Td>
-      
     </Tr>
   );
 };

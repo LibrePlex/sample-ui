@@ -74,10 +74,10 @@ const accountUpdater =
       const newOrUpdatedItem = decode(accountInfo.data, accountId);
       queryClient.setQueryData(key, (old: IRpcObject<T>[]) => {
         const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
-        console.log({ found, old, key});
+        console.log({ found, old, key, newOrUpdatedItem});
         return found
           ? old.map((item) =>
-              item.pubkey === accountId ? newOrUpdatedItem : item
+              item.pubkey.equals(accountId) ? newOrUpdatedItem : item
             )
           : [...(old ?? []), newOrUpdatedItem];
       });
