@@ -62,7 +62,7 @@ const info = [
     text: "The source of the protocol will be made available on github or similar. After initial launch, any changes will be subject to 30-day vetting and a community vote.",
   },
   {
-    id: 4,
+    id: 5,
     header: "Permissive license",
     text: "Contracts & SDK released under MIT.",
   },
@@ -92,12 +92,12 @@ export const HomeView: FC = ({}) => {
         <VStack display={"flex"} margin={"auto"}>
           <Box>
             <Grid
-              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+              templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(1, 1fr)" }}
               mt={"5.5vh"}
               gap={4}
               // mb={10}
             >
-              <GridItem
+              {/* <GridItem
                 colSpan={{ base: 0, md: 1 }}
                 display={"flex"}
                 justifySelf={{ base: "center", md: "flex-end" }}
@@ -106,10 +106,11 @@ export const HomeView: FC = ({}) => {
                 <Box width={"100%"} maxW={"450px"} hideBelow={"md"}>
                   <img src="LibreL.png" height={"100%"} width={"100%"} />
                 </Box>
-              </GridItem>
+              </GridItem> */}
               <GridItem
                 display={"flex"}
-                textAlign={{ base: "center", md: "left" }}
+                w={"100%"}
+                textAlign={{ base: "center", md: "center" }}
                 mr={{ base: "45vw", md: "0px" }}
                 colSpan={1}
               >
@@ -129,7 +130,7 @@ export const HomeView: FC = ({}) => {
           </Box>{" "}
 
           {/* CANT GET THIS TO BE MOBILE FRIENDLY */}
-          <Box>
+          <Box pt={"30px"}>
             <div className=" mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
               <pre data-prefix=">">
                 <code className="truncate">
@@ -150,10 +151,10 @@ export const HomeView: FC = ({}) => {
           flexDir={"column"}
           mt={{ base: "4vh", md: "10vh" }}
         >
-          <Heading size="2xl">What makes us great.</Heading>
+          <Heading size="2xl">The Mission.</Heading>
           <Box mt={2} sx={{ maxWidth: "700px" }}>
             <Text fontSize={"md"} color={"gray.400"}>
-              The mission of LibrePlex is to provide a community-driven, open
+              To provide a community-driven, open
               license protocol to the Solana SPL Token and NFT community. The
               protocol must meet the following criteria:
             </Text>
