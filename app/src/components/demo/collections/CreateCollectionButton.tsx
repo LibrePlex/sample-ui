@@ -42,9 +42,7 @@ export const createCollection = async (
   if (!wallet.publicKey) {
     throw Error("Wallet key missing");
   }
-  //  / alert('here');
-  console.log({ params });
-
+  
   const data: {
     instructions: TransactionInstruction[];
     signers: Keypair[];

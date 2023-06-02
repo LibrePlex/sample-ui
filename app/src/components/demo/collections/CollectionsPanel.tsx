@@ -1,48 +1,74 @@
 import { RepeatIcon } from "@chakra-ui/icons";
 import {
-    Box,
-    Button,
-    Spinner,
-    Table,
-    TableCaption,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr
+  Box,
+  Button,
+  Spinner,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import {
-    usePermissionsHydratedWithCollections
-} from "stores/accounts/useCollectionsById";
-import { usePermissionsByAuthority } from "stores/accounts/usePermissionsByAuthority";
+// import {
+//     usePermissionsHydratedWithCollections
+// } from "stores/accounts/useCollectionsById";
+import { PublicKey } from "@solana/web3.js";
+
+import { useMemo } from "react";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
+
+import { IRpcObject } from "components/executor/IRpcObject";
+import { CollectionPermissions } from "generated/libreplex";
+import { useQuery } from "react-query";
+import { useCollectionsById } from "query/useCollectionsById";
+import { usePermissions } from "query/permissions";
+import useDeletedKeysStore from "stores/useDeletedKeyStore";
 
 export const CollectionsPanel = () => {
   const { publicKey } = useWallet();
 
-  //   const {
-  //     getCollectionsByAuthority,
-  //     collections,
-  //     isFetching,
-  //     clearCollections,
-  //   } = useCollectionsByAuthority();
-
   const { connection } = useConnection();
 
-  const {
-    items: permissions,
-  } = usePermissionsByAuthority(publicKey, connection);
+  const { data: permissions, refetch } = usePermissions(publicKey, connection);
 
-  const {
-    items: collections,
-    removeCollection,
-    isFetching,
-    clear,
-  } = usePermissionsHydratedWithCollections(permissions, connection);
+  const distinctCollectionKeys = useMemo(
+    () => [
+      ...new Set<PublicKey>(
+        permissions
+          ?.filter((item) => item.item)
+          .map((item) => item.item.collection) ?? []
+      ),
+    ],
+    [permissions]
+  );
 
+  const permissionsByCollection = useMemo(() => {
+    const _permissionsByCollection: {
+      [key: string]: IRpcObject<CollectionPermissions>;
+    } = {};
+
+    for (const permission of permissions ?? []) {
+      _permissionsByCollection[permission.item.collection.toBase58()] = {
+        pubkey: permission.pubkey,
+        item: permission.item,
+        deleted: false,
+      };
+    }
+    return _permissionsByCollection;
+  }, [permissions]);
+
+  const { data: collections, isFetching } = useCollectionsById(
+    distinctCollectionKeys,
+    connection
+  );
+
+  const deletedKeys = useDeletedKeysStore((state) => state.deletedKeys);
 
   return (
     <Box>
@@ -61,7 +87,7 @@ export const CollectionsPanel = () => {
               <Th>
                 <Button
                   onClick={() => {
-                    clear();
+                    refetch();
                   }}
                 >
                   <RepeatIcon />
@@ -71,26 +97,40 @@ export const CollectionsPanel = () => {
           </Thead>
           <Tbody>
             {collections?.map((item, idx) => (
-              <Tr key={idx}>
+              <Tr
+                key={idx}
+                sx={{
+                  background: deletedKeys.has(item.pubkey) ? "#fee" : "none",
+                }}
+              >
                 <Td>
-                  <CopyPublicKeyButton
-                    publicKey={item.collection.pubkey.toBase58()}
-                  />
+                  <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
                 </Td>
-                <Td>{item.collection.item.name}</Td>
-                <Td isNumeric>{item.collection.item.itemCount.toString()}</Td>
-                <Td isNumeric>{item.collection.item.symbol}</Td>
+                <Td>{item.item.name}</Td>
+                <Td isNumeric>{item.item.itemCount.toString()}</Td>
+                <Td isNumeric>{item.item.symbol}</Td>
                 <Td isNumeric>
-                  {Number(item.collection.item.itemCount.toString()) === 0 && (
-                    <DeleteCollectionTransactionButton
-                      onSuccess={() => {}}
-                      params={{
-                        collection: item.collection.pubkey,
-                        collectionPermissions: item.permissions.pubkey,
-                      }}
-                      formatting={{ size: "sm", colorScheme: "teal" }}
-                    />
-                  )}
+                  {item &&
+                    permissionsByCollection &&
+                    permissionsByCollection[item.pubkey.toBase58()] &&
+                    Number(item.item.itemCount.toString()) === 0 &&
+                    (deletedKeys.has(item.pubkey) ?  (
+                        <Text>Deleted</Text>
+                      ) : (
+                      <DeleteCollectionTransactionButton
+                        onSuccess={(msg) => {
+                          // markAsDeleted(permissionsByCollection[item.pubkey.toBase58()].pubkey)
+                          // removeCollection(collection);
+                        }}
+                        params={{
+                          collection: item.pubkey,
+                          collectionPermissions:
+                            permissionsByCollection[item.pubkey.toBase58()]
+                              .pubkey,
+                        }}
+                        formatting={{ size: "sm", colorScheme: "teal" }}
+                      />
+                    ))}
                 </Td>
               </Tr>
             ))}
