@@ -24,7 +24,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <div className="flex flex-col h-screen">
           <Notifications />
           <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen}/>
-          <ContentContainer isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen}>
+          <ContentContainer>
             <PortalManager>
             
               <Component {...pageProps} />
