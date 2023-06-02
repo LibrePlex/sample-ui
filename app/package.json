@@ -17,7 +17,7 @@
     "@heroicons/react": "^1.0.5",
     "@metaplex-foundation/js": "0.18.3",
     "@noble/ed25519": "^1.7.1",
-    "@project-serum/anchor": "^0.26.0",
+    "@coral-xyz/anchor": "^0.27.0",
     "@solana/wallet-adapter-base": "^0.9.22",
     "@solana/wallet-adapter-react": "^0.15.32",
     "@solana/wallet-adapter-react-ui": "^0.9.31",

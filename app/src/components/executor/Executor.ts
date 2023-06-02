@@ -1,10 +1,13 @@
+import { string } from "joi";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import {
   Connection,
   PublicKey,
   Transaction,
+  sendAndConfirmRawTransaction,
+  sendAndConfirmTransaction,
+  TransactionInstruction,
   TransactionStatus,
-  sendAndConfirmRawTransaction
 } from "@solana/web3.js";
 import { ITransactionTemplate } from "./ITransactionTemplate";
 
@@ -184,11 +187,12 @@ export class Executor<P> {
     let batchId = 0;
     let awaitConfirmation = transactions.length < 3;
 
-    console.log({ remainingTransactions });
+
     while (remainingTransactions.length > 0) {
+      console.log({ remainingTransactions });
       try {
         batchId++;
-        // console.log({ batchId });
+        console.log({ batchId });
         const thisBatch = remainingTransactions.splice(0, TX_BATCH_SIZE);
         const { signedTransactions, blockhash } =
           await this.getSignedTransactions(thisBatch);
@@ -197,7 +201,7 @@ export class Executor<P> {
           const signedTransactionsBatch = [...signedTransactions];
           while (signedTransactionsBatch.length > 0) {
             const thisBatchSigned = signedTransactionsBatch.splice(0, 10);
-
+            console.log("lkjhlkjh")
             const promises = Promise.all(
               thisBatchSigned.map((item) =>
                 this.connection
@@ -227,7 +231,8 @@ export class Executor<P> {
                           ...blockhash,
                         },
                         {
-                          skipPreflight: true,
+                          skipPreflight: false,
+                          maxRetries: 5
                         }
                       );
                       // console.log(result);
@@ -243,6 +248,7 @@ export class Executor<P> {
                   })
               )
             );
+            
 
             await promises
               .then((success) => {

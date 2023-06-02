@@ -1,5 +1,5 @@
-import { BorshCoder, IdlAccounts, Program } from "@project-serum/anchor";
-import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
+import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
+import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import { sha256 } from "js-sha256";

@@ -1,5 +1,5 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import { Program } from "@project-serum/anchor";
+import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
@@ -40,10 +40,11 @@ export const LibrePlexProgramProvider = ({
       {children}
     </LibrePlexProgramContext.Provider>
   ) : (
-    <Box>
-      <Text>
-        Loading anchor program... <Spinner />
+    <Box sx={{display :"flex"}} columnGap={2}>
+      <Text >
+        Loading anchor program... 
       </Text>
+      <Spinner />
     </Box>
   );
 };
