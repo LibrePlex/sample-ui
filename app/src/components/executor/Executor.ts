@@ -1,13 +1,10 @@
-import { string } from "joi";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import {
   Connection,
   PublicKey,
   Transaction,
-  sendAndConfirmRawTransaction,
-  sendAndConfirmTransaction,
-  TransactionInstruction,
   TransactionStatus,
+  sendAndConfirmRawTransaction
 } from "@solana/web3.js";
 import { ITransactionTemplate } from "./ITransactionTemplate";
 
