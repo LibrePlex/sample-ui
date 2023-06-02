@@ -91,7 +91,7 @@ export const CostsView: FC = ({}) => {
               </Tr>
               <Tr>
                 <Td>Create token record</Td>
-                
+
                 <Td>
                   <Center>0</Center>
                 </Td>
@@ -101,62 +101,76 @@ export const CostsView: FC = ({}) => {
               </Tr>
               <Tr>
                 <Td>Create master edition</Td>
-                
+
                 <Td>
                   <Center>0</Center>
                 </Td>
-                <Td >
+                <Td>
                   <Center>0.0028536</Center>
                 </Td>
               </Tr>
               <Tr>
                 <Td>Total cost per mint</Td>
-                
+
                 <Td>
                   <Center>0.00519</Center>
                 </Td>
-                <Td >
+                <Td>
                   <Center>0.02342</Center>
                 </Td>
               </Tr>
               <Tr>
                 <Td>Cost per 10k collection</Td>
-                
+
                 <Td>
                   <Center>51.9 SOL</Center>
                 </Td>
-                <Td >
+                <Td>
                   <Center>234.2 SOL</Center>
                 </Td>
               </Tr>
               <Tr>
                 <Td>Protocol fees per 10k collection</Td>
-                
+
                 <Td>
                   <Center>0 SOL</Center>
                 </Td>
-                <Td >
+                <Td>
                   <Center>100.0 SOL</Center>
                 </Td>
               </Tr>
-              
+
               <Tr>
                 <Td>Total funding to date (USD)</Td>
-                <Td><Center>0</Center></Td>
-                <Td ><Center>47,000,000</Center></Td>
+                <Td>
+                  <Center>0</Center>
+                </Td>
+                <Td>
+                  <Center>47,000,000</Center>
+                </Td>
               </Tr>
               <Tr>
                 <Td>Entity type</Td>
 
                 <Td>
-                  <Box display="flex" flexDirection="column">
-                    Trust / Foundation
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Center>Trust / Foundation</Center>
                   </Box>
                 </Td>
                 <Td>
-                  <Box display="flex" flexDirection="column">
-                    Privately held
-                    
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignContent={"center"}
+                    alignItems={"center"}
+                    sx={{ width: "100%"}}
+                  >
+                    <Center>Private</Center>
                   </Box>
                 </Td>
               </Tr>
