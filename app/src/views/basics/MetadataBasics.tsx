@@ -4,6 +4,7 @@ import { SendTransaction } from "../../components/SendTransaction";
 import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
+  Heading,
   ListItem,
   OrderedList,
   Tab,
@@ -18,7 +19,8 @@ import { StyledTabs } from "components/tabs/Tabs";
 export const MetadataBasics: FC = ({}) => {
   return (
     <Box>
-      <h3 className="text-2xl">Unchanged</h3>
+        <Heading fontSize="xl">Unchanged</Heading>
+      
       <Box>
         <OrderedList
           sx={{
@@ -31,7 +33,8 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </OrderedList>
       </Box>
-      <h3 className="text-2xl">Changed</h3>
+      <Heading fontSize="xl">Propose to change</Heading>
+      
       <Box>
         <OrderedList
           sx={{
@@ -48,7 +51,7 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>Royalties (handled independently from creators)</ListItem>
         </OrderedList>
       </Box>
-      <h3 className="text-2xl">New concepts</h3>
+      <Heading fontSize="xl">New</Heading>
       <Box>
         <OrderedList
           sx={{
@@ -65,7 +68,7 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>URL to allow base64 and ordinals</ListItem>
         </OrderedList>
       </Box>
-      <h3 className="text-2xl">Under discussion</h3>
+      <Heading fontSize="xl">Active discussion</Heading>
       <Box>
         <OrderedList
           sx={{

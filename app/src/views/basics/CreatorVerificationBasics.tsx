@@ -4,6 +4,7 @@ import { SendTransaction } from "../../components/SendTransaction";
 import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
+  Heading,
   ListItem,
   OrderedList,
   Tab,
@@ -31,7 +32,7 @@ export const CreatorVerificationBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </UnorderedList>
       </Box> */}
-      <h3 className="text-2xl">Changed</h3>
+      <Heading fontSize="xl">Propose to change</Heading>
       <Box>
         Creator verification will be independent of royalties. Proposed flow is
         as follows:
