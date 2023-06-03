@@ -5,6 +5,7 @@ import { uploadImageToShadowDrive } from "api/shadowdrive/uploadToShadowDrive";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import Jimp from "jimp";
 import { Button } from "@chakra-ui/react";
+import { WalletAuthenticatingButton } from "components/buttons/WalletAuthenticatingButton";
 
 export interface IUpdatableMetadata {
   name: string;
@@ -35,8 +36,18 @@ export const getShadowDriveUploadSignature = async (
   fileExtension: string
 ) => {
   const httpClient = new HttpClient("");
+  
+  // TODO: Replace "DUMMYUPLOADTYPE" with metadata / collection etc
+  // as validation will probably need to be performed serverside
+  // as to who can upload what.
+  // given this is a reference implementation, we haven't spent 
+  // too much time on that, but if you're implementing this in 
+  // production, you will want to check these things if you're
+  // using shadowdrive / S3 or anything else where the keys are 
+  // generated serverside.
+  
   return await httpClient.get<IShadowDriveUpload>(
-    `/api/shadowdrive/upload/${mintId}/${fileExtension}`
+    `/api/shadowdrive/upload/DUMMYUPLOADTYPE/${mintId}/${fileExtension}`
   );
 };
 
@@ -80,12 +91,12 @@ export const ImageUploadActions = ({
   image,
   children,
   fileId,
-  mintId,
+  linkedAccountId,
   afterUpdate,
   notify,
 }: { image: File } & {
   fileId: string;
-  mintId: string;
+  linkedAccountId: string;
   children: ReactNode;
   afterUpdate?: (offchainUrl?: string) => any;
   notify: (newNotification: {
@@ -100,23 +111,25 @@ export const ImageUploadActions = ({
   const onClick = useCallback(async () => {
     try {
       setProcessing(true);
-      await uploadToShadowDrive(mintId, fileId, image);
+      const retval = await uploadToShadowDrive(linkedAccountId, fileId, image);
+      afterUpdate()
+      return retval;
     } catch (e) {
       console.log(e);
       notify({ message: "Could not upload to shadow drive", type: "error" });
+      
     } finally {
       setProcessing(false);
     }
-  }, [mintId, fileId, image]);
+  }, [linkedAccountId, fileId, image, afterUpdate, notify]);
 
   return (
-    <Button
-      sx={{ width: "200px" }}
+    <WalletAuthenticatingButton
       disabled={processing}
       onClick={onClick}
       isLoading={false}
     >
-      Upload
-    </Button>
+      Update
+    </WalletAuthenticatingButton>
   );
 };

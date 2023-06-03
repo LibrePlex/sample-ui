@@ -27,8 +27,8 @@ export const AttributeSelectorPanel = ({
       {attributeCount >0 && (
         <Table>
           <Thead>
-            <Td>Attribute Type</Td>
-            <Td>Attribute Value</Td>
+            <Td>Type</Td>
+            <Td>Value</Td>
           </Thead>
           {collection?.item?.nftCollectionData?.attributeTypes?.map(
             (item, idx) => (

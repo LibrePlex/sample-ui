@@ -7,12 +7,17 @@ import { ContentContainer } from "../components/ContentContainer";
 import { Footer } from "../components/Footer";
 import Notifications from "../components/Notification";
 import { LibrePlexProgramProvider } from "anchor/LibrePlexProgramContext";
-import { PortalManager } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  PortalManager,
+  createLocalStorageManager,
+} from "@chakra-ui/react";
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 
-const App: FC<AppProps> = ({ Component, pageProps }) => {
+const manager = createLocalStorageManager("colormode-key");
 
+const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <>
@@ -20,20 +25,20 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <title>LibrePlex</title>
       </Head>
 
-      <ContextProvider>
-        <div className="flex flex-col h-screen bg-[#121212]">
-          <Notifications />
-          <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen}/>
-          <ContentContainer>
-            <PortalManager>
-            
-              <Component {...pageProps} />
-              <Footer />
+      <ChakraProvider colorModeManager={manager}>
+        <ContextProvider>
+          <div className="flex flex-col h-screen bg-[#121212]">
+            <Notifications />
+            <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+            <ContentContainer>
+              <PortalManager>
+                <Component {...pageProps} />
+                <Footer />
               </PortalManager>
-              
-          </ContentContainer>
-        </div>
-      </ContextProvider>
+            </ContentContainer>
+          </div>
+        </ContextProvider>
+      </ChakraProvider>
     </>
   );
 };

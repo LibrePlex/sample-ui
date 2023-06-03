@@ -1,3 +1,4 @@
+import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
 import {
   Connection,
   Keypair,
@@ -23,7 +24,6 @@ import { notify } from "utils/notifications";
 export interface ICreateCollection {
   name: string;
   symbol: string;
-  collectionUrl: string;
   nftCollectionData: Collection["nftCollectionData"];
 }
 
@@ -67,7 +67,12 @@ export const createCollection = async (
     payer: Keypair.generate(),
   });
 
-  const { symbol, name, collectionUrl, nftCollectionData } = params;
+  const { symbol, name, nftCollectionData } = params;
+
+  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now. 
+  /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
+
+  const collectionUrl = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${collection.toBase58()}.png`
 
   console.log({nftCollectionData})
 

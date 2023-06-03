@@ -82,7 +82,6 @@ export const GenericTransactionButton = <P extends unknown>({
 
   return (
     <Button
-      variant="contained"
       disabled={isExecuting}
       {...rest}
       onClick={onClick}

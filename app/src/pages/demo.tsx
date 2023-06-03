@@ -37,7 +37,6 @@ const DemoPage = () => {
         flexDirection={"column"}
         sx={{
           alignItems: "center",
-          justifyContent: "center",
         }}
       >
         <LibrePlexProgramProvider>

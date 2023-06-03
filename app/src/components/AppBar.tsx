@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { useAutoConnect } from "../contexts/AutoConnectProvider";
 import NetworkSwitcher from "./NetworkSwitcher";
 import NavElement from "./nav-element";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -21,6 +21,18 @@ export const AppBar = ({
   setIsNavOpen: (b: boolean) => any;
 }) => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
+  const { colorMode, toggleColorMode, setColorMode} = useColorMode();
+
+  /* 
+    a hack to get chakra to always start in dark mode. 
+    I wonder if this will cause flashing? 
+      - neft
+  */
+  useEffect(()=>{
+    if( colorMode !== "dark") {
+      setColorMode("dark")
+    }
+  },[colorMode, setColorMode])
 
   return (
     <div>
@@ -45,13 +57,16 @@ export const AppBar = ({
           </div>
           {/* <WalletMultiButtonDynamic className="btn-ghost btn-sm relative flex md:hidden text-lg " /> */}
         </div>
+        {/* <Text color='white'>{colorMode}</Text>
+        <Button size="sm" colorScheme="blue" onClick={toggleColorMode}>
+          Toggle Mode
+        </Button> */}
 
         {/* Nav Links */}
         {/* Wallet & Settings */}
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
-          
               label="Design"
               href="/design"
               navigationStarts={() => setIsNavOpen(false)}

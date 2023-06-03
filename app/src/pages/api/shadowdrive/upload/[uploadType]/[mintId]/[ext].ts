@@ -1,6 +1,8 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT, SHDW_DRIVE_OWNER_SECRET_KEY } from '@/environmentvariables';
 
 import { Connection, Keypair } from "@solana/web3.js";
+import { defaultAuthenticatedHandler } from 'api/middleware/authenticatedWallet';
+import { SystemUser, WalletUser } from 'api/middleware/validateAuthenticatedWallet';
 
 import { IShadowDriveUpload } from "api/shadowdrive/IShadowDriveUpload";
 import { getDeleteMessage } from "api/shadowdrive/getDeleteMessage";
@@ -11,14 +13,25 @@ import { getUploadMessage } from "api/shadowdrive/getUploadMessage";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ApiErrors } from "pages/api/ApiErrors";
 
-export const createCollectionUploadMessage = async (
+export const createMintUrlUploadMessage = async (
   req: NextApiRequest,
   res: NextApiResponse,
+   user: WalletUser | SystemUser
 ) => {
   const { mintId, ext } = req.query as {
     mintId: string;
     ext: string;
+    // uploadType: string;
+    
   };
+
+  // TODO: Perform appropriate checks to prevent people from uploading random jump
+  /* 
+    
+    For example, check that wallet has the edit permission on a collection / mint etc.
+    For now, we require that the wallet is authenticated but no such checks are performed.
+
+  */
 
   try {
     console.log(mintId);
@@ -33,6 +46,7 @@ export const createCollectionUploadMessage = async (
     const keyPair = Keypair.fromSecretKey(keyArray);
 
     const filename = `${mintId}.${ext}`;
+    console.log({filename});
     const messageSignatureUpload = getUploadMessage(
       bucket, //keyPair.publicKey.toBase58(),
       filename,
@@ -76,4 +90,4 @@ export const errorHandler = (
   };
 };
 
-export default createCollectionUploadMessage;
+export default defaultAuthenticatedHandler(createMintUrlUploadMessage);

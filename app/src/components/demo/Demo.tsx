@@ -54,8 +54,8 @@ export const Demo = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        flexDirection: "column", height :"100%"
+        
       }}
       rowGap={3}
     >
@@ -106,6 +106,7 @@ export const Demo = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "start",
+          justifyContent: 'start', height :"100%"
         }}
       >
         <CollectionsPanel />

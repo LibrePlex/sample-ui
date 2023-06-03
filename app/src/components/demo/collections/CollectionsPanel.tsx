@@ -4,6 +4,7 @@ import {
   Button,
   Center,
   Checkbox,
+  Heading,
   Spinner,
   Table,
   TableCaption,
@@ -119,7 +120,7 @@ export const CollectionsPanel = () => {
       );
       setSelectAll(_selectAll);
     },
-    [collections]
+    [collections, setSelectedCollectionKeys]
   );
 
   const collectionDict = useMemo(() => {
@@ -156,9 +157,9 @@ export const CollectionsPanel = () => {
         //   creator: PublicKey; // the creator of the collection (close account rent gets sent here)
         //   collectionPermissions: PublicKey;
         [];
-  }, [selectedCollectionKeys, collectionDict]);
+  }, [selectedCollectionKeys, collectionDict, permissionsByCollection]);
 
-  const [collection, setCollection] = useState<IRpcObject<Collection>>()
+  const [collection, setCollection] = useState<IRpcObject<Collection>>();
 
   return (
     <Box
@@ -166,11 +167,19 @@ export const CollectionsPanel = () => {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "start",
+        alignItems: "start", height :"100%"
       }}
     >
-      <Box sx={{ display: "flex" }} columnGap={2}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "start",
+          justifyContent: "center",
+          width: "100%"
+        }}
+        columnGap={2}
+      >
         <Button
           onClick={() => setEditorStatus({ open: true, collection: undefined })}
         >
@@ -200,75 +209,72 @@ export const CollectionsPanel = () => {
           <RepeatIcon />
         </Button>
       </Box>
-      {/* <Box sx={{ display: "flex", width: "100%", justifyContent: "center" }}>
-        {isFetching && <Spinner />}
-      </Box> */}
-      <TableContainer sx={{ width: "100%" }}>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th></Th>
-              <Th></Th>
-              <Th></Th>
-              <Th></Th>
 
-              <Th></Th>
-              <Th colSpan={2}>
-                <Center>Royalties</Center>
-              </Th>
+      {collection ? (
+        <Box display="flex" columnGap={3} alignItems='center'>
+          <Heading>Selected Collection : {collection.item.name}</Heading>
+          <Button onClick={() => setCollection(undefined)}>Clear</Button>
+        </Box>
+      ) : (
+        <Box>
+          <Box pt={3} pb={3}>
+            <Heading>Collections ({collections?.length ?? "-"})</Heading>
+          </Box>
+          <TableContainer
+            sx={{ maxHeight: "100vh", overflow: "auto", width: "100%" }}
+          >
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>
+                    <Center>
+                      <Checkbox
+                        checked={selectAll}
+                        onChange={(e) => {
+                          toggleSelectAll(e.currentTarget.checked);
+                        }}
+                      />
+                    </Center>
+                  </Th>
+                  <Th>Image</Th>
+                  <Th>Collection</Th>
 
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Thead>
-            <Tr>
-              <Th>
-                <Center>
-                  <Checkbox
-                    checked={selectAll}
-                    onChange={(e) => {
-                      toggleSelectAll(e.currentTarget.checked);
-                    }}
+                  <Th>Royalties</Th>
+                  <Th>
+                    <Center>Signers</Center>
+                  </Th>
+                  <Th>
+                    <Center>Attributes</Center>
+                  </Th>
+                </Tr>
+              </Thead>
+
+              <Tbody>
+                {orderedCollections?.map((item, idx) => (
+                  <CollectionRow
+                    key={idx}
+                    permissions={
+                      permissionsByCollection[item.pubkey.toBase58()]
+                    }
+                    item={item}
+                    selectedCollections={selectedCollectionKeys}
+                    toggleSelectedCollection={toggleSelectedCollection}
+                    activeCollection={collection}
+                    setActiveCollection={setCollection}
                   />
-                </Center>
-              </Th>
-              <Th>Name</Th>
-              <Th>Add items</Th>
-              <Th><Center>Items</Center></Th>
-              <Th>Collection</Th>
-              
-              
-              
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
+      )}
 
-              <Th>Symbol</Th>
-              <Th>bps</Th>
-              <Th>
-                <Center>Recipients</Center>
-              </Th>
-              <Th>
-                  <Center>Signers</Center>
-              </Th>
-              <Th>
-                  <Center>Attributes</Center>
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {orderedCollections?.map((item, idx) => (
-              <CollectionRow
-                key={idx}
-                permissions={permissionsByCollection[item.pubkey.toBase58()]}
-                item={item}
-                selectedCollections={selectedCollectionKeys}
-                toggleSelectedCollection={toggleSelectedCollection}
-                activeCollection={collection}
-                setActiveCollection={setCollection}
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <CollectionViewer collection={collection} setCollection={setCollection}/>
+      {collection && (
+        <CollectionViewer
+          collection={collection}
+          setCollection={setCollection}
+        />
+      )}
     </Box>
   );
 };

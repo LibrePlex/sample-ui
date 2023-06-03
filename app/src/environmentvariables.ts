@@ -3,3 +3,5 @@ export const SHDW_DRIVE_OWNER_SECRET_KEY = process.env.SHDW_DRIVE_OWNER_SECRET_K
 export const NEXT_PUBLIC_STORAGE_BUCKET_KEY = process.env.NEXT_PUBLIC_STORAGE_BUCKET_KEY;
 export const NEXT_PUBLIC_DEVNET_URL = process.env.NEXT_PUBLIC_DEVNET_URL;
 export const NEXT_PUBLIC_MAINNET_URL = process.env.NEXT_PUBLIC_MAINNET_URL;
+export const JWT_SYSTEM_SIGNING_KEY = process.env.JWT_SYSTEM_SIGNING_KEY;
+export const COOKIE_KEY_AUTH = 'cookie-auth';

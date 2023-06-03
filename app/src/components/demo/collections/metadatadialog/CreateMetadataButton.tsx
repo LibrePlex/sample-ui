@@ -26,10 +26,10 @@ import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 import { getMetadataPda } from "pdas/getMetadataPda";
 import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
 import { notify } from "utils/notifications";
+import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
 
 export interface ICreateMetadata {
   name: string;
-  url: string;
   attributes: number[] | null;
   mint: Keypair;
   collection: PublicKey;
@@ -52,7 +52,7 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const { collection, name, url, attributes, mint } = params;
+  const { collection, name,  attributes, mint } = params;
 
   const [signerCollectionPermissions] = getUserPermissionsPda(
     collection,
@@ -65,6 +65,11 @@ export const createMetadata = async (
   });
 
   const [metadata] = getMetadataPda(mint.publicKey);
+
+  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now. 
+  /// anything could be passed in obviously, including dynamic render modes !WE ASSUME PNG FOR NOW!
+
+  const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`
 
   let instructions: TransactionInstruction[] = [];
 
@@ -149,11 +154,14 @@ export const CreateMetadataButton = (
 ) => {
   return (
     <>
+     
       <GenericTransactionButton<ICreateMetadata>
-        text={"Create"}
+        text={"Mint into this collection"}
+        
         transactionGenerator={createMetadata}
         onError={(msg) => notify({ message: msg })}
         {...props}
+        formatting={{variant:'solid',colorScheme:"teal"}}
       />
     </>
   );

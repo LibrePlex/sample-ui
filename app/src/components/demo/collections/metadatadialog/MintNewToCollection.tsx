@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  LightMode,
   Text,
 } from "@chakra-ui/react";
 import { Keypair, PublicKey } from "@solana/web3.js";
@@ -20,7 +21,7 @@ import { RoyalOverridePanel } from "./RoyaltyOverridePanel";
 import { AttributeSelectorPanel } from "./AttributeSelectorPanel";
 import { generateKey } from "crypto";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { MintImageUploader } from "components/shadowdrive/MintImageUploader";
+import { ImageUploader } from "components/shadowdrive/ImageUploader";
 
 enum Status {
   NotStarted,
@@ -30,7 +31,7 @@ enum Status {
 
 enum UrlMode {
   Shadow,
-  String
+  String,
 }
 export const MintNewToCollection = ({
   collection,
@@ -54,7 +55,6 @@ export const MintNewToCollection = ({
     () => collection?.item?.nftCollectionData?.attributeTypes?.length ?? 0,
     [collection]
   );
-
 
   const [urlMode, setUrlMode] = useState<UrlMode>(UrlMode.Shadow);
 
@@ -88,20 +88,6 @@ export const MintNewToCollection = ({
           onChange={(e) => setName(e.currentTarget.value)}
         />
       </InputGroup>
-      {urlMode === UrlMode.String ? (
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <AttachmentIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            placeholder="URL"
-            value={url}
-            onChange={(e) => setUrl(e.currentTarget.value)}
-          />
-        </InputGroup>
-      ) : (
-        <MintImageUploader mintId={generatedMint.publicKey.toBase58()} fileId={"file.png"} afterUpdate={ () =>{} } />
-      )}
 
       <Box
         display="flex"
@@ -136,7 +122,7 @@ export const MintNewToCollection = ({
         setGeneratedMint={setGeneratedMint}
       />
 
-      <CreateMetadataButton
+      {status !== Status.Success &&<CreateMetadataButton
         beforeClick={() => {
           setStatus(Status.Processing);
           setSelectedMint(generatedMint);
@@ -154,25 +140,25 @@ export const MintNewToCollection = ({
         formatting={{
           isDisabled: status !== Status.NotStarted,
         }}
-      />
+      />}
 
       {status === Status.Success && selectedMint && (
-        <Alert
-          status="success"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Text>Metadata added to mint:</Text>
-          <Box p={1}>
-            <CopyPublicKeyButton
-              publicKey={selectedMint.publicKey.toBase58()}
-            />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Text>Metadata added to mint:</Text>
+            <Box p={1}>
+              <CopyPublicKeyButton
+                publicKey={selectedMint.publicKey.toBase58()}
+              />
+            </Box>
+            <Text>Please generate a new key to create another.</Text>
           </Box>
-          <Text>Please generate a new key to create another.</Text>
-        </Alert>
+
       )}
     </Box>
   );

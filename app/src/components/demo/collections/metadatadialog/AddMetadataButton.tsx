@@ -6,12 +6,14 @@ import { EditMetadataDialog } from "./EditMetadataDialog";
 import { IRpcObject } from "components/executor/IRpcObject";
 import { Collection } from "query/collections";
 
-export const AddMetadataButton = ({collection, ...rest}:{collection: IRpcObject<Collection>}&ButtonProps) => {
+export const AddMetadataButton = ({
+  collection,
+  ...rest
+}: { collection: IRpcObject<Collection> } & ButtonProps) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
       <Button
-        
         colorScheme="teal"
         variant="outline"
         onClick={() => {
@@ -21,11 +23,13 @@ export const AddMetadataButton = ({collection, ...rest}:{collection: IRpcObject<
       >
         <AddIcon />
       </Button>
-      <EditMetadataDialog
-        open={open}
-        onClose={() => setOpen(false)}
-        collection={collection}
-      />
+      {collection && (
+        <EditMetadataDialog
+          open={open}
+          onClose={() => setOpen(false)}
+          collection={collection}
+        />
+      )}
     </>
   );
 };

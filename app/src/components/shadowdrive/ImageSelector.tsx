@@ -11,13 +11,20 @@ import {
   InputLeftElement,
   Skeleton,
   Spinner,
+  useTheme,
 } from "@chakra-ui/react";
+
+import { MdCancel } from "react-icons/md";
 import { FiFile } from "react-icons/fi";
 export const ImageSelector = ({
   selectedImage,
   setSelectedImage,
   currentImageUrl,
+  width = "300px",
+  height = "300px",
 }: {
+  width: number | string;
+  height: number | string;
   currentImageUrl?: string;
   setSelectedImage: (f: File | undefined) => any;
   selectedImage: File | undefined;
@@ -37,6 +44,8 @@ export const ImageSelector = ({
 
   const inputRef = useRef<any>();
 
+  const theme = useTheme();
+
   return (
     <>
       <Box
@@ -51,12 +60,12 @@ export const ImageSelector = ({
           animation={0}
           sx={{
             opacity: visible ? 0 : 1,
-            height: "100%",
-            width: "100%",
-            minWidth: "300px",
-            minHeight: "300px",
-            maxWidth: "300px",
-            maxHeight: "300px",
+            height,
+            width,
+            minWidth: width,
+            minHeight: height,
+            maxWidth: width,
+            maxHeight: height,
           }}
           variant="rectangular"
         >
@@ -71,14 +80,15 @@ export const ImageSelector = ({
               setVisible(false);
             }}
             style={{
+              padding: 0,
               opacity: visible ? 1 : 0,
-              height: "100%",
-              minWidth: "300px",
-              minHeight: "300px",
-              maxWidth: "300px",
-              maxHeight: "300px",
+              height,
+              width,
+              minWidth: width,
+              minHeight: height,
+              maxWidth: width,
+              maxHeight: height,
               position: "absolute",
-              width: "100%",
               aspectRatio: "1/1",
             }}
             src={base64Image}
@@ -86,22 +96,29 @@ export const ImageSelector = ({
         ) : (
           <></>
         )}
-        <Box p={1}>
+        <Box display="flex">
           {selectedImage ? (
-            <Button
-              sx={{ width: "200px" }}
+            <Box
+              sx={{
+                position: "absolute",
+                top: 1,
+                right: 1,
+                borderRadius: "1000px",
+                background: '#999',
+                cursor: 'pointer'
+              }}
               onClick={() => {
                 setSelectedImage(undefined);
               }}
-              variant="contained"
             >
-              Cancel
-            </Button>
+              <MdCancel
+                size={"32px"}
+                style={{ color: '#fff'}}
+              />
+            </Box>
           ) : (
             <FormControl isRequired>
-              <FormLabel htmlFor="writeUpFile">Image</FormLabel>
               <InputGroup>
-                
                 <input
                   type="file"
                   hidden
@@ -117,11 +134,12 @@ export const ImageSelector = ({
                 {/* <input type='file' accept={acceptedFileTypes} name={name} ref={inputRef} {...inputProps} inputRef={ref} style={{ display: 'none' }}></input> */}
                 <Button
                   placeholder={""}
+                  variant={'ghost'}
                   sx={{ cursor: "pointer" }}
                   onClick={() => inputRef?.current && inputRef.current.click()}
                   value={""}
                 >
-                  <Icon as={FiFile} /> Select
+                  <Icon as={FiFile} /> Upload
                 </Button>
               </InputGroup>
             </FormControl>

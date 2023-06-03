@@ -1,17 +1,25 @@
-import { Td, Tr, Text, Center, Checkbox, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Checkbox,
+  Stack,
+  Td,
+  Text,
+  Tr
+} from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
 import { CollectionPermissions } from "query/permissions";
 
-import { Collection } from "query/collections";
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
-import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 import { PublicKey } from "@solana/web3.js";
-import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
-import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
-import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
-import { AttributesDialog } from "./AttributesDialog";
+import { ImageUploader } from "components/shadowdrive/ImageUploader";
+import { Collection } from "query/collections";
 import { Dispatch, SetStateAction } from "react";
+import useDeletedKeysStore from "stores/useDeletedKeyStore";
+import { AttributesDialog } from "./AttributesDialog";
+import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
+import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 
 export const CollectionRow = ({
   item,
@@ -36,8 +44,9 @@ export const CollectionRow = ({
       }}
     >
       <Td
-      borderLeft={`10px solid ${activeCollection?.pubkey?.equals(item.pubkey)?'teal':'none'}`}
-        
+        borderLeft={`10px solid ${
+          activeCollection?.pubkey?.equals(item.pubkey) ? "teal" : "none"
+        }`}
       >
         <Center>
           <Checkbox
@@ -48,47 +57,62 @@ export const CollectionRow = ({
           />
         </Center>
       </Td>
-      <Td>{item.item.name}</Td>
       <Td>
-        <Center>
-          {item &&
-            permissions &&
-            (deletedKeys.has(item.pubkey) ? (
-              <Text>Deleted</Text>
-            ) : (
-              <AddMetadataButton size="sm" collection={item} />
-            ))}
-        </Center>
-      </Td>
-
-      <Td>
-        <Center>
-          <Button
-            onClick={() => {
-              setActiveCollection(item);
-            }}
-          >
-            {item.item.itemCount.toString()}
-          </Button>
-        </Center>
-      </Td>
-      <Td>
-        <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
-      </Td>
-
-      <Td isNumeric>
-        <Center>{item.item.symbol}</Center>
-      </Td>
-      <Td isNumeric>
-        <Center>{item.item.nftCollectionData?.royaltyBps}</Center>
-      </Td>
-      <Td isNumeric>
-        <Center>
-          {item.item.nftCollectionData?.royaltyShares && (
-            <RoyaltiesDialog
-              royalties={item.item.nftCollectionData?.royaltyShares}
+        <Box>
+          {item.item.collectionRenderMode.url && (
+            <ImageUploader
+              currentImage={item.item.collectionRenderMode.url.collectionUrl}
+              linkedAccountId={item.pubkey.toBase58()}
+              fileId={""}
+              afterUpdate={() => {}}
             />
           )}
+        </Box>
+        {/* 
+      <InputGroup>
+        <InputLeftElement pointerEvents="none">
+          <AttachmentIcon color="gray.300" />
+        </InputLeftElement>
+        <Input
+          placeholder="URL"
+          value={collectionUrl}
+          onChange={(e) => setCollectionUrl(e.currentTarget.value)}
+        />
+      </InputGroup> */}
+      </Td>
+      <Td>
+        <Stack>
+          <Center>
+            <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
+              <Text fontSize="4xl">
+                {item.item.name} [{item.item.symbol}]
+              </Text>
+              <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
+
+              <Button
+                onClick={() => {
+                  setActiveCollection(item);
+                }}
+              >
+                View items ({item.item.itemCount.toString()})
+              </Button>
+            </Box>
+          </Center>
+        </Stack>
+      </Td>
+
+      <Td>
+        <Center>
+          <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
+            <Center>
+              {(item.item.nftCollectionData?.royaltyBps / 100).toFixed(2)}%
+            </Center>
+            {item.item.nftCollectionData?.royaltyShares && (
+              <RoyaltiesDialog
+                royalties={item.item.nftCollectionData?.royaltyShares}
+              />
+            )}
+          </Box>
         </Center>
       </Td>
 

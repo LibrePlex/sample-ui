@@ -105,16 +105,7 @@ export const EditCollectionPanel = ({
         />
       </InputGroup>
 
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <AttachmentIcon color="gray.300" />
-        </InputLeftElement>
-        <Input
-          placeholder="URL"
-          value={collectionUrl}
-          onChange={(e) => setCollectionUrl(e.currentTarget.value)}
-        />
-      </InputGroup>
+      
 
       <Checkbox
         checked={isNftCollection}
@@ -194,7 +185,6 @@ export const EditCollectionPanel = ({
         params={{
           name,
           symbol,
-          collectionUrl,
           nftCollectionData,
         }}
         formatting={{}}
