@@ -86,93 +86,107 @@ export const CostsView: FC = ({}) => {
               </Tr>
 
               <Tr>
-                <Td>Create metadata</Td>
+                <Td>Metadata</Td>
                 <Td>
                   <Center>
-                    <Text sx={{ color: "lightgreen" }}>0.00168</Text>
+                    <Text sx={{ color: "lightgreen" }}>0.00168 SOL</Text>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
-                    <Text sx={{ color: "#f44" }}>0.00561</Text>
+                    <Text sx={{ color: "#f44" }}>0.00561 SOL</Text>
                   </Center>
                 </Td>
               </Tr>
               <Tr>
-                <Td>Create token record</Td>
+                <Td>Royalty Enforcement</Td>
 
                 <Td>
                   <Center>
-                    <Text sx={{ color: "lightgreen" }}>0</Text>
+                    <Text sx={{ color: "lightgreen" }}>0.001 SOL</Text>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
-                    <Text sx={{ color: "#f44" }}>0.00145</Text>
+                    <Text sx={{ color: "#f44" }}>0.0043 SOL</Text>
                   </Center>
                 </Td>
               </Tr>
-              <Tr>
-                <Td>Create master edition</Td>
+              {/* <Tr>
+                <Td>Royalty Enforcement</Td>
 
                 <Td>
                   <Center>
-                    <Text sx={{ color: "lightgreen" }}>0</Text>
+                    <Text sx={{ color: "lightgreen" }}>0 SOL</Text>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
-                    <Text sx={{ color: "#f44" }}>0.00285</Text>
+                    <Text sx={{ color: "#f44" }}>0.00145 SOL</Text>
                   </Center>
                 </Td>
               </Tr>
               <Tr>
-                <Td>Create mint</Td>
+                <Td>Master edition</Td>
+
+                <Td>
+                  <Center>
+                    <Text sx={{ color: "lightgreen" }}>0 SOL</Text>
+                  </Center>
+                </Td>
+                <Td>
+                  <Center>
+                    <Text sx={{ color: "#f44" }}>0.00285 SOL</Text>
+                  </Center>
+                </Td>
+              </Tr> */}
+              <Tr>
+                <Td>Mint</Td>
                 <Td colSpan={2}>
-                  <Center>0.00146</Center>
+                  <Center>0.00146 SOL</Center>
                 </Td>
               </Tr>
               <Tr>
-                <Td>Create token account</Td>
+                <Td>Token account</Td>
                 <Td colSpan={2}>
-                  <Center>0.00204</Center>
+                  <Center>0.00204 SOL</Center>
                 </Td>
               </Tr>
 
               <Tr>
-                <Td>Total cost per mint</Td>
+                <Td>Single mint total cost</Td>
 
                 <Td>
                   <Center>
-                    <Text sx={{ color: "lightgreen" }}>0.00519</Text>
+                    <Text sx={{ color: "lightgreen" }}>0.00619 SOL</Text>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
-                    <Text sx={{ color: "#f44" }}>0.02342</Text>
+                    <Text sx={{ color: "#f44" }}>0.02341 SOL</Text>
                   </Center>
                 </Td>
               </Tr>
               <Tr>
-                <Td>Cost per 10k collection</Td>
+                <Td>10k mints total cost</Td>
 
                 <Td>
                   <Center>
                     <Text sx={{ color: "lightgreen", fontWeight: "800" }}>
-                      51.9 SOL
+                      61.9 SOL
                     </Text>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
                     <Text sx={{ color: "#f44", fontWeight: "800" }}>
-                      234.2 SOL
+                      234.1 SOL
                     </Text>
                   </Center>
                 </Td>
               </Tr>
               <Tr>
-                <Td>Protocol fees per 10k collection</Td>
+                <Td>Protocol fees</Td>
 
                 <Td>
                   <Center>
@@ -192,17 +206,9 @@ export const CostsView: FC = ({}) => {
                 </Td>
               </Tr>
 
+            
               <Tr>
-                <Td>Total funding to date (USD)</Td>
-                <Td>
-                  <Center>0</Center>
-                </Td>
-                <Td>
-                  <Center>47,000,000</Center>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Entity type</Td>
+                <Td>License</Td>
 
                 <Td>
                   <Box
@@ -211,7 +217,9 @@ export const CostsView: FC = ({}) => {
                     alignContent={"center"}
                     alignItems={"center"}
                   >
-                    <Center>Trust / Foundation</Center>
+                    <Center>
+                      <Text sx={{ color: "lightgreen", fontWeight: "800" }}>MIT</Text>
+                    </Center>
                   </Box>
                 </Td>
                 <Td>
@@ -222,8 +230,21 @@ export const CostsView: FC = ({}) => {
                     alignItems={"center"}
                     sx={{ width: "100%" }}
                   >
-                    <Center>Private</Center>
+                    <Center>
+                      <Text sx={{ color: "#f44", fontWeight: "800" }}>
+                        Proprietary
+                      </Text>
+                    </Center>
                   </Box>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>Total funding to date</Td>
+                <Td>
+                  <Center>0</Center>
+                </Td>
+                <Td>
+                  <Center>47,000,000 USD</Center>
                 </Td>
               </Tr>
             </Tbody>
