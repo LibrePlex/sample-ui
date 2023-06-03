@@ -132,7 +132,6 @@ export const MintNewToCollection = ({
         }}
         params={{
           name,
-          url,
           attributes,
           collection: collection.pubkey,
           mint: generatedMint,
