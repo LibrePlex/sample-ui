@@ -129,7 +129,6 @@ export const HomeView: FC = ({ }) => {
             </Grid>
           </Box>{" "}
 
-          {/* CANT GET THIS TO BE MOBILE FRIENDLY */}
           <Box
             maxW="80vw"
           >
@@ -149,7 +148,8 @@ export const HomeView: FC = ({ }) => {
                   padding: "23px",
                 }
               }}
-              className="mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
+              className="mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2"
+            >
               <pre data-prefix=">">
                 <code className="truncate">
                   {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
@@ -301,14 +301,14 @@ export const HomeView: FC = ({ }) => {
                   p={3}
                   mb={1}
                   as={"a"}
-                  href="https://discord.gg/6tDfht4qdB"
+                  href="http://discord.gg/6tDfht4qdB"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <VStack>
                     <Heading size={"md"}>Join us on Discord</Heading>
                     {/* LINK IS BROKEN, NEED NEW ONE */}
-                    <Text color={"gray.400"}>https://discord.gg/6tDfht4qdB</Text>
+                    <Text color={"gray.400"}>http://discord.gg/6tDfht4qdB</Text>
                   </VStack>
                 </Button>
                 <Button
