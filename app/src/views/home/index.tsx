@@ -68,7 +68,7 @@ const info = [
   },
 ];
 
-export const HomeView: FC = ({}) => {
+export const HomeView: FC = ({ }) => {
   const wallet = useWallet();
   const { connection } = useConnection();
   const handleClickCosts = () => {
@@ -95,7 +95,7 @@ export const HomeView: FC = ({}) => {
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(1, 1fr)" }}
               mt={"5.5vh"}
               gap={4}
-              // mb={10}
+            // mb={10}
             >
               {/* <GridItem
                 colSpan={{ base: 0, md: 1 }}
@@ -130,14 +130,32 @@ export const HomeView: FC = ({}) => {
           </Box>{" "}
 
           {/* CANT GET THIS TO BE MOBILE FRIENDLY */}
-          <Box pt={"30px"}>
-            <div className=" mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
+          <Box
+            maxW="80vw"
+          >
+            <Box
+              sx={{
+                '&::-webkit-scrollbar': {
+                  width: '10px !important',
+                  height: "3px !important"
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: "grey",
+                  borderRadius: '24px',
+                  padding: "23px !important"
+                },
+                '&::-webkit-scrollbar-button': {
+                  margin: "23px 0",
+                  padding: "23px",
+                }
+              }}
+              className="mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
               <pre data-prefix=">">
                 <code className="truncate">
                   {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
                 </code>
               </pre>
-            </div>
+            </Box>
           </Box>
         </VStack>
       </Background>
@@ -316,6 +334,6 @@ export const HomeView: FC = ({}) => {
           </Grid>
         </Box>
       </div>
-    </div>
+    </div >
   );
 };
