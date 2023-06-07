@@ -15,13 +15,14 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { useState } from "react";
+import { getAttrValue } from "./editCollectionDialog/AttributeTypeRow";
 
 export const AttributesDialog = ({
   attributeTypes,
 }: {
-  attributeTypes: Collection["nftCollectionData"]["attributeTypes"];
+  attributeTypes: Group["attributeTypes"];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
@@ -61,7 +62,7 @@ export const AttributesDialog = ({
                           <Td>
                             <Box display="flex" gap={1}>
                               {item.permittedValues.map((item, idx) => (
-                                <Tag key={idx}>{item}</Tag>
+                                <Tag key={idx}>{getAttrValue(item)}</Tag>
                               ))}
                             </Box>
                           </Td>

@@ -1,104 +1,46 @@
-import { RepeatIcon, AttachmentIcon } from "@chakra-ui/icons";
+import { RepeatIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Center,
   Checkbox,
   Heading,
-  Spinner,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
-  Td,
-  Text,
   Th,
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 // import {
 //     usePermissionsHydratedWithCollections
 // } from "stores/accounts/useCollectionsById";
-import { PublicKey } from "@solana/web3.js";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 
 import { IRpcObject } from "components/executor/IRpcObject";
-import {
-  Collection,
-  decodeCollection,
-  useCollectionsByCreator,
-  useCollectionsById,
-} from "query/collections";
-import { CollectionPermissions, usePermissionsByUser } from "query/permissions";
+import { Group, decodeGroup } from "query/group";
+import { GroupViewer } from "./GroupViewer";
+import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";
+import { usePermittedCollections } from "./usePermittedCollections";
 import useSelectedCollections from "./useSelectedCollections";
-import { CollectionRow } from "./CollectionRow";
-import { EditCollectionDialog } from "./editCollectionDialog/EditCollectionDialog";
-import { CollectionViewer } from "./CollectionViewer";
+import { GroupRow } from "./GroupRow";
 
 export const CollectionsPanel = () => {
-  const { publicKey } = useWallet();
+  // const { publicKey } = useWallet();
 
-  const { connection } = useConnection();
+  // const { connection } = useConnection();
 
-  const { data: permissions, refetch } = usePermissionsByUser(
-    publicKey,
-    connection
-  );
-
-  //   const { data: createdCollections } = useCollectionsByCreator(
-  //     publicKey,
-  //     connection
-  //   );
-
-  const distinctCollectionKeys = useMemo(
-    () => [
-      ...new Set<PublicKey>([
-        ...(permissions
-          ?.filter((item) => item.item)
-          .map((item) => item.item.collection) ?? []),
-        // ...(createdCollections?.map((item) => item.pubkey) ?? []),
-      ]),
-    ],
-    [
-      permissions,
-      // , createdCollections
-    ]
-  );
-
-  const permissionsByCollection = useMemo(() => {
-    const _permissionsByCollection: {
-      [key: string]: IRpcObject<CollectionPermissions>;
-    } = {};
-
-    for (const permission of permissions ?? []) {
-      if (permission.item.collection) {
-        _permissionsByCollection[permission.item.collection.toBase58()] = {
-          pubkey: permission.pubkey,
-          item: permission.item,
-        };
-      }
-    }
-    return _permissionsByCollection;
-  }, [permissions]);
-
-  const { data: collections, isFetching } = useCollectionsById(
-    distinctCollectionKeys,
-    connection
-  );
-
-  const orderedCollections = useMemo(
-    () =>
-      collections
-        ? [...collections].sort((a, b) =>
-            a.item.name.localeCompare(b.item.name)
-          )
-        : [],
-    [collections]
-  );
+  // const orderedCollections = useMemo(
+  //   () =>
+  //     collections
+  //       ? [...collections].sort((a, b) =>
+  //           a.item.name.localeCompare(b.item.name)
+  //         )
+  //       : [],
+  //   [collections]
+  // );
 
   const selectedCollectionKeys = useSelectedCollections(
     (state) => state.selectedCollectionKeys
@@ -113,31 +55,34 @@ export const CollectionsPanel = () => {
 
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
+  const { groups, permissionsByCollection, refetch } =
+    usePermittedCollections();
+
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
       setSelectedCollectionKeys(
-        new Set(_selectAll ? collections.map((item) => item.pubkey) : [])
+        new Set(_selectAll ? groups.map((item) => item.pubkey) : [])
       );
       setSelectAll(_selectAll);
     },
-    [collections, setSelectedCollectionKeys]
+    [groups, setSelectedCollectionKeys]
   );
 
   const collectionDict = useMemo(() => {
     const _collectionDict: {
-      [key: string]: ReturnType<ReturnType<typeof decodeCollection>>;
+      [key: string]: ReturnType<ReturnType<typeof decodeGroup>>;
     } = {};
 
-    for (const collection of collections ?? []) {
+    for (const collection of groups ?? []) {
       if (collection) {
         _collectionDict[collection?.pubkey?.toBase58()] = collection;
       }
     }
     return _collectionDict;
-  }, [collections]);
+  }, [groups]);
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
-    collection: Collection | undefined;
+    collection: Group | undefined;
   }>({
     open: false,
     collection: undefined,
@@ -153,13 +98,10 @@ export const CollectionsPanel = () => {
               permissionsByCollection[pubkey.toBase58()].pubkey,
             collection: pubkey,
           }))
-      : //           collection: PublicKey;
-        //   creator: PublicKey; // the creator of the collection (close account rent gets sent here)
-        //   collectionPermissions: PublicKey;
-        [];
+      : [];
   }, [selectedCollectionKeys, collectionDict, permissionsByCollection]);
 
-  const [collection, setCollection] = useState<IRpcObject<Collection>>();
+  const [collection, setCollection] = useState<IRpcObject<Group>>();
 
   return (
     <Box
@@ -168,7 +110,8 @@ export const CollectionsPanel = () => {
         flexDirection: "column",
         width: "100%",
         justifyContent: "start",
-        alignItems: "start", height :"100%"
+        alignItems: "start",
+        height: "100%",
       }}
     >
       <Box
@@ -176,14 +119,14 @@ export const CollectionsPanel = () => {
           display: "flex",
           alignItems: "start",
           justifyContent: "center",
-          width: "100%"
+          width: "100%",
         }}
         columnGap={2}
       >
         <Button
           onClick={() => setEditorStatus({ open: true, collection: undefined })}
         >
-          Create Collection
+          Create Group
         </Button>
         {deleteCollectionParams.length > 0 && (
           <DeleteCollectionTransactionButton
@@ -192,7 +135,7 @@ export const CollectionsPanel = () => {
           />
         )}
 
-        <EditCollectionDialog
+        <EditGroupDialog
           open={editorStatus.open}
           onClose={() => {
             setEditorStatus({
@@ -211,14 +154,14 @@ export const CollectionsPanel = () => {
       </Box>
 
       {collection ? (
-        <Box display="flex" columnGap={3} alignItems='center'>
+        <Box display="flex" columnGap={3} alignItems="center">
           <Heading>Selected Collection : {collection.item.name}</Heading>
           <Button onClick={() => setCollection(undefined)}>Clear</Button>
         </Box>
       ) : (
         <Box>
           <Box pt={3} pb={3}>
-            <Heading>Collections ({collections?.length ?? "-"})</Heading>
+            <Heading>Groups ({groups?.length ?? "-"})</Heading>
           </Box>
           <TableContainer
             sx={{ maxHeight: "100vh", overflow: "auto", width: "100%" }}
@@ -250,8 +193,8 @@ export const CollectionsPanel = () => {
               </Thead>
 
               <Tbody>
-                {orderedCollections?.map((item, idx) => (
-                  <CollectionRow
+                {groups?.map((item, idx) => (
+                  <GroupRow
                     key={idx}
                     permissions={
                       permissionsByCollection[item.pubkey.toBase58()]
@@ -270,8 +213,9 @@ export const CollectionsPanel = () => {
       )}
 
       {collection && (
-        <CollectionViewer
-          collection={collection}
+        <GroupViewer
+          permissions={permissionsByCollection[collection.pubkey.toBase58()]}
+          group={collection}
           setCollection={setCollection}
         />
       )}

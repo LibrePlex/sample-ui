@@ -37,9 +37,9 @@ export const EditMetadataPanel = ({
         </Button>
         <Collapse in={showInfo}>
           <Text sx={{ maxWidth: "500px" }}>
-            An LibrePlex standard, each metadata item belongs to a collection,
-            including SPL tokens. You can create metadata in the selected
-            collection here.
+            You can create metadata here. The default metadata is sufficient for 
+            most SPL-related applications. A metadata can optionally be extended to
+            include NFT-related data such as attributes.
           </Text>
         </Collapse>
       </Box>

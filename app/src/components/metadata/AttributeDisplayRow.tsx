@@ -1,17 +1,22 @@
 import { Td, Tr } from "@chakra-ui/react";
+import { getAttrValue } from "components/demo/collections/editCollectionDialog/AttributeTypeRow";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 
-export const AttributeDisplayRow = ({collection, idx, item}:{collection: IRpcObject<Collection>, idx: number, item: number}) => {
+export const AttributeDisplayRow = ({
+  group,
+  idx,
+  item,
+}: {
+  group: IRpcObject<Group>;
+  idx: number;
+  item: number;
+}) => {
   return (
     <Tr>
-      <Td>{collection.item.nftCollectionData.attributeTypes[idx].name}</Td>
+      <Td>{group.item.attributeTypes[idx].name}</Td>
       <Td>
-        {
-          collection.item.nftCollectionData.attributeTypes[idx].permittedValues[
-            item
-          ]
-        }
+        {getAttrValue(group.item.attributeTypes[idx].permittedValues[item])}
       </Td>
     </Tr>
   );

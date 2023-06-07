@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
+import { MINT_SIZE, TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createInitializeMint2Instruction, createMintToInstruction, getAssociatedTokenAddressSync, getMinimumBalanceForRentExemptMint } from "@solana/spl-token";
 import {
   Connection,
   Keypair,
@@ -8,31 +10,26 @@ import {
 import { getProgramInstance } from "anchor/getProgramInstance";
 import { IExecutorParams } from "components/executor/Executor";
 import {
-  createMintToInstruction,
-  createInitializeMint2Instruction,
-  TOKEN_PROGRAM_ID,
-  TOKEN_2022_PROGRAM_ID,
-  MINT_SIZE,
-  getMinimumBalanceForRentExemptMint,
-  createAssociatedTokenAccountInstruction,
-  getAssociatedTokenAddressSync
-} from "@solana/spl-token";
-import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
+import { getGroupPda } from "pdas/getCollectionPda";
 import { getMetadataPda } from "pdas/getMetadataPda";
-import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
+import { getPermissionsPda } from "pdas/getPermissionsPda";
+import { Group } from "query/group";
 import { notify } from "utils/notifications";
-import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
+
+
 
 export interface ICreateMetadata {
   name: string;
-  attributes: number[] | null;
+  symbol: string;
+  url: string;
+  description: string | null;
   mint: Keypair;
-  collection: PublicKey;
+
 }
 
 export const createMetadata = async (
@@ -45,31 +42,32 @@ export const createMetadata = async (
   if (!wallet.publicKey) {
     throw Error("Wallet key missing");
   }
-
+  
   const data: {
     instructions: TransactionInstruction[];
     signers: Keypair[];
     description: string;
   }[] = [];
 
-  const { collection, name,  attributes, mint } = params;
-
-  const [signerCollectionPermissions] = getUserPermissionsPda(
-    collection,
-    wallet.publicKey
-  );
-
   const librePlexProgram = getProgramInstance(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });
 
-  const [metadata] = getMetadataPda(mint.publicKey);
+  const { symbol, name, description, mint} = params;
+
+  const [metadata] = getMetadataPda(mint.publicKey)
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now. 
-  /// anything could be passed in obviously, including dynamic render modes !WE ASSUME PNG FOR NOW!
+  /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
-  const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`
+  const url = `https://metadata.libreplex.io/${mint.publicKey.toBase58()}.json`
+
+  console.log({args: {
+    name,
+    symbol,
+    description,
+  }});
 
   let instructions: TransactionInstruction[] = [];
 
@@ -109,29 +107,23 @@ export const createMetadata = async (
     )
   );
 
+  console.log('Creating instruction');
+
   const instruction = await librePlexProgram.methods
     .createMetadata({
       name,
-      renderModeData: {
-        url: { url },
-      },
-      nftMetadata: attributes
-        ? {
-            attributes: Buffer.from(attributes),
-          }
-        : null,
+      symbol,
+      description,
+      url
     })
     .accounts({
-      signer: wallet.publicKey,
-      signerCollectionPermissions,
-      collection,
       metadata,
       mint: mint.publicKey,
       systemProgram: SystemProgram.programId,
     })
-    .signers([mint])
     .instruction();
-
+    console.log('INSTRUCTION CREATED');
+  
   instructions.push(instruction);
   data.push({
     instructions,
@@ -146,7 +138,7 @@ export const createMetadata = async (
   };
 };
 
-export const CreateMetadataButton = (
+export const CreateMetadataTransactionButton = (
   props: Omit<
     GenericTransactionButtonProps<ICreateMetadata>,
     "transactionGenerator"
@@ -154,14 +146,11 @@ export const CreateMetadataButton = (
 ) => {
   return (
     <>
-     
       <GenericTransactionButton<ICreateMetadata>
-        text={"Mint into this collection"}
-        
+        text={"Create metadata"}
         transactionGenerator={createMetadata}
-        onError={(msg) => notify({ message: msg })}
+        onError={(msg)=>notify({message: msg})}
         {...props}
-        formatting={{variant:'solid',colorScheme:"teal"}}
       />
     </>
   );

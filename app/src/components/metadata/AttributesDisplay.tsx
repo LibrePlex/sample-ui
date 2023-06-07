@@ -1,28 +1,32 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { Metadata } from "query/metadata";
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
+import { MetadataExtended } from "query/metadataExtended";
 
 export const AttributesDisplay = ({
   attributes,
-  collection,
+  group,
 }: {
-  collection: IRpcObject<Collection>;
-  attributes: Metadata["nftMetadata"]["attributes"];
+  group: IRpcObject<Group>;
+  attributes: MetadataExtended["attributes"];
 }) => {
-  return (
+  return group ? (
     <Table>
       <Thead>
-        <Th>Attribute</Th>
-        <Th>Value</Th>
+        <Tr>
+          <Th>Attribute</Th>
+          <Th>Value</Th>
+        </Tr>
       </Thead>
       <Tbody>
-       
-        {[...attributes].map((item, idx) => 
-          <AttributeDisplayRow key={idx} item={item} idx={idx} collection={collection}/>
-        )}
+        {[...attributes].map((item, idx) => (
+          <AttributeDisplayRow key={idx} item={item} idx={idx} group={group} />
+        ))}
       </Tbody>
     </Table>
+  ) : (
+    <></>
   );
 };

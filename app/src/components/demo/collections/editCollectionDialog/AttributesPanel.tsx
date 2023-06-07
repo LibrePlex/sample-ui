@@ -13,23 +13,24 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { AttributeTypeRow } from "./AttributeTypeRow";
 import { AddIcon, CalendarIcon } from "@chakra-ui/icons";
+
+
 
 export const AttributesPanel = ({
   attributeTypes,
   setAttributeTypes,
 }: {
-  attributeTypes: Collection["nftCollectionData"]["attributeTypes"];
+  attributeTypes: Group["attributeTypes"];
   setAttributeTypes: Dispatch<
-    SetStateAction<Collection["nftCollectionData"]["attributeTypes"]>
+    SetStateAction<Group["attributeTypes"]>
   >;
 }) => {
   const [name, setName] = useState<string>("");
-  const [attributeValues, setAttributeValues] = useState<string>("");
-
+  
   const [attributeValueStr, setAttributeValueStr] = useState<string>("");
 
   const attributeValueSet = useMemo(
@@ -94,7 +95,9 @@ export const AttributesPanel = ({
                 ...old,
                 {
                   name,
-                  permittedValues: sortedAttributes,
+                  permittedValues: sortedAttributes.map(item=>({
+                    word: {value: item}
+                  })),
                   deleted: false,
                   continuedAtIndex: null,
                   continuedFromIndex: null,

@@ -13,9 +13,8 @@ import {
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { KeyGenerator } from "components/KeyGenerator";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { useEffect, useMemo, useState } from "react";
-import { CreateMetadataButton } from "./CreateMetadataButton";
 import { MutableInfoPanel } from "./MutableInfoDialog";
 import { RoyalOverridePanel } from "./RoyaltyOverridePanel";
 import { AttributeSelectorPanel } from "./AttributeSelectorPanel";
@@ -36,7 +35,7 @@ enum UrlMode {
 export const MintNewToCollection = ({
   collection,
 }: {
-  collection: IRpcObject<Collection>;
+  collection: IRpcObject<Group>;
 }) => {
   const [generatedMint, setGeneratedMint] = useState<Keypair>(
     Keypair.generate()
@@ -48,15 +47,12 @@ export const MintNewToCollection = ({
 
   const [url, setUrl] = useState<string>("");
 
-  //   const {} = useFetchMultiAccounts()
   const [isMutable, setIsMutable] = useState<boolean>(false);
 
   const numberOfAttributes = useMemo(
-    () => collection?.item?.nftCollectionData?.attributeTypes?.length ?? 0,
+    () => collection?.item?.attributeTypes?.length ?? 0,
     [collection]
   );
-
-  const [urlMode, setUrlMode] = useState<UrlMode>(UrlMode.Shadow);
 
   useEffect(() => {
     setStatus(Status.NotStarted);
@@ -70,14 +66,6 @@ export const MintNewToCollection = ({
 
   return (
     <Box display="flex" rowGap={1} flexDirection="column">
-      <Box display="flex" justifyContent={"center"}>
-        {collection.item.nftCollectionData ? (
-          <Text sx={{ fontSize: "18px" }}>Nft collection</Text>
-        ) : (
-          <Text sx={{ fontSize: "18px" }}>Spl collection</Text>
-        )}
-      </Box>
-
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <CalendarIcon color="gray.300" />
@@ -113,51 +101,50 @@ export const MintNewToCollection = ({
         collection={collection}
       />
 
-      <Collapse in={collection.item.nftCollectionData !== undefined}>
-        <RoyalOverridePanel />
-      </Collapse>
+      <RoyalOverridePanel />
 
       <KeyGenerator
         generatedMint={generatedMint}
         setGeneratedMint={setGeneratedMint}
       />
 
-      {status !== Status.Success &&<CreateMetadataButton
-        beforeClick={() => {
-          setStatus(Status.Processing);
-          setSelectedMint(generatedMint);
-        }}
-        onSuccess={() => {
-          setStatus(Status.Success);
-        }}
-        params={{
-          name,
-          attributes,
-          collection: collection.pubkey,
-          mint: generatedMint,
-        }}
-        formatting={{
-          isDisabled: status !== Status.NotStarted,
-        }}
-      />}
+      {status !== Status.Success && (
+        <CreateMetadataButton
+          beforeClick={() => {
+            setStatus(Status.Processing);
+            setSelectedMint(generatedMint);
+          }}
+          onSuccess={() => {
+            setStatus(Status.Success);
+          }}
+          params={{
+            name,
+            attributes,
+            collection: collection.pubkey,
+            mint: generatedMint,
+          }}
+          formatting={{
+            isDisabled: status !== Status.NotStarted,
+          }}
+        />
+      )}
 
       {status === Status.Success && selectedMint && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Text>Metadata added to mint:</Text>
-            <Box p={1}>
-              <CopyPublicKeyButton
-                publicKey={selectedMint.publicKey.toBase58()}
-              />
-            </Box>
-            <Text>Please generate a new key to create another.</Text>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Text>Metadata added to mint:</Text>
+          <Box p={1}>
+            <CopyPublicKeyButton
+              publicKey={selectedMint.publicKey.toBase58()}
+            />
           </Box>
-
+          <Text>Please generate a new key to create another.</Text>
+        </Box>
       )}
     </Box>
   );

@@ -1,12 +1,11 @@
-
 import { PublicKey } from "@solana/web3.js";
 
-import { GROUP } from "./constants";
+import { METADATA_EXTENDED } from "./constants";
 import { PROGRAM_ID } from "anchor/getProgramInstance";
 
-export const getGroupPda = (seed: PublicKey) => {
+export const getMetadataExtendedPda = (mint: PublicKey) => {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from(GROUP), seed.toBuffer()],
+    [Buffer.from(METADATA_EXTENDED), mint.toBuffer()],
     new PublicKey(PROGRAM_ID)
   );
 };

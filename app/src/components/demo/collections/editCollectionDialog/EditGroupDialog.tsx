@@ -7,9 +7,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { EditCollectionPanel } from "./EditCollectionPanel";
+import { EditGroupPanel } from "./EditGroupPanel";
 
-export const EditCollectionDialog = ({
+export const EditGroupDialog = ({
   open,
   onClose,
 }: {
@@ -20,10 +20,10 @@ export const EditCollectionDialog = ({
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Collection</ModalHeader>
+        <ModalHeader>Create Group</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <EditCollectionPanel onSuccess={()=>{}
+          <EditGroupPanel onSuccess={()=>{}
             // ()=>alert('success')
             // onClose
             }/>

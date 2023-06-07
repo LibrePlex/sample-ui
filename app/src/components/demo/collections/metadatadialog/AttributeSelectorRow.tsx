@@ -1,6 +1,8 @@
 import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { Dispatch, SetStateAction } from "react";
+import { getAttrValue } from "../editCollectionDialog/AttributeTypeRow";
+
 
 export const AttributeSelectorRow = ({
   attributeType,
@@ -11,7 +13,7 @@ export const AttributeSelectorRow = ({
   attributeTypeIdx: number;
   attributes: number[];
   setAttributes: Dispatch<SetStateAction<number[]>>;
-  attributeType: Collection["nftCollectionData"]["attributeTypes"][0];
+  attributeType: Group["attributeTypes"][0];
 }) => {
   return (
     <Tr>
@@ -43,7 +45,7 @@ export const AttributeSelectorRow = ({
               size="sm"
               sx={{ cursor: "pointer" }}
             >
-              {item}
+              {getAttrValue(item)}
             </Button>
           ))}
         </Box>

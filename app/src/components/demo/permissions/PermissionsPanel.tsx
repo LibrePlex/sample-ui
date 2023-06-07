@@ -20,12 +20,11 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useMemo, useState } from "react";
 
-import { decodeCollectionPermission, usePermissionsByUser } from "query/permissions";
+import { Group } from "query/group";
+import { decodePermission, usePermissionsByUser } from "query/permissions";
+import { EditCollectionDialog } from "./EditPermissionDialog";
 import { PermissionsRow } from "./PermissionsRow";
 import useSelectedPermissions from "./useSelectedPermissions";
-import { DeleteCollectionPermissionsTransactionButton } from "./DeleteCollectionPermissionsTransactionButton";
-import { EditCollectionDialog } from "./EditPermissionDialog";
-import { Collection } from "query/collections";
 
 export const PermissionsPanel = () => {
   const { publicKey } = useWallet();
@@ -64,16 +63,15 @@ export const PermissionsPanel = () => {
 
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
-    collection: Collection | undefined;
+    collection: Group | undefined;
   }>({
     open: false,
     collection: undefined,
   });
 
-
   const permissionDict = useMemo(() => {
     const _permissionDict: {
-      [key: string]: ReturnType<ReturnType<typeof decodeCollectionPermission>>;
+      [key: string]: ReturnType<ReturnType<typeof decodePermission>>;
     } = {};
 
     for (const permission of permissions ?? []) {
@@ -84,20 +82,17 @@ export const PermissionsPanel = () => {
     return _permissionDict;
   }, [permissions]);
 
- 
-
-  const deleteSelectionParams = useMemo(() => {
-    console.log({ selectedPermissionKeys });
-    return selectedPermissionKeys
-      ? [...selectedPermissionKeys]
-          .filter((item) => permissionDict[item.toBase58()])
-          .map((pubkey) => ({
-            collectionPermissions: pubkey,
-            collection: permissionDict[pubkey.toBase58()].item.collection,
-          }))
-      : [];
-  }, [selectedPermissionKeys, permissionDict]);
-
+  // const deleteSelectionParams = useMemo(() => {
+  //   console.log({ selectedPermissionKeys });
+  //   return selectedPermissionKeys
+  //     ? [...selectedPermissionKeys]
+  //         .filter((item) => permissionDict[item.toBase58()])
+  //         .map((pubkey) => ({
+  //           collectionPermissions: pubkey,
+  //           collection: permissionDict[pubkey.toBase58()].item.collection,
+  //         }))
+  //     : [];
+  // }, [selectedPermissionKeys, permissionDict]);
 
   return (
     <Box sx={{ maxHeight: "50vh", overflow: "auto", width: "100%" }}>

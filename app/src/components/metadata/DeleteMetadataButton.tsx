@@ -13,15 +13,19 @@ import {
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
 
-export interface IDeleteCollection {
+import useDeletedKeysStore from "stores/useDeletedKeyStore";
+// import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
+
+
+export interface IDeleteMetadata {
   collection: PublicKey;
+  metadata: PublicKey,
   collectionPermissions: PublicKey;
 }
 
-export const deleteCollection = async (
-  { wallet, params }: IExecutorParams<IDeleteCollection[]>,
+export const deleteMetadata = async (
+  { wallet, params }: IExecutorParams<IDeleteMetadata[]>,
   connection: Connection
 ): Promise<{
   data?: ITransactionTemplate[];
@@ -39,58 +43,74 @@ export const deleteCollection = async (
     description: string;
   }[] = [];
 
-  const seed = Keypair.generate();
-
   const librePlexProgram = getProgramInstance(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });
 
-  for (const param of params) {
-    const { collectionPermissions, collection } = param;
-    const instruction = await librePlexProgram.methods.deleteCollectionPermissions().accounts({
-      signer: wallet.publicKey,
-      signerCollectionPermissions: collectionPermissions,
+
+
+  for (const metadataToDelete of params) {
+    const { collection, collectionPermissions, metadata } = metadataToDelete;
+
+
+    const instruction = await librePlexProgram.methods
+    .deleteMetadata()
+    .accounts({
+      authority: wallet.publicKey,
+      permissions: collectionPermissions,
       collection,
+      metadata: metadataToDelete.metadata,
       receiver: wallet.publicKey,
       systemProgram: SystemProgram.programId,
-    }).instruction();
+    })
+    .instruction();
+
+    // const instruction = createDeleteCollectionInstruction({
+    //   signer: wallet.publicKey,
+    //   signerCollectionPermissions: collectionPermissions,
+    //   collection,
+    //   creator,
+    //   receiver: wallet.publicKey,
+    //   systemProgram: SystemProgram.programId,
+    // });
 
     let instructions: TransactionInstruction[] = [];
     instructions.push(instruction);
     data.push({
       instructions,
-      description: `Delete collection permissions`,
+      description: `Delete metadata`,
       signers: [],
     });
 
     console.log({ data });
   }
-
   return {
     data,
   };
 };
 
-export const DeleteCollectionPermissionsTransactionButton = (
+export const DeleteMetadataButton = (
   props: Omit<
-    GenericTransactionButtonProps<IDeleteCollection[]>,
+    GenericTransactionButtonProps<IDeleteMetadata[]>,
     "transactionGenerator"
   >
 ) => {
   const { addDeletedKey } = useDeletedKeysStore();
 
   return (
-      <GenericTransactionButton<IDeleteCollection[]>
-        text={`Delete (${props.params.length})`}
-        transactionGenerator={deleteCollection}
+    <>
+      <GenericTransactionButton<IDeleteMetadata[]>
+        text={`Delete (${props.params.length})` }
+        transactionGenerator={deleteMetadata}
         {...props}
         onSuccess={(msg) => {
-          for (const p of props.params) {
-            addDeletedKey(p.collectionPermissions);
+          for( const collection of props.params) {
+            addDeletedKey(collection.collection);
           }
           props.onSuccess && props.onSuccess(msg);
         }}
       />
+    </>
   );
 };

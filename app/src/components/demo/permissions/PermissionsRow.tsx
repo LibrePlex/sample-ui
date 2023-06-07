@@ -4,9 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
 
-import { Dispatch, SetStateAction } from "react";
-import { DeleteCollectionPermissionsTransactionButton } from "./DeleteCollectionPermissionsTransactionButton";
-import { CollectionPermissions } from "query/permissions";
+import { Permissions } from "query/permissions";
 
 export const PermissionsRow = ({
   item,
@@ -16,7 +14,7 @@ export const PermissionsRow = ({
   selectedPermissions: Set<PublicKey>;
   toggleSelectedPermission: (pubkey: PublicKey, b: boolean) => any;
   //   setSelectedPermissions: Dispatch<SetStateAction<Set<PublicKey>>>;
-  item: IRpcObject<CollectionPermissions>;
+  item: IRpcObject<Permissions>;
 }) => {
   return (
     <Tr>
@@ -33,7 +31,7 @@ export const PermissionsRow = ({
       <Td>
         <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
       </Td>
-      <Td align={"center"}>
+      {/* <Td align={"center"}>
         <Center>{item.item.isAdmin ? <CheckCircleIcon /> : <></>}</Center>
       </Td>
       <Td align={"center"}>
@@ -54,7 +52,9 @@ export const PermissionsRow = ({
 
       <Td align={"center"}>
         <Center>
-          {item.item.collection && <CopyPublicKeyButton publicKey={item.item.collection.toBase58()} />}
+          {item.item.collection && (
+            <CopyPublicKeyButton publicKey={item.item.collection.toBase58()} />
+          )}
         </Center>
       </Td>
 
@@ -79,7 +79,7 @@ export const PermissionsRow = ({
           ]}
           formatting={{}}
         />{" "}
-      </Td>
+      </Td> */}
     </Tr>
   );
 };

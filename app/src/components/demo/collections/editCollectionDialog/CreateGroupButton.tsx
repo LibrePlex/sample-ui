@@ -14,17 +14,18 @@ import {
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
-import { getCollectionPda } from "pdas/getCollectionPda";
-import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
-import { Collection } from "query/collections";
+import { getGroupPda } from "pdas/getCollectionPda";
+import { getPermissionsPda } from "pdas/getPermissionsPda";
+import { Group } from "query/group";
 import { notify } from "utils/notifications";
-
-
 
 export interface ICreateCollection {
   name: string;
   symbol: string;
-  nftCollectionData: Collection["nftCollectionData"];
+  description: string;
+  attributeTypes: Group["attributeTypes"];
+  royalties: Group["royalties"];
+  permittedSigners: Group["permittedSigners"]
 }
 
 export const createCollection = async (
@@ -37,7 +38,7 @@ export const createCollection = async (
   if (!wallet.publicKey) {
     throw Error("Wallet key missing");
   }
-  
+
   const data: {
     instructions: TransactionInstruction[];
     signers: Keypair[];
@@ -46,9 +47,9 @@ export const createCollection = async (
 
   const seed = Keypair.generate();
 
-  const [collection] = getCollectionPda(seed.publicKey);
+  const [group] = getGroupPda(seed.publicKey);
 
-  const [userPermissions] = getUserPermissionsPda(collection, wallet.publicKey);
+  const [permissions] = getPermissionsPda(group, wallet.publicKey);
 
   // const a = createDeleteCollectionInstruction({
   //   authority: wallet.publicKey,
@@ -67,38 +68,46 @@ export const createCollection = async (
     payer: Keypair.generate(),
   });
 
-  const { symbol, name, nftCollectionData } = params;
+  const { symbol, name, permittedSigners, attributeTypes, royalties } = params;
 
-  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now. 
+  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
-  const collectionUrl = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${collection.toBase58()}.png`
+  const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${group.toBase58()}.png`;
 
-  console.log({nftCollectionData})
+  console.log({
+    authority: wallet.publicKey.toBase58(),
+    permissions: permissions.toBase58(),
+    group: group.toBase58(),
+    seed: seed.publicKey.toBase58(),
+    systemProgram: SystemProgram.programId.toBase58(),
+  })
+
 
   const instruction = await librePlexProgram.methods
-    .createCollection({
+    .createGroup({
       name,
       symbol,
-      nftCollectionData,
-      collectionRenderMode: {
-          url: {collectionUrl}
-      }, 
+      // description,
+      attributeTypes,
+      royalties,
+      permittedSigners,
+      url,
       metadataRenderMode: {
         url: {
-          baseUrlConfiguration: null
-        }
-      }
+          baseUrlConfiguration: null,
+        },
+      },
     })
     .accounts({
       authority: wallet.publicKey,
-      userPermissions,
-      collection,
+      permissions,
+      group,
       seed: seed.publicKey,
       systemProgram: SystemProgram.programId,
     })
     .instruction();
-
+  console.log("INSTRUCTION CREATED");
   let instructions: TransactionInstruction[] = [];
   instructions.push(instruction);
   data.push({
@@ -123,9 +132,9 @@ export const CreateCollectionTransactionButton = (
   return (
     <>
       <GenericTransactionButton<ICreateCollection>
-        text={"Create collection"}
+        text={"Create group"}
         transactionGenerator={createCollection}
-        onError={(msg)=>notify({message: msg})}
+        onError={(msg) => notify({ message: msg })}
         {...props}
       />
     </>

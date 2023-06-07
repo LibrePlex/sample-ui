@@ -1,4 +1,5 @@
-import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
+import { BorshCoder, IdlAccounts, IdlTypes, Program } from "@coral-xyz/anchor";
+import { IdlTypeDefTyStruct } from "@coral-xyz/anchor/dist/cjs/idl";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
@@ -7,10 +8,11 @@ import { useGpa } from "query/gpa";
 import { useContext, useEffect, useMemo } from "react";
 import { Libreplex } from "types/libreplex";
 
-export type CollectionPermissions =
-  IdlAccounts<Libreplex>["collectionPermissions"];
+export type Permissions =
+  IdlAccounts<Libreplex>["permissions"];
 
-export const decodeCollectionPermission =
+
+export const decodePermission =
   (program: Program<Libreplex>) =>
   (
     buffer: Buffer,
@@ -18,14 +20,13 @@ export const decodeCollectionPermission =
     pubkey: PublicKey
   ) => {
     const coder = new BorshCoder(program.idl);
-
-    const collectionPermissions = coder.accounts.decode<CollectionPermissions>(
-      "collectionPermissions",
+    const permissions = coder.accounts.decode<Permissions>(
+      "permissions",
       buffer
     );
-
+    
     return {
-      item: collectionPermissions ?? null,
+      item: permissions ?? null,
       pubkey,
     };
   };
@@ -44,7 +45,7 @@ export const usePermissionsByUser = (
       const filters = [
         {
           memcmp: {
-            offset: 40,
+            offset: 9,
             bytes: publicKey.toBase58(),
           },
         },
@@ -52,7 +53,7 @@ export const usePermissionsByUser = (
           memcmp: {
             offset: 0,
             bytes: bs58.encode(
-              sha256.array("account:CollectionPermissions").slice(0, 8)
+              sha256.array("account:Permissions").slice(0, 8)
             ),
           },
         },
@@ -63,11 +64,54 @@ export const usePermissionsByUser = (
     }
   }, [publicKey]);
   const d = useMemo(
-    () => decodeCollectionPermission(program),
-    [program, decodeCollectionPermission]
+    () => decodePermission(program),
+    [program]
   );
   return useGpa(program.programId, filters, connection, d, [
     publicKey?.toBase58() ?? "",
+    "collectionpermissions",
+  ]);
+};
+
+
+export const usePermissionsByReference = (
+  reference: PublicKey | undefined,
+  connection: Connection
+) => {
+  const { program } = useContext(LibrePlexProgramContext);
+
+  useEffect(() => {
+    console.log({ program });
+  }, [program]);
+  const filters = useMemo(() => {
+    if (reference) {
+      const filters = [
+        {
+          memcmp: {
+            offset: 8 + 1 + 32,
+            bytes: reference.toBase58(),
+          },
+        },
+        {
+          memcmp: {
+            offset: 0,
+            bytes: bs58.encode(
+              sha256.array("account:Permissions").slice(0, 8)
+            ),
+          },
+        },
+      ];
+      return filters;
+    } else {
+      return null;
+    }
+  }, [reference]);
+  const d = useMemo(
+    () => decodePermission(program),
+    [program]
+  );
+  return useGpa(program.programId, filters, connection, d, [
+    reference?.toBase58() ?? "",
     "collectionpermissions",
   ]);
 };

@@ -10,18 +10,18 @@ import {
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { CollectionPermissions } from "query/permissions";
+import { Permissions } from "query/permissions";
 
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "components/shadowdrive/ImageUploader";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { Dispatch, SetStateAction } from "react";
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 import { AttributesDialog } from "./AttributesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 
-export const CollectionRow = ({
+export const GroupRow = ({
   item,
   permissions,
   selectedCollections,
@@ -29,10 +29,10 @@ export const CollectionRow = ({
   setActiveCollection,
   activeCollection,
 }: {
-  activeCollection: IRpcObject<Collection> | undefined;
-  setActiveCollection: Dispatch<SetStateAction<IRpcObject<Collection>>>;
-  permissions: IRpcObject<CollectionPermissions> | undefined;
-  item: IRpcObject<Collection>;
+  activeCollection: IRpcObject<Group> | undefined;
+  setActiveCollection: Dispatch<SetStateAction<IRpcObject<Group>>>;
+  permissions: IRpcObject<Permissions> | undefined;
+  item: IRpcObject<Group>;
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
 }) => {
@@ -43,6 +43,7 @@ export const CollectionRow = ({
         background: deletedKeys.has(item.pubkey) ? "#fee" : "none",
       }}
     >
+      
       <Td
         borderLeft={`10px solid ${
           activeCollection?.pubkey?.equals(item.pubkey) ? "teal" : "none"
@@ -59,10 +60,10 @@ export const CollectionRow = ({
       </Td>
       <Td>
         <Box>
-          {item.item.collectionRenderMode.url && (
+          {item.item?.url && (
             <ImageUploader
-              currentImage={item.item.collectionRenderMode.url.collectionUrl}
-              linkedAccountId={item.pubkey.toBase58()}
+              currentImage={item.item?.url}
+              linkedAccountId={item.pubkey?.toBase58()}
               fileId={""}
               afterUpdate={() => {}}
             />
@@ -85,16 +86,16 @@ export const CollectionRow = ({
           <Center>
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
               <Text fontSize="4xl">
-                {item.item.name} [{item.item.symbol}]
+                {item.item?.name} [{item.item?.symbol}]
               </Text>
-              <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
+              <CopyPublicKeyButton publicKey={item.pubkey?.toBase58()} />
 
               <Button
                 onClick={() => {
                   setActiveCollection(item);
                 }}
               >
-                View items ({item.item.itemCount.toString()})
+                View items ({item.item?.itemCount?.toString()})
               </Button>
             </Box>
           </Center>
@@ -102,14 +103,15 @@ export const CollectionRow = ({
       </Td>
 
       <Td>
+        
         <Center>
           <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
             <Center>
-              {(item.item.nftCollectionData?.royaltyBps / 100).toFixed(2)}%
+              {(item.item.royalties?.bps / 100).toFixed(2)}%
             </Center>
-            {item.item.nftCollectionData?.royaltyShares && (
+            {item.item.royalties && (
               <RoyaltiesDialog
-                royalties={item.item.nftCollectionData?.royaltyShares}
+                royalties={item.item.royalties}
               />
             )}
           </Box>
@@ -118,16 +120,16 @@ export const CollectionRow = ({
 
       <Td isNumeric>
         <Center>
-          {item.item.nftCollectionData?.royaltyShares && (
+          {item.item.royalties?.shares && (
             <PermittedSignersDialog
-              permittedSigners={item.item.nftCollectionData?.permittedSigners}
+              permittedSigners={item.item?.permittedSigners}
             />
           )}
         </Center>
       </Td>
       <Td isNumeric>
         <AttributesDialog
-          attributeTypes={item.item.nftCollectionData?.attributeTypes ?? []}
+          attributeTypes={item.item.attributeTypes ?? []}
         />
       </Td>
     </Tr>

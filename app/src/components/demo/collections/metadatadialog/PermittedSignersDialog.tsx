@@ -15,13 +15,13 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { useState } from "react";
 
 export const PermittedSignersDialog = ({
   permittedSigners,
 }: {
-  permittedSigners: Collection["nftCollectionData"]["permittedSigners"];
+  permittedSigners: Group["permittedSigners"];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (

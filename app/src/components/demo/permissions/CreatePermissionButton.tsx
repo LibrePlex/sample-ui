@@ -13,8 +13,8 @@ import {
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
-import { getCollectionPda } from "pdas/getCollectionPda";
-import { getUserPermissionsPda } from "pdas/getUserPermissionsPda";
+import { getGroupPda } from "pdas/getCollectionPda";
+import { getPermissionsPda } from "pdas/getPermissionsPda";
 
 export interface INftCollectionData {
   royaltyBps: number;
@@ -51,9 +51,9 @@ export const createCollection = async (
 
   const seed = Keypair.generate();
 
-  const [collection] = getCollectionPda(seed.publicKey);
+  const [collection] = getGroupPda(seed.publicKey);
 
-  const [userPermissions] = getUserPermissionsPda(collection, wallet.publicKey);
+  const [userPermissions] = getPermissionsPda(collection, wallet.publicKey);
 
   // const a = createDeleteCollectionInstruction({
   //   authority: wallet.publicKey,

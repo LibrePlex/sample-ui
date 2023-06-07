@@ -17,14 +17,6 @@ import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 // import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
-export interface INftCollectionData {
-  royaltyBps: number;
-  royaltyShares: {
-    recipient: PublicKey;
-    share: number;
-  }[];
-  permittedSigners;
-}
 
 export interface IDeleteCollection {
   collection: PublicKey;
@@ -51,9 +43,6 @@ export const deleteCollection = async (
     description: string;
   }[] = [];
 
-  const seed = Keypair.generate();
-
-
   const librePlexProgram = getProgramInstance(connection, {
     ...wallet,
     payer: Keypair.generate(),
@@ -66,10 +55,10 @@ export const deleteCollection = async (
 
 
     const instruction = await librePlexProgram.methods
-    .deleteCollection()
+    .deleteGroup({admin: {}})
     .accounts({
       signer: wallet.publicKey,
-      signerCollectionPermissions: collectionPermissions,
+      permissions: collectionPermissions,
       collection,
       creator,
       receiver: wallet.publicKey,

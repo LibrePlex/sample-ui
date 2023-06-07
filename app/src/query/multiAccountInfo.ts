@@ -16,11 +16,10 @@ export type DecodeType<T extends unknown, P extends Idl> = (
 
 export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
   accountKeys: PublicKey[],
-  decoder: DecodeType<T, P>,
-  connection: Connection,
+  connection: Connection
 ) => ({
   fetcher: async () => {
-    const _items: IRpcObject<T>[] = [];
+    const _items: IRpcObject<Buffer>[] = [];
     const remainingAccountKeys = [...accountKeys];
 
     while (remainingAccountKeys.length > 0) {
@@ -31,9 +30,15 @@ export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
 
       for (const [idx, result] of results.entries()) {
         if (result?.data) {
-          const obj = decoder(result.data, accountKeys[idx]);
-          if (obj) {
-            _items.push(obj);
+          try {
+            _items.push({
+              pubkey: accountKeys[idx], 
+              item: result.data
+            })
+            
+          } catch (e) {
+
+            console.log({ e, key: accountKeys[idx].toBase58() });
           }
         }
       }
@@ -42,18 +47,16 @@ export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
   },
   listener: {
     add: (onAccountChange: AccountChangeCallback, accountId: PublicKey) =>
-      connection.onAccountChange(accountId, onAccountChange),
+    connection && connection.onAccountChange(accountId, onAccountChange),
     remove: (i: number) => {
-      connection.removeAccountChangeListener(i);
+      connection && connection.removeAccountChangeListener(i);
     },
   },
 });
 
 const accountUpdater =
-  <T extends unknown, P extends Idl>(
-    program: Program<P>,
+  <P extends Idl>(
     accountId: PublicKey,
-    decode: DecodeType<T, P>,
     queryClient: QueryClient,
     key: any
   ) =>
@@ -69,12 +72,13 @@ const accountUpdater =
           could make this fully data driven though
           by adding a deleted marker on IRpcObject
       */
-
     } else {
-      const newOrUpdatedItem = decode(accountInfo.data, accountId);
-      queryClient.setQueryData(key, (old: IRpcObject<T>[]) => {
+      queryClient.setQueryData(key, (old: IRpcObject<Buffer>[]) => {
         const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
-        console.log({ found, old, key, newOrUpdatedItem});
+        // console.log({ found, old, key, newOrUpdatedItem });
+        const newOrUpdatedItem = {item: accountInfo.data, 
+          pubkey: accountId}
+        
         return found
           ? old.map((item) =>
               item.pubkey.equals(accountId) ? newOrUpdatedItem : item
@@ -94,15 +98,11 @@ export const useFetchMultiAccounts = <T extends unknown, P extends Idl>(
   /* 
     same decoder interface as in useGpa
   */
-  decode: (
-    buf: Buffer,
-    pubkey: PublicKey
-  ) => IRpcObject<T>,
-  connection: Connection,
+  connection: Connection
 ) => {
   const { fetcher, listener } = useMemo(
-    () => fetchMultiAccounts(accountIds, decode, connection),
-    [accountIds, decode, connection, program]
+    () => fetchMultiAccounts(accountIds, connection),
+    [accountIds, connection]
   );
 
   /* 
@@ -119,17 +119,20 @@ export const useFetchMultiAccounts = <T extends unknown, P extends Idl>(
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<T>[]>(accountIds, fetcher);
+  const q = useQuery<IRpcObject<Buffer>[]>(accountIds, fetcher);
+
+  
+  
 
   /// intercept account changes and refetch as needed
   useEffect(() => {
     let _listeners: number[] = [];
     if ((accountIds.length ?? 0) > 0) {
       for (const accountId of accountIds) {
-        console.log("Adding account listener", accountId);
+        // console.log("Adding account listener", accountId);
         _listeners.push(
           listener.add(
-            accountUpdater(program, accountId, decode, queryClient, key),
+            accountUpdater(accountId, queryClient, key),
             accountId
           )
         );
@@ -140,7 +143,7 @@ export const useFetchMultiAccounts = <T extends unknown, P extends Idl>(
         listener.remove(i);
       }
     };
-  }, [listener, accountIds, program, decode, queryClient, key]);
+  }, [listener, accountIds, queryClient, key]);
 
   return q;
 };

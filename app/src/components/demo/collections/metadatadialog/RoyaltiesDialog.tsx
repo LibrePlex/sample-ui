@@ -15,25 +15,26 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { useState } from "react";
 
 export const RoyaltiesDialog = ({
   royalties,
 }: {
-  royalties: Collection["nftCollectionData"]["royaltyShares"];
+  royalties: Group["royalties"];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
-      {royalties.length > 0 ? (
+      {royalties.shares.length > 0 ? (
         <>
           <Button
             onClick={() => {
               setOpen(true);
             }}
           >
-            {royalties.length}
+            Royalties: {(royalties?.bps / 100).toFixed(2)}%
+            ({royalties.shares.length})
           </Button>
           <Modal
             isOpen={open}
@@ -43,11 +44,16 @@ export const RoyaltiesDialog = ({
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Royalty shares</ModalHeader>
+              <ModalHeader>Royalties</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Box pb={2}>
                   <Table>
+                    <Thead>
+                      <Th colSpan={2}>
+                        Percentage: {(royalties?.bps / 100).toFixed(2)}%
+                      </Th>
+                    </Thead>
                     <Thead>
                       <Tr>
                         <Th>Recipient</Th>
@@ -55,12 +61,16 @@ export const RoyaltiesDialog = ({
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {royalties.map((item, idx) => (
+                      {royalties.shares.map((item, idx) => (
                         <Tr key={idx}>
                           <Td>
-                            <CopyPublicKeyButton publicKey={item.recipient.toBase58()} />
+                            <CopyPublicKeyButton
+                              publicKey={item.recipient.toBase58()}
+                            />
                           </Td>
-                          <Td isNumeric>{Number(item.share/100).toFixed(2)}</Td>
+                          <Td isNumeric>
+                            {Number(item.share / 100).toFixed(2)}
+                          </Td>
                         </Tr>
                       ))}
                     </Tbody>

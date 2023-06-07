@@ -4,12 +4,12 @@ import { Button, ButtonProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 
 export const AddMetadataButton = ({
   collection,
   ...rest
-}: { collection: IRpcObject<Collection> } & ButtonProps) => {
+}: { collection: IRpcObject<Group> } & ButtonProps) => {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>

@@ -14,8 +14,11 @@ import { ReactNode, useState } from "react";
 import { CollectionsPanel } from "./collections/CollectionsPanel";
 import { PermissionsPanel } from "./permissions/PermissionsPanel";
 import useSelectedPermissions from "./permissions/useSelectedPermissions";
+import { BaseMetadataPanel } from "./metadata/MetadataPanel";
+
 
 enum View {
+  BaseMetadata = "BaseMetadata",
   Collections = "Collections",
   Permissions = "Permissions",
   Metadata = "Metadata",
@@ -48,7 +51,7 @@ export const Demo = () => {
   //   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
-  const [view, setView] = useState<View>(View.Collections);
+  const [view, setView] = useState<View>(View.BaseMetadata);
 
   return (
     <Box
@@ -72,12 +75,21 @@ export const Demo = () => {
       >
         <Button
           colorScheme="teal"
+          variant={view === View.BaseMetadata ? "solid" : "outline"}
+          onClick={() => {
+            setView(View.BaseMetadata);
+          }}
+        >
+          Metadata
+        </Button>
+        <Button
+          colorScheme="teal"
           variant={view === View.Collections ? "solid" : "outline"}
           onClick={() => {
             setView(View.Collections);
           }}
         >
-          Collections
+          Groups
         </Button>
         <Button
           colorScheme="teal"
@@ -99,6 +111,18 @@ export const Demo = () => {
           Repos
         </Button>
       </Box>
+
+      <TabPanel
+        open={view === View.BaseMetadata}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: 'start', height :"100%"
+        }}
+      >
+        <BaseMetadataPanel />
+      </TabPanel>
 
       <TabPanel
         open={view === View.Collections}

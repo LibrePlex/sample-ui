@@ -1,6 +1,6 @@
 import { Box, Table, Td, Text, Thead } from "@chakra-ui/react";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { AttributeSelectorRow } from "./AttributeSelectorRow";
 
@@ -11,10 +11,10 @@ export const AttributeSelectorPanel = ({
 }: {
   attributes: number[];
   setAttributes: Dispatch<SetStateAction<number[]>>;
-  collection: IRpcObject<Collection>;
+  collection: IRpcObject<Group>;
 }) => {
   const attributeCount = useMemo(
-    () => collection?.item?.nftCollectionData?.attributeTypes?.length ?? 0,
+    () => collection?.item?.attributeTypes?.length ?? 0,
     [collection]
   );
   return (
@@ -30,7 +30,8 @@ export const AttributeSelectorPanel = ({
             <Td>Type</Td>
             <Td>Value</Td>
           </Thead>
-          {collection?.item?.nftCollectionData?.attributeTypes?.map(
+          {JSON.stringify(attributes)}
+          {collection?.item?.attributeTypes?.map(
             (item, idx) => (
               <AttributeSelectorRow
                 key={idx}

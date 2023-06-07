@@ -9,14 +9,14 @@ import {
 } from "@chakra-ui/react";
 import { EditMetadataPanel } from "./EditMetadataPanel";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Collection } from "query/collections";
+import { Group } from "query/group";
 
 export const EditMetadataDialog = ({
   open,
 onClose,
   collection,
 }: {
-  collection: IRpcObject<Collection>;
+  collection: IRpcObject<Group>;
   open: boolean;
   onClose: () => any;
 }) => {
