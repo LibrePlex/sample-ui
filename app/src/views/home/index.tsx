@@ -122,7 +122,10 @@ export const HomeView: FC = ({}) => {
                     Open Protocol.
                   </Heading>
                   <Heading size={{ base: "xl", md: "2xl" }} my="3">
-                    Developer Friendly.
+                    Easy Adoption.
+                  </Heading>
+                  <Heading size={{ base: "xl", md: "2xl" }} my="3">
+                    No Mint Tax.
                   </Heading>
                 </Box>
               </GridItem>
