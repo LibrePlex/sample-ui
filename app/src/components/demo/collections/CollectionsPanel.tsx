@@ -19,18 +19,18 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Group, decodeGroup } from "query/group";
+import { Group, decodeGroup, useGroupsByAuthority } from "query/group";
+import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";
-import { usePermittedCollections } from "./usePermittedCollections";
 import useSelectedCollections from "./useSelectedCollections";
-import { GroupRow } from "./GroupRow";
 
 export const CollectionsPanel = () => {
   // const { publicKey } = useWallet();
 
-  // const { connection } = useConnection();
+  const { connection } = useConnection();
 
   // const orderedCollections = useMemo(
   //   () =>
@@ -55,8 +55,9 @@ export const CollectionsPanel = () => {
 
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
-  const { groups, permissionsByCollection, refetch } =
-    usePermittedCollections();
+  const { publicKey } = useWallet();
+
+  const { data: groups, refetch } = useGroupsByAuthority(publicKey, connection);
 
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
@@ -93,13 +94,10 @@ export const CollectionsPanel = () => {
       ? [...selectedCollectionKeys]
           .filter((item) => collectionDict[item.toBase58()])
           .map((pubkey) => ({
-            creator: collectionDict[pubkey.toBase58()].item.creator,
-            collectionPermissions:
-              permissionsByCollection[pubkey.toBase58()].pubkey,
-            collection: pubkey,
+            group: pubkey,
           }))
       : [];
-  }, [selectedCollectionKeys, collectionDict, permissionsByCollection]);
+  }, [selectedCollectionKeys, collectionDict]);
 
   const [collection, setCollection] = useState<IRpcObject<Group>>();
 
@@ -196,9 +194,6 @@ export const CollectionsPanel = () => {
                 {groups?.map((item, idx) => (
                   <GroupRow
                     key={idx}
-                    permissions={
-                      permissionsByCollection[item.pubkey.toBase58()]
-                    }
                     item={item}
                     selectedCollections={selectedCollectionKeys}
                     toggleSelectedCollection={toggleSelectedCollection}
@@ -213,11 +208,7 @@ export const CollectionsPanel = () => {
       )}
 
       {collection && (
-        <GroupViewer
-          permissions={permissionsByCollection[collection.pubkey.toBase58()]}
-          group={collection}
-          setCollection={setCollection}
-        />
+        <GroupViewer group={collection} setCollection={setCollection} />
       )}
     </Box>
   );

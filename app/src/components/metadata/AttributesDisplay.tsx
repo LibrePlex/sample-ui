@@ -3,7 +3,7 @@ import { IRpcObject } from "components/executor/IRpcObject";
 import { Group } from "query/group";
 import { Metadata } from "query/metadata";
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
-import { MetadataExtended } from "query/metadataExtended";
+import { MetadataExtended } from "query/metadataExtension";
 
 export const AttributesDisplay = ({
   attributes,

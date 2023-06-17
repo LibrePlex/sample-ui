@@ -1,5 +1,14 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
-import { MINT_SIZE, TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createInitializeMint2Instruction, createMintToInstruction, getAssociatedTokenAddressSync, getMinimumBalanceForRentExemptMint } from "@solana/spl-token";
+import {
+  MINT_SIZE,
+  TOKEN_PROGRAM_ID,
+  createAssociatedTokenAccountInstruction,
+  createInitializeMint2Instruction,
+  createMintToInstruction,
+  getAssociatedTokenAddressSync,
+  getMinimumBalanceForRentExemptMint,
+} from "@solana/spl-token";
+
 import {
   Connection,
   Keypair,
@@ -7,7 +16,10 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
+import {
+  PROGRAM_ID_INSCRIPTIONS,
+  getProgramInstance,
+} from "anchor/getProgramInstance";
 import { IExecutorParams } from "components/executor/Executor";
 import {
   GenericTransactionButton,
@@ -21,16 +33,27 @@ import { getPermissionsPda } from "pdas/getPermissionsPda";
 import { Group } from "query/group";
 import { notify } from "utils/notifications";
 
+export enum AssetType {
+  Image,
+  Inscription,
+}
 
+// export type Asset = {
+//   type: AssetType.Image,
+// } | {
+//   type: AssetType.Ordinal
+// }
 
 export interface ICreateMetadata {
   name: string;
   symbol: string;
-  url: string;
+  assetType: AssetType;
   description: string | null;
   mint: Keypair;
-
 }
+
+// start at 0. We can extend as needed
+export const ORDINAL_DEFAULT_LENGTH = 0;
 
 export const createMetadata = async (
   { wallet, params }: IExecutorParams<ICreateMetadata>,
@@ -42,7 +65,7 @@ export const createMetadata = async (
   if (!wallet.publicKey) {
     throw Error("Wallet key missing");
   }
-  
+
   const data: {
     instructions: TransactionInstruction[];
     signers: Keypair[];
@@ -54,34 +77,27 @@ export const createMetadata = async (
     payer: Keypair.generate(),
   });
 
-  const { symbol, name, description, mint} = params;
+  const { assetType, symbol, name, description, mint } = params;
 
-  const [metadata] = getMetadataPda(mint.publicKey)
+  const [metadata] = getMetadataPda(mint.publicKey);
 
-  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now. 
+  /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
-
-  const url = `https://metadata.libreplex.io/${mint.publicKey.toBase58()}.json`
-
-  console.log({args: {
-    name,
-    symbol,
-    description,
-  }});
 
   let instructions: TransactionInstruction[] = [];
 
-  const lamports = await getMinimumBalanceForRentExemptMint(connection);
-  
-  const ata = getAssociatedTokenAddressSync(mint.publicKey,
-    wallet.publicKey)
+  const mintLamports = await getMinimumBalanceForRentExemptMint(connection);
+
+  const signers = [mint];
+
+  const ata = getAssociatedTokenAddressSync(mint.publicKey, wallet.publicKey);
 
   instructions.push(
     SystemProgram.createAccount({
       fromPubkey: wallet.publicKey,
       newAccountPubkey: mint.publicKey,
       space: MINT_SIZE,
-      lamports,
+      lamports: mintLamports,
       programId: TOKEN_PROGRAM_ID,
     }),
     createInitializeMint2Instruction(
@@ -107,28 +123,76 @@ export const createMetadata = async (
     )
   );
 
-  console.log('Creating instruction');
+  console.log("Creating instruction");
 
-  const instruction = await librePlexProgram.methods
-    .createMetadata({
-      name,
-      symbol,
-      description,
-      url
-    })
-    .accounts({
-      metadata,
-      mint: mint.publicKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .instruction();
-    console.log('INSTRUCTION CREATED');
-  
-  instructions.push(instruction);
+  if (assetType === AssetType.Image) {
+    const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
+
+
+    const instruction = await librePlexProgram.methods
+      .createMetadata({
+        name,
+        symbol,
+        description,
+        asset: {
+          image: {
+            url,
+          },
+        },
+      })
+      .accounts({
+        metadata,
+        mint: mint.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .instruction();
+    instructions.push(instruction);
+  } else if (assetType === AssetType.Inscription) {
+    const ordinal = Keypair.generate();
+
+    const ordinalLamports = await connection.getMinimumBalanceForRentExemption(
+      8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH
+    );
+    signers.push(ordinal);
+    instructions.push(
+      SystemProgram.createAccount({
+        fromPubkey: wallet.publicKey,
+        newAccountPubkey: ordinal.publicKey,
+        space: 8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH,
+        lamports: ordinalLamports,
+        programId: new PublicKey(PROGRAM_ID_INSCRIPTIONS),
+      })
+    );
+
+
+
+    const instruction = await librePlexProgram.methods
+      .createOrdinalMetadata({
+        name,
+        symbol,
+        description,
+        inscriptionInput: {
+          maxDataLength: ORDINAL_DEFAULT_LENGTH,
+          authority: wallet.publicKey
+        },
+      })
+      .accounts({
+        metadata,
+        ordinal: ordinal.publicKey,
+        mint: mint.publicKey,
+        systemProgram: SystemProgram.programId,
+        inscriptionsProgram: new PublicKey(PROGRAM_ID_INSCRIPTIONS),
+      })
+      .instruction();
+    instructions.push(instruction);
+  }
+
+  console.log("INSTRUCTION CREATED");
+
   data.push({
     instructions,
     description: `Create metadata`,
-    signers: [mint],
+    signers,
   });
 
   console.log({ data });
@@ -149,7 +213,7 @@ export const CreateMetadataTransactionButton = (
       <GenericTransactionButton<ICreateMetadata>
         text={"Create metadata"}
         transactionGenerator={createMetadata}
-        onError={(msg)=>notify({message: msg})}
+        onError={(msg) => notify({ message: msg })}
         {...props}
       />
     </>

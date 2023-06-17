@@ -13,6 +13,7 @@ import {
   Th,
   Thead,
   Tr,
+  Text,
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { Group } from "query/group";
@@ -33,8 +34,8 @@ export const RoyaltiesDialog = ({
               setOpen(true);
             }}
           >
-            Royalties: {(royalties?.bps / 100).toFixed(2)}%
-            ({royalties.shares.length})
+            Royalties: {(royalties?.bps / 100).toFixed(2)}% (
+            {royalties.shares.length})
           </Button>
           <Modal
             isOpen={open}
@@ -47,12 +48,19 @@ export const RoyaltiesDialog = ({
               <ModalHeader>Royalties</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
+                <Text>
+                  Royalties are typically configured at collection level. For
+                  fine-grain control, you may override collection-level settings
+                  for each individual metadata item as well.
+                </Text>
                 <Box pb={2}>
                   <Table>
                     <Thead>
-                      <Th colSpan={2}>
-                        Percentage: {(royalties?.bps / 100).toFixed(2)}%
-                      </Th>
+                      <Tr>
+                        <Th colSpan={2}>
+                          Percentage: {(royalties?.bps / 100).toFixed(2)}%
+                        </Th>
+                      </Tr>
                     </Thead>
                     <Thead>
                       <Tr>

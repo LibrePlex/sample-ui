@@ -68,7 +68,7 @@ export const createCollection = async (
     payer: Keypair.generate(),
   });
 
-  const { symbol, name, permittedSigners, attributeTypes, royalties } = params;
+  const { symbol, name, permittedSigners, attributeTypes, description, royalties } = params;
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
@@ -88,7 +88,7 @@ export const createCollection = async (
     .createGroup({
       name,
       symbol,
-      // description,
+      description,
       attributeTypes,
       royalties,
       permittedSigners,

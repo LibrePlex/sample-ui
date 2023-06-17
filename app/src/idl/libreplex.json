@@ -24,7 +24,7 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
+                "account": "Group",
                 "path": "group"
               },
               {
@@ -75,7 +75,7 @@
       ]
     },
     {
-      "name": "updateCollection",
+      "name": "updateGroup",
       "accounts": [
         {
           "name": "authority",
@@ -83,7 +83,7 @@
           "isSigner": true
         },
         {
-          "name": "userPermissions",
+          "name": "permissions",
           "isMut": false,
           "isSigner": false,
           "pda": {
@@ -96,8 +96,8 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
-                "path": "collection"
+                "account": "Group",
+                "path": "group"
               },
               {
                 "kind": "account",
@@ -108,7 +108,7 @@
           }
         },
         {
-          "name": "collection",
+          "name": "group",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -168,8 +168,8 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
-                "path": "collection"
+                "account": "Group",
+                "path": "group"
               },
               {
                 "kind": "account",
@@ -185,7 +185,7 @@
           "isSigner": false
         },
         {
-          "name": "collection",
+          "name": "group",
           "isMut": true,
           "isSigner": false
         },
@@ -200,17 +200,10 @@
           "isSigner": false
         }
       ],
-      "args": [
-        {
-          "name": "permissionType",
-          "type": {
-            "defined": "PermissionType"
-          }
-        }
-      ]
+      "args": []
     },
     {
-      "name": "editCollectionPermissions",
+      "name": "editPermissions",
       "accounts": [
         {
           "name": "authority",
@@ -236,8 +229,7 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
-                "path": "collection"
+                "path": "reference"
               },
               {
                 "kind": "account",
@@ -261,8 +253,7 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
-                "path": "collection"
+                "path": "reference"
               },
               {
                 "kind": "account",
@@ -273,9 +264,12 @@
           }
         },
         {
-          "name": "collection",
+          "name": "reference",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "docs": [
+            "CHECK it doesn't matter what type of account we are editing permissions for. Hence unchecked!"
+          ]
         },
         {
           "name": "systemProgram",
@@ -287,7 +281,7 @@
         {
           "name": "input",
           "type": {
-            "defined": "EditCollectionPermissionsInput"
+            "defined": "EditPermissionsInput"
           }
         }
       ]
@@ -365,6 +359,88 @@
       ]
     },
     {
+      "name": "createOrdinalMetadata",
+      "accounts": [
+        {
+          "name": "signer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "metadata",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "metadata"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "permissions",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "permissions"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Metadata",
+                "path": "metadata"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "ordinal",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "metadataInput",
+          "type": {
+            "defined": "CreateOrdinalMetadataInput"
+          }
+        }
+      ]
+    },
+    {
       "name": "extendMetadata",
       "accounts": [
         {
@@ -386,7 +462,7 @@
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "MetadataGroup",
+                "account": "Group",
                 "path": "group"
               },
               {
@@ -456,7 +532,7 @@
               {
                 "kind": "const",
                 "type": "string",
-                "value": "metadata_extended"
+                "value": "metadata_extension"
               },
               {
                 "kind": "account",
@@ -488,7 +564,7 @@
       ]
     },
     {
-      "name": "deleteMetadata",
+      "name": "deleteMetadataExtension",
       "accounts": [
         {
           "name": "authority",
@@ -501,12 +577,41 @@
           "isSigner": false
         },
         {
-          "name": "collection",
+          "name": "group",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "metadata",
+          "name": "metadataExtension",
+          "isMut": true,
+          "isSigner": false,
+          "relations": [
+            "group"
+          ]
+        },
+        {
+          "name": "receiver",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deletePermissions",
+      "accounts": [
+        {
+          "name": "signer",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "permissions",
           "isMut": true,
           "isSigner": false,
           "pda": {
@@ -514,23 +619,24 @@
               {
                 "kind": "const",
                 "type": "string",
-                "value": "metadata"
+                "value": "permissions"
               },
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
+                "path": "collection"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "path": "signer"
               }
             ]
-          },
-          "relations": [
-            "mint"
-          ]
+          }
         },
         {
-          "name": "mint",
-          "isMut": false,
+          "name": "collection",
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -549,7 +655,7 @@
   ],
   "accounts": [
     {
-      "name": "MetadataGroup",
+      "name": "Group",
       "type": {
         "kind": "struct",
         "fields": [
@@ -575,6 +681,10 @@
           },
           {
             "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "description",
             "type": "string"
           },
           {
@@ -609,54 +719,7 @@
       }
     },
     {
-      "name": "Metadata",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "mint",
-            "type": "publicKey"
-          },
-          {
-            "name": "creator",
-            "type": "publicKey"
-          },
-          {
-            "name": "isMutable",
-            "type": "bool"
-          },
-          {
-            "name": "name",
-            "docs": [
-              "from input - variable size"
-            ],
-            "type": "string"
-          },
-          {
-            "name": "symbol",
-            "docs": [
-              "from input - variable size"
-            ],
-            "type": "string"
-          },
-          {
-            "name": "url",
-            "docs": [
-              "from input - variable size"
-            ],
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "type": {
-              "option": "string"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "MetadataExtended",
+      "name": "MetadataExtension",
       "type": {
         "kind": "struct",
         "fields": [
@@ -685,41 +748,53 @@
                 "defined": "Royalties"
               }
             }
+          },
+          {
+            "name": "license",
+            "type": {
+              "option": {
+                "defined": "License"
+              }
+            }
           }
         ]
       }
     },
     {
-      "name": "NftMetadataUnique",
+      "name": "Metadata",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "metadata",
+            "name": "mint",
             "type": "publicKey"
           },
           {
-            "name": "royaltyBpsOverride",
+            "name": "creator",
+            "type": "publicKey"
+          },
+          {
+            "name": "isMutable",
+            "type": "bool"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "asset",
             "type": {
-              "option": "u16"
+              "defined": "Asset"
             }
           },
           {
-            "name": "royaltiesShareOverride",
+            "name": "description",
             "type": {
-              "option": {
-                "vec": {
-                  "defined": "RoyaltyShare"
-                }
-              }
-            }
-          },
-          {
-            "name": "permittedSignersOverride",
-            "type": {
-              "option": {
-                "vec": "publicKey"
-              }
+              "option": "string"
             }
           }
         ]
@@ -756,44 +831,28 @@
   ],
   "types": [
     {
-      "name": "EditCollectionPermissionsInput",
+      "name": "CreateOrdinalMetadataInput",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "addPermissions",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "symbol",
+            "type": "string"
+          },
+          {
+            "name": "description",
             "type": {
-              "vec": {
-                "defined": "PermissionType"
-              }
+              "option": "string"
             }
           },
           {
-            "name": "removePermissions",
+            "name": "inscriptionInput",
             "type": {
-              "vec": {
-                "defined": "PermissionType"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Royalties",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "bps",
-            "type": "u16"
-          },
-          {
-            "name": "shares",
-            "type": {
-              "vec": {
-                "defined": "RoyaltyShare"
-              }
+              "defined": "CreateInscriptionInput"
             }
           }
         ]
@@ -820,6 +879,30 @@
             "name": "invokedPermission",
             "type": {
               "defined": "PermissionType"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EditPermissionsInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "addPermissions",
+            "type": {
+              "vec": {
+                "defined": "PermissionType"
+              }
+            }
+          },
+          {
+            "name": "removePermissions",
+            "type": {
+              "vec": {
+                "defined": "PermissionType"
+              }
             }
           }
         ]
@@ -878,22 +961,6 @@
       }
     },
     {
-      "name": "RoyaltyShare",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "recipient",
-            "type": "publicKey"
-          },
-          {
-            "name": "share",
-            "type": "u16"
-          }
-        ]
-      }
-    },
-    {
       "name": "GroupInput",
       "type": {
         "kind": "struct",
@@ -908,6 +975,10 @@
           },
           {
             "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "description",
             "type": "string"
           },
           {
@@ -967,8 +1038,10 @@
             "type": "string"
           },
           {
-            "name": "url",
-            "type": "string"
+            "name": "asset",
+            "type": {
+              "defined": "Asset"
+            }
           },
           {
             "name": "description",
@@ -993,8 +1066,10 @@
             "type": "string"
           },
           {
-            "name": "url",
-            "type": "string"
+            "name": "asset",
+            "type": {
+              "defined": "Asset"
+            }
           },
           {
             "name": "description",
@@ -1012,18 +1087,37 @@
       }
     },
     {
-      "name": "CollectionEventType",
+      "name": "RoyaltyShare",
       "type": {
-        "kind": "enum",
-        "variants": [
+        "kind": "struct",
+        "fields": [
           {
-            "name": "Create"
+            "name": "recipient",
+            "type": "publicKey"
           },
           {
-            "name": "Edit"
+            "name": "share",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Royalties",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bps",
+            "type": "u16"
           },
           {
-            "name": "Delete"
+            "name": "shares",
+            "type": {
+              "vec": {
+                "defined": "RoyaltyShare"
+              }
+            }
           }
         ]
       }
@@ -1154,7 +1248,44 @@
       }
     },
     {
-      "name": "MetadataRenderModeData",
+      "name": "GroupEventType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Create"
+          },
+          {
+            "name": "Update"
+          },
+          {
+            "name": "Delete"
+          }
+        ]
+      }
+    },
+    {
+      "name": "License",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NoLicense"
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "license_url",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Asset",
       "type": {
         "kind": "enum",
         "variants": [
@@ -1162,7 +1293,34 @@
             "name": "None"
           },
           {
-            "name": "Program",
+            "name": "Json",
+            "fields": [
+              {
+                "name": "url",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "JsonTemplate",
+            "fields": [
+              {
+                "name": "url_parameter",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Image",
+            "fields": [
+              {
+                "name": "url",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "ChainRenderer",
             "fields": [
               {
                 "name": "program_id",
@@ -1171,13 +1329,30 @@
             ]
           },
           {
-            "name": "Url",
+            "name": "Inscription",
             "fields": [
               {
-                "name": "url",
-                "type": "string"
+                "name": "account_id",
+                "type": "publicKey"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "MetadataEventType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Create"
+          },
+          {
+            "name": "Update"
+          },
+          {
+            "name": "Delete"
           }
         ]
       }
@@ -1203,15 +1378,6 @@
         "variants": [
           {
             "name": "Admin"
-          },
-          {
-            "name": "Create"
-          },
-          {
-            "name": "Edit"
-          },
-          {
-            "name": "Delete"
           }
         ]
       }
@@ -1263,7 +1429,7 @@
   ],
   "events": [
     {
-      "name": "CollectionEvent",
+      "name": "ExtendMetadataEvent",
       "fields": [
         {
           "name": "id",
@@ -1271,40 +1437,13 @@
           "index": false
         },
         {
-          "name": "creator",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "eventType",
-          "type": {
-            "defined": "CollectionEventType"
-          },
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "CreateMetadataEvent",
-      "fields": [
-        {
-          "name": "id",
+          "name": "group",
           "type": "publicKey",
           "index": false
         },
         {
           "name": "mint",
           "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "name",
-          "type": "string",
           "index": false
         }
       ]
@@ -1345,7 +1484,34 @@
       ]
     },
     {
-      "name": "ExtendMetadataEvent",
+      "name": "GroupEvent",
+      "fields": [
+        {
+          "name": "eventType",
+          "type": {
+            "defined": "GroupEventType"
+          },
+          "index": false
+        },
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "id",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MetadataEvent",
       "fields": [
         {
           "name": "id",
@@ -1353,13 +1519,15 @@
           "index": false
         },
         {
-          "name": "group",
+          "name": "mint",
           "type": "publicKey",
           "index": false
         },
         {
-          "name": "mint",
-          "type": "publicKey",
+          "name": "eventType",
+          "type": {
+            "defined": "MetadataEventType"
+          },
           "index": false
         }
       ]
@@ -1368,7 +1536,7 @@
       "name": "PermissionEvent",
       "fields": [
         {
-          "name": "group",
+          "name": "reference",
           "type": "publicKey",
           "index": false
         },

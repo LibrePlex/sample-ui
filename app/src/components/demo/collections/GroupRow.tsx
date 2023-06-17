@@ -23,7 +23,6 @@ import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 
 export const GroupRow = ({
   item,
-  permissions,
   selectedCollections,
   toggleSelectedCollection,
   setActiveCollection,
@@ -31,7 +30,6 @@ export const GroupRow = ({
 }: {
   activeCollection: IRpcObject<Group> | undefined;
   setActiveCollection: Dispatch<SetStateAction<IRpcObject<Group>>>;
-  permissions: IRpcObject<Permissions> | undefined;
   item: IRpcObject<Group>;
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
@@ -86,7 +84,7 @@ export const GroupRow = ({
           <Center>
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
               <Text fontSize="4xl">
-                {item.item?.name} [{item.item?.symbol}]
+                {item.item?.name}
               </Text>
               <CopyPublicKeyButton publicKey={item.pubkey?.toBase58()} />
 

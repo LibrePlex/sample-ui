@@ -8,46 +8,34 @@ import {
 import { IRpcObject } from "components/executor/IRpcObject";
 import { useCallback, useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
+import { BufferingConnection } from "stores/BufferingConnection";
 
 export type DecodeType<T extends unknown, P extends Idl> = (
   buf: Buffer,
   pubkey: PublicKey
 ) => IRpcObject<T>;
 
-export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
-  accountKeys: PublicKey[],
+export const fetchSingleAccount = <T extends unknown, P extends Idl>(
+  accountKey: PublicKey,
   connection: Connection
 ) => ({
   fetcher: async () => {
-    const _items: IRpcObject<Buffer>[] = [];
-    const remainingAccountKeys = [...accountKeys];
+    const bufferingConnection = BufferingConnection.getOrCreate(connection);
 
-    while (remainingAccountKeys.length > 0) {
-      /// 100 is the max for getMultipleAccountsInfo
-      const batchKeys = remainingAccountKeys.splice(0, 100);
+    const result = await bufferingConnection.getMultipleAccountsInfo([
+      accountKey,
+    ]);
 
-      const results = await connection.getMultipleAccountsInfo(batchKeys);
-
-      for (const [idx, result] of results.entries()) {
-        if (result?.data) {
-          try {
-            _items.push({
-              pubkey: accountKeys[idx], 
-              item: result.data
-            })
-            
-          } catch (e) {
-
-            console.log({ e, key: accountKeys[idx].toBase58() });
-          }
-        }
-      }
-    }
-    return _items;
+    return {
+      pubkey: accountKey,
+      item: result[0]?.data || null,
+    };
   },
   listener: {
     add: (onAccountChange: AccountChangeCallback, accountId: PublicKey) =>
-    connection && connection.onAccountChange(accountId, onAccountChange),
+      connection &&
+      accountId &&
+      connection.onAccountChange(accountId, onAccountChange),
     remove: (i: number) => {
       connection && connection.removeAccountChangeListener(i);
     },
@@ -55,15 +43,8 @@ export const fetchMultiAccounts = <T extends unknown, P extends Idl>(
 });
 
 const accountUpdater =
-  <P extends Idl>(
-    accountId: PublicKey,
-    queryClient: QueryClient,
-    key: any
-  ) =>
+  <P extends Idl>(accountId: PublicKey, queryClient: QueryClient, key: any) =>
   (accountInfo: AccountInfo<Buffer>) => {
-    console.log({ queryClient });
-    console.log("Account updated (single)", accountInfo, key);
-
     // delete events have now started to fire, hence need to check if the
     // buffer contains anything at all
     if (accountInfo.data.length === 0) {
@@ -76,9 +57,8 @@ const accountUpdater =
       queryClient.setQueryData(key, (old: IRpcObject<Buffer>[]) => {
         const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
         // console.log({ found, old, key, newOrUpdatedItem });
-        const newOrUpdatedItem = {item: accountInfo.data, 
-          pubkey: accountId}
-        
+        const newOrUpdatedItem = { item: accountInfo.data, pubkey: accountId };
+
         return found
           ? old.map((item) =>
               item.pubkey.equals(accountId) ? newOrUpdatedItem : item
@@ -88,20 +68,20 @@ const accountUpdater =
     }
   };
 
-export const useFetchMultiAccounts2 = <T extends unknown, P extends Idl>(
+export const useFetchSingleAccount = <T extends unknown, P extends Idl>(
   /*
     this is needed for deserialization only. 
     unlike gpa fetch we don't need the program id to find accounts on chain.
   */
-  accountIds: PublicKey[],
+  accountId: PublicKey,
   /* 
     same decoder interface as in useGpa
   */
   connection: Connection
 ) => {
   const { fetcher, listener } = useMemo(
-    () => fetchMultiAccounts(accountIds, connection),
-    [accountIds, connection]
+    () => fetchSingleAccount(accountId, connection),
+    [accountId, connection]
   );
 
   /* 
@@ -114,36 +94,27 @@ export const useFetchMultiAccounts2 = <T extends unknown, P extends Idl>(
     included a sample implementation in the codebase
     though it's not currently used.
   */
-  let key = useMemo(() => accountIds, [accountIds]);
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<Buffer>[]>(accountIds, fetcher);
+  const q = useQuery<IRpcObject<Buffer>>([accountId], fetcher);
 
   
-  
-
   /// intercept account changes and refetch as needed
   useEffect(() => {
     let _listeners: number[] = [];
-    
-    if ((accountIds.length ?? 0) > 0) {
-      for (const accountId of accountIds) {
-        // console.log("Adding account listener", accountId);
-        _listeners.push(
-          listener.add(
-            accountUpdater(accountId, queryClient, key),
-            accountId
-          )
-        );
-      }
-    }
+
+    // console.log("Adding account listener", accountId);
+    _listeners.push(
+      listener.add(accountUpdater(accountId, queryClient, accountId), accountId)
+    );
+
     return () => {
       for (const i of _listeners) {
         listener.remove(i);
       }
     };
-  }, [listener, accountIds, queryClient, key]);
+  }, [listener, accountId, queryClient]);
 
   return q;
 };

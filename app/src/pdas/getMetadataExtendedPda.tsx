@@ -1,11 +1,11 @@
 import { PublicKey } from "@solana/web3.js";
 
-import { METADATA_EXTENDED } from "./constants";
-import { PROGRAM_ID } from "anchor/getProgramInstance";
+import { METADATA_EXTENSION } from "./constants";
+import { PROGRAM_ID_METADATA } from "anchor/getProgramInstance";
 
-export const getMetadataExtendedPda = (mint: PublicKey) => {
+export const getMetadataExtendedPda = (metadata: PublicKey) => {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from(METADATA_EXTENDED), mint.toBuffer()],
-    new PublicKey(PROGRAM_ID)
+    [Buffer.from(METADATA_EXTENSION), metadata.toBuffer()],
+    new PublicKey(PROGRAM_ID_METADATA)
   );
 };

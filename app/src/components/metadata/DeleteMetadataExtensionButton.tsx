@@ -19,8 +19,8 @@ import useDeletedKeysStore from "stores/useDeletedKeyStore";
 
 
 export interface IDeleteMetadata {
-  collection: PublicKey;
-  metadata: PublicKey,
+  group: PublicKey;
+  metadataExtension: PublicKey,
   collectionPermissions: PublicKey;
 }
 
@@ -51,16 +51,16 @@ export const deleteMetadata = async (
 
 
   for (const metadataToDelete of params) {
-    const { collection, collectionPermissions, metadata } = metadataToDelete;
+    const { group, collectionPermissions, metadataExtension: metadata } = metadataToDelete;
 
 
     const instruction = await librePlexProgram.methods
-    .deleteMetadata()
+    .deleteMetadataExtension()
     .accounts({
       authority: wallet.publicKey,
       permissions: collectionPermissions,
-      collection,
-      metadata: metadataToDelete.metadata,
+      group,
+      metadataExtension: metadata,
       receiver: wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
@@ -90,7 +90,7 @@ export const deleteMetadata = async (
   };
 };
 
-export const DeleteMetadataButton = (
+export const DeleteMetadataExtensionButton = (
   props: Omit<
     GenericTransactionButtonProps<IDeleteMetadata[]>,
     "transactionGenerator"
@@ -106,7 +106,7 @@ export const DeleteMetadataButton = (
         {...props}
         onSuccess={(msg) => {
           for( const collection of props.params) {
-            addDeletedKey(collection.collection);
+            addDeletedKey(collection.group);
           }
           props.onSuccess && props.onSuccess(msg);
         }}

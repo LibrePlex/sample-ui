@@ -16,7 +16,7 @@ import { IMetadataJson } from "models/IMetadataJson";
 import { getAttrValue } from "components/demo/collections/editCollectionDialog/AttributeTypeRow";
 import { HttpClient } from "HttpClient";
 import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import { decodeMetadataExtended } from "query/metadataExtended";
+import { decodeMetadataExtension } from "query/metadataExtension";
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;
@@ -58,7 +58,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     });
   }
 
-  const { item: libreMetadataExtendedObj } = decodeMetadataExtended(
+  const { item: libreMetadataExtendedObj } = decodeMetadataExtension(
     libreProgram
   )(libreMetadataAccount[1].data, libreMetadataExtendedPda[0]);
 
@@ -86,36 +86,53 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
 
   const httpClient = new HttpClient("");
 
-  const { data, error } = await httpClient.get<any>(libreMetadataObj.url);
+  let jsondata;
+  if( libreMetadataObj.asset.json) {
+    const { data, error } = await httpClient.get<any>(libreMetadataObj.asset.json.url);
+    jsondata = data;
+  }
 
   const signerSet = new Set(libreMetadataExtendedObj.signers);
 
   const retval: IMetadataJson = {
-    ...data,
-    name: libreMetadataObj.name,
-    symbol: libreMetadataObj.symbol,
-    description: libreMetadataObj.description ?? "-",
+    ...jsondata,
+    name: libreMetadataObj.name ?? jsondata.name,
+    symbol: libreMetadataObj.symbol ?? jsondata.symbol,
+    description: libreMetadataObj.description ?? jsondata.description,
     seller_fee_basis_points:
-      libreMetadataExtendedObj?.royalties?.bps ?? group.item.royalties?.bps,
-    image: libreMetadataObj?.url,
+      libreMetadataExtendedObj?.royalties?.bps ?? group.item.royalties?.bps ?? jsondata.seller_fee_basis_points,
+    image: libreMetadataObj?.asset?.image?.url ?? jsondata.image,
     attributes:
       group?.item.attributeTypes.map((item, idx) => ({
         trait_type: item.name,
         value: getAttrValue(item.permittedValues[idx]),
-      })) ?? [],
+      })) ?? jsondata?.attributes ?? [],
     properties: {
+      ...jsondata?.properties,
       files: [
-        {
-          uri: libreMetadataObj?.url,
-          type: "image/png",
-        },
+        ...(libreMetadataObj?.asset?.json
+          ? [
+              {
+                uri: libreMetadataObj?.asset?.json,
+                type: "application/json",
+              },
+            ]
+          : []),
+          ...(libreMetadataObj?.asset?.image
+            ? [
+                {
+                  uri: libreMetadataObj?.asset?.json,
+                  type: "image/png",
+                },
+              ]
+            : []
+          ),
       ],
-      category: "image",
       creators: group?.item.royalties?.shares?.map((item) => ({
         address: item.recipient.toBase58(),
-        share: item.share/100,
-        verified: signerSet.has(item.recipient)
-      })),
+        share: item.share / 100,
+        verified: signerSet.has(item.recipient),
+      })) ?? jsondata?.properties.creators,
     },
   };
 

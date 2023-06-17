@@ -1,4 +1,4 @@
-import { PublicKey, Connection } from "@solana/web3.js";
+import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 
 /* 
     this class exists to buffer rpc calls
@@ -7,7 +7,8 @@ import { PublicKey, Connection } from "@solana/web3.js";
 
     instead of calling getAccountInfo N times, 
     this class will bundle those calls into groups
-    (max 100 as allowed by getMultipleAccountInfo())
+    (within a 250ms time window, max 100 as allowed 
+      by getMultipleAccountInfo())
     and then resolve the promises individually 
 */
 
@@ -41,6 +42,7 @@ export class BufferingConnection {
 
   public flushAccounts = async () => {
     this.processing = true;
+    console.log('Flushing accounts');
     if (this.timeout) {
       clearTimeout(this.timeout);
       this.timeout = null;
@@ -51,13 +53,18 @@ export class BufferingConnection {
     this.accountRequests.length = 0;
 
     const remainingRequests = [...requests];
+    
 
     while (remainingRequests.length > 0) {
+      console.log({remainingRequests: [...remainingRequests]});
+
       const batchRequests = remainingRequests.splice(0, 100);
       try {
+        console.log('Fetching', batchRequests.map(item=>item.accountId?.toBase58()));
         const accountData = await this.connection.getMultipleAccountsInfo(
-          batchRequests.map((item) => item.accountId)
+          batchRequests.map((item) => item.accountId??Keypair.generate().publicKey)
         );
+        console.log('accountData', accountData);
         for (const [idx, a] of accountData.entries()) {
           if (a) {
             batchRequests[idx].cb({
@@ -72,6 +79,7 @@ export class BufferingConnection {
           }
         }
       } catch (e) {
+        console.log(e)
         for (const id of batchRequests) {
           // console.log("Rejecting all", e);
           id.cb({
@@ -115,28 +123,26 @@ export class BufferingConnection {
 
   public getMultipleAccountsInfo = async (accountIds: PublicKey[]) => {
     const promises = accountIds.map((item) => this.fetchAccountData(item));
-    return Promise.all(promises);
+    return await Promise.all(promises);
   };
 
-  public fetchAccountData = async (accountId: PublicKey) => {
+  public fetchAccountData = (accountId: PublicKey) => {
     const currentTimestamp = new Date().getTime();
 
-    // console.log({ currentTimestamp, fs: this.firstPendingTimestamp });
-
+    
     if (!this.firstPendingTimestamp) {
       this.firstPendingTimestamp = currentTimestamp;
     }
 
     const promise = new Promise<{ accountId: PublicKey; data: Buffer | null }>((resolve, reject) => {
       const cb = (val: { accountId: PublicKey; data: Buffer | null }) => {
+        console.log('Resolving with val', val);
         resolve(val);
       };
 
       this.accountRequests.push({ accountId, cb });
     });
 
-    // console.log("Calling schedule flush");
-    /// processing will kick off another flush at the end if needed - hence no need to worry
     this.scheduleFlush();
     return promise
   };

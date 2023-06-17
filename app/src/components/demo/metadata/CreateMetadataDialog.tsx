@@ -23,7 +23,10 @@ import { MutableInfoPanel } from "../collections/metadatadialog/MutableInfoDialo
 import { AttributeSelectorPanel } from "../collections/metadatadialog/AttributeSelectorPanel";
 import { KeyGenerator } from "components/KeyGenerator";
 import { Keypair, PublicKey } from "@solana/web3.js";
-import { CreateMetadataTransactionButton } from "./CreateMetadataTransactionButton";
+import {
+  AssetType,
+  CreateMetadataTransactionButton,
+} from "./CreateMetadataTransactionButton";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 
 enum View {
@@ -59,6 +62,8 @@ export const CreateMetadataDialog = ({
   const [status, setStatus] = useState<Status>(Status.NotStarted);
 
   const [selectedMint, setSelectedMint] = useState<Keypair>();
+
+  const [assetType, setAssetType] = useState<AssetType>(AssetType.Image);
 
   useEffect(() => {
     setStatus(Status.NotStarted);
@@ -124,6 +129,40 @@ export const CreateMetadataDialog = ({
               placeholder="Description"
               size="sm"
             />
+            <Box display="flex" flexDirection={"column"} alignItems={"center"}>
+          
+              <Box p={3}>
+              <Heading>Select asset type</Heading>
+                <Text>
+                  Select the asset type for this metadata. Currently
+                  all asset types are owned by the metadata program, EXCEPT ordinal asset type that is owned by the Ordinals
+                  program. Both programs allow assets to be immutable.
+                </Text>
+              </Box>
+
+              <Box display="flex" columnGap={2}>
+                <Button
+                  variant={assetType === AssetType.Image ? "solid" : "outline"}
+                  colorScheme={"teal"}
+                  onClick={() => {
+                    setAssetType(AssetType.Image);
+                  }}
+                >
+                  Image (on-chain)
+                </Button>
+                <Button
+                  variant={
+                    assetType === AssetType.Inscription ? "solid" : "outline"
+                  }
+                  colorScheme={"teal"}
+                  onClick={() => {
+                    setAssetType(AssetType.Inscription);
+                  }}
+                >
+                  Inscription
+                </Button>
+              </Box>
+            </Box>
 
             <Box
               display="flex"
@@ -162,7 +201,7 @@ export const CreateMetadataDialog = ({
                   name,
                   mint: generatedMint,
                   symbol,
-                  url,
+                  assetType,
                   description,
                 }}
                 formatting={{

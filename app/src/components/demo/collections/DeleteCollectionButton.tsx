@@ -18,14 +18,12 @@ import useDeletedKeysStore from "stores/useDeletedKeyStore";
 // import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
 
-export interface IDeleteCollection {
-  collection: PublicKey;
-  creator: PublicKey; // the creator of the collection (close account rent gets sent here)
-  collectionPermissions: PublicKey;
+export interface IDeleteGroup {
+  group: PublicKey;
 }
 
 export const deleteCollection = async (
-  { wallet, params }: IExecutorParams<IDeleteCollection[]>,
+  { wallet, params }: IExecutorParams<IDeleteGroup[]>,
   connection: Connection
 ): Promise<{
   data?: ITransactionTemplate[];
@@ -51,16 +49,14 @@ export const deleteCollection = async (
 
 
   for (const collectionToDelete of params) {
-    const { collection, collectionPermissions, creator } = collectionToDelete;
+    const { group } = collectionToDelete;
 
 
     const instruction = await librePlexProgram.methods
-    .deleteGroup({admin: {}})
+    .deleteGroup()
     .accounts({
       signer: wallet.publicKey,
-      permissions: collectionPermissions,
-      collection,
-      creator,
+      group,
       receiver: wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
@@ -92,7 +88,7 @@ export const deleteCollection = async (
 
 export const DeleteCollectionTransactionButton = (
   props: Omit<
-    GenericTransactionButtonProps<IDeleteCollection[]>,
+    GenericTransactionButtonProps<IDeleteGroup[]>,
     "transactionGenerator"
   >
 ) => {
@@ -100,13 +96,13 @@ export const DeleteCollectionTransactionButton = (
 
   return (
     <>
-      <GenericTransactionButton<IDeleteCollection[]>
+      <GenericTransactionButton<IDeleteGroup[]>
         text={`Delete (${props.params.length})` }
         transactionGenerator={deleteCollection}
         {...props}
         onSuccess={(msg) => {
           for( const collection of props.params) {
-            addDeletedKey(collection.collection);
+            addDeletedKey(collection.group);
           }
           props.onSuccess && props.onSuccess(msg);
         }}

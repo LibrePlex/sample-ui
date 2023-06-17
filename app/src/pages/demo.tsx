@@ -17,6 +17,7 @@ import { Demo } from "components/demo/Demo";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Link from "next/link";
 import { LibrePlexProgramProvider } from "anchor/LibrePlexProgramContext";
+import { InscriptionsProgramProvider } from "anchor/InscriptionsProgramProvider";
 
 const DemoPage = () => {
   // Here is a wallet adapter
@@ -40,7 +41,9 @@ const DemoPage = () => {
         }}
       >
         <LibrePlexProgramProvider>
-          <Demo />
+          <InscriptionsProgramProvider>
+            <Demo />
+          </InscriptionsProgramProvider>
         </LibrePlexProgramProvider>
       </Box>
     </QueryClientProvider>

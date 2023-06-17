@@ -1,5 +1,5 @@
 import { IRpcObject } from "components/executor/IRpcObject";
-import { MetadataExtended } from "query/metadataExtended";
+import { MetadataExtended } from "query/metadataExtension";
 import React, { useState } from "react";
 import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
 import { Metadata } from "query/metadata";

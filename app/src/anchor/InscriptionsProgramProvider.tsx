@@ -1,33 +1,32 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import { Idl, Program } from "@coral-xyz/anchor";
+import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { Libreplex } from "types/libreplex";
+import { getProgramInstance } from "./getProgramInstance";
 import { Inscriptions } from "types/inscriptions";
-import { LibreplexWithOrdinals, getProgramInstance } from "./getProgramInstance";
+import { getProgramInstanceOrdinals } from "./getProgramInstanceOrdinals";
 
 
 
-
-
-export const LibrePlexProgramContext = createContext<Program<LibreplexWithOrdinals>>(
+export const OrdinalsProgramContext = createContext<Program<Inscriptions>>(
   undefined!
 );
 
-export const LibrePlexProgramProvider = ({
+export const InscriptionsProgramProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
   const wallet = useWallet();
 
-  const [program, setProgram] = useState<Program<LibreplexWithOrdinals>>();
+  const [program, setProgram] = useState<Program<Inscriptions>>();
 
   const { connection } = useConnection();
 
   useEffect(() => {
-    const program = getProgramInstance(connection, {
+    const program = getProgramInstanceOrdinals(connection, {
       ...wallet,
       payer: Keypair.generate(),
     });
@@ -37,9 +36,9 @@ export const LibrePlexProgramProvider = ({
   }, [wallet, connection]);
 
   return program?.programId ? (
-    <LibrePlexProgramContext.Provider value={program}>
+    <OrdinalsProgramContext.Provider value={program}>
       {children}
-    </LibrePlexProgramContext.Provider>
+    </OrdinalsProgramContext.Provider>
   ) : (
     <Box sx={{display :"flex"}} columnGap={2}>
       <Text >

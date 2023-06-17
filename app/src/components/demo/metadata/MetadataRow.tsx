@@ -16,36 +16,36 @@ import {
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Permissions } from "query/permissions";
 
+import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { Metadata } from "query/metadata";
-import { MetadataExtended } from "query/metadataExtended";
-import { Dispatch, SetStateAction, useState } from "react";
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
-import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
-import { MetadataExtendedPanel } from "./MetadataExtendedPanel";
 import { AttributesDisplay } from "components/metadata/AttributesDisplay";
-import { Group } from "query/group";
-import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { SignersDisplay } from "components/metadata/SignersDisplay";
+import { OrdinalUploader } from "components/onft/OrdinalUploader";
+import { ImageUploader } from "components/shadowdrive/ImageUploader";
+import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
+import { useGroupById } from "query/group";
+import { useInscriptionById } from "query/inscriptions";
+import { Metadata } from "query/metadata";
+import {
+  useMetadataExtendedById
+} from "query/metadataExtension";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import useDeletedKeysStore from "stores/useDeletedKeyStore";
+import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
+import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
+import { InscriptionCell } from "./ordinal/InscriptionCell";
 
 export const MetadataRow = ({
   item,
-  metadataExtended,
-  group,
-  permissions,
   selectedMetadataObjs,
   toggleSelectedMetadata,
   setActiveMetadata,
   activeMetadata,
 }: {
-  group: IRpcObject<Group>;
   activeMetadata: IRpcObject<Metadata> | undefined;
   setActiveMetadata: Dispatch<SetStateAction<IRpcObject<Metadata>>>;
-  permissions: IRpcObject<Permissions> | undefined;
   item: IRpcObject<Metadata>;
-  metadataExtended: IRpcObject<MetadataExtended>;
   selectedMetadataObjs: Set<PublicKey>;
   toggleSelectedMetadata: (pubkey: PublicKey, b: boolean) => any;
 }) => {
@@ -56,6 +56,51 @@ export const MetadataRow = ({
   const [attributesOpen, setAttributesOpen] = useState<boolean>(false);
 
   const [signersOpen, setSignersOpen] = useState<boolean>(false);
+
+  const metadataExtendedId = useMemo(
+    () => getMetadataExtendedPda(item.pubkey)[0],
+    [item]
+  );
+
+  const { connection } = useConnection();
+
+  const metadataExtended = useMetadataExtendedById(
+    metadataExtendedId,
+    connection
+  );
+
+  const instructionId = useMemo(
+    () =>
+      item.item.asset?.inscription
+        ? item.item.asset?.inscription.accountId
+        : null,
+    [item.item]
+  );
+
+  const inscription = useInscriptionById(instructionId, connection);
+
+  const group = useGroupById(metadataExtended?.item?.group ?? null, connection);
+
+  // const inscriptionsPerId = useMemo(() => {
+  //   const _inscriptions: { [key: string]: IRpcObject<Inscription> } = {};
+
+  //   for (const d of inscriptionData.data) {
+  //     _inscriptions[d.pubkey.toBase58()] = d;
+  //   }
+  //   return _inscriptions;
+  // }, [inscriptionData]);
+
+  // const inscriptionsPerMetadata = useMemo(() => {
+  //   const _dict: { [key: string]: IRpcObject<Inscription> } = {};
+  //   for (const d of inscriptionIds) {
+  //     _dict[d.metadataId.toBase58()] = inscriptionsPerId[inscriptionIdsPerMetadata[d.metadataId.toBase58()].toBase58()];
+  //   }
+  //   return _dict;
+  // }, [inscriptionIds, inscriptionIdsPerMetadata, inscriptionsPerId]);
+
+  // useEffect(()=>{
+  //   console.log({inscriptionsPerMetadata, inscriptionIdsPerMetadata, inscriptionsPerId, ids: inscriptionIds.map(item=>item.inscriptionId)})
+  // },[inscriptionsPerMetadata, inscriptionIdsPerMetadata, inscriptionsPerId, inscriptionIds])
 
   return (
     <Tr
@@ -78,13 +123,28 @@ export const MetadataRow = ({
         </Center>
       </Td>
       <Td>
-        <Box></Box>
+        <Box>
+          {item.item.asset?.image ? (
+            <ImageUploader
+              currentImage={item.item.asset?.image.url}
+              linkedAccountId={item.item.mint.toBase58()}
+              fileId={""}
+              afterUpdate={() => {}}
+            />
+          ) : item.item.asset?.inscription ? (
+            <OrdinalUploader inscription={inscription} afterUpdate={() => {}} />
+          ) : (
+            <Text>Cannot upload this asset type</Text>
+          )}
+        </Box>
+      </Td>
+      <Td>
+        <Text fontSize="2xl">{item.item.name}</Text>
       </Td>
       <Td>
         <Stack sx={{ width: "100%" }}>
           <Center>
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
-              <Text fontSize="4xl">{item.item.name}</Text>
               <Box display="flex" w={"100%"} justifyContent={"space-between"}>
                 Metadata:{" "}
                 <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
@@ -96,24 +156,39 @@ export const MetadataRow = ({
                 )}
               </Box>
 
+              {/* 
               <Button
                 onClick={() => {
                   setActiveMetadata(item);
                 }}
               >
                 View item
-              </Button>
+              </Button> */}
             </Box>
           </Center>
         </Stack>
+      </Td>
+      <Td>
+        {inscription ? (
+          <InscriptionCell inscription={inscription} />
+        ) : item.item.asset.image ? (
+          "On-chain image"
+        ) : (
+          "Other"
+        )}
       </Td>
       {metadataExtended && group ? (
         <>
           <Td>
             <CopyPublicKeyButton publicKey={group.pubkey.toBase58()} />
           </Td>
+
           <Td>
-            <RoyaltiesDialog royalties={metadataExtended.item.royalties ?? group.item.royalties} />
+            <RoyaltiesDialog
+              royalties={
+                metadataExtended.item.royalties ?? group.item.royalties
+              }
+            />
           </Td>
           <Td>
             <Button
@@ -192,7 +267,6 @@ export const MetadataRow = ({
               setOpen(false);
             }}
           />
-          {/* <MetadataExtendedPanel metadataExtended={metadataExtended} metadata={item}/> */}
         </Td>
       )}
     </Tr>

@@ -27,25 +27,24 @@ import { MetadataItem as MetadataItem } from "components/metadata/MetadataItem";
 import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
 import useSelectedMetadata from "./useSelectedMetadata";
 import { Permissions } from "query/permissions";
-import { DeleteMetadataButton } from "components/metadata/DeleteMetadataButton";
+import { DeleteMetadataExtensionButton } from "components/metadata/DeleteMetadataExtensionButton";
 import {
   MetadataExtended,
-  decodeMetadataExtended,
+  decodeMetadataExtension,
   useMetadataExtendedByGroup,
-} from "query/metadataExtended";
+} from "query/metadataExtension";
 import { Metadata } from "query/metadata";
+import { MetadataExtendedItem } from "components/metadata/MetadataExtendedItem";
 
 export const GroupViewer = ({
   group,
-  permissions,
   setCollection,
 }: {
-  permissions: IRpcObject<Permissions> | undefined;
   group: IRpcObject<Group> | undefined;
   setCollection: Dispatch<SetStateAction<IRpcObject<Group>>>;
 }) => {
   const { connection } = useConnection();
-  const { hydrated: items } = useMetadataExtendedByGroup(
+  const { metadata: items } = useMetadataExtendedByGroup(
     group?.pubkey,
     connection
   );
@@ -66,7 +65,7 @@ export const GroupViewer = ({
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
       setSelectedMetadatakeys(
-        new Set(_selectAll ? items.map((item) => item.metadata.pubkey) : [])
+        new Set(_selectAll ? items.map((item) => item.pubkey) : [])
       );
       setSelectAll(_selectAll);
     },
@@ -75,15 +74,12 @@ export const GroupViewer = ({
 
   const metadataDict = useMemo(() => {
     const _metadataDict: {
-      [key: string]: {
-        metadata: IRpcObject<Metadata>;
-        extended: IRpcObject<MetadataExtended>;
-      };
+      [key: string]: IRpcObject<MetadataExtended>
     } = {};
 
     for (const metadata of items ?? []) {
       if (metadata) {
-        _metadataDict[metadata?.metadata.pubkey?.toBase58()] = metadata;
+        _metadataDict[metadata?.pubkey?.toBase58()] = metadata;
       }
     }
     return _metadataDict;
@@ -95,19 +91,6 @@ export const GroupViewer = ({
     open: false,
     collection: undefined,
   });
-
-  const deleteMetadataParams = useMemo(() => {
-    return selectedMetadataKeys
-      ? [...selectedMetadataKeys]
-          .filter((item) => metadataDict[item.toBase58()])
-          .map((pubkey) => ({
-            collectionPermissions: permissions.pubkey,
-            collection: group.pubkey,
-            metadata: pubkey,
-          }))
-      : [];
-  }, [group.pubkey, metadataDict, permissions.pubkey, selectedMetadataKeys]);
-
   return (
     <Box pt={5} sx={{ width: "100%", height: "100%" }}>
       <Box
@@ -119,9 +102,10 @@ export const GroupViewer = ({
         <Heading>Items ({items?.length ?? "-"})</Heading>
 
         <AddMetadataButton size="sm" collection={group} />
-        {deleteMetadataParams.length > 0 && (
-          <DeleteMetadataButton params={deleteMetadataParams} formatting={{}} />
-        )}
+        {/* TODO: ENABLE SELECTION BY METADATA EXTENSION */}
+        {/* {deleteMetadataParams.length > 0 && (
+          <DeleteMetadataExtensionButton params={deleteMetadataParams} formatting={{}} />
+        )} */}
       </Box>
       <TableContainer
         sx={{
@@ -150,12 +134,11 @@ export const GroupViewer = ({
           </Thead>
           <Tbody>
             {items?.map((item, idx) => (
-              <MetadataItem
+              <MetadataExtendedItem
                 selectedMetadataKeys={selectedMetadataKeys}
                 toggleSelectedMetadata={toggleSelectedMetadata}
-                extended={item.extended}
                 key={idx}
-                item={item.metadata}
+                item={item}
                 collection={group}
               />
             ))}

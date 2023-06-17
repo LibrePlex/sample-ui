@@ -7,17 +7,16 @@ import { IRpcObject } from "../executor/IRpcObject";
 import { NftMetadataDisplay } from "./ExtendedMetadataDisplay";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { MetadataExtended, useMetadataExtendedById } from "query/metadataExtension";
+import { MetadataExtended } from "query/metadataExtension";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
 
-export const MetadataItem = ({
+export const MetadataExtendedItem = ({
   item,
   collection,
   selectedMetadataKeys,
   toggleSelectedMetadata,
 }: {
-  item: IRpcObject<Metadata>;
+  item: IRpcObject<MetadataExtended>;
   collection: IRpcObject<Group>;
   selectedMetadataKeys: Set<PublicKey>,
   toggleSelectedMetadata: (pubkey: PublicKey, b: boolean)=> any;
@@ -26,10 +25,8 @@ export const MetadataItem = ({
   
   const {connection} = useConnection()
 
-  const metadataExtendedKey = useMemo(()=>getMetadataExtendedPda(item.pubkey)[0],[item])
-
-  const metadataExtended = useMetadataExtendedById(
-    metadataExtendedKey,
+  const metadata = useMetadataById(
+    item.item.metadata,
     connection
   );
 
@@ -63,14 +60,12 @@ export const MetadataItem = ({
 
       <Td>
         <Box display="flex" flexDir={"column"} alignItems="center" rowGap={3}>
-          <Text fontSize="3xl">{item.item.name}</Text>
-          <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} />
-          {metadataExtended && (
+          <Text fontSize="3xl">{metadata.item.name}</Text>
+          <CopyPublicKeyButton publicKey={metadata.item.mint.toBase58()} />
             <NftMetadataDisplay
-              attributes={metadataExtended.item.attributes}
+              attributes={item.item.attributes}
               collection={collection}
             />
-          )}
         </Box>
       </Td>
 

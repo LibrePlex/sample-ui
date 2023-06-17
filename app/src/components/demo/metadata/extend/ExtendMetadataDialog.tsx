@@ -18,11 +18,12 @@ import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
 import { RoyaltiesPanel } from "components/demo/collections/editCollectionDialog/RoyaltiesPanel";
 import { AttributeSelectorPanel } from "components/demo/collections/metadatadialog/AttributeSelectorPanel";
 import { ExtendMetadataButton } from "components/demo/collections/metadatadialog/ExtendMetadataButton";
-import { usePermittedCollections as usePermittedGroups } from "components/demo/collections/usePermittedCollections";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
+import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
+import { Group, useGroupsByAuthority } from "query/group";
 import { Metadata } from "query/metadata";
 import { useEffect, useMemo, useState } from "react";
+import { abbreviateKey } from "shared/abbreviateKey";
 
 enum View {
   Standalone,
@@ -50,7 +51,7 @@ export const ExtendMetadataDialog = ({
 
   const { connection } = useConnection();
 
-  const { groups } = usePermittedGroups();
+  const groups= useGroupsByAuthority(publicKey, connection);
 
   const [selectedGroup, setSelectedGroup] = useState<IRpcObject<Group>>();
 
@@ -69,6 +70,8 @@ export const ExtendMetadataDialog = ({
     setAttributes([...Array(numberOfAttributes)])
   },[numberOfAttributes])
 
+  const extendedMetadataKey = useMemo(()=>getMetadataExtendedPda(metadata.pubkey)[0],[metadata])
+
   const [royaltyBps, setRoyaltyBps] = useState<number>(500);
   const [royaltyShares, setRoyaltyShares] = useState<IRoyaltyShare[]>([]);
 
@@ -76,7 +79,7 @@ export const ExtendMetadataDialog = ({
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Extend Metadata</ModalHeader>
+        <ModalHeader>Extend Metadata ({abbreviateKey(extendedMetadataKey.toBase58())})</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack>
@@ -87,11 +90,13 @@ export const ExtendMetadataDialog = ({
                 alignItems: "center",
               }}
             >
-              <Select placeholder="Select group" onChange={(e)=>{
-                setSelectedGroup(groups.find(item=>item.pubkey.toBase58() === e.currentTarget.value))
+              <Select placeholder="Select group" 
+                value={selectedGroup?.pubkey.toBase58()}
+              onChange={(e)=>{
+                setSelectedGroup(groups.data.find(item=>item.pubkey.toBase58() === e.currentTarget.value))
               }}>
-                {groups.map((item, idx) => (
-                  <option key={idx} value={item.pubkey?.toBase58()} selected={selectedGroup === item}>
+                {groups.data.map((item, idx) => (
+                  <option key={idx} value={item.pubkey?.toBase58()} >
                     {item.item?.name}
                   </option>
                 ))}

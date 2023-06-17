@@ -11,75 +11,30 @@ import {
   Th,
   Thead,
   Tr,
-  Text
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 // import {
 //     usePermissionsHydratedWithCollections
 // } from "stores/accounts/useCollectionsById";
-import { PublicKey } from "@solana/web3.js";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { IRpcObject } from "components/executor/IRpcObject";
 import { Group } from "query/group";
-import { Metadata, decodeMetadata, useMetadataById } from "query/metadata";
-import { Permissions, usePermissionsByUser } from "query/permissions";
-import useSelectedCollections from "../collections/useSelectedCollections";
+import { Metadata, useMetadataByAuthority } from "query/metadata";
+import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
 import { MetadataRow } from "./MetadataRow";
-import useSelectedMetadata from "../collections/useSelectedMetadata";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import {
-  MetadataExtended,
-  useMetadataExtendedById,
-} from "query/metadataExtended";
-import { useMetadataHydratedWithExtended } from "./useHydratedMetadata";
 
 export const BaseMetadataPanel = () => {
   const { publicKey } = useWallet();
 
   const { connection } = useConnection();
 
-  const { data: permissions, refetch } = usePermissionsByUser(
+  const { data: metadata, refetch } = useMetadataByAuthority(
     publicKey,
     connection
   );
-
-  //   const { data: createdCollections } = useCollectionsByCreator(
-  //     publicKey,
-  //     connection
-  //   );
-
-  const distinctReferenceKeys = useMemo(
-    () => [
-      ...new Set<PublicKey>([
-        ...(permissions
-          ?.filter((item) => item.item)
-          .map((item) => item.item.reference) ?? []),
-      ]),
-    ],
-    [
-      permissions,
-      // , createdCollections
-    ]
-  );
-
-  const permissionsByMetadata = useMemo(() => {
-    const _permissionsByCollection: {
-      [key: string]: IRpcObject<Permissions>;
-    } = {};
-
-    for (const permission of permissions ?? []) {
-      if (permission.item.reference) {
-        _permissionsByCollection[permission.item.reference.toBase58()] = {
-          pubkey: permission.pubkey,
-          item: permission.item,
-        };
-      }
-    }
-    return _permissionsByCollection;
-  }, [permissions]);
 
   const selectedMetadataKeys = useSelectedMetadata(
     (state) => state.selectedMetadataKeys
@@ -94,30 +49,15 @@ export const BaseMetadataPanel = () => {
 
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
-  const { hydrated } = useMetadataHydratedWithExtended(distinctReferenceKeys);
-
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
       setSelectedMetadataKeys(
-        new Set(_selectAll ? hydrated.map((item) => item.metadata.pubkey) : [])
+        new Set(_selectAll ? metadata.map((item) => item.pubkey) : [])
       );
       setSelectAll(_selectAll);
     },
-    [hydrated, setSelectedMetadataKeys]
+    [metadata, setSelectedMetadataKeys]
   );
-
-  // const metadataDict = useMemo(() => {
-  //   const _metadataDict: {
-  //     [key: string]: ReturnType<ReturnType<typeof decodeMetadata>>;
-  //   } = {};
-
-  //   for (const metadataObj of metadataObjs ?? []) {
-  //     if (metadataObj) {
-  //       _metadataDict[metadataObj?.pubkey?.toBase58()] = metadataObj;
-  //     }
-  //   }
-  //   return _metadataDict;
-  // }, [metadataObjs]);
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
     collection: Group | undefined;
@@ -125,19 +65,6 @@ export const BaseMetadataPanel = () => {
     open: false,
     collection: undefined,
   });
-
-  // const deleteMetadataParams = useMemo(() => {
-  //   return selectedMetadataKeys
-  //     ? [...selectedMetadataKeys]
-  //         .filter((item) => metadataDict[item.toBase58()])
-  //         .map((pubkey) => ({
-  //           creator: metadataDict[pubkey.toBase58()].item.creator,
-  //           collectionPermissions:
-  //             permissionsByMetadata[pubkey.toBase58()].pubkey,
-  //           collection: pubkey,
-  //         }))
-  //     : [];
-  // }, [selectedMetadataKeys, metadataDict, permissionsByMetadata]);
 
   const [activeMetadata, setActiveMetadata] = useState<IRpcObject<Metadata>>();
 
@@ -191,17 +118,22 @@ export const BaseMetadataPanel = () => {
           <Button onClick={() => setActiveMetadata(undefined)}>Clear</Button>
         </Box>
       ) : (
-        <Box sx={{ maxWidth: "100%", maxHeight :"100%"}}>
+        <Box sx={{ maxWidth: "100%", maxHeight: "100%" }}>
           <Box pt={3} pb={3}>
-            <Heading>Metadata ({hydrated?.length ?? "-"})</Heading>
+            <Heading>Metadata ({metadata?.length ?? "-"})</Heading>
           </Box>
           <TableContainer
-            sx={{ overflow: "auto", width: "100%", maxHeight :"50vh", overflowY: 'auto'  }}
+            sx={{
+              overflow: "auto",
+              width: "100%",
+              maxHeight: "50vh",
+              overflowY: "auto",
+            }}
           >
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th colSpan={3}></Th>
+                  <Th colSpan={5}></Th>
                   <Th colSpan={4}>
                     <Center>Extended</Center>
                   </Th>
@@ -223,6 +155,7 @@ export const BaseMetadataPanel = () => {
                     <Center>Data</Center>
                   </Th>
                   <Th>Collection</Th>
+                  <Th>Asset type</Th>
 
                   <Th>Royalties</Th>
                   <Th>
@@ -235,17 +168,15 @@ export const BaseMetadataPanel = () => {
               </Thead>
 
               <Tbody>
-                {hydrated?.map((item, idx) => (
+                {metadata?.map((item, idx) => (
                   <MetadataRow
                     key={idx}
-                    group={item.group}
-                    permissions={permissionsByMetadata[item.metadata.pubkey.toBase58()]}
-                    item={item.metadata}
-                    metadataExtended={item.extended}
+                    item={item}
                     selectedMetadataObjs={selectedMetadataKeys}
                     toggleSelectedMetadata={toggleSelectedMetadata}
                     activeMetadata={activeMetadata}
-                    setActiveMetadata={setActiveMetadata}/>
+                    setActiveMetadata={setActiveMetadata}
+                  />
                 ))}
               </Tbody>
             </Table>
