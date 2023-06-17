@@ -664,7 +664,7 @@ export type Libreplex = {
             "type": "publicKey"
           },
           {
-            "name": "creator",
+            "name": "admin",
             "type": "publicKey"
           },
           {
@@ -770,7 +770,7 @@ export type Libreplex = {
             "type": "publicKey"
           },
           {
-            "name": "creator",
+            "name": "admin",
             "type": "publicKey"
           },
           {
@@ -2238,7 +2238,7 @@ export const IDL: Libreplex = {
             "type": "publicKey"
           },
           {
-            "name": "creator",
+            "name": "admin",
             "type": "publicKey"
           },
           {
@@ -2344,7 +2344,7 @@ export const IDL: Libreplex = {
             "type": "publicKey"
           },
           {
-            "name": "creator",
+            "name": "admin",
             "type": "publicKey"
           },
           {

@@ -151,11 +151,9 @@ export const BaseMetadataPanel = () => {
                     </Center>
                   </Th>
                   <Th>Image</Th>
-                  <Th>
-                    <Center>Data</Center>
-                  </Th>
-                  <Th>Collection</Th>
-                  <Th>Asset type</Th>
+                  
+                  <Th>Asset</Th>
+                  <Th>Group</Th>
 
                   <Th>Royalties</Th>
                   <Th>

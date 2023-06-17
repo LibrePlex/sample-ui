@@ -139,7 +139,17 @@ export type Inscriptions = {
         "kind": "struct",
         "fields": [
           {
-            "name": "size",
+            "name": "change",
+            "type": {
+              "defined": "Change"
+            }
+          },
+          {
+            "name": "expectedStartSize",
+            "type": "u32"
+          },
+          {
+            "name": "targetSize",
             "type": "u32"
           }
         ]
@@ -157,6 +167,32 @@ export type Inscriptions = {
           {
             "name": "startPos",
             "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Change",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Reduce",
+            "fields": [
+              {
+                "name": "amount",
+                "type": "u32"
+              }
+            ]
+          },
+          {
+            "name": "Increase",
+            "fields": [
+              {
+                "name": "amount",
+                "type": "u32"
+              }
+            ]
           }
         ]
       }
@@ -341,7 +377,17 @@ export const IDL: Inscriptions = {
         "kind": "struct",
         "fields": [
           {
-            "name": "size",
+            "name": "change",
+            "type": {
+              "defined": "Change"
+            }
+          },
+          {
+            "name": "expectedStartSize",
+            "type": "u32"
+          },
+          {
+            "name": "targetSize",
             "type": "u32"
           }
         ]
@@ -359,6 +405,32 @@ export const IDL: Inscriptions = {
           {
             "name": "startPos",
             "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Change",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Reduce",
+            "fields": [
+              {
+                "name": "amount",
+                "type": "u32"
+              }
+            ]
+          },
+          {
+            "name": "Increase",
+            "fields": [
+              {
+                "name": "amount",
+                "type": "u32"
+              }
+            ]
           }
         ]
       }

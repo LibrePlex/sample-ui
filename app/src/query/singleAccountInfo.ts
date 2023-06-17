@@ -54,16 +54,18 @@ const accountUpdater =
           by adding a deleted marker on IRpcObject
       */
     } else {
-      queryClient.setQueryData(key, (old: IRpcObject<Buffer>[]) => {
-        const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
-        // console.log({ found, old, key, newOrUpdatedItem });
+      queryClient.setQueryData(key, (old: IRpcObject<Buffer>) => {
         const newOrUpdatedItem = { item: accountInfo.data, pubkey: accountId };
+        return newOrUpdatedItem
+        // const found = (old ?? []).find((item) => item.pubkey.equals(accountId));
+        // // console.log({ found, old, key, newOrUpdatedItem });
+        
 
-        return found
-          ? old.map((item) =>
-              item.pubkey.equals(accountId) ? newOrUpdatedItem : item
-            )
-          : [...(old ?? []), newOrUpdatedItem];
+        // return found
+        //   ? old.map((item) =>
+        //       item.pubkey.equals(accountId) ? newOrUpdatedItem : item
+        //     )
+        //   : [...(old ?? []), newOrUpdatedItem];
       });
     }
   };
@@ -99,15 +101,18 @@ export const useFetchSingleAccount = <T extends unknown, P extends Idl>(
 
   const q = useQuery<IRpcObject<Buffer>>([accountId], fetcher);
 
-  
   /// intercept account changes and refetch as needed
   useEffect(() => {
     let _listeners: number[] = [];
 
-    // console.log("Adding account listener", accountId);
-    _listeners.push(
-      listener.add(accountUpdater(accountId, queryClient, accountId), accountId)
-    );
+    if (accountId) {
+      _listeners.push(
+        listener.add(
+          accountUpdater(accountId, queryClient, accountId),
+          accountId
+        )
+      );
+    }
 
     return () => {
       for (const i of _listeners) {

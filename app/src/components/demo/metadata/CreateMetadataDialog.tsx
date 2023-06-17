@@ -26,7 +26,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import {
   AssetType,
   CreateMetadataTransactionButton,
-} from "./CreateMetadataTransactionButton";
+} from "./createbuttons/CreateMetadataBaseTransactionButton";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 
 enum View {

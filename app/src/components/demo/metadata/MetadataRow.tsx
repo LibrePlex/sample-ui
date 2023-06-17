@@ -21,15 +21,13 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { AttributesDisplay } from "components/metadata/AttributesDisplay";
 import { SignersDisplay } from "components/metadata/SignersDisplay";
-import { OrdinalUploader } from "components/onft/OrdinalUploader";
+import { InscriptionUploader } from "components/onft/InscriptionUploader";
 import { ImageUploader } from "components/shadowdrive/ImageUploader";
 import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
 import { useGroupById } from "query/group";
 import { useInscriptionById } from "query/inscriptions";
 import { Metadata } from "query/metadata";
-import {
-  useMetadataExtendedById
-} from "query/metadataExtension";
+import { useMetadataExtendedById } from "query/metadataExtension";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
@@ -81,27 +79,6 @@ export const MetadataRow = ({
 
   const group = useGroupById(metadataExtended?.item?.group ?? null, connection);
 
-  // const inscriptionsPerId = useMemo(() => {
-  //   const _inscriptions: { [key: string]: IRpcObject<Inscription> } = {};
-
-  //   for (const d of inscriptionData.data) {
-  //     _inscriptions[d.pubkey.toBase58()] = d;
-  //   }
-  //   return _inscriptions;
-  // }, [inscriptionData]);
-
-  // const inscriptionsPerMetadata = useMemo(() => {
-  //   const _dict: { [key: string]: IRpcObject<Inscription> } = {};
-  //   for (const d of inscriptionIds) {
-  //     _dict[d.metadataId.toBase58()] = inscriptionsPerId[inscriptionIdsPerMetadata[d.metadataId.toBase58()].toBase58()];
-  //   }
-  //   return _dict;
-  // }, [inscriptionIds, inscriptionIdsPerMetadata, inscriptionsPerId]);
-
-  // useEffect(()=>{
-  //   console.log({inscriptionsPerMetadata, inscriptionIdsPerMetadata, inscriptionsPerId, ids: inscriptionIds.map(item=>item.inscriptionId)})
-  // },[inscriptionsPerMetadata, inscriptionIdsPerMetadata, inscriptionsPerId, inscriptionIds])
-
   return (
     <Tr
       sx={{
@@ -132,29 +109,39 @@ export const MetadataRow = ({
               afterUpdate={() => {}}
             />
           ) : item.item.asset?.inscription ? (
-            <OrdinalUploader inscription={inscription} afterUpdate={() => {}} />
+            <InscriptionUploader
+              inscription={inscription}
+              afterUpdate={() => {}}
+            />
           ) : (
             <Text>Cannot upload this asset type</Text>
           )}
         </Box>
       </Td>
-      <Td>
-        <Text fontSize="2xl">{item.item.name}</Text>
-      </Td>
+
       <Td>
         <Stack sx={{ width: "100%" }}>
           <Center>
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
+              <Text fontSize="2xl">{item.item.name}</Text>
               <Box display="flex" w={"100%"} justifyContent={"space-between"}>
-                Metadata:{" "}
-                <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />
+                
+                <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} /> (metadata)
               </Box>
               <Box display="flex" w={"100%"} justifyContent={"space-between"}>
-                Mint:{" "}
                 {item.item.mint && (
-                  <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} />
+                  <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} /> 
                 )}
+                (mint)
               </Box>
+              
+              {inscription ? (
+                <InscriptionCell inscription={inscription} />
+              ) : item.item.asset.image ? (
+                "On-chain image"
+              ) : (
+                "Other"
+              )}
 
               {/* 
               <Button
@@ -168,15 +155,7 @@ export const MetadataRow = ({
           </Center>
         </Stack>
       </Td>
-      <Td>
-        {inscription ? (
-          <InscriptionCell inscription={inscription} />
-        ) : item.item.asset.image ? (
-          "On-chain image"
-        ) : (
-          "Other"
-        )}
-      </Td>
+
       {metadataExtended && group ? (
         <>
           <Td>

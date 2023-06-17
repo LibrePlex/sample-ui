@@ -26,7 +26,9 @@ import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
 } from "components/executor/GenericTransactionButton";
+import { IRpcObject } from "components/executor/IRpcObject";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+import { Inscription } from "query/inscriptions";
 
 import { notify } from "utils/notifications";
 
@@ -42,12 +44,14 @@ export enum AssetType {
 // }
 
 export interface IResizeInscription {
-  inscriptionKey: PublicKey;
+  inscription: IRpcObject<Inscription>;
   size: number;
 }
 
 // start at 0. We can extend as needed
 export const ORDINAL_DEFAULT_LENGTH = 0;
+
+export const MAX_CHANGE = 4096;
 
 export const resizeInscription = async (
   { wallet, params }: IExecutorParams<IResizeInscription>,
@@ -71,26 +75,52 @@ export const resizeInscription = async (
     payer: Keypair.generate(),
   });
 
-  const { inscriptionKey, size } = params;
+  const { inscription, size } = params;
 
-  const instructions: TransactionInstruction[] = [];
+  let sizeRemaining = size - inscription.item.size;
+  while (Math.abs(sizeRemaining) > 0) {
+    const instructions: TransactionInstruction[] = [];
+    console.log({
+      sizeRemaining,
+      increase: Math.min(sizeRemaining, MAX_CHANGE),
+      decrease: -Math.max(sizeRemaining, -MAX_CHANGE),
+    });
 
-  const instruction = await inscriptionsProgram.methods
-    .resizeInscription({
-      size,
-    })
-    .accounts({
-      inscription: inscriptionKey,
-      systemProgram: SystemProgram.programId,
-    })
-    .instruction();
-  instructions.push(instruction);
+    const instruction = await inscriptionsProgram.methods
+      .resizeInscription({
+        change:
+          sizeRemaining > 0
+            ? {
+                increase: {
+                  amount: Math.min(sizeRemaining, MAX_CHANGE),
+                },
+              }
+            : {
+                reduce: {
+                  amount: -Math.max(sizeRemaining, -MAX_CHANGE),
+                },
+              },
+        expectedStartSize: Math.abs(sizeRemaining),
+        targetSize: size,
+      })
+      .accounts({
+        inscription: inscription.pubkey,
+        systemProgram: SystemProgram.programId,
+      })
+      .instruction();
+    instructions.push(instruction);
 
-  data.push({
-    instructions,
-    description: `Resize inscription`,
-    signers: [],
-  });
+    data.push({
+      instructions,
+      description: `Resize inscription`,
+      signers: [],
+    });
+
+    sizeRemaining =
+      sizeRemaining > 0
+        ? Math.max(0, sizeRemaining - MAX_CHANGE)
+        : Math.min(0, sizeRemaining + MAX_CHANGE);
+  }
 
   console.log({ data });
 

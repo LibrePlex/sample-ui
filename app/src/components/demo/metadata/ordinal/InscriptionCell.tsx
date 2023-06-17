@@ -8,7 +8,7 @@ export const InscriptionCell = ({ inscription }: { inscription: IRpcObject<Inscr
   return (
     <>
     
-      Ordinal (len: {inscription?.item.size ?? "-"})
+      {inscription? `Ordinal [${inscription?.item.size.toLocaleString() ?? "-"} bytes]`:''}
     </>
   );
 };

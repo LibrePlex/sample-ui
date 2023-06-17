@@ -172,7 +172,6 @@ export class Executor<P> {
         return { error: (e as Error).message, data: undefined };
       })
       .then((result) => result);
-    console.log({ result });
     const { data: transactions, error } = result;
 
     if (!transactions) {
@@ -185,10 +184,8 @@ export class Executor<P> {
     let awaitConfirmation = transactions.length < 3;
 
     while (remainingTransactions.length > 0) {
-      console.log({ remainingTransactions });
       try {
         batchId++;
-        console.log({ batchId });
         const thisBatch = remainingTransactions.splice(0, TX_BATCH_SIZE);
         const { signedTransactions, blockhash } =
           await this.getSignedTransactions(thisBatch);
@@ -197,7 +194,6 @@ export class Executor<P> {
           const signedTransactionsBatch = [...signedTransactions];
           while (signedTransactionsBatch.length > 0) {
             const thisBatchSigned = signedTransactionsBatch.splice(0, 10);
-            console.log("lkjhlkjh");
             const promises = Promise.all(
               thisBatchSigned.map((item) =>
                 this.connection

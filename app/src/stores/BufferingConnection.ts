@@ -42,7 +42,6 @@ export class BufferingConnection {
 
   public flushAccounts = async () => {
     this.processing = true;
-    console.log('Flushing accounts');
     if (this.timeout) {
       clearTimeout(this.timeout);
       this.timeout = null;
@@ -56,15 +55,12 @@ export class BufferingConnection {
     
 
     while (remainingRequests.length > 0) {
-      console.log({remainingRequests: [...remainingRequests]});
-
+      
       const batchRequests = remainingRequests.splice(0, 100);
       try {
-        console.log('Fetching', batchRequests.map(item=>item.accountId?.toBase58()));
         const accountData = await this.connection.getMultipleAccountsInfo(
           batchRequests.map((item) => item.accountId??Keypair.generate().publicKey)
         );
-        console.log('accountData', accountData);
         for (const [idx, a] of accountData.entries()) {
           if (a) {
             batchRequests[idx].cb({
@@ -79,7 +75,6 @@ export class BufferingConnection {
           }
         }
       } catch (e) {
-        console.log(e)
         for (const id of batchRequests) {
           // console.log("Rejecting all", e);
           id.cb({
@@ -136,7 +131,6 @@ export class BufferingConnection {
 
     const promise = new Promise<{ accountId: PublicKey; data: Buffer | null }>((resolve, reject) => {
       const cb = (val: { accountId: PublicKey; data: Buffer | null }) => {
-        console.log('Resolving with val', val);
         resolve(val);
       };
 

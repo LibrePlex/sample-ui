@@ -80,6 +80,7 @@ export const ImageSelector = ({
               setVisible(false);
             }}
             style={{
+              imageRendering: "pixelated",
               padding: 0,
               opacity: visible ? 1 : 0,
               height,
@@ -91,7 +92,7 @@ export const ImageSelector = ({
               position: "absolute",
               aspectRatio: "1/1",
             }}
-            src={base64Image}
+            src={finalImage}
           />
         ) : (
           <></>
