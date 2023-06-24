@@ -1,19 +1,16 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import { Idl, Program } from "@coral-xyz/anchor";
+import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { Libreplex } from "types/libreplex";
-import { Inscriptions } from "types/inscriptions";
-import { LibreplexWithOrdinals, getProgramInstance } from "./getProgramInstance";
+import {
+  LibreplexWithOrdinals,
+  getProgramInstance,
+} from "./getProgramInstance";
 
-
-
-
-
-export const LibrePlexProgramContext = createContext<Program<LibreplexWithOrdinals>>(
-  undefined!
-);
+export const LibrePlexProgramContext = createContext<
+  Program<LibreplexWithOrdinals>
+>(undefined!);
 
 export const LibrePlexProgramProvider = ({
   children,
@@ -31,9 +28,7 @@ export const LibrePlexProgramProvider = ({
       ...wallet,
       payer: Keypair.generate(),
     });
-    setProgram(
-      program,
-    );
+    setProgram(program);
   }, [wallet, connection]);
 
   return program?.programId ? (
@@ -41,10 +36,8 @@ export const LibrePlexProgramProvider = ({
       {children}
     </LibrePlexProgramContext.Provider>
   ) : (
-    <Box sx={{display :"flex"}} columnGap={2}>
-      <Text >
-        Loading anchor program... 
-      </Text>
+    <Box sx={{ display: "flex" }} columnGap={2}>
+      <Text>Loading anchor program...</Text>
       <Spinner />
     </Box>
   );

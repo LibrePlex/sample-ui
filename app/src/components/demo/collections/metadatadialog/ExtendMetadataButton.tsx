@@ -17,13 +17,13 @@ import { getMetadataPda } from "pdas/getMetadataPda";
 import { getPermissionsPda } from "pdas/getPermissionsPda";
 
 import { IdlTypes } from "@coral-xyz/anchor";
-import { Libreplex } from "types";
+import { LibreplexMetadata } from "types/libreplex_metadata";
 import { notify } from "utils/notifications";
 import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
 
-export type Royalties = IdlTypes<Libreplex>["ExtendMetadataInput"]["royalties"];
+export type Royalties = IdlTypes<LibreplexMetadata>["ExtendMetadataInput"]["royalties"];
 export type InvokedPermission =
-  IdlTypes<Libreplex>["ExtendMetadataInput"]["invokedPermission"];
+  IdlTypes<LibreplexMetadata>["ExtendMetadataInput"]["invokedPermission"];
 
 export interface IExtendMetadata {
   attributes: number[] | null;
@@ -80,14 +80,11 @@ export const extendMetadata = async (
     .extendMetadata({
       attributes: Buffer.from(attributes),
       royalties: null, // no override for now
-      invokedPermission: { admin: {} },
+      invokedPermission: { update: {} },
     })
     .accounts({
-      signer: wallet.publicKey,
-      groupPermissions,
-      metadataPermissions,
+      updateAuthority: wallet.publicKey,
       metadataExtended,
-      group,
       metadata,
       mint: mint,
       systemProgram: SystemProgram.programId,

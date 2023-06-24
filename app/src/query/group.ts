@@ -4,7 +4,8 @@ import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
 import { useContext, useMemo } from "react";
-import { Libreplex } from "types/libreplex";
+import { LibreplexMetadata as Libreplex } from "types/libreplex_metadata";
+
 import { useGpa } from "./gpa";
 import { LibreplexWithOrdinals } from "anchor/getProgramInstance";
 import { useFetchSingleAccount } from "./singleAccountInfo";

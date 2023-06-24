@@ -1,10 +1,11 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Connection, Keypair } from "@solana/web3.js";
+import { Connection } from "@solana/web3.js";
 
-export const PROGRAM_ID_METADATA = "AJ5Hh5q4HegZWWu1ScY7ZRA6zELXmRzEWS5EXFSKqBC6";
-export const PROGRAM_ID_INSCRIPTIONS = "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
+export const PROGRAM_ID_METADATA =
+  "LibrQsXf9V1DmTtJLkEghoaF1kjJcAzWiEGoJn8mz7p";
+export const PROGRAM_ID_INSCRIPTIONS =
+  "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
 
-import { IDL as IDLMetadata } from "types/libreplex";
 import { IDL as IDLOrdinals } from "types/inscriptions";
 
 export function getProgramInstanceOrdinals(

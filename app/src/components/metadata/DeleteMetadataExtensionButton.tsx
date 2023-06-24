@@ -57,11 +57,8 @@ export const deleteMetadata = async (
     const instruction = await librePlexProgram.methods
     .deleteMetadataExtension()
     .accounts({
-      authority: wallet.publicKey,
-      permissions: collectionPermissions,
-      group,
+      updateAuthority: wallet.publicKey,
       metadataExtension: metadata,
-      receiver: wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
     .instruction();

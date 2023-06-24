@@ -1,5 +1,5 @@
 export type Inscriptions = {
-  "version": "0.1.0",
+  "version": "0.1.6",
   "name": "inscriptions",
   "instructions": [
     {
@@ -232,12 +232,24 @@ export type Inscriptions = {
           "index": false
         }
       ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadAuthority",
+      "msg": "Bad authority"
+    },
+    {
+      "code": 6001,
+      "name": "MaxSizeExceeded",
+      "msg": "Max size exceeded"
     }
   ]
 };
 
 export const IDL: Inscriptions = {
-  "version": "0.1.0",
+  "version": "0.1.6",
   "name": "inscriptions",
   "instructions": [
     {
@@ -470,6 +482,18 @@ export const IDL: Inscriptions = {
           "index": false
         }
       ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadAuthority",
+      "msg": "Bad authority"
+    },
+    {
+      "code": 6001,
+      "name": "MaxSizeExceeded",
+      "msg": "Max size exceeded"
     }
   ]
 };

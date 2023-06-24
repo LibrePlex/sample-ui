@@ -1,13 +1,13 @@
 import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
-import { useContext, useMemo, useEffect } from "react";
-import { Libreplex } from "types/libreplex";
-import { Inscriptions } from "types/inscriptions";
 import { OrdinalsProgramContext } from "anchor/InscriptionsProgramProvider";
+import { useContext, useMemo } from "react";
+import { Inscriptions } from "types/inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 
-export type Inscription = IdlAccounts<Inscriptions>["inscription"] & {dataBytes: number[]};
+export type Inscription = IdlAccounts<Inscriptions>["inscription"] & {
+  dataBytes: number[];
+};
 
 export const decodeInscription =
   (program: Program<Inscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {

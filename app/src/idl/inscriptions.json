@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.6",
   "name": "inscriptions",
   "instructions": [
     {
@@ -234,7 +234,16 @@
       ]
     }
   ],
-  "metadata": {
-    "address": "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp"
-  }
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadAuthority",
+      "msg": "Bad authority"
+    },
+    {
+      "code": 6001,
+      "name": "MaxSizeExceeded",
+      "msg": "Max size exceeded"
+    }
+  ]
 }

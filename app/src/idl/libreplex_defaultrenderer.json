@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "name": "defaultrenderer",
+  "version": "0.1.2",
+  "name": "libreplex_defaultrenderer",
   "instructions": [
     {
       "name": "canonical",

@@ -3,14 +3,12 @@ import {
   Center,
   Checkbox,
   Heading,
-  ICollapse,
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import { IRpcObject } from "components/executor/IRpcObject";
 import { Group } from "query/group";
@@ -23,18 +21,13 @@ import {
 } from "react";
 
 import { useConnection } from "@solana/wallet-adapter-react";
-import { MetadataItem as MetadataItem } from "components/metadata/MetadataItem";
-import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
-import useSelectedMetadata from "./useSelectedMetadata";
-import { Permissions } from "query/permissions";
-import { DeleteMetadataExtensionButton } from "components/metadata/DeleteMetadataExtensionButton";
+import { MetadataExtendedItem } from "components/metadata/MetadataExtendedItem";
 import {
   MetadataExtended,
-  decodeMetadataExtension,
-  useMetadataExtendedByGroup,
+  useMetadataExtendedByGroup
 } from "query/metadataExtension";
-import { Metadata } from "query/metadata";
-import { MetadataExtendedItem } from "components/metadata/MetadataExtendedItem";
+import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
+import useSelectedMetadata from "./useSelectedMetadata";
 
 export const GroupViewer = ({
   group,
@@ -74,7 +67,7 @@ export const GroupViewer = ({
 
   const metadataDict = useMemo(() => {
     const _metadataDict: {
-      [key: string]: IRpcObject<MetadataExtended>
+      [key: string]: IRpcObject<MetadataExtended>;
     } = {};
 
     for (const metadata of items ?? []) {

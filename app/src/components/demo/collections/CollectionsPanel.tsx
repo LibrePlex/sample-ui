@@ -17,7 +17,6 @@ import {
 // } from "stores/accounts/useCollectionsById";
 
 import { useCallback, useMemo, useState } from "react";
-import { DeleteCollectionTransactionButton } from "./DeleteCollectionButton";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { IRpcObject } from "components/executor/IRpcObject";
@@ -126,12 +125,12 @@ export const CollectionsPanel = () => {
         >
           Create Group
         </Button>
-        {deleteCollectionParams.length > 0 && (
+        {/* {deleteCollectionParams.length > 0 && (
           <DeleteCollectionTransactionButton
             params={deleteCollectionParams}
             formatting={{}}
           />
-        )}
+        )} */}
 
         <EditGroupDialog
           open={editorStatus.open}

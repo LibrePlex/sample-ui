@@ -6,11 +6,10 @@ import {
   Stack,
   Td,
   Text,
-  Tr
+  Tr,
 } from "@chakra-ui/react";
 import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
 import { IRpcObject } from "components/executor/IRpcObject";
-import { Permissions } from "query/permissions";
 
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "components/shadowdrive/ImageUploader";
@@ -41,7 +40,6 @@ export const GroupRow = ({
         background: deletedKeys.has(item.pubkey) ? "#fee" : "none",
       }}
     >
-      
       <Td
         borderLeft={`10px solid ${
           activeCollection?.pubkey?.equals(item.pubkey) ? "teal" : "none"
@@ -83,9 +81,7 @@ export const GroupRow = ({
         <Stack>
           <Center>
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
-              <Text fontSize="4xl">
-                {item.item?.name}
-              </Text>
+              <Text fontSize="4xl">{item.item?.name}</Text>
               <CopyPublicKeyButton publicKey={item.pubkey?.toBase58()} />
 
               <Button
@@ -101,16 +97,11 @@ export const GroupRow = ({
       </Td>
 
       <Td>
-        
         <Center>
           <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
-            <Center>
-              {(item.item.royalties?.bps / 100).toFixed(2)}%
-            </Center>
+            <Center>{(item.item.royalties?.bps / 100).toFixed(2)}%</Center>
             {item.item.royalties && (
-              <RoyaltiesDialog
-                royalties={item.item.royalties}
-              />
+              <RoyaltiesDialog royalties={item.item.royalties} />
             )}
           </Box>
         </Center>
@@ -126,9 +117,7 @@ export const GroupRow = ({
         </Center>
       </Td>
       <Td isNumeric>
-        <AttributesDialog
-          attributeTypes={item.item.attributeTypes ?? []}
-        />
+        <AttributesDialog attributeTypes={item.item.attributeTypes ?? []} />
       </Td>
     </Tr>
   );

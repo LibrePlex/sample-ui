@@ -47,27 +47,24 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     new Wallet(Keypair.generate())
   );
 
+  console.dir({d: [...libreMetadataAccount[0].data]}, {'maxArrayLength': null});
+
   const { item: libreMetadataObj } = decodeMetadata(libreProgram)(
     libreMetadataAccount[0].data,
     libreMetadataPda[0]
   );
+
+  console.log({ libreMetadataObj });
 
   if (!libreMetadataObj) {
     return res.status(404).json({
       msg: `Could not deserialize libre metadata object at address ${libreMetadataPda[0].toBase58()} [mintId: ${mintId}].`,
     });
   }
-
-  const { item: libreMetadataExtendedObj } = decodeMetadataExtension(
-    libreProgram
-  )(libreMetadataAccount[1].data, libreMetadataExtendedPda[0]);
-
-  // if we have an extended obj, grab the collection
-
   let group;
-  if (libreMetadataExtendedObj) {
+  if (libreMetadataObj.group) {
     const groupAccount = await connection.getAccountInfo(
-      libreMetadataExtendedObj.group
+      libreMetadataObj.group
     );
 
     console.log({ groupAccount });
@@ -75,11 +72,21 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     if (groupAccount) {
       const item = decodeGroup(libreProgram)(
         groupAccount.data,
-        libreMetadataExtendedObj.group
+        libreMetadataObj.group
       );
       group = item;
     }
   }
+
+  const extendedObj = libreMetadataAccount[1]
+    ? decodeMetadataExtension(libreProgram)(
+        libreMetadataAccount[1].data,
+        libreMetadataExtendedPda[0]
+      )
+    : undefined;
+
+  // if we have an extended obj, grab the collection
+
   console.log({ group, royalties: group?.item.royalties });
 
   // get url
@@ -87,12 +94,14 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
   const httpClient = new HttpClient("");
 
   let jsondata;
-  if( libreMetadataObj.asset.json) {
-    const { data, error } = await httpClient.get<any>(libreMetadataObj.asset.json.url);
+  if (libreMetadataObj.asset.json) {
+    const { data, error } = await httpClient.get<any>(
+      libreMetadataObj.asset.json.url
+    );
     jsondata = data;
   }
 
-  const signerSet = new Set(libreMetadataExtendedObj.signers);
+  const signerSet = new Set(extendedObj ? extendedObj.item.signers : []);
 
   const retval: IMetadataJson = {
     ...jsondata,
@@ -100,13 +109,17 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     symbol: libreMetadataObj.symbol ?? jsondata.symbol,
     description: libreMetadataObj.description ?? jsondata.description,
     seller_fee_basis_points:
-      libreMetadataExtendedObj?.royalties?.bps ?? group.item.royalties?.bps ?? jsondata.seller_fee_basis_points,
+      extendedObj?.item?.royalties?.bps ??
+      group?.item.royalties?.bps ??
+      jsondata.seller_fee_basis_points,
     image: libreMetadataObj?.asset?.image?.url ?? jsondata.image,
     attributes:
       group?.item.attributeTypes.map((item, idx) => ({
         trait_type: item.name,
         value: getAttrValue(item.permittedValues[idx]),
-      })) ?? jsondata?.attributes ?? [],
+      })) ??
+      jsondata?.attributes ??
+      [],
     properties: {
       ...jsondata?.properties,
       files: [
@@ -118,21 +131,21 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
               },
             ]
           : []),
-          ...(libreMetadataObj?.asset?.image
-            ? [
-                {
-                  uri: libreMetadataObj?.asset?.json,
-                  type: "image/png",
-                },
-              ]
-            : []
-          ),
+        ...(libreMetadataObj?.asset?.image
+          ? [
+              {
+                uri: libreMetadataObj?.asset?.json,
+                type: "image/png",
+              },
+            ]
+          : []),
       ],
-      creators: group?.item.royalties?.shares?.map((item) => ({
-        address: item.recipient.toBase58(),
-        share: item.share / 100,
-        verified: signerSet.has(item.recipient),
-      })) ?? jsondata?.properties.creators,
+      creators:
+        group?.item.royalties?.shares?.map((item) => ({
+          address: item.recipient.toBase58(),
+          share: item.share / 100,
+          verified: signerSet.has(item.recipient),
+        })) ?? jsondata?.properties.creators,
     },
   };
 

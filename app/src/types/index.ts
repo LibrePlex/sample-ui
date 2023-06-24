@@ -1,2 +1,2 @@
 
-export * from "./libreplex"
+export * from "./libreplex_metadata"

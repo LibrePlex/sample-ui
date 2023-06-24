@@ -93,15 +93,11 @@ export const createCollection = async (
       royalties,
       permittedSigners,
       url,
-      metadataRenderMode: {
-        url: {
-          baseUrlConfiguration: null,
-        },
-      },
+      templateConfiguration: {none: {}},
+    
     })
     .accounts({
       authority: wallet.publicKey,
-      permissions,
       group,
       seed: seed.publicKey,
       systemProgram: SystemProgram.programId,

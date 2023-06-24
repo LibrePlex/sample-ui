@@ -77,7 +77,7 @@ export const MetadataRow = ({
 
   const inscription = useInscriptionById(instructionId, connection);
 
-  const group = useGroupById(metadataExtended?.item?.group ?? null, connection);
+  const group = useGroupById(item?.item?.group ?? null, connection);
 
   return (
     <Tr

@@ -12,7 +12,6 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { ReactNode, useState } from "react";
 import { CollectionsPanel } from "./collections/CollectionsPanel";
-import { PermissionsPanel } from "./permissions/PermissionsPanel";
 import useSelectedPermissions from "./permissions/useSelectedPermissions";
 import { BaseMetadataPanel } from "./metadata/MetadataPanel";
 
@@ -136,7 +135,7 @@ export const Demo = () => {
         <CollectionsPanel />
       </TabPanel>
 
-      <TabPanel
+      {/* <TabPanel
         open={view === View.Permissions}
         sx={{
           display: "flex",
@@ -145,7 +144,7 @@ export const Demo = () => {
         }}
       >
         <PermissionsPanel />
-      </TabPanel>
+      </TabPanel> */}
 
       <TabPanel open={view === View.Repos}>
         <Box

@@ -131,6 +131,7 @@ export const createMetadata = async (
 
     const instruction = await librePlexProgram.methods
       .createMetadata({
+        updateAuthority: wallet.publicKey,
         name,
         symbol,
         description,
@@ -168,6 +169,7 @@ export const createMetadata = async (
 
     const instruction = await librePlexProgram.methods
       .createOrdinalMetadata({
+        updateAuthority: wallet.publicKey,
         name,
         symbol,
         description,

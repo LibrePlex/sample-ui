@@ -7,7 +7,7 @@ import { LibrePlexProgramContext } from "anchor/LibrePlexProgramContext";
 import { sha256 } from "js-sha256";
 import { useGpa } from "query/gpa";
 import { useContext, useEffect, useMemo } from "react";
-import { Libreplex } from "types/libreplex";
+import { LibreplexMetadata as Libreplex } from "types/libreplex_metadata";
 import { decodeGroup } from "./group";
 
 export type Permissions = IdlAccounts<Libreplex>["permissions"];

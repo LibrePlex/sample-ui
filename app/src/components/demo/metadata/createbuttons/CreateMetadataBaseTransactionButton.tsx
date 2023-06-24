@@ -134,6 +134,7 @@ export const createMetadata = async (
         name,
         symbol,
         description,
+        updateAuthority: wallet.publicKey,
         asset: {
           image: {
             url,
@@ -168,6 +169,7 @@ export const createMetadata = async (
 
     const instruction = await librePlexProgram.methods
       .createOrdinalMetadata({
+        updateAuthority: wallet.publicKey,
         name,
         symbol,
         description,
