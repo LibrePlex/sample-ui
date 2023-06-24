@@ -36,7 +36,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     libreMetadataPda[0],
     libreMetadataExtendedPda[0],
   ]);
-  if (!libreMetadataAccount) {
+  if (!libreMetadataAccount[0]) {
     return res.status(404).json({
       msg: `Libre metadata object at address ${libreMetadataPda[0].toBase58()} [mintId: ${mintId}] not found.`,
     });
