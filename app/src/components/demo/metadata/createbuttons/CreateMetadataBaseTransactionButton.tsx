@@ -27,10 +27,7 @@ import {
 } from "components/executor/GenericTransactionButton";
 import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
 
-import { getGroupPda } from "pdas/getCollectionPda";
 import { getMetadataPda } from "pdas/getMetadataPda";
-import { getPermissionsPda } from "pdas/getPermissionsPda";
-import { Group } from "query/group";
 import { notify } from "utils/notifications";
 
 export enum AssetType {
@@ -128,7 +125,6 @@ export const createMetadata = async (
   if (assetType === AssetType.Image) {
     const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
 
-
     const instruction = await librePlexProgram.methods
       .createMetadata({
         name,
@@ -145,6 +141,7 @@ export const createMetadata = async (
         metadata,
         mint: mint.publicKey,
         systemProgram: SystemProgram.programId,
+        invokedMigratorProgram: null,
       })
       .instruction();
     instructions.push(instruction);
@@ -165,8 +162,6 @@ export const createMetadata = async (
       })
     );
 
-
-
     const instruction = await librePlexProgram.methods
       .createOrdinalMetadata({
         updateAuthority: wallet.publicKey,
@@ -175,7 +170,7 @@ export const createMetadata = async (
         description,
         inscriptionInput: {
           maxDataLength: ORDINAL_DEFAULT_LENGTH,
-          authority: wallet.publicKey
+          authority: wallet.publicKey,
         },
       })
       .accounts({

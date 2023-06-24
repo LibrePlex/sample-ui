@@ -25,6 +25,7 @@ import { Metadata, useMetadataByAuthority } from "query/metadata";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
 import { MetadataRow } from "./MetadataRow";
+import { DeleteMetadataButton } from "components/metadata/DeleteMetadataButton";
 
 export const BaseMetadataPanel = () => {
   const { publicKey } = useWallet();
@@ -103,6 +104,11 @@ export const BaseMetadataPanel = () => {
             });
           }}
         />
+        {selectedMetadataKeys.size > 0 && (
+          <DeleteMetadataButton params={[...selectedMetadataKeys].map(item=>({
+            metadata: item
+          }))} formatting={{}} />
+        )}
         <Button
           onClick={() => {
             refetch();
@@ -151,7 +157,7 @@ export const BaseMetadataPanel = () => {
                     </Center>
                   </Th>
                   <Th>Image</Th>
-                  
+
                   <Th>Asset</Th>
                   <Th>Group</Th>
 

@@ -93,7 +93,7 @@ export const CreateMetadataDialog = ({
               </Button>
               <Collapse in={showInfo}>
                 <Text sx={{ maxWidth: "500px" }}>
-                  An LibrePlex standard, each metadata item belongs to a
+                  In LibrePlex standard, each metadata item belongs to a
                   collection, including SPL tokens. You can create metadata in
                   the selected collection here.
                 </Text>
