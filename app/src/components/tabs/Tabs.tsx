@@ -51,6 +51,6 @@ export const tabsTheme = defineMultiStyleConfig({ variants });
 
 // now we can use the `colorful` variant with a different color Scheme
 export const StyledTabs = (props: TabsProps) => (
-  <Tabs isFitted variant="colorful" colorScheme="purple" {...props} />
+  <Tabs isFitted variant={"line"} colorScheme="purple"  {...props} />
 );
 

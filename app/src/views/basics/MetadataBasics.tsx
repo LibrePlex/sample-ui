@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   Heading,
   ListItem,
   OrderedList
@@ -25,6 +26,8 @@ export const MetadataBasics: FC = ({}) => {
           <ListItem>Name</ListItem>
         </OrderedList>
       </Box>
+
+      <Divider w={"90%"}/>
       <Heading fontSize="xl" style={{ paddingTop: "15px" }}>
         Propose to change
       </Heading>

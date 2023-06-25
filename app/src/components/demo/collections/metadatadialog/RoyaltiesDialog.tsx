@@ -27,7 +27,7 @@ export const RoyaltiesDialog = ({
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
-      {royalties.shares.length > 0 ? (
+      {royalties?.shares.length > 0 ? (
         <>
           <Button
             onClick={() => {

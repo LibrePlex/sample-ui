@@ -18,6 +18,7 @@ import {
   Container,
   Grid,
   GridItem,
+  HStack,
   Heading,
   Image,
   LinkBox,
@@ -89,7 +90,7 @@ export const HomeView: FC = ({}) => {
   return (
     <div style={{ overflow: "hidden" }}>
       <Background imageUrl={"heroImage.png"}>
-        <VStack display={"flex"} margin={"auto"}>
+        <VStack display={"flex"} margin={"auto"} w={"100vw"}>
           <Box>
             <Grid
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(1, 1fr)" }}
@@ -133,13 +134,16 @@ export const HomeView: FC = ({}) => {
           </Box>{" "}
 
           {/* CANT GET THIS TO BE MOBILE FRIENDLY */}
-          <Box pt={"30px"}>
-            <div className=" mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2">
-              <pre data-prefix=">">
-                <code className="truncate">
+          <Box pt={"30px"} maxW={{base:"92vw", md:"unset"}}>
+            <div className="mockup-code bg-primary border-2 border-[#FFFFFF9f] px-5 my-2">
+                <HStack p={{md:4, base:0}} px={{md:8, base:0}} display={"flex"}>
+                  <Text fontSize={{md: "17px", base: "0px"}}  opacity={.5}>
+                  &gt;
+                  </Text>
+                <Text fontFamily={"monospace"} display={"flex"}  fontSize={{md: "17px", base: "12px"}} className="truncate">
                   {`git clone git@github.com:LibrePlex/metadata.git`}{" "}
-                </code>
-              </pre>
+                </Text>
+                </HStack>
             </div>
           </Box>
         </VStack>

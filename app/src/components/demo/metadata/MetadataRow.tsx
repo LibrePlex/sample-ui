@@ -159,13 +159,13 @@ export const MetadataRow = ({
       {metadataExtended && group ? (
         <>
           <Td>
-            <CopyPublicKeyButton publicKey={group.pubkey.toBase58()} />
+            <CopyPublicKeyButton publicKey={group.pubkey?.toBase58()} />
           </Td>
 
           <Td>
             <RoyaltiesDialog
               royalties={
-                metadataExtended.item.royalties ?? group.item.royalties
+                metadataExtended.item.royalties ?? group.item?.royalties
               }
             />
           </Td>
