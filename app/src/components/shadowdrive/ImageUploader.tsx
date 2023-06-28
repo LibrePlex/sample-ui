@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ImageSelector } from "./ImageSelector";
-import { notify } from "utils/notifications";
+import { notify } from "shared-ui";
 import { ImageUploadActions } from "./ImageUploadActions";
 import { useTheme } from "@emotion/react";
 

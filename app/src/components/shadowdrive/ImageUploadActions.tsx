@@ -1,11 +1,11 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
-import { HttpClient } from "HttpClient";
-import { IShadowDriveUpload } from "api/shadowdrive/IShadowDriveUpload";
-import { uploadImageToShadowDrive } from "api/shadowdrive/uploadToShadowDrive";
+import { HttpClient } from "shared-ui";
+import { IShadowDriveUpload } from "@/api/shadowdrive/IShadowDriveUpload";
+import { uploadImageToShadowDrive } from "@/api/shadowdrive/uploadToShadowDrive";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import Jimp from "jimp";
 import { Button } from "@chakra-ui/react";
-import { WalletAuthenticatingButton } from "components/buttons/WalletAuthenticatingButton";
+import { WalletAuthenticatingButton } from "shared-ui";
 
 export interface IUpdatableMetadata {
   name: string;

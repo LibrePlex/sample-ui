@@ -36,8 +36,8 @@ import {
   Tr,
   VStack,
 } from "@chakra-ui/react";
-import Background from "components/Background";
-import { WhatMakesGreatGrid } from "components/tables/WhatMakesGreatGrid";
+import Background from "@/components/Background";
+import { WhatMakesGreatGrid } from "@/components/tables/WhatMakesGreatGrid";
 import router from "next/router";
 
 const info = [

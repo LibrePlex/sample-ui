@@ -21,9 +21,9 @@ import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
+import { RoyaltyShare } from "shared-ui";
 import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
-import { abbreviateKey } from "shared/abbreviateKey";
+import { abbreviateKey } from "shared-ui";
 import { CreateCollectionTransactionButton } from "./CreatePermissionButton";
 
 export const EditCollectionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
@@ -38,7 +38,7 @@ export const EditCollectionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
   );
 
   const [royaltyBps, setRoyaltyBps] = useState<number>(500);
-  const [royaltyShares, setRoyaltyShares] = useState<IRoyaltyShare[]>([]);
+  const [royaltyShares, setRoyaltyShares] = useState<RoyaltyShare[]>([]);
   const [permittedSigners, setPermittedSigners] = useState<PublicKey[]>([]);
 
   const [newPermittedSignerStr, setNewPermittedSignerStr] =

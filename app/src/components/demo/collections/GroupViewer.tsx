@@ -10,8 +10,8 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
 import {
   Dispatch,
   SetStateAction,
@@ -21,11 +21,11 @@ import {
 } from "react";
 
 import { useConnection } from "@solana/wallet-adapter-react";
-import { MetadataExtendedItem } from "components/metadata/MetadataExtendedItem";
+import { MetadataExtendedItem } from "@/components/metadata/MetadataExtendedItem";
 import {
   MetadataExtended,
   useMetadataExtendedByGroup
-} from "query/metadataExtension";
+} from "shared-ui";
 import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
 import useSelectedMetadata from "./useSelectedMetadata";
 

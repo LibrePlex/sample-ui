@@ -22,7 +22,7 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
-import { StyledTabs } from "components/tabs/Tabs";
+import { StyledTabs } from "@/components/tabs/Tabs";
 import { MintTaxInfoDialog } from "./MintTaxInfoDialog";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 

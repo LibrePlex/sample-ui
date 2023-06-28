@@ -8,14 +8,14 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { IRpcObject } from "components/executor/IRpcObject";
+import { CopyPublicKeyButton } from "shared-ui";
+import { IRpcObject } from "shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
-import { ImageUploader } from "components/shadowdrive/ImageUploader";
-import { Group } from "query/group";
+import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
+import { Group } from "shared-ui";
 import { Dispatch, SetStateAction } from "react";
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
+import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
 import { AttributesDialog } from "./AttributesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";

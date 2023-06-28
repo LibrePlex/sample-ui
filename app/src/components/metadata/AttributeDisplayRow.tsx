@@ -1,7 +1,7 @@
 import { Td, Tr } from "@chakra-ui/react";
-import { getAttrValue } from "components/demo/collections/editCollectionDialog/AttributeTypeRow";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
+import { getAttrValue } from "@/components/demo/collections/editCollectionDialog/AttributeTypeRow";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
 
 export const AttributeDisplayRow = ({
   group,

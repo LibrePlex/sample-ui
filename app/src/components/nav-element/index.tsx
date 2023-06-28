@@ -1,7 +1,7 @@
 /* tslint:disable:no-empty */
 import Link from 'next/link';
 import {Text} from "@chakra-ui/react";
-import { cn } from '../../utils';
+import { cn } from 'shared-ui';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 

@@ -21,13 +21,13 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MutableInfoPanel } from "../collections/metadatadialog/MutableInfoDialog";
 import { AttributeSelectorPanel } from "../collections/metadatadialog/AttributeSelectorPanel";
-import { KeyGenerator } from "components/KeyGenerator";
+import { KeyGenerator } from "@/components/KeyGenerator";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import {
   AssetType,
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
+import { CopyPublicKeyButton } from "shared-ui";
 
 enum View {
   Standalone,

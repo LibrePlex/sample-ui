@@ -17,9 +17,7 @@ import {
 
 import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-
-import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
-import { Group } from "query/group";
+import { Group, RoyaltyShare } from "shared-ui";
 import { AttributesPanel } from "./AttributesPanel";
 import { CreateCollectionTransactionButton } from "./CreateGroupButton";
 import { PermittedSignersPanel } from "./PermittedSignersPanel";
@@ -34,7 +32,7 @@ export const EditGroupPanel = ({ onSuccess }: { onSuccess: () => any }) => {
   const [permittedSigners, setPermittedSigners] = useState<PublicKey[]>([]);
 
   const [royaltyBps, setRoyaltyBps] = useState<number>(500);
-  const [royaltyShares, setRoyaltyShares] = useState<IRoyaltyShare[]>([]);
+  const [royaltyShares, setRoyaltyShares] = useState<RoyaltyShare[]>([]);
 
   const [validated, setValidated] = useState<boolean>(false);
 

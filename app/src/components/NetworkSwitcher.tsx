@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
-import { useNetworkConfiguration } from '../contexts/NetworkConfigurationProvider';
+import { useNetworkConfiguration } from 'shared-ui';
 
 const NetworkSwitcher: FC = () => {
   const { networkConfiguration, setNetworkConfiguration } = useNetworkConfiguration();

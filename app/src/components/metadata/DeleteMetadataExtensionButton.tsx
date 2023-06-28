@@ -5,13 +5,13 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+import { getProgramInstanceMetadata } from "shared-ui";
+import { IExecutorParams } from "@/components/executor/Executor";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "@/components/executor/GenericTransactionButton";
+import { ITransactionTemplate } from "@/components/executor/ITransactionTemplate";
 
 
 import useDeletedKeysStore from "stores/useDeletedKeyStore";
@@ -43,7 +43,7 @@ export const deleteMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });

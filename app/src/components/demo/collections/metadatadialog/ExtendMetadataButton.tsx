@@ -5,25 +5,22 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+import { Royalties, getProgramInstanceMetadata } from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
 
-import { getMetadataPda } from "pdas/getMetadataPda";
-import { getPermissionsPda } from "pdas/getPermissionsPda";
+import { getMetadataPda } from "shared-ui";
+import { getPermissionsPda } from "shared-ui";
 
 import { IdlTypes } from "@coral-xyz/anchor";
-import { LibreplexMetadata } from "types/libreplex_metadata";
-import { notify } from "utils/notifications";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
+import { notify } from "shared-ui";
+import { getMetadataExtendedPda } from "shared-ui";
 
-export type Royalties = IdlTypes<LibreplexMetadata>["ExtendMetadataInput"]["royalties"];
-export type InvokedPermission =
-  IdlTypes<LibreplexMetadata>["ExtendMetadataInput"]["invokedPermission"];
+
 
 export interface IExtendMetadata {
   attributes: number[] | null;
@@ -51,7 +48,7 @@ export const extendMetadata = async (
 
   const { group, attributes, royalties, mint } = params;
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });
@@ -69,12 +66,6 @@ export const extendMetadata = async (
   const [metadataPermissions] = getPermissionsPda(metadata, wallet.publicKey);
 
   const [metadataExtended] = getMetadataExtendedPda(metadata);
-
-  console.log({
-    attributes: Buffer.from(attributes),
-    royalties,
-    invokedPermission: 0 as InvokedPermission,
-  });
 
   const instruction = await librePlexProgram.methods
     .extendMetadata({

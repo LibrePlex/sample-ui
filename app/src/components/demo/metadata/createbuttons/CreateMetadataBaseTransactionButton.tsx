@@ -18,17 +18,17 @@ import {
 } from "@solana/web3.js";
 import {
   PROGRAM_ID_INSCRIPTIONS,
-  getProgramInstance,
-} from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+  getProgramInstanceMetadata,
+} from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
 
-import { getMetadataPda } from "pdas/getMetadataPda";
-import { notify } from "utils/notifications";
+import { getMetadataPda } from "shared-ui";
+import { notify } from "shared-ui";
 
 export enum AssetType {
   Image,
@@ -69,7 +69,7 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });

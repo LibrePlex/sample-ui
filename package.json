@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "app",
-    "sdk"
+    "shared-ui",
+    "marketplace"
   ],
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -13,6 +14,7 @@
     "lib"
   ],
   "scripts": {
+    "dev": "turbo run dev --parallel",
     "build": "yarn --cwd sdk tsc",
     "build2": "yarn --cwd solita solita && yarn --cwd sdk tsc && yarn --cwd app build",
     "libreplex:deploy:devnet": "anchor build -p libreplex && anchor deploy -p libreplex --provider.cluster https://api.devnet.solana.com --provider.wallet ~/.config/solana/libreplex-deployer.json",
@@ -25,6 +27,14 @@
   },
   "devDependencies": {
     "@types/node": "20.2.3",
+    "turborepo": "^0.0.1",
     "typescript": "5.0.4"
+  },
+  "resolutions": {
+      "@solana/wallet-adapter-base": "^0.9.22",
+    "@solana/wallet-adapter-react": "^0.15.32",
+    "@solana/wallet-adapter-react-ui": "^0.9.31",
+    "@solana/wallet-adapter-wallets": "^0.19.16",
+    "@solana/web3.js": "^1.73.0"
   }
 }

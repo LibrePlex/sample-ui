@@ -5,13 +5,13 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+import { getProgramInstanceMetadata } from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
 
 import { getGroupPda } from "pdas/getCollectionPda";
 import { getPermissionsPda } from "pdas/getPermissionsPda";
@@ -67,7 +67,7 @@ export const createCollection = async (
 
   // console.log({a});
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });

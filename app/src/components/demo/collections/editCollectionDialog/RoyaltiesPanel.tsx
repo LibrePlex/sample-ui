@@ -12,10 +12,9 @@ import {
   Stack,
   Text
 } from "@chakra-ui/react";
-import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
-import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
+import { usePublicKeyOrNull } from "../../../../hooks/usePublicKeyOrNull";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { abbreviateKey } from "shared/abbreviateKey";
+import { RoyaltyShare, abbreviateKey } from "shared-ui";
 
 export const RoyaltiesPanel = ({
   royaltyBps,
@@ -25,8 +24,8 @@ export const RoyaltiesPanel = ({
 }: {
   royaltyBps: number;
   setRoyaltyBps: Dispatch<SetStateAction<number>>;
-  royaltyShares: IRoyaltyShare[];
-  setRoyaltyShares: Dispatch<SetStateAction<IRoyaltyShare[]>>;
+  royaltyShares: RoyaltyShare[];
+  setRoyaltyShares: Dispatch<SetStateAction<RoyaltyShare[]>>;
 }) => {
   const [royaltyRecipientStr, setRoyaltyRecipientStr] = useState<string>(
     "7XD9dmZKK6fDGAtbjJX8KxDFy3zAjBAoLsAu748nNfEV"

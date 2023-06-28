@@ -1,9 +1,9 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
-import { Metadata } from "query/metadata";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
+import { Metadata } from "shared-ui";
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
-import { MetadataExtended } from "query/metadataExtension";
+import { MetadataExtended } from "shared-ui";
 
 export const AttributesDisplay = ({
   attributes,

@@ -1,6 +1,6 @@
 import { MinusIcon } from "@chakra-ui/icons";
 import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
-import { Group } from "query/group";
+import { Group } from "shared-ui";
 import { Dispatch, SetStateAction } from "react";
 
 export const getAttrValue = (attr: Group["attributeTypes"][0]["permittedValues"][0]) => {
