@@ -11,7 +11,7 @@ import {
 
 import jwtDecode from "jsonwebtoken";
 import { HttpMethod } from "./validateApi";
-import { ApiErrors } from "pages/api/ApiErrors";
+import { ApiErrors } from "@/pages/api/ApiErrors";
 
 const debug = Debug("lister:api:middleware");
 

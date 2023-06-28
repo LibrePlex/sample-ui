@@ -1,36 +1,21 @@
-import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
-import {
-  MINT_SIZE,
-  TOKEN_PROGRAM_ID,
-  createAssociatedTokenAccountInstruction,
-  createInitializeMint2Instruction,
-  createMintToInstruction,
-  getAssociatedTokenAddressSync,
-  getMinimumBalanceForRentExemptMint,
-} from "@solana/spl-token";
 
 import {
   Connection,
   Keypair,
-  PublicKey,
   SystemProgram,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
-import {
-  PROGRAM_ID_INSCRIPTIONS,
-  getProgramInstance,
-} from "anchor/getProgramInstance";
-import { getProgramInstanceOrdinals } from "anchor/getProgramInstanceOrdinals";
-import { IExecutorParams } from "components/executor/Executor";
+import { getProgramInstanceOrdinals } from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
-import { Inscription } from "query/inscriptions";
+} from "shared-ui";
+import { IRpcObject } from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
+import { Inscription } from "shared-ui";
 
-import { notify } from "utils/notifications";
+import { notify } from "shared-ui";
 
 export enum AssetType {
   Image,

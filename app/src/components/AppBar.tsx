@@ -2,10 +2,11 @@ import { FC, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import { useAutoConnect } from "../contexts/AutoConnectProvider";
+
 import NetworkSwitcher from "./NetworkSwitcher";
 import NavElement from "./nav-element";
 import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
+import { useAutoConnect } from "shared-ui";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>

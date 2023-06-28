@@ -1,32 +1,13 @@
 "use client";
 
 import {
-  Box,
-  Heading,
-  LinkBox,
-  LinkOverlay,
-  ListItem,
-  Text,
-  UnorderedList,
+  Box
 } from "@chakra-ui/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { SendTransaction } from "components/SendTransaction";
-import { SendVersionedTransaction } from "components/SendVersionedTransaction";
-import { SignMessage } from "components/SignMessage";
-import { Demo } from "components/demo/Demo";
+import { Demo } from "@/components/demo/Demo";
+import { InscriptionsProgramProvider, LibrePlexProgramProvider } from "shared-ui";
 import { QueryClient, QueryClientProvider } from "react-query";
-import Link from "next/link";
-import { LibrePlexProgramProvider } from "anchor/LibrePlexProgramContext";
-import { InscriptionsProgramProvider } from "anchor/InscriptionsProgramProvider";
 
 const DemoPage = () => {
-  // Here is a wallet adapter
-  const wallet = useWallet();
-
-  // Here is an RPC connection
-  const connection = useConnection();
-
-  // The Solita client can be imported via yarn workspace
   const queryClient = new QueryClient({});
 
   return (

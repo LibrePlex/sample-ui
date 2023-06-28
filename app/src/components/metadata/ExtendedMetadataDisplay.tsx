@@ -1,10 +1,9 @@
-import { Metadata } from "query/metadata";
-import { AttributesDisplay } from "./AttributesDisplay";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
-import { useState } from "react";
 import { Button, Collapse } from "@chakra-ui/react";
-import { MetadataExtended } from "query/metadataExtension";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
+import { MetadataExtended } from "shared-ui";
+import { useState } from "react";
+import { AttributesDisplay } from "./AttributesDisplay";
 
 export const NftMetadataDisplay = ({
   attributes,
@@ -24,10 +23,7 @@ export const NftMetadataDisplay = ({
         Attributes
       </Button>
       <Collapse in={show}>
-        <AttributesDisplay
-          attributes={attributes}
-          group={collection}
-        />
+        <AttributesDisplay attributes={attributes} group={collection} />
       </Collapse>
     </>
   );

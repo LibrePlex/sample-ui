@@ -19,8 +19,7 @@ import {
 import { useCallback, useMemo, useState } from "react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group, decodeGroup, useGroupsByAuthority } from "query/group";
+import { IRpcObject, Group, decodeGroup, useGroupsByAuthority } from "shared-ui";
 import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";

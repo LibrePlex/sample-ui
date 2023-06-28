@@ -1,5 +1,5 @@
 import { extendTheme, withDefaultColorScheme, type ThemeConfig } from '@chakra-ui/react'
-import { tabsTheme } from 'components/tabs/Tabs'
+import { tabsTheme } from '@/components/tabs/Tabs'
 
 
 const theme = extendTheme({

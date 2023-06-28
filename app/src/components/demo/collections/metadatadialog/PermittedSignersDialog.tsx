@@ -14,8 +14,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { Group } from "query/group";
+import { CopyPublicKeyButton } from "shared-ui";
+import { Group } from "shared-ui";
 import { useState } from "react";
 
 export const PermittedSignersDialog = ({

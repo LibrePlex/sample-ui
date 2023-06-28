@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "target": "es6",
+    "baseUrl": "..",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,9 +16,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "rootDir": ".",
     "paths": {
       "@/environmentvariables": [
-        "./environmentvariables.ts"
+        "./app/src/environmentvariables.ts"
+      ],
+      "@/pages/*": [
+        "./app/src/pages/*"
+      ],
+      "@/components/*": [
+        "./app/src/components/*"
+      ],
+      "@/views/*": [
+        "./app/src/views/*"
+      ],
+      "@/stores/*": [
+        "./app/src/stores/*"
+      ],
+      "@/api/*": [
+        "./app/src/api/*"
       ]
     }
   },

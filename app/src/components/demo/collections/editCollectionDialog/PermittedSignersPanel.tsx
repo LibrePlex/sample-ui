@@ -8,9 +8,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
+import { usePublicKeyOrNull } from "../../../../hooks/usePublicKeyOrNull";
 import { Dispatch, SetStateAction, useState } from "react";
-import { abbreviateKey } from "shared/abbreviateKey";
+import { abbreviateKey } from "shared-ui";
 
 export const PermittedSignersPanel = ({
   permittedSigners,

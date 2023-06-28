@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { cn } from 'utils';
+import { cn } from 'shared-ui';
 
 /**
  * Properties for a card component.

@@ -1,5 +1,5 @@
 import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
-import { Group } from "query/group";
+import { Group } from "shared-ui";
 import { Dispatch, SetStateAction } from "react";
 import { getAttrValue } from "../editCollectionDialog/AttributeTypeRow";
 

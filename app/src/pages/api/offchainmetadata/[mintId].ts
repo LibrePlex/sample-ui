@@ -1,4 +1,4 @@
-import { getProgramInstance } from "anchor/getProgramInstance";
+import { getProgramInstanceMetadata } from "shared-ui";
 import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@/environmentvariables";
 import { Wallet } from "@coral-xyz/anchor";
 import {
@@ -10,13 +10,13 @@ import {
 } from "@solana/web3.js";
 import { NextApiHandler } from "next";
 import { getMetadataPda } from "pdas/getMetadataPda";
-import { decodeMetadata } from "query/metadata";
-import { Group, decodeGroup } from "query/group";
+import { decodeMetadata } from "shared-ui";
+import { Group, decodeGroup } from "shared-ui";
 import { IMetadataJson } from "models/IMetadataJson";
 import { getAttrValue } from "components/demo/collections/editCollectionDialog/AttributeTypeRow";
-import { HttpClient } from "HttpClient";
+import { HttpClient } from "shared-ui";
 import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import { decodeMetadataExtension } from "query/metadataExtension";
+import { decodeMetadataExtension } from "shared-ui";
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;
@@ -42,7 +42,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     });
   }
 
-  const libreProgram = getProgramInstance(
+  const libreProgram = getProgramInstanceMetadata(
     connection,
     new Wallet(Keypair.generate())
   );

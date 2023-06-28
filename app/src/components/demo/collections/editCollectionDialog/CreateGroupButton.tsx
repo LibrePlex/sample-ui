@@ -6,26 +6,26 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstance } from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+import { AttributeType, GroupInput, getProgramInstanceMetadata } from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
 
-import { getGroupPda } from "pdas/getCollectionPda";
-import { getPermissionsPda } from "pdas/getPermissionsPda";
-import { Group } from "query/group";
-import { notify } from "utils/notifications";
+import { getGroupPda } from "shared-ui";
+import { getPermissionsPda } from "shared-ui";
+import { Group } from "shared-ui";
+import { notify } from "shared-ui";
 
 export interface ICreateCollection {
   name: string;
   symbol: string;
   description: string;
-  attributeTypes: Group["attributeTypes"];
-  royalties: Group["royalties"];
-  permittedSigners: Group["permittedSigners"]
+  attributeTypes: AttributeType;
+  royalties: GroupInput["royalties"];
+  permittedSigners: GroupInput["permittedSigners"]
 }
 
 export const createCollection = async (
@@ -63,7 +63,7 @@ export const createCollection = async (
 
   // console.log({a});
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });

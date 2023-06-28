@@ -15,14 +15,15 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Group } from "query/group";
+import { Group } from "shared-ui";
 import { useState } from "react";
 import { getAttrValue } from "./editCollectionDialog/AttributeTypeRow";
+import { AttributeType } from "shared-ui";
 
 export const AttributesDialog = ({
   attributeTypes,
 }: {
-  attributeTypes: Group["attributeTypes"];
+  attributeTypes: AttributeType[];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   return (

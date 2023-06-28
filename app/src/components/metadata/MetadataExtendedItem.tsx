@@ -1,13 +1,13 @@
 import { Box, Center, Checkbox, Td, Text, Tr } from "@chakra-ui/react";
-import { ImageUploader } from "components/shadowdrive/ImageUploader";
-import { Group } from "query/group";
-import { Metadata, useMetadataById } from "query/metadata";
-import { CopyPublicKeyButton } from "../buttons/CopyPublicKeyButton";
+import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
+import { Group } from "shared-ui";
+import { Metadata, useMetadataById } from "shared-ui";
+import { CopyPublicKeyButton } from "shared-ui";
 import { IRpcObject } from "../executor/IRpcObject";
 import { NftMetadataDisplay } from "./ExtendedMetadataDisplay";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { MetadataExtended } from "query/metadataExtension";
+import { MetadataExtended } from "shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 
 export const MetadataExtendedItem = ({

@@ -14,7 +14,7 @@ import {
   Tabs,
   UnorderedList,
 } from "@chakra-ui/react";
-import { StyledTabs } from "components/tabs/Tabs";
+import { StyledTabs } from "@/components/tabs/Tabs";
 
 export const CreatorVerificationBasics: FC = ({}) => {
   return (

@@ -16,22 +16,18 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import {
-  PROGRAM_ID_INSCRIPTIONS,
-  getProgramInstance,
-} from "anchor/getProgramInstance";
-import { IExecutorParams } from "components/executor/Executor";
+import { IExecutorParams } from "@/components/executor/Executor";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "components/executor/ITransactionTemplate";
+} from "@/components/executor/GenericTransactionButton";
+import { ITransactionTemplate } from "@/components/executor/ITransactionTemplate";
+import {
+  PROGRAM_ID_INSCRIPTIONS, getProgramInstanceMetadata
+} from "shared-ui";
 
-import { getGroupPda } from "pdas/getCollectionPda";
 import { getMetadataPda } from "pdas/getMetadataPda";
-import { getPermissionsPda } from "pdas/getPermissionsPda";
-import { Group } from "query/group";
-import { notify } from "utils/notifications";
+import { notify } from "shared-ui";
 
 export enum AssetType {
   Image,
@@ -72,7 +68,7 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstance(connection, {
+  const librePlexProgram = getProgramInstanceMetadata(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });
@@ -128,7 +124,6 @@ export const createMetadata = async (
   if (assetType === AssetType.Image) {
     const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
 
-
     const instruction = await librePlexProgram.methods
       .createMetadata({
         updateAuthority: wallet.publicKey,
@@ -165,8 +160,6 @@ export const createMetadata = async (
       })
     );
 
-
-
     const instruction = await librePlexProgram.methods
       .createOrdinalMetadata({
         updateAuthority: wallet.publicKey,
@@ -175,7 +168,7 @@ export const createMetadata = async (
         description,
         inscriptionInput: {
           maxDataLength: ORDINAL_DEFAULT_LENGTH,
-          authority: wallet.publicKey
+          authority: wallet.publicKey,
         },
       })
       .accounts({

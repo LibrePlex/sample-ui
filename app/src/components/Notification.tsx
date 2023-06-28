@@ -7,7 +7,7 @@ import {
 import { XIcon } from '@heroicons/react/solid'
 import useNotificationStore from '../stores/useNotificationStore'
 import { useConnection } from '@solana/wallet-adapter-react';
-import { useNetworkConfiguration } from 'contexts/NetworkConfigurationProvider';
+import { useNetworkConfiguration } from 'shared-ui';
 
 const NotificationList = () => {
   const { notifications, set: setNotificationStore } = useNotificationStore(

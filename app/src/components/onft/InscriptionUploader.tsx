@@ -1,29 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Box,
   BoxProps,
   Button,
-  Collapse,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
+  Text
 } from "@chakra-ui/react";
-import { notify } from "utils/notifications";
-import { useTheme } from "@emotion/react";
-import { ImageSelector } from "components/shadowdrive/ImageSelector";
-import { PublicKey } from "@solana/web3.js";
-import { useResizedImage } from "./useResizedImage";
-import { Inscription } from "query/inscriptions";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { ResizeOrdinalTransactionButton } from "components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
+import { ResizeOrdinalTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { ImageSelector } from "@/components/shadowdrive/ImageSelector";
+import { Inscription } from "shared-ui";
+import { useEffect, useMemo, useState } from "react";
 import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
-import {
-  convertBase64,
-  useFileToBase64,
-} from "components/shadowdrive/useFileToBase64";
 
 enum Status {
   NotStarted,
@@ -165,8 +152,16 @@ export const InscriptionUploader = ({
           {/* {inscription.item.dataLengthMax} */}
           {buf && inscription && buf.length !== inscription.item.size ? (
             <Box display="flex" flexDir={"column"} alignItems="center">
-              <Text>Size {inscription.item.size.toLocaleString()} {"=>"} {buf.length.toLocaleString()}</Text>
-              <Box width='100%' display={'flex'} flexDirection='column' alignItems={'center'}>
+              <Text>
+                Size {inscription.item.size.toLocaleString()} {"=>"}{" "}
+                {buf.length.toLocaleString()}
+              </Text>
+              <Box
+                width="100%"
+                display={"flex"}
+                flexDirection="column"
+                alignItems={"center"}
+              >
                 {buf.length > inscription.item.size ? (
                   <Text color="#f44">
                     Cost: ~

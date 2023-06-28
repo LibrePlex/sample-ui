@@ -3,6 +3,8 @@
 // const withPWA = require("next-pwa");
 const p = require("path");
 
+const withTM = require("next-transpile-modules")(["shared-ui"]);
+
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
@@ -36,4 +38,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withTM(nextConfig)

@@ -1,6 +1,6 @@
 import { Box, Table, Td, Text, Thead } from "@chakra-ui/react";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { AttributeSelectorRow } from "./AttributeSelectorRow";
 

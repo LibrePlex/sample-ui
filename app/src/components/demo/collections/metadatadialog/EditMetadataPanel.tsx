@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Box, Button, Collapse, Heading, Stack, Text } from "@chakra-ui/react";
 
 
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
+import { IRpcObject } from "shared-ui";
+import { Group } from "shared-ui";
 
 enum View {
   MintNew = "Mint new",

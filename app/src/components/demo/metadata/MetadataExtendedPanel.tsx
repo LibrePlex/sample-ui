@@ -1,8 +1,8 @@
-import { IRpcObject } from "components/executor/IRpcObject";
-import { MetadataExtended } from "query/metadataExtension";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { MetadataExtended } from "shared-ui";
 import React, { useState } from "react";
 import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
-import { Metadata } from "query/metadata";
+import { Metadata } from "shared-ui";
 import { Button, Td } from "@chakra-ui/react";
 
 export const MetadataExtendedPanel = ({

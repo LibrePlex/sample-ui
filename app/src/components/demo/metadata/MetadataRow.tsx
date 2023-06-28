@@ -14,22 +14,22 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
-import { IRpcObject } from "components/executor/IRpcObject";
+import { CopyPublicKeyButton } from "shared-ui";
+import { IRpcObject } from "shared-ui";
 
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { AttributesDisplay } from "components/metadata/AttributesDisplay";
-import { SignersDisplay } from "components/metadata/SignersDisplay";
-import { InscriptionUploader } from "components/onft/InscriptionUploader";
-import { ImageUploader } from "components/shadowdrive/ImageUploader";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import { useGroupById } from "query/group";
-import { useInscriptionById } from "query/inscriptions";
-import { Metadata } from "query/metadata";
-import { useMetadataExtendedById } from "query/metadataExtension";
+import { AttributesDisplay } from "@/components/metadata/AttributesDisplay";
+import { SignersDisplay } from "@/components/metadata/SignersDisplay";
+import { InscriptionUploader } from "@/components/onft/InscriptionUploader";
+import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
+import { getMetadataExtendedPda } from "shared-ui";
+import { useGroupById } from "shared-ui";
+import { useInscriptionById } from "shared-ui";
+import { Metadata } from "shared-ui";
+import { useMetadataExtendedById } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import useDeletedKeysStore from "stores/useDeletedKeyStore";
+import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";

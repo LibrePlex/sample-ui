@@ -1,29 +1,27 @@
 import { InfoIcon } from "@chakra-ui/icons";
 import {
-    Box,
-    Button,
-    Collapse,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    Select,
-    Stack,
-    Text,
+  Box,
+  Button,
+  Collapse,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Select,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { IRoyaltyShare } from "anchor/interfaces/IRoyaltyShare";
-import { RoyaltiesPanel } from "components/demo/collections/editCollectionDialog/RoyaltiesPanel";
-import { AttributeSelectorPanel } from "components/demo/collections/metadatadialog/AttributeSelectorPanel";
-import { ExtendMetadataButton } from "components/demo/collections/metadatadialog/ExtendMetadataButton";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import { Group, useGroupsByAuthority } from "query/group";
-import { Metadata } from "query/metadata";
+import { AttributeSelectorPanel } from "@/components/demo/collections/metadatadialog/AttributeSelectorPanel";
+import { ExtendMetadataButton } from "@/components/demo/collections/metadatadialog/ExtendMetadataButton";
+import { IRpcObject } from "shared-ui";
+import { getMetadataExtendedPda } from "shared-ui";
+import { Group, RoyaltyShare, useGroupsByAuthority } from "shared-ui";
+import { Metadata } from "shared-ui";
 import { useEffect, useMemo, useState } from "react";
-import { abbreviateKey } from "shared/abbreviateKey";
+import { abbreviateKey } from "shared-ui";
 
 enum View {
   Standalone,
@@ -51,7 +49,7 @@ export const ExtendMetadataDialog = ({
 
   const { connection } = useConnection();
 
-  const groups= useGroupsByAuthority(publicKey, connection);
+  const groups = useGroupsByAuthority(publicKey, connection);
 
   const [selectedGroup, setSelectedGroup] = useState<IRpcObject<Group>>();
 
@@ -66,20 +64,25 @@ export const ExtendMetadataDialog = ({
     ...Array(numberOfAttributes),
   ]);
 
-  useEffect(()=>{
-    setAttributes([...Array(numberOfAttributes)])
-  },[numberOfAttributes])
+  useEffect(() => {
+    setAttributes([...Array(numberOfAttributes)]);
+  }, [numberOfAttributes]);
 
-  const extendedMetadataKey = useMemo(()=>getMetadataExtendedPda(metadata.pubkey)[0],[metadata])
+  const extendedMetadataKey = useMemo(
+    () => getMetadataExtendedPda(metadata.pubkey)[0],
+    [metadata]
+  );
 
   const [royaltyBps, setRoyaltyBps] = useState<number>(500);
-  const [royaltyShares, setRoyaltyShares] = useState<IRoyaltyShare[]>([]);
+  const [royaltyShares, setRoyaltyShares] = useState<RoyaltyShare[]>([]);
 
   return (
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Extend Metadata ({abbreviateKey(extendedMetadataKey.toBase58())})</ModalHeader>
+        <ModalHeader>
+          Extend Metadata ({abbreviateKey(extendedMetadataKey.toBase58())})
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack>
@@ -90,13 +93,19 @@ export const ExtendMetadataDialog = ({
                 alignItems: "center",
               }}
             >
-              <Select placeholder="Select group" 
+              <Select
+                placeholder="Select group"
                 value={selectedGroup?.pubkey.toBase58()}
-              onChange={(e)=>{
-                setSelectedGroup(groups.data.find(item=>item.pubkey.toBase58() === e.currentTarget.value))
-              }}>
+                onChange={(e) => {
+                  setSelectedGroup(
+                    groups.data.find(
+                      (item) => item.pubkey.toBase58() === e.currentTarget.value
+                    )
+                  );
+                }}
+              >
                 {groups.data.map((item, idx) => (
-                  <option key={idx} value={item.pubkey?.toBase58()} >
+                  <option key={idx} value={item.pubkey?.toBase58()}>
                     {item.item?.name}
                   </option>
                 ))}
@@ -137,13 +146,13 @@ export const ExtendMetadataDialog = ({
                   mint: metadata.item.mint,
                   group: selectedGroup.pubkey,
                   royalties: undefined,
-                //   royalties:
-                //     royaltyShares.length > 0
-                //       ? {
-                //           shares: royaltyShares,
-                //           bps: royaltyBps,
-                //         }
-                //       : null,
+                  //   royalties:
+                  //     royaltyShares.length > 0
+                  //       ? {
+                  //           shares: royaltyShares,
+                  //           bps: royaltyBps,
+                  //         }
+                  //       : null,
                 }}
                 formatting={undefined}
               />

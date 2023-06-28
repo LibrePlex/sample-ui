@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "CommonJS",
+    "composite": true,
+    "esModuleInterop": true,
+    "target": "es6",
+    "allowJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@target": [
+        "./target/*"
+      ],
+      "@/components": [
+        "./components/*"
+      ],
+      "types": [
+        "./types/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "auth.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": ["dist", "node_modules", "public", "migrations", "tests"]
+}

@@ -1,10 +1,8 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { IRpcObject } from "components/executor/IRpcObject";
-import { Group } from "query/group";
-import { Metadata } from "query/metadata";
-import { AttributeDisplayRow } from "./AttributeDisplayRow";
-import { MetadataExtended } from "query/metadataExtension";
-import { CopyPublicKeyButton } from "components/buttons/CopyPublicKeyButton";
+import { CopyPublicKeyButton } from "shared-ui";
+import { IRpcObject } from "@/components/executor/IRpcObject";
+import { Group } from "shared-ui";
+import { MetadataExtended } from "shared-ui";
 
 export const SignersDisplay = ({
   signers,
