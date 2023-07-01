@@ -5,7 +5,7 @@ import {
   Connection,
   PublicKey,
 } from "@solana/web3.js";
-import { IRpcObject } from "components/executor/IRpcObject";
+import { IRpcObject } from "../../components/executor/IRpcObject";
 import { useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { BufferingConnection } from "../../stores/BufferingConnection";

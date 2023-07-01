@@ -5,7 +5,7 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstanceMetadata } from "shared-ui";
+import { getGroupPda, getProgramInstanceMetadata } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
@@ -13,8 +13,6 @@ import {
 } from "shared-ui";
 import { ITransactionTemplate } from "shared-ui";
 
-import { getGroupPda } from "pdas/getCollectionPda";
-import { getPermissionsPda } from "pdas/getPermissionsPda";
 
 export interface INftCollectionData {
   royaltyBps: number;
@@ -53,7 +51,7 @@ export const createCollection = async (
 
   const [collection] = getGroupPda(seed.publicKey);
 
-  const [userPermissions] = getPermissionsPda(collection, wallet.publicKey);
+  // const [userPermissions] = getPermissionsPda(collection, wallet.publicKey);
 
   // const a = createDeleteCollectionInstruction({
   //   authority: wallet.publicKey,

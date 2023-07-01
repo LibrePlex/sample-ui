@@ -1,6 +1,6 @@
-export type LibreplexCreator = {
+export type Librecreator = {
   "version": "0.1.0",
-  "name": "libreplex_creator",
+  "name": "librecreator",
   "instructions": [
     {
       "name": "createCreator",
@@ -104,10 +104,7 @@ export type LibreplexCreator = {
         {
           "name": "creator",
           "isMut": true,
-          "isSigner": false,
-          "relations": [
-            "mint_authority"
-          ]
+          "isSigner": false
         },
         {
           "name": "metadata",
@@ -485,9 +482,9 @@ export type LibreplexCreator = {
   ]
 };
 
-export const IDL: LibreplexCreator = {
+export const IDL: Librecreator = {
   "version": "0.1.0",
-  "name": "libreplex_creator",
+  "name": "librecreator",
   "instructions": [
     {
       "name": "createCreator",
@@ -591,10 +588,7 @@ export const IDL: LibreplexCreator = {
         {
           "name": "creator",
           "isMut": true,
-          "isSigner": false,
-          "relations": [
-            "mint_authority"
-          ]
+          "isSigner": false
         },
         {
           "name": "metadata",

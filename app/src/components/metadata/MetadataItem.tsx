@@ -1,15 +1,12 @@
 import { Box, Center, Checkbox, Td, Text, Tr } from "@chakra-ui/react";
 import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
-import { Group } from "shared-ui";
+import { Group, IRpcObject, getMetadataExtendedPda } from "shared-ui";
 import { Metadata, useMetadataById } from "shared-ui";
 import { CopyPublicKeyButton } from "shared-ui";
-import { IRpcObject } from "../executor/IRpcObject";
 import { NftMetadataDisplay } from "./ExtendedMetadataDisplay";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { MetadataExtended, useMetadataExtendedById } from "shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
 
 export const MetadataItem = ({
   item,
@@ -28,10 +25,10 @@ export const MetadataItem = ({
 
   const metadataExtendedKey = useMemo(()=>getMetadataExtendedPda(item.pubkey)[0],[item])
 
-  const metadataExtended = useMetadataExtendedById(
-    metadataExtendedKey,
-    connection
-  );
+  // const metadataExtended = useMetadataExtendedById(
+  //   metadataExtendedKey,
+  //   connection
+  // );
 
   return (
     <Tr>
@@ -65,12 +62,12 @@ export const MetadataItem = ({
         <Box display="flex" flexDir={"column"} alignItems="center" rowGap={3}>
           <Text fontSize="3xl">{item.item.name}</Text>
           <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} />
-          {metadataExtended && (
+          {/* {metadataExtended && (
             <NftMetadataDisplay
               attributes={metadataExtended.item.attributes}
               collection={collection}
             />
-          )}
+          )} */}
         </Box>
       </Td>
 

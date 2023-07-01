@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Group } from "shared-ui";
 import { useState } from "react";
-import { getAttrValue } from "./editCollectionDialog/AttributeTypeRow";
+// import { getAttrValue } from "./editCollectionDialog/AttributeTypeRow";
 import { AttributeType } from "shared-ui";
 
 export const AttributesDialog = ({
@@ -62,9 +62,9 @@ export const AttributesDialog = ({
                           <Td>{item.name}</Td>
                           <Td>
                             <Box display="flex" gap={1}>
-                              {item.permittedValues.map((item, idx) => (
+                              {/* {item.permittedValues.map((item, idx) => (
                                 <Tag key={idx}>{getAttrValue(item)}</Tag>
-                              ))}
+                              ))} */}
                             </Box>
                           </Td>
                         </Tr>

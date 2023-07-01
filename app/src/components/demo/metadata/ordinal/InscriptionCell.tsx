@@ -1,14 +1,18 @@
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
-import { IRpcObject } from "@/components/executor/IRpcObject";
-import { Inscription} from "shared-ui";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { IRpcObject, Inscription } from "shared-ui";
 
-export const InscriptionCell = ({ inscription }: { inscription: IRpcObject<Inscription> }) => {
-  
+
+
+export const InscriptionCell = ({
+  inscription,
+}: {
+  inscription: IRpcObject<Inscription>;
+}) => {
   return (
     <>
-    
-      {inscription? `Ordinal [${inscription?.item.size.toLocaleString() ?? "-"} bytes]`:''}
+      {inscription
+        ? `Ordinal [${inscription?.item.size.toLocaleString() ?? "-"} bytes]`
+        : ""}
     </>
   );
 };

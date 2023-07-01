@@ -15,8 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { Group } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { AttributeTypeRow } from "./AttributeTypeRow";
+// import { AttributeTypeRow } from "./AttributeTypeRow";
 import { AddIcon, CalendarIcon } from "@chakra-ui/icons";
+import { AttributeTypeRow } from "./AttributeTypeRow22";
 
 
 

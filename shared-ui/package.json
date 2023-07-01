@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "copy-idl": "rm -rf ./src/types/libreplex.ts && rm -rf ./src/types/inscriptions.ts && rm -rf ./src/idl/*  && cp -p -r ../../metadata/target/types/*  ./src/types && cp -p -r ../../metadata/target/idl/* ./src/idl"
+    "copy-idl": "rm -rf ./src/types/libreplex_*.ts && rm -rf ./src/idl/*  && cp -p -r ../../metadata/target/types/*  ./src/types && cp -p -r ../../metadata/target/idl/* ./src/idl"
   },
   "devDependencies": {
     "@metaplex-foundation/amman": "^0.12.1",

@@ -3,8 +3,8 @@ import { AddIcon } from "@chakra-ui/icons";
 import { Button, ButtonProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { EditMetadataDialog } from "./EditMetadataDialog";
-import { IRpcObject } from "@/components/executor/IRpcObject";
-import { Group } from "shared-ui";
+
+import { Group, IRpcObject } from "shared-ui";
 
 export const AddMetadataButton = ({
   collection,

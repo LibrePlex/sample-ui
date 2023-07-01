@@ -1,8 +1,12 @@
 export { CopyPublicKeyButton, WalletAuthenticatingButton } from "./buttons";
-export {
+export type {
   IRpcObject,
   IExecutorParams,
-  GenericTransactionButton,
   GenericTransactionButtonProps,
   ITransactionTemplate
 } from "./executor";
+
+export {
+    GenericTransactionButton,
+  
+} from "./executor"

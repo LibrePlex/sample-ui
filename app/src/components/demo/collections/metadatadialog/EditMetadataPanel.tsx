@@ -5,12 +5,16 @@ import { Box, Button, Collapse, Heading, Stack, Text } from "@chakra-ui/react";
 
 
 import { IRpcObject } from "shared-ui";
-import { Group } from "shared-ui";
+import { LibreplexMetadata } from "shared-ui";
+import { IdlAccounts } from "@coral-xyz/anchor";
 
 enum View {
   MintNew = "Mint new",
   AddMint = "Add mint",
 }
+
+export type Group = IdlAccounts<LibreplexMetadata>["group"];
+
 
 export const EditMetadataPanel = ({
   collection,

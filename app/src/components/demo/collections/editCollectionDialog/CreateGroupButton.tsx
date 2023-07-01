@@ -1,4 +1,5 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
+import { IdlTypes } from "@coral-xyz/anchor";
 import {
   Connection,
   Keypair,
@@ -6,7 +7,7 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { AttributeType, GroupInput, getProgramInstanceMetadata } from "shared-ui";
+import { AttributeType, getProgramInstanceMetadata } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
@@ -18,12 +19,18 @@ import { getGroupPda } from "shared-ui";
 import { getPermissionsPda } from "shared-ui";
 import { Group } from "shared-ui";
 import { notify } from "shared-ui";
+import { LibreplexMetadata } from "shared-ui";
+
+
+export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
+
+
 
 export interface ICreateCollection {
   name: string;
   symbol: string;
   description: string;
-  attributeTypes: AttributeType;
+  attributeTypes: AttributeType[];
   royalties: GroupInput["royalties"];
   permittedSigners: GroupInput["permittedSigners"]
 }

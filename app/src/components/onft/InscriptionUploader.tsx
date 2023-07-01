@@ -6,9 +6,8 @@ import {
   Text
 } from "@chakra-ui/react";
 import { ResizeOrdinalTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
-import { IRpcObject } from "@/components/executor/IRpcObject";
 import { ImageSelector } from "@/components/shadowdrive/ImageSelector";
-import { Inscription } from "shared-ui";
+import { IRpcObject, Inscription } from "shared-ui";
 import { useEffect, useMemo, useState } from "react";
 import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
 

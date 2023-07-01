@@ -19,8 +19,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useState } from "react";
 
-import { IRpcObject } from "@/components/executor/IRpcObject";
-import { Group } from "shared-ui";
+import { Group, IRpcObject } from "shared-ui";
 import { Metadata } from "shared-ui";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
@@ -142,7 +141,7 @@ export const BaseMetadataPanel = () => {
                 <Tr>
                   <Th colSpan={5}></Th>
                   <Th colSpan={4}>
-                    <Center>Extended</Center>
+                    
                   </Th>
                 </Tr>
 
