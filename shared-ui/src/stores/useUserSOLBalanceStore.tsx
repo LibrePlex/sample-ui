@@ -6,7 +6,7 @@ interface UserSOLBalanceStore extends State {
   getUserSOLBalance: (publicKey: PublicKey, connection: Connection) => void
 }
 
-const useUserSOLBalanceStore = create<UserSOLBalanceStore>((set, _get) => ({
+export const useUserSOLBalanceStore = create<UserSOLBalanceStore>((set, _get) => ({
   balance: 0,
   getUserSOLBalance: async (publicKey, connection) => {
     let balance = 0;
@@ -26,4 +26,3 @@ const useUserSOLBalanceStore = create<UserSOLBalanceStore>((set, _get) => ({
   },
 }));
 
-export default useUserSOLBalanceStore;

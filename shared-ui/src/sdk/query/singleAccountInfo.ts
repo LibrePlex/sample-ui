@@ -8,28 +8,31 @@ import {
 import { IRpcObject } from "../../components/executor/IRpcObject";
 import { useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
-import { BufferingConnection } from "../../stores/BufferingConnection";
+import { BufferingConnection } from "shared-ui";
 
 export type DecodeType<T extends unknown, P extends Idl> = (
   buf: Buffer,
   pubkey: PublicKey
 ) => IRpcObject<T>;
 
-export const fetchSingleAccount = <T extends unknown, P extends Idl>(
-  accountKey: PublicKey,
+export const fetchSingleAccount = (
+  accountKey: PublicKey | null,
   connection: Connection
 ) => ({
   fetcher: async () => {
     const bufferingConnection = BufferingConnection.getOrCreate(connection);
+    if (accountKey) {
+      const result = await bufferingConnection.getMultipleAccountsInfo([
+        accountKey,
+      ]);
 
-    const result = await bufferingConnection.getMultipleAccountsInfo([
-      accountKey,
-    ]);
-
-    return {
-      pubkey: accountKey,
-      item: result[0]?.data || null,
-    };
+      return {
+        pubkey: accountKey,
+        item: result[0]?.data || null,
+      };
+    } else {
+      return null;
+    }
   },
   listener: {
     add: (onAccountChange: AccountChangeCallback, accountId: PublicKey) =>
@@ -67,12 +70,12 @@ const accountUpdater =
     }
   };
 
-export const useFetchSingleAccount = <T extends unknown, P extends Idl>(
+export const useFetchSingleAccount = (
   /*
     this is needed for deserialization only. 
     unlike gpa fetch we don't need the program id to find accounts on chain.
   */
-  accountId: PublicKey,
+  accountId: PublicKey | null,
   /* 
     same decoder interface as in useGpa
   */
@@ -96,7 +99,7 @@ export const useFetchSingleAccount = <T extends unknown, P extends Idl>(
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<Buffer | null>>([accountId], fetcher);
+  const q = useQuery<IRpcObject<Buffer | null> | null>([accountId], fetcher);
 
   /// intercept account changes and refetch as needed
   useEffect(() => {

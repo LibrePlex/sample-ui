@@ -1,20 +1,20 @@
 import {
-    Box,
-    BoxProps,
-    Button,
-    Collapse,
-    Heading,
-    LinkBox,
-    LinkOverlay,
-    Text,
-    useMediaQuery
+  Box,
+  BoxProps,
+  Button,
+  Collapse,
+  Heading,
+  LinkBox,
+  LinkOverlay,
+  Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { ReactNode, useState } from "react";
 import { CollectionsPanel } from "./collections/CollectionsPanel";
 import useSelectedPermissions from "./permissions/useSelectedPermissions";
 import { BaseMetadataPanel } from "./metadata/MetadataPanel";
-
+import { useNetworkConfiguration } from "shared-ui";
 
 enum View {
   BaseMetadata = "BaseMetadata",
@@ -47,6 +47,8 @@ export const Demo = () => {
 
   const { connection } = useConnection();
 
+  const { networkConfiguration } = useNetworkConfiguration();
+
   //   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -56,8 +58,8 @@ export const Demo = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column", height :"100%"
-        
+        flexDirection: "column",
+        height: "100%",
       }}
       rowGap={3}
     >
@@ -65,77 +67,85 @@ export const Demo = () => {
         LibrePlex Manager
       </h1>
       {/* {selectedPermissionKeys.size} */}
-      <Box
-        display="flex"
-        flexDirection={isSmallerThan800 ? "column" : "row"}
-        justifyContent={'center'}
-        columnGap={2}
-        w={[300, 300, 800]}
-      >
-        <Button
-          colorScheme="teal"
-          variant={view === View.BaseMetadata ? "solid" : "outline"}
-          onClick={() => {
-            setView(View.BaseMetadata);
-          }}
-        >
-          Metadata
-        </Button>
-        <Button
-          colorScheme="teal"
-          variant={view === View.Collections ? "solid" : "outline"}
-          onClick={() => {
-            setView(View.Collections);
-          }}
-        >
-          Groups
-        </Button>
-        <Button
-          colorScheme="teal"
-          variant={view === View.Permissions ? "solid" : "outline"}
-          onClick={() => {
-            setView(View.Permissions);
-          }}
-        >
-          Permissions
-        </Button>
+      {networkConfiguration === "mainnet-beta" ? (
+        <Box>
+          Demo is not available on mainnet yet! Please switch to devnet to test.
+        </Box>
+      ) : (
+        <Box>
+          <Box
+            display="flex"
+            flexDirection={isSmallerThan800 ? "column" : "row"}
+            justifyContent={"center"}
+            columnGap={2}
+            w={[300, 300, 800]}
+          >
+            <Button
+              colorScheme="teal"
+              variant={view === View.BaseMetadata ? "solid" : "outline"}
+              onClick={() => {
+                setView(View.BaseMetadata);
+              }}
+            >
+              Metadata
+            </Button>
+            <Button
+              colorScheme="teal"
+              variant={view === View.Collections ? "solid" : "outline"}
+              onClick={() => {
+                setView(View.Collections);
+              }}
+            >
+              Groups
+            </Button>
+            <Button
+              colorScheme="teal"
+              variant={view === View.Permissions ? "solid" : "outline"}
+              onClick={() => {
+                setView(View.Permissions);
+              }}
+            >
+              Permissions
+            </Button>
 
-        <Button
-          colorScheme="teal"
-          variant={view === View.Repos ? "solid" : "outline"}
-          onClick={() => {
-            setView(View.Repos);
-          }}
-        >
-          Repos
-        </Button>
-      </Box>
+            <Button
+              colorScheme="teal"
+              variant={view === View.Repos ? "solid" : "outline"}
+              onClick={() => {
+                setView(View.Repos);
+              }}
+            >
+              Repos
+            </Button>
+          </Box>
 
-      <TabPanel
-        open={view === View.BaseMetadata}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-          justifyContent: 'start', height :"100%"
-        }}
-      >
-        <BaseMetadataPanel />
-      </TabPanel>
+          <TabPanel
+            open={view === View.BaseMetadata}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+              justifyContent: "start",
+              height: "100%",
+            }}
+          >
+            <BaseMetadataPanel />
+          </TabPanel>
 
-      <TabPanel
-        open={view === View.Collections}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-          justifyContent: 'start', height :"100%"
-        }}
-      >
-        <CollectionsPanel />
-      </TabPanel>
+          <TabPanel
+            open={view === View.Collections}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+              justifyContent: "start",
+              height: "100%",
+            }}
+          >
+            <CollectionsPanel />
+          </TabPanel>
 
-      {/* <TabPanel
+          {/* <TabPanel
         open={view === View.Permissions}
         sx={{
           display: "flex",
@@ -146,36 +156,50 @@ export const Demo = () => {
         <PermissionsPanel />
       </TabPanel> */}
 
-      <TabPanel open={view === View.Repos}>
-        <Box
-          display="flex"
-          columnGap={2}
-          flexDirection={isSmallerThan800 ? "column" : "row"}
-          alignItems={isSmallerThan800 ? "center" : "row"}
-          justifyContent={"center"}
-        >
-          <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
-            <Heading size="md" my="2">
-              <LinkOverlay href="https://github.com/LibrePlex/metadata">
-                Contracts
-              </LinkOverlay>
-            </Heading>
-            <Text>Released under MIT License</Text>
-            <Text>Click here for the repo!</Text>
-            <Text>https://github.com/LibrePlex/metadata</Text>
-          </LinkBox>
-          <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
-            <Heading size="md" my="2">
-              <LinkOverlay href="https://github.com/LibrePlex/sample-ui">
-                Reference UI (this website)
-              </LinkOverlay>
-            </Heading>
-            <Text>Released under Apache 2.0 License</Text>
-            <Text>Click here for the repo!</Text>
-            <Text>https://github.com/LibrePlex/sample-ui</Text>
-          </LinkBox>
+          <TabPanel open={view === View.Repos}>
+            <Box
+              display="flex"
+              columnGap={2}
+              flexDirection={isSmallerThan800 ? "column" : "row"}
+              alignItems={isSmallerThan800 ? "center" : "row"}
+              justifyContent={"center"}
+            >
+              <LinkBox
+                as="article"
+                maxW="sm"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+              >
+                <Heading size="md" my="2">
+                  <LinkOverlay href="https://github.com/LibrePlex/metadata">
+                    Contracts
+                  </LinkOverlay>
+                </Heading>
+                <Text>Released under MIT License</Text>
+                <Text>Click here for the repo!</Text>
+                <Text>https://github.com/LibrePlex/metadata</Text>
+              </LinkBox>
+              <LinkBox
+                as="article"
+                maxW="sm"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+              >
+                <Heading size="md" my="2">
+                  <LinkOverlay href="https://github.com/LibrePlex/sample-ui">
+                    Reference UI (this website)
+                  </LinkOverlay>
+                </Heading>
+                <Text>Released under Apache 2.0 License</Text>
+                <Text>Click here for the repo!</Text>
+                <Text>https://github.com/LibrePlex/sample-ui</Text>
+              </LinkBox>
+            </Box>
+          </TabPanel>
         </Box>
-      </TabPanel>
+      )}
     </Box>
   );
 };

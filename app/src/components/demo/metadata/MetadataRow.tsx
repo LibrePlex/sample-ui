@@ -29,7 +29,7 @@ import { useGroupById } from "shared-ui";
 import { useInscriptionById } from "shared-ui";
 import { Metadata } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
+import {useDeletedKeyStore} from "shared-ui";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
 import { IdlAccounts } from "@coral-xyz/anchor";
@@ -49,7 +49,7 @@ export const MetadataRow = ({
   selectedMetadataObjs: Set<PublicKey>;
   toggleSelectedMetadata: (pubkey: PublicKey, b: boolean) => any;
 }) => {
-  const deletedKeys = useDeletedKeysStore((state) => state.deletedKeys);
+  const deletedKeys = useDeletedKeyStore((state) => state.deletedKeys);
 
   const [open, setOpen] = useState<boolean>(false);
 

@@ -14,7 +14,7 @@ import {
 import { ITransactionTemplate } from "shared-ui";
 
 
-import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
+import {useDeletedKeyStore} from "shared-ui";
 // import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
 
@@ -92,7 +92,7 @@ export const DeleteMetadataButton = (
     "transactionGenerator"
   >
 ) => {
-  const { addDeletedKey } = useDeletedKeysStore();
+  const { addDeletedKey } = useDeletedKeyStore();
 
   return (
     <>

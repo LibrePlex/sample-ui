@@ -1,4 +1,4 @@
-import useNotificationStore from "./useNotificationStore";
+import {useNotificationStore} from "shared-ui";
 
 export function notify(newNotification: {
   type?: string

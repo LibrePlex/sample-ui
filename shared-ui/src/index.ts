@@ -5,7 +5,7 @@ export {
 } from "./contexts";
 export { useUserSolBalanceStore } from "./useUserSolBalanceStore";
 
-export { BufferingConnection } from "./stores";
+export { BufferingConnection, useNotificationStore, useUserSOLBalanceStore, useDeletedKeyStore } from "./stores";
 export type { LibreplexMetadata } from "./types/libreplex_metadata";
 
 export {
@@ -27,6 +27,9 @@ export {
   useMetadataByAuthority,
   useMetadataById,
   useMetadataByGroup,
+  useTokenAccountsByOwner,
+  useLegacyMetadataByMintId,
+  useLegacyTokenRecordByTokenAccount
 } from "./sdk";
 export type {
   AttributeType,
@@ -63,4 +66,6 @@ export {
   getMetadataExtendedPda,
   getMetadataPda,
   getPermissionsPda,
+  getLegacyMetadataPda,
+  getLegacyTokenRecordPda
 } from "./pdas";

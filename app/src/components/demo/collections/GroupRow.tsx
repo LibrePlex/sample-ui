@@ -14,7 +14,7 @@ import { IRpcObject } from "shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
 import { Dispatch, SetStateAction } from "react";
-import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
+import {useDeletedKeyStore} from "shared-ui";
 import { AttributesDialog } from "./AttributesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
@@ -36,7 +36,7 @@ export const GroupRow = ({
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
 }) => {
-  const deletedKeys = useDeletedKeysStore((state) => state.deletedKeys);
+  const deletedKeys = useDeletedKeyStore((state) => state.deletedKeys);
   return (
     <Tr
       sx={{

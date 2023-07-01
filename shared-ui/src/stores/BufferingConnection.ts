@@ -88,7 +88,7 @@ export class BufferingConnection {
     this.timeout = null;
     this.processing = false;
     // if new stuff has come in since then, set the timeout
-    this.scheduleFlush();
+    // this.scheduleFlush();
   };
 
   public scheduleFlush = () => {

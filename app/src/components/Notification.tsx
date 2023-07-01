@@ -5,7 +5,7 @@ import {
   XCircleIcon,
 } from '@heroicons/react/outline'
 import { XIcon } from '@heroicons/react/solid'
-import useNotificationStore from '../stores/useNotificationStore'
+import {useNotificationStore} from 'shared-ui'
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useNetworkConfiguration } from 'shared-ui';
 

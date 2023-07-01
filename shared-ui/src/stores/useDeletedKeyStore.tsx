@@ -6,7 +6,7 @@ interface DeletedKeysStore extends State {
   addDeletedKey: (publicKey: PublicKey) => void
 }
 
-const useDeletedKeysStore = create<DeletedKeysStore>((set, _get) => ({
+export const useDeletedKeyStore = create<DeletedKeysStore>((set, _get) => ({
   deletedKeys: new Set(),
   addDeletedKey: async (publicKey) => {
     
@@ -15,5 +15,3 @@ const useDeletedKeysStore = create<DeletedKeysStore>((set, _get) => ({
     })
   },
 }));
-
-export default useDeletedKeysStore;

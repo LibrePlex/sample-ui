@@ -9,4 +9,7 @@ export {
   useInscriptionById,
   useMetadataById,
   decodeMetadata,
+  useTokenAccountsByOwner,
+  useLegacyMetadataByMintId,
+  useLegacyTokenRecordByTokenAccount
 } from "./query";

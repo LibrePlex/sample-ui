@@ -97,21 +97,7 @@ export const useGpa = <T extends unknown, P extends Idl>(
     [filters, connection, programId]
   );
 
-
-    
   const queryClient = useQueryClient();
-
-  // const fetcher = useMemo(
-  //   () =>
-  //     getFetcher && programId
-  //       ? { key, fetcher: getFetcher(programId) }
-  //       : { key: "DUMMY", fetcher: () => [] },
-  //   [getFetcher, programId, key]
-  // );
-
-  // useEffect(()=>{
-  //   console.log({fetcherKey: fetcher.key});
-  // },[fetcher.key])
 
   const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
 

@@ -9,7 +9,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { RequestAirdrop } from "../../components/RequestAirdrop";
 
 // Store
-import useUserSOLBalanceStore from "../../stores/useUserSOLBalanceStore";
+import {useUserSOLBalanceStore} from "shared-ui";
 import {
   Box,
   Button,
@@ -303,14 +303,13 @@ export const HomeView: FC = ({ }) => {
                   p={3}
                   mb={1}
                   as={"a"}
-                  href="http://discord.gg/6tDfht4qdB"
+                  href="http://discord.gg/libreplex"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <VStack>
                     <Heading size={"md"}>Join us on Discord</Heading>
-                    {/* LINK IS BROKEN, NEED NEW ONE */}
-                    <Text color={"gray.400"}>http://discord.gg/6tDfht4qdB</Text>
+                    <Text color={"gray.400"}>http://discord.gg/libreplex</Text>
                   </VStack>
                 </Button>
                 <Button
