@@ -5,7 +5,10 @@ import { useContext, useMemo } from "react";
 import { Inscriptions } from "types/inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 
-export type Inscription = IdlAccounts<Inscriptions>["inscription"] & {
+export type Inscription = {
+  authority: PublicKey,
+  root: PublicKey,
+  size: number,
   dataBytes: number[];
 };
 

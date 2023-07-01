@@ -1,7 +1,7 @@
 import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
 import { Group } from "shared-ui";
 import { Dispatch, SetStateAction } from "react";
-import { getAttrValue } from "../editCollectionDialog/AttributeTypeRow";
+import { getAttrValue } from "../../../../utils/getAttrValue";
 
 
 export const AttributeSelectorRow = ({
@@ -36,11 +36,12 @@ export const AttributeSelectorRow = ({
                 attributes[attributeTypeIdx]  === valueIdx + 1? "solid" : "outline"
               }
               onClick={() => {
-                setAttributes((old) => [
+                setAttributes((old) => {
+                  return [
                   ...old.map((item: number, idx: number) =>
                     idx === attributeTypeIdx ? valueIdx + 1: item
                   ),
-                ]);
+                ]});
               }}
               size="sm"
               sx={{ cursor: "pointer" }}

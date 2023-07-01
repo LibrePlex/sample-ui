@@ -8,17 +8,20 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "shared-ui";
+import { CopyPublicKeyButton, Group, LibreplexMetadata } from "shared-ui";
 import { IRpcObject } from "shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
-import { Group } from "shared-ui";
 import { Dispatch, SetStateAction } from "react";
 import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
 import { AttributesDialog } from "./AttributesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
+import { IdlAccounts } from "@coral-xyz/anchor";
+
+
+
 
 export const GroupRow = ({
   item,

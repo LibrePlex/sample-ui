@@ -1,7 +1,8 @@
 import { PublicKey } from "@solana/web3.js";
 
 import { METADATA_EXTENSION } from "./constants";
-import { PROGRAM_ID_METADATA } from "shared-ui";
+import { PROGRAM_ID_METADATA } from "../anchor/getProgramInstanceMetadata";
+
 
 export const getMetadataExtendedPda = (metadata: PublicKey) => {
   return PublicKey.findProgramAddressSync(

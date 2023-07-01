@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Checkbox,
+  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,7 +15,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "shared-ui";
+import { CopyPublicKeyButton, LibreplexMetadata } from "shared-ui";
 import { IRpcObject } from "shared-ui";
 
 import { useConnection } from "@solana/wallet-adapter-react";
@@ -27,12 +28,13 @@ import { getMetadataExtendedPda } from "shared-ui";
 import { useGroupById } from "shared-ui";
 import { useInscriptionById } from "shared-ui";
 import { Metadata } from "shared-ui";
-import { useMetadataExtendedById } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import useDeletedKeysStore from "@/stores/useDeletedKeyStore";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
-import { ExtendMetadataDialog } from "./extend/ExtendMetadataDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
+import { IdlAccounts } from "@coral-xyz/anchor";
+
+export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
 export const MetadataRow = ({
   item,
@@ -55,18 +57,10 @@ export const MetadataRow = ({
 
   const [signersOpen, setSignersOpen] = useState<boolean>(false);
 
-  const metadataExtendedId = useMemo(
-    () => getMetadataExtendedPda(item.pubkey)[0],
-    [item]
-  );
-
+  
   const { connection } = useConnection();
 
-  const metadataExtended = useMetadataExtendedById(
-    metadataExtendedId,
-    connection
-  );
-
+  
   const instructionId = useMemo(
     () =>
       item.item.asset?.inscription
@@ -156,7 +150,7 @@ export const MetadataRow = ({
         </Stack>
       </Td>
 
-      {metadataExtended && group ? (
+      {group ? (
         <>
           <Td>
             <CopyPublicKeyButton publicKey={group.pubkey.toBase58()} />
@@ -165,7 +159,7 @@ export const MetadataRow = ({
           <Td>
             <RoyaltiesDialog
               royalties={
-                metadataExtended.item.royalties ?? group.item.royalties
+                item.item.extension?.nft?.royalties ?? group.item.royalties
               }
             />
           </Td>
@@ -175,7 +169,7 @@ export const MetadataRow = ({
                 setSignersOpen(true);
               }}
             >
-              Signers: {metadataExtended.item.signers.length}
+              Signers: {item.item.extension?.nft?.signers?.length??0}
             </Button>
             <Modal
               isOpen={signersOpen}
@@ -193,7 +187,7 @@ export const MetadataRow = ({
                     Permitted signers are configured at collection level.
                   </Text>
                   <SignersDisplay
-                    signers={metadataExtended.item.signers}
+                    signers={item.item.extension?.nft?.signers??[]}
                     group={group}
                   />
                 </ModalBody>
@@ -206,7 +200,7 @@ export const MetadataRow = ({
                 setAttributesOpen(true);
               }}
             >
-              {metadataExtended.item.attributes.length}
+              {item.item.extension?.nft?.attributes.length??0}
             </Button>
             <Modal
               isOpen={attributesOpen}
@@ -219,8 +213,9 @@ export const MetadataRow = ({
                 <ModalHeader>Attributes</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
+                  <Heading>{item.item.extension?'y':'n'}</Heading>
                   <AttributesDisplay
-                    attributes={metadataExtended.item.attributes}
+                    attributes={item.item.extension?.nft?.attributes??[]}
                     group={group}
                   />
                 </ModalBody>
@@ -230,22 +225,7 @@ export const MetadataRow = ({
         </>
       ) : (
         <Td colSpan={4}>
-          <Center>
-            <Button
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              Extend metadata
-            </Button>
-          </Center>
-          <ExtendMetadataDialog
-            metadata={item}
-            open={open}
-            onClose={() => {
-              setOpen(false);
-            }}
-          />
+              No group assigned
         </Td>
       )}
     </Tr>

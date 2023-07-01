@@ -1,4 +1,4 @@
-import { getProgramInstanceMetadata } from "shared-ui";
+
 import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@/environmentvariables";
 import { Wallet } from "@coral-xyz/anchor";
 import {
@@ -8,15 +8,10 @@ import {
   Transaction,
   VersionedTransaction,
 } from "@solana/web3.js";
-import { NextApiHandler } from "next";
-import { getMetadataPda } from "pdas/getMetadataPda";
-import { decodeMetadata } from "shared-ui";
-import { Group, decodeGroup } from "shared-ui";
 import { IMetadataJson } from "models/IMetadataJson";
-import { getAttrValue } from "components/demo/collections/editCollectionDialog/AttributeTypeRow";
-import { HttpClient } from "shared-ui";
-import { getMetadataExtendedPda } from "pdas/getMetadataExtendedPda";
-import { decodeMetadataExtension } from "shared-ui";
+import { NextApiHandler } from "next";
+import { HttpClient, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata } from "shared-ui";
+import { getAttrValue } from "utils/getAttrValue";
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;
@@ -77,14 +72,6 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       group = item;
     }
   }
-
-  const extendedObj = libreMetadataAccount[1]
-    ? decodeMetadataExtension(libreProgram)(
-        libreMetadataAccount[1].data,
-        libreMetadataExtendedPda[0]
-      )
-    : undefined;
-
   // if we have an extended obj, grab the collection
 
   console.log({ group, royalties: group?.item.royalties });
@@ -101,7 +88,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     jsondata = data;
   }
 
-  const signerSet = new Set(extendedObj ? extendedObj.item.signers : []);
+  const signerSet = new Set(libreMetadataObj?.extension?.nft?.signers ?? []);
 
   const retval: IMetadataJson = {
     ...jsondata,
@@ -109,7 +96,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     symbol: libreMetadataObj.symbol ?? jsondata.symbol,
     description: libreMetadataObj.description ?? jsondata.description,
     seller_fee_basis_points:
-      extendedObj?.item?.royalties?.bps ??
+      libreMetadataObj?.extension?.nft?.royalties?.bps ??
       group?.item.royalties?.bps ??
       jsondata.seller_fee_basis_points,
     image: libreMetadataObj?.asset?.image?.url ?? jsondata.image,

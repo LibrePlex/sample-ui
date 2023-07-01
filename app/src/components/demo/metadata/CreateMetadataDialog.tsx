@@ -18,7 +18,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { MutableInfoPanel } from "../collections/metadatadialog/MutableInfoDialog";
 import { AttributeSelectorPanel } from "../collections/metadatadialog/AttributeSelectorPanel";
 import { KeyGenerator } from "@/components/KeyGenerator";
@@ -27,7 +27,8 @@ import {
   AssetType,
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
-import { CopyPublicKeyButton } from "shared-ui";
+import { CopyPublicKeyButton, Group, IRpcObject } from "shared-ui";
+import { GroupSelector } from "./GroupSelector";
 
 enum View {
   Standalone,
@@ -54,6 +55,24 @@ export const CreateMetadataDialog = ({
   const [description, setDescription] = useState<string>("");
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [isMutable, setIsMutable] = useState<boolean>(false);
+
+  const [selectedGroup, setSelectedGroup] = useState<IRpcObject<Group>>();
+
+
+  const numberOfAttributes = useMemo(
+    () => selectedGroup?.item?.attributeTypes?.length ?? 0,
+    [selectedGroup]
+  );
+
+  const [attributes, setAttributes] = useState<number[]>([
+    ...Array(numberOfAttributes),
+  ]);
+
+  useEffect(() => {
+    setAttributes([...Array(numberOfAttributes)]);
+  }, [numberOfAttributes]);
+
+
 
   const [generatedMint, setGeneratedMint] = useState<Keypair>(
     Keypair.generate()
@@ -130,13 +149,13 @@ export const CreateMetadataDialog = ({
               size="sm"
             />
             <Box display="flex" flexDirection={"column"} alignItems={"center"}>
-          
               <Box p={3}>
-              <Heading>Select asset type</Heading>
+                <Heading>Select asset type</Heading>
                 <Text>
-                  Select the asset type for this metadata. Currently
-                  all asset types are owned by the metadata program, EXCEPT ordinal asset type that is owned by the Ordinals
-                  program. Both programs allow assets to be immutable.
+                  Select the asset type for this metadata. Currently all asset
+                  types are owned by the metadata program, EXCEPT ordinal asset
+                  type that is owned by the Ordinals program. Both programs
+                  allow assets to be immutable.
                 </Text>
               </Box>
 
@@ -148,7 +167,7 @@ export const CreateMetadataDialog = ({
                     setAssetType(AssetType.Image);
                   }}
                 >
-                  Image (on-chain)
+                  Image (off-chain)
                 </Button>
                 <Button
                   variant={
@@ -182,6 +201,15 @@ export const CreateMetadataDialog = ({
               </Checkbox>
               <MutableInfoPanel />
             </Box>
+            <GroupSelector
+              selectedGroup={selectedGroup}
+              setSelectedGroup={setSelectedGroup}
+            />
+             <AttributeSelectorPanel
+              attributes={attributes}
+              setAttributes={setAttributes}
+              collection={selectedGroup}
+            />
 
             <KeyGenerator
               generatedMint={generatedMint}
@@ -203,7 +231,10 @@ export const CreateMetadataDialog = ({
                   symbol,
                   assetType,
                   description,
-                }}
+                  group: selectedGroup?.pubkey ?? null,
+                  extension: {
+                      attributes
+                }}}
                 formatting={{
                   isDisabled: status !== Status.NotStarted,
                 }}

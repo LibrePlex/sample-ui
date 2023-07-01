@@ -1,17 +1,17 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT, SHDW_DRIVE_OWNER_SECRET_KEY } from '@/environmentvariables';
 
 import { Connection, Keypair } from "@solana/web3.js";
-import { defaultAuthenticatedHandler } from 'api/middleware/authenticatedWallet';
-import { SystemUser, WalletUser } from 'api/middleware/validateAuthenticatedWallet';
+import { defaultAuthenticatedHandler } from '@/api/middleware/authenticatedWallet';
+import { SystemUser, WalletUser } from '@/api/middleware/validateAuthenticatedWallet';
 
-import { IShadowDriveUpload } from "api/shadowdrive/IShadowDriveUpload";
-import { getDeleteMessage } from "api/shadowdrive/getDeleteMessage";
-import { getUploadMessage } from "api/shadowdrive/getUploadMessage";
+import { IShadowDriveUpload } from "@/api/shadowdrive/IShadowDriveUpload";
+import { getDeleteMessage } from "@/api/shadowdrive/getDeleteMessage";
+import { getUploadMessage } from "@/api/shadowdrive/getUploadMessage";
 
 
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { ApiErrors } from "pages/api/ApiErrors";
+import { ApiErrors } from "@/pages/api/ApiErrors";
 
 export const createMintUrlUploadMessage = async (
   req: NextApiRequest,

@@ -6,8 +6,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import joi from "joi";
 const debug = Debug("lister:api");
 import crypto from "crypto";
+import { validateApi, HttpMethod } from "@/api/middleware/validateApi";
 
-import { validateApi, HttpMethod } from "api/middleware/validateApi";
+
 
 export const getAuthenticationMessage = (nonce: string) => {
   return `Sign to authenticate your wallet [nonce:${nonce}]`;

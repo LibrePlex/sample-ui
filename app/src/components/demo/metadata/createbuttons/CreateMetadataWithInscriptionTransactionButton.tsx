@@ -16,17 +16,14 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { IExecutorParams } from "@/components/executor/Executor";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "@/components/executor/GenericTransactionButton";
-import { ITransactionTemplate } from "@/components/executor/ITransactionTemplate";
-import {
-  PROGRAM_ID_INSCRIPTIONS, getProgramInstanceMetadata
+  IExecutorParams,
+  ITransactionTemplate,
+  PROGRAM_ID_INSCRIPTIONS, getMetadataPda, getProgramInstanceMetadata
 } from "shared-ui";
 
-import { getMetadataPda } from "pdas/getMetadataPda";
 import { notify } from "shared-ui";
 
 export enum AssetType {
@@ -46,6 +43,9 @@ export interface ICreateMetadata {
   assetType: AssetType;
   description: string | null;
   mint: Keypair;
+  extension: {
+    attributes: number[]
+  } | null
 }
 
 // start at 0. We can extend as needed
@@ -73,7 +73,7 @@ export const createMetadata = async (
     payer: Keypair.generate(),
   });
 
-  const { assetType, symbol, name, description, mint } = params;
+  const { assetType, symbol, name, description, mint, extension } = params;
 
   const [metadata] = getMetadataPda(mint.publicKey);
 
@@ -135,6 +135,14 @@ export const createMetadata = async (
             url,
           },
         },
+        extension: extension ? {
+          nft: {
+            attributes: Buffer.from(extension.attributes),
+            signers: [],
+            royalties: null,
+            license: null
+          }
+        } : null
       })
       .accounts({
         metadata,

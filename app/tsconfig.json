@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "..",
+    "baseUrl": "./src",
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -16,25 +16,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "rootDir": ".",
+    "rootDir": "./src",
     "paths": {
       "@/environmentvariables": [
-        "./app/src/environmentvariables.ts"
+        "./environmentvariables.ts"
       ],
       "@/pages/*": [
-        "./app/src/pages/*"
+        "./pages/*"
       ],
       "@/components/*": [
-        "./app/src/components/*"
+        "./components/*"
       ],
       "@/views/*": [
-        "./app/src/views/*"
+        "./views/*"
       ],
       "@/stores/*": [
-        "./app/src/stores/*"
+        "./stores/*"
       ],
       "@/api/*": [
-        "./app/src/api/*"
+        "./api/*"
       ]
     }
   },

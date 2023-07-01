@@ -14,7 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { usePublicKeyOrNull } from "../../../../hooks/usePublicKeyOrNull";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { RoyaltyShare, abbreviateKey } from "shared-ui";
+import { LibreplexMetadata, abbreviateKey } from "shared-ui";
+import { IdlTypes } from "@coral-xyz/anchor";
+
+export type Royalties = IdlTypes<LibreplexMetadata>["Royalties"];
+
+
+export type RoyaltyShare = IdlTypes<LibreplexMetadata>["RoyaltyShare"];
+
 
 export const RoyaltiesPanel = ({
   royaltyBps,

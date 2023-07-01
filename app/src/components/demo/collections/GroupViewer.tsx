@@ -10,8 +10,7 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { IRpcObject } from "@/components/executor/IRpcObject";
-import { Group } from "shared-ui";
+import { Group, IRpcObject, Metadata, useMetadataByGroup } from "shared-ui";
 import {
   Dispatch,
   SetStateAction,
@@ -21,11 +20,7 @@ import {
 } from "react";
 
 import { useConnection } from "@solana/wallet-adapter-react";
-import { MetadataExtendedItem } from "@/components/metadata/MetadataExtendedItem";
-import {
-  MetadataExtended,
-  useMetadataExtendedByGroup
-} from "shared-ui";
+
 import { AddMetadataButton } from "./metadatadialog/AddMetadataButton";
 import useSelectedMetadata from "./useSelectedMetadata";
 
@@ -37,7 +32,7 @@ export const GroupViewer = ({
   setCollection: Dispatch<SetStateAction<IRpcObject<Group>>>;
 }) => {
   const { connection } = useConnection();
-  const { metadata: items } = useMetadataExtendedByGroup(
+  const { data: items } = useMetadataByGroup(
     group?.pubkey,
     connection
   );
@@ -67,7 +62,7 @@ export const GroupViewer = ({
 
   const metadataDict = useMemo(() => {
     const _metadataDict: {
-      [key: string]: IRpcObject<MetadataExtended>;
+      [key: string]: IRpcObject<Metadata>;
     } = {};
 
     for (const metadata of items ?? []) {
@@ -125,7 +120,7 @@ export const GroupViewer = ({
               <Th>Details</Th>
             </Tr>
           </Thead>
-          <Tbody>
+          {/* <Tbody>
             {items?.map((item, idx) => (
               <MetadataExtendedItem
                 selectedMetadataKeys={selectedMetadataKeys}
@@ -135,7 +130,7 @@ export const GroupViewer = ({
                 collection={group}
               />
             ))}
-          </Tbody>
+          </Tbody> */}
         </Table>
       </TableContainer>
     </Box>

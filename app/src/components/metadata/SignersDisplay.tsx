@@ -1,15 +1,14 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "shared-ui";
-import { IRpcObject } from "@/components/executor/IRpcObject";
+import { PublicKey } from "@solana/web3.js";
+import { CopyPublicKeyButton, IRpcObject } from "shared-ui";
 import { Group } from "shared-ui";
-import { MetadataExtended } from "shared-ui";
 
 export const SignersDisplay = ({
   signers,
   group,
 }: {
   group: IRpcObject<Group>;
-  signers: MetadataExtended["signers"];
+  signers: PublicKey[];
 }) => {
   return group ? (
     <Table>

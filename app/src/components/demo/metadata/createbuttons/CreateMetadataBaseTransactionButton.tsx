@@ -17,6 +17,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import {
+  GroupInput,
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceMetadata,
 } from "shared-ui";
@@ -47,6 +48,10 @@ export interface ICreateMetadata {
   assetType: AssetType;
   description: string | null;
   mint: Keypair;
+  group: PublicKey | null,
+  extension: {
+    attributes: number[]
+  } | null
 }
 
 // start at 0. We can extend as needed
@@ -74,7 +79,7 @@ export const createMetadata = async (
     payer: Keypair.generate(),
   });
 
-  const { assetType, symbol, name, description, mint } = params;
+  const { assetType, symbol, name, group, description, mint, extension } = params;
 
   const [metadata] = getMetadataPda(mint.publicKey);
 
@@ -131,11 +136,20 @@ export const createMetadata = async (
         symbol,
         description,
         updateAuthority: wallet.publicKey,
+        
         asset: {
           image: {
             url,
           },
         },
+        extension: extension ? {
+          nft: {
+            attributes: Buffer.from(extension.attributes),
+            signers: [],
+            royalties: null,
+            license: null
+          }
+        } : null
       })
       .accounts({
         metadata,

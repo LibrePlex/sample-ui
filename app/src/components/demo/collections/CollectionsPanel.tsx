@@ -19,11 +19,14 @@ import {
 import { useCallback, useMemo, useState } from "react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { IRpcObject, Group, decodeGroup, useGroupsByAuthority } from "shared-ui";
+import { Group, IRpcObject, LibreplexMetadata, decodeGroup, useGroupsByAuthority } from "shared-ui";
 import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";
 import useSelectedCollections from "./useSelectedCollections";
+import { IdlAccounts } from "@coral-xyz/anchor";
+
+
 
 export const CollectionsPanel = () => {
   // const { publicKey } = useWallet();

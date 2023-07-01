@@ -104,7 +104,10 @@
         {
           "name": "creator",
           "isMut": true,
-          "isSigner": false
+          "isSigner": false,
+          "relations": [
+            "mint_authority"
+          ]
         },
         {
           "name": "metadata",

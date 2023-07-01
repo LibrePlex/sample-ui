@@ -7,7 +7,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { EditCollectionPanel } from "./EditPermissionPanel";
+import { EditPermissionPanel } from "./EditPermissionPanel";
 
 export const EditCollectionDialog = ({
   open,
@@ -19,12 +19,12 @@ export const EditCollectionDialog = ({
   return (
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
-      <EditCollectionPanel onSuccess={onClose}/>
+      <EditPermissionPanel onSuccess={onClose}/>
       <ModalContent>
         <ModalHeader>Create Collection</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <EditCollectionPanel onSuccess={onClose}/>
+          <EditPermissionPanel onSuccess={onClose}/>
         </ModalBody>
       </ModalContent>
     </Modal>

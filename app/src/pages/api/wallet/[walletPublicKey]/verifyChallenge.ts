@@ -13,9 +13,9 @@ import {
   
   
   import Debug from "debug";
-import { ApiErrors } from "pages/api/ApiErrors";
+import { ApiErrors } from "@/pages/api/ApiErrors";
 import { getAuthenticationMessage } from "./createChallenge";
-import {HttpMethod, validateApi} from "api/middleware/validateApi";
+import {HttpMethod, validateApi} from "@/api/middleware/validateApi";
   
   const debug = Debug("api:authenticatedwallet");
   

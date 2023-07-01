@@ -1,7 +1,8 @@
-export { IRpcObject } from "./IRpcObject";
-export { IExecutorParams } from "./Executor";
+export type { IRpcObject } from "./IRpcObject";
+export type { IExecutorParams } from "./Executor";
+export type {GenericTransactionButtonProps} from "./GenericTransactionButton";
 export {
   GenericTransactionButton,
-  GenericTransactionButtonProps,
+  
 } from "./GenericTransactionButton";
-export {ITransactionTemplate} from "./ITransactionTemplate"
+export type {ITransactionTemplate} from "./ITransactionTemplate"

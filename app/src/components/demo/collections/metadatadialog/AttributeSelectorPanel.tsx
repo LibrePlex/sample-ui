@@ -1,8 +1,10 @@
 import { Box, Table, Td, Text, Thead } from "@chakra-ui/react";
-import { IRpcObject } from "@/components/executor/IRpcObject";
-import { Group } from "shared-ui";
+import { LibreplexMetadata, IRpcObject, Group } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { AttributeSelectorRow } from "./AttributeSelectorRow";
+import { IdlAccounts } from "@coral-xyz/anchor";
+
+
 
 export const AttributeSelectorPanel = ({
   attributes,
@@ -30,7 +32,6 @@ export const AttributeSelectorPanel = ({
             <Td>Type</Td>
             <Td>Value</Td>
           </Thead>
-          {JSON.stringify(attributes)}
           {collection?.item?.attributeTypes?.map(
             (item, idx) => (
               <AttributeSelectorRow
