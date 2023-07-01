@@ -42,9 +42,11 @@ export const PNFTFixer = () => {
           <Thead>
             <Tr>
               <Th>Mint</Th>
+              <Th>Name</Th>
               <Th>Token account</Th>
               <Th>Type</Th>
               <Th>State</Th>
+              <Th></Th>
             </Tr>
           </Thead>
           <Tbody >

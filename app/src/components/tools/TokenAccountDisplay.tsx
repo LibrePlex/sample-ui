@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import {
   CopyPublicKeyButton,
   IRpcObject,
+  SolscanLink,
   getLegacyMetadataPda,
   useLegacyMetadataByMintId,
 } from "shared-ui";
@@ -31,9 +32,13 @@ export const TokenAccountDisplay = ({
       sx={{
         display: legacyMetadata?.item?.tokenStandard !== 4 || tokenRecord.item.delegateRole !== TokenDelegateRole.Migration ? "none" : "show",
       }}
-    >
+    >  
       <Td>
-        <CopyPublicKeyButton publicKey={tokenAccount.item.mint.toBase58()} />
+        <SolscanLink mintId={tokenAccount.item.mint.toBase58()}/>
+        {/* <CopyPublicKeyButton publicKey={tokenAccount.item.mint.toBase58()} /> */}
+      </Td>
+      <Td>
+        {legacyMetadata?.item.data.name}
       </Td>
       <Td>
         <CopyPublicKeyButton publicKey={tokenAccount.pubkey.toBase58()} />
@@ -42,12 +47,12 @@ export const TokenAccountDisplay = ({
       <Td>{tokenRecord?.item.delegateRole === TokenDelegateRole.Staking ? 'Staking'
       : tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ? 'Migration'
       : 'Other'}</Td>
-      <td>
+      <Td>
         <FixStuckMigrationStateButton
           params={{ tokenAccounts: [tokenAccount] }}
           formatting={{}}
         />
-      </td>
+      </Td>
     </Tr>
   );
 };

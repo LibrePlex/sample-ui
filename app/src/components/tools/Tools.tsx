@@ -39,50 +39,53 @@ export const Tools = () => {
           pNFT Fixer
         </Button>
       </HStack>
-      <Box sx={{height :"100%"}}>
+      <Box sx={{ height: "100%" }}>
         {view === View.PnftMigrationFixer && <PNFTFixer />}
       </Box>
 
-      {/* <Text>
-        The tools are free to use, though donations are welcome. If you find the
-        tools useful, make sure you follow us:
-      </Text>
+      <Box width='100%' display='flex' flexDir={'column'} alignItems={'center'}>
+        <Stack maxWidth={"500px"}>
+          <Text maxWidth={"500px"} textAlign={"center"}>
+            These tools are free to use. If you find them helpful, please
+            follow us! </Text>
 
-      <Stack>
-        <Button
-          variant={"outline"}
-          w={"100%"}
-          h={"fit-content"}
-          p={3}
-          mb={1}
-          as={"a"}
-          href="http://discord.gg/libreplex"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <VStack>
-            <Heading size={"md"}>Join us on Discord</Heading>
-            <Text color={"gray.400"}>http://discord.gg/libreplex</Text>
-          </VStack>
-        </Button>
-        <Button
-          variant={"outline"}
-          h={"fit-content"}
-          w={"100%"}
-          mt={5}
-          p={3}
-          as={"a"}
-          href="https://twitter.com/LibrePlex"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <VStack>
-            <Heading size={"md"}>Follow us on Twitter</Heading>
-            <Text color={"gray.400"}>https://twitter.com/LibrePlex</Text>
-          </VStack>
-        </Button>
-      </Stack> */}
-    
+          <Text maxWidth={"500px"} textAlign={"center"}>
+            We are independent and unfunded - for a more decentralized Solana, we need grass-roots support from people like you!
+          </Text>
+          <Button
+            variant={"outline"}
+            w={"100%"}
+            h={"fit-content"}
+            p={3}
+            mb={1}
+            as={"a"}
+            href="http://discord.gg/libreplex"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <VStack>
+              <Heading size={"md"}>Join us on Discord</Heading>
+              <Text color={"gray.400"}>http://discord.gg/libreplex</Text>
+            </VStack>
+          </Button>
+          <Button
+            variant={"outline"}
+            h={"fit-content"}
+            w={"100%"}
+            mt={5}
+            p={3}
+            as={"a"}
+            href="https://twitter.com/LibrePlex"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <VStack>
+              <Heading size={"md"}>Follow us on Twitter</Heading>
+              <Text color={"gray.400"}>https://twitter.com/LibrePlex</Text>
+            </VStack>
+          </Button>
+        </Stack>
+      </Box>
     </Box>
   );
 };

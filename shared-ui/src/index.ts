@@ -55,6 +55,7 @@ export {
   CopyPublicKeyButton,
   WalletAuthenticatingButton,
   GenericTransactionButton,
+  SolscanLink
 } from "./components";
 
 export {
