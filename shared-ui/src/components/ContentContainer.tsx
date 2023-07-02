@@ -1,27 +1,27 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
-import Text from "./Text";
-import NavElement from "./nav-element";
+import React from "react";
+import { Text } from "@chakra-ui/react";
+import { NavElement } from "./nav-element";
+
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
+  isNavOpen?: boolean;
+  setIsNavOpen?: (b: boolean) => any;
 }
 
 export const ContentContainer: React.FC<Props> = ({
   isNavOpen,
   setIsNavOpen,
   children,
-}: {
-  children: ReactNode;
-  isNavOpen: boolean;
-  setIsNavOpen: (b: boolean) => any;
-}) => {
+}: Props) => {
   return (
     <div className="flex-1 drawer h-52">
       <input
         id="my-drawer"
         type="checkbox"
         className="grow drawer-toggle"
-        onClick={() => setIsNavOpen(!isNavOpen)}
+        onClick={() => setIsNavOpen && setIsNavOpen(!isNavOpen)}
       />
       <div className="items-center  drawer-content">{children}</div>
       {/* SideBar / Drawer */}

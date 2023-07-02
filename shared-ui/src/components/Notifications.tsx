@@ -5,11 +5,12 @@ import {
   XCircleIcon,
 } from '@heroicons/react/outline'
 import { XIcon } from '@heroicons/react/solid'
-import {useNotificationStore} from 'shared-ui'
 import { useConnection } from '@solana/wallet-adapter-react';
-import { useNetworkConfiguration } from 'shared-ui';
+import { useNotificationStore } from '../stores';
+import React from 'react';
+import { useNetworkConfiguration } from '../contexts';
 
-const NotificationList = () => {
+export const Notifications = () => {
   const { notifications, set: setNotificationStore } = useNotificationStore(
     (s) => s
   )
@@ -44,7 +45,7 @@ const NotificationList = () => {
   );
 }
 
-const Notification = ({ type, message, description, txid, onHide }) => {
+export const Notification = ({ type, message, description, txid, onHide }: any) => {
   const { connection } = useConnection();
   const { networkConfiguration } = useNetworkConfiguration();
 
@@ -114,5 +115,3 @@ const Notification = ({ type, message, description, txid, onHide }) => {
     </div>
   )
 }
-
-export default NotificationList

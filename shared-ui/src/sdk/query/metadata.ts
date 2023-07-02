@@ -3,7 +3,7 @@ import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { LibrePlexProgramContext } from "../../anchor/LibrePlexProgramContext";
 import { useContext, useMemo, useEffect } from "react";
-import { LibreplexMetadata as Libreplex } from "types/libreplex_metadata";
+import { LibreplexMetadata as Libreplex } from "../../types/libreplex_metadata";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { sha256 } from "js-sha256";

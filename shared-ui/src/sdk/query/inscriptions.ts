@@ -2,7 +2,7 @@ import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { InscriptionsProgramContext } from "../../anchor/InscriptionsProgramProvider";
 import { useContext, useMemo } from "react";
-import { Inscriptions } from "types/inscriptions";
+import { Inscriptions } from "../../types/inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 
 export type Inscription = {

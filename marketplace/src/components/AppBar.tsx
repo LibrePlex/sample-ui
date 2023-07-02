@@ -3,8 +3,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
-import {NetworkSwitcherDynamic} from "shared-ui";
-import NavElement from "./nav-element";
+import {NavElement, NetworkSwitcherDynamic} from "shared-ui";
 import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
 import { useAutoConnect } from "shared-ui";
 
@@ -68,25 +67,16 @@ export const AppBar = ({
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
-              label="Design"
-              href="/design"
+              label="Listings"
+              href="/listings"
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
-              label="Savings"
-              href="/costs"
+              label="Wallet"
+              href="/mywallet"
               navigationStarts={() => setIsNavOpen(false)}
             />
-            <NavElement
-              label="Tools"
-              href="/tools"
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-             <NavElement
-              label="Demo"
-              href="/demo"
-              navigationStarts={() => setIsNavOpen(false)}
-            />
+       
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
           </div>
           <label

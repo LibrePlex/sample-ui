@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 import { useNetworkConfiguration } from 'shared-ui';
+import React from 'react';
 
-const NetworkSwitcher: FC = () => {
+export const NetworkSwitcher: FC = () => {
   const { networkConfiguration, setNetworkConfiguration } = useNetworkConfiguration();
 
   console.log(networkConfiguration);
@@ -24,6 +25,6 @@ const NetworkSwitcher: FC = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(NetworkSwitcher), {
+export const NetworkSwitcherDynamic = dynamic(() => Promise.resolve(NetworkSwitcher), {
   ssr: false
 })

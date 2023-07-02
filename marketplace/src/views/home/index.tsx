@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import Background from "@/components/Background";
 import router from "next/router";
-import useUserSolBalanceStore from "@/stores/useUserSolBalanceStore";
+import {useUserSolBalanceStore} from "shared-ui";
 import { Gallery } from "@/components/gallery/Gallery";
 
 const info = [
@@ -113,38 +113,7 @@ export const HomeView: FC = ({}) => {
       <div>
        
 
-        {/* From private ownership... */}
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              margin: "auto",
-              top: 0,
-              right: 0,
-              bottom: 150,
-              left: 450,
-              width: "200px",
-              height: "200px",
-              borderRadius: "100%",
-              filter: "blur(120px)", // Adjust the blur effect as per your preference
-              background:
-                "linear-gradient(138deg, rgba(168,21,208,1) 0%, rgba(73,57,184,1) 100%)",
-              opacity: "70%",
-              zIndex: -1,
-            }}
-          />
-          <Box
-            maxWidth={"1250px"}
-            p={{ base: "15px", md: "25px" }}
-            display={"flex"}
-            margin={"auto"}
-            flexDir={"column"}
-            mt={"5vh"}
-          >
-<Gallery />
-
-          </Box>
-        </div>
+      
       </div>
     </div>
   );

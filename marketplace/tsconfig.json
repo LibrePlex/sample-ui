@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es5",
+    "baseUrl": "./src",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
+    "strictNullChecks": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -15,13 +16,20 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "rootDir": "./src",
     "paths": {
-      "@/*": ["./src/*"],
-      "shared/*": [
-        "../shared/*"
-      ]
+      "@/components/*": [
+        "./components/*"
+      ],
+     
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next",],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

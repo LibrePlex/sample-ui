@@ -1,3 +1,4 @@
+import { ContentContainer } from './components/ContentContainer';
 export {
   ContextProvider,
   useAutoConnect,
@@ -55,7 +56,11 @@ export {
   CopyPublicKeyButton,
   WalletAuthenticatingButton,
   GenericTransactionButton,
-  SolscanLink
+  SolscanLink,
+  Notifications,
+  NetworkSwitcherDynamic,
+  ContentContainer,
+  NavElement
 } from "./components";
 
 export {

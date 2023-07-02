@@ -50,8 +50,7 @@
     "react-icons": "^4.9.0",
     "react-query": "^3.39.3",
     "yarn": "^1.22.19",
-    "zustand": "^3.6.9",
-    "shared-ui": "*"
+    "zustand": "^3.6.9"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

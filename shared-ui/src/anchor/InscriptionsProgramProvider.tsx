@@ -4,7 +4,7 @@ import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { Inscriptions } from "types/inscriptions";
+import { Inscriptions } from "../types/inscriptions";
 import { getProgramInstanceOrdinals } from "./getProgramInstanceOrdinals";
 
 export const InscriptionsProgramContext = createContext<Program<Inscriptions>>(
