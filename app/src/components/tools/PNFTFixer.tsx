@@ -10,6 +10,7 @@ import {
   Th,
   Thead,
   Tr,
+  Text
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useMemo, useState } from "react";
@@ -56,9 +57,9 @@ export const PNFTFixer = () => {
 
       {isFetching && <Spinner />}
       <h5>
-        You have {data.length} mints in your wallet. Only pNFTs in stuck
-        migration state are displayed below.
+        You have {data.length} mints in your wallet.
       </h5>
+      <Text>{showAll?"Showing all mints":"Showing pNFTs in stuck migration state."}</Text>
       <TableContainer sx={{ overflow: "auto", height: "100%" }}>
         <Table>
           <Thead>
