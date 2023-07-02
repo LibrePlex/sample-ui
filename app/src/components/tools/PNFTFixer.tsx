@@ -1,6 +1,8 @@
 import {
-    Box,
+  Box,
   Button,
+  Checkbox,
+  HStack,
   Spinner,
   Table,
   TableContainer,
@@ -10,7 +12,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTokenAccountsByOwner } from "shared-ui";
 import { TokenAccountDisplay } from "./TokenAccountDisplay";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
@@ -29,14 +31,34 @@ export const PNFTFixer = () => {
     key
   );
 
-
-  const sortedData = useMemo(()=>[...data].sort((a,b)=>a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())),[data])
-
+  const sortedData = useMemo(
+    () =>
+      [...data].sort((a, b) =>
+        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
+      ),
+    [data]
+  );
+  const [showAll, setShowAll] = useState<boolean>(false);
   return (
-    <Box sx={{ height: "100%", pb: '150px' }}>
-      <Button onClick={() => refetch()}>Refresh</Button>
+    <Box sx={{ height: "100%", pb: "150px" }}>
+      <HStack alignItems={'center'}>
+        <Button onClick={() => refetch()}>Refresh</Button>
+        <Checkbox
+          checked={showAll}
+          onChange={(e) => {
+            setShowAll(e.currentTarget.checked);
+          }}
+          defaultChecked={showAll}
+        >
+          Show all mints
+        </Checkbox>
+      </HStack>
+
       {isFetching && <Spinner />}
-      <h5>You have {data.length} mints in your wallet. Only pNFTs in stuck migration state are displayed below.</h5>
+      <h5>
+        You have {data.length} mints in your wallet. Only pNFTs in stuck
+        migration state are displayed below.
+      </h5>
       <TableContainer sx={{ overflow: "auto", height: "100%" }}>
         <Table>
           <Thead>
@@ -49,9 +71,9 @@ export const PNFTFixer = () => {
               <Th></Th>
             </Tr>
           </Thead>
-          <Tbody >
+          <Tbody>
             {sortedData.map((item, idx) => (
-              <TokenAccountDisplay key={idx} tokenAccount={item} />
+              <TokenAccountDisplay key={idx} tokenAccount={item} showAll={showAll}/>
             ))}
           </Tbody>
         </Table>

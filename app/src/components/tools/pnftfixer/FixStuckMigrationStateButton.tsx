@@ -1,3 +1,4 @@
+import { HStack, Text } from "@chakra-ui/react";
 import {
   Metaplex,
   token,
@@ -20,6 +21,7 @@ import {
   Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
+import { useState } from "react";
 import { getProgramInstanceOrdinals } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
@@ -96,7 +98,7 @@ export const fixStuckMigration = async (
 
       const newTokenAccountKey = Keypair.generate();
 
-     instructions.push(
+      instructions.push(
         SystemProgram.createAccount({
           fromPubkey: wallet.publicKey,
           newAccountPubkey: newTokenAccountKey.publicKey,
@@ -163,14 +165,22 @@ export const FixStuckMigrationStateButton = (
     "transactionGenerator"
   >
 ) => {
+  const [success, setSuccess] = useState<boolean>(false);
   return (
-    <>
-      <GenericTransactionButton<IFixStuckMigration>
-        text={"Fix state"}
-        transactionGenerator={fixStuckMigration}
-        onError={(msg) => notify({ message: msg })}
-        {...props}
-      />
-    </>
+    <HStack justifyContent={'center'}>
+      {success ? (
+        <Text>Fixed</Text>
+      ) : (
+        <GenericTransactionButton<IFixStuckMigration>
+          text={"Fix state"}
+          transactionGenerator={fixStuckMigration}
+          onError={(msg) => notify({ message: msg })}
+          onSuccess={() => {
+            setSuccess(true);
+          }}
+          {...props}
+        />
+      )}
+    </HStack>
   );
 };

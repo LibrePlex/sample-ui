@@ -14,7 +14,9 @@ import { FixStuckMigrationStateButton } from "./pnftfixer/FixStuckMigrationState
 import {TokenStandard, TokenDelegateRole} from "@metaplex-foundation/mpl-token-metadata"
 export const TokenAccountDisplay = ({
   tokenAccount,
+  showAll
 }: {
+    showAll: boolean,
   tokenAccount: IRpcObject<RawAccount>;
 }) => {
   const { connection } = useConnection();
@@ -30,7 +32,7 @@ export const TokenAccountDisplay = ({
   return (
     <Tr
       sx={{
-        display: legacyMetadata?.item?.tokenStandard !== 4 || tokenRecord.item.delegateRole !== TokenDelegateRole.Migration ? "none" : "show",
+        display: !showAll && (legacyMetadata?.item?.tokenStandard !== 4 || tokenRecord.item.delegateRole !== TokenDelegateRole.Migration) ? "none" : "show",
       }}
     >  
       <Td>
@@ -48,10 +50,10 @@ export const TokenAccountDisplay = ({
       : tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ? 'Migration'
       : 'Other'}</Td>
       <Td>
-        <FixStuckMigrationStateButton
+        {tokenRecord?.item.delegateRole === TokenDelegateRole.Migration && <FixStuckMigrationStateButton
           params={{ tokenAccounts: [tokenAccount] }}
           formatting={{}}
-        />
+        />}
       </Td>
     </Tr>
   );

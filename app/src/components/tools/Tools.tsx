@@ -19,6 +19,7 @@ enum View {
 export const Tools = () => {
   const { publicKey } = useWallet();
   const [view, setView] = useState<View>(View.PnftMigrationFixer);
+  
   return (
     <Box
       sx={{
