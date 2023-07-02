@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
 import {NetworkSwitcherDynamic} from "shared-ui";
-import NavElement from "./nav-element";
+import {NavElement} from "./navelement";
 import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
 import { useAutoConnect } from "shared-ui";
 

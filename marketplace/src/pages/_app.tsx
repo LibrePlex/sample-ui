@@ -6,9 +6,11 @@ import {
   createLocalStorageManager,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import { ContentContainer, ContextProvider, Notifications } from 'shared-ui';
+import { ContextProvider, Notifications } from 'shared-ui';
 import {FC, useState} from "react"
-import { AppBar } from 'components/AppBar';
+import { AppBar } from '../components/AppBar';
+import React from 'react';
+import { ContentContainer } from '../components/ContentContainer';
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 const manager = createLocalStorageManager("colormode-key");

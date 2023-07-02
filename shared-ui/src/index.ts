@@ -1,4 +1,3 @@
-import { ContentContainer } from './components/ContentContainer';
 export {
   ContextProvider,
   useAutoConnect,
@@ -59,7 +58,6 @@ export {
   SolscanLink,
   Notifications,
   NetworkSwitcherDynamic,
-  ContentContainer,
   NavElement
 } from "./components";
 

@@ -7,10 +7,10 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { FC, useState } from "react";
 import { AppBar } from "../components/AppBar";
-import { ContentContainer } from "shared-ui";
 import { Footer } from "../components/Footer";
 import {Notifications} from "shared-ui";
 import { ContextProvider } from "shared-ui";
+import {ContentContainer} from "../components/ContentContainer"
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 

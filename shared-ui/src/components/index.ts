@@ -14,5 +14,4 @@ export {
 
 export {Notifications} from "./Notifications"
 export {NetworkSwitcherDynamic} from "./NetworkSwitcher"
-export {ContentContainer} from "./ContentContainer"
-export {NavElement} from "./nav-element"
+export {NavElement} from "./navelement"

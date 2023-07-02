@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 import Link from "next/link";
 import React from "react";
 import { Text } from "@chakra-ui/react";
-import { NavElement } from "./nav-element";
+import { NavElement } from "./navelement";
 
 interface Props {
   children: ReactNode;

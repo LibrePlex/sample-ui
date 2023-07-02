@@ -17,10 +17,10 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import Background from "@/components/Background";
+import Background from "../../components/Background";
 import router from "next/router";
 import {useUserSolBalanceStore} from "shared-ui";
-import { Gallery } from "@/components/gallery/Gallery";
+import React from "react";
 
 const info = [
   {

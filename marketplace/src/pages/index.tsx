@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { HomeView } from "../views";
 import { ContextProvider } from "shared-ui";
+import React from "react";
 
 const Home: NextPage = (props) => {
   return (

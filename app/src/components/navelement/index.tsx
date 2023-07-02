@@ -15,8 +15,8 @@ type NavElementProps = {
     navigationStarts?: () => void;
 };
 
-const NavElement = ({
-    label,
+export const NavElement = ({
+label,
     href,
     as,
     scroll,
@@ -59,5 +59,5 @@ const NavElement = ({
     );
 };
 
-export default NavElement;
+
 
