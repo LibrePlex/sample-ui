@@ -40,22 +40,14 @@ export const ContentContainer: React.FC<Props> = ({
           <li>
             <NavElement label="Home" href="/" />
           </li>
+          <li>
+            <NavElement label="Listings" href="/Listings" />
+          </li>
 
           <li>
-            <NavElement label="Mission" href="/mission" />
+            <NavElement label="Wallet" href="/wallet" />
           </li>
-          <li>
-            <NavElement label="Design" href="/design" />
-          </li>
-          <li>
-            <NavElement label="Why" href="/why" />
-          </li>
-          <li>
-            <NavElement label="Costs" href="/costs" />
-          </li>
-          <li>
-            <NavElement label="Demo" href="/demo" />
-          </li>
+         
         </ul>
       </div>
     </div>

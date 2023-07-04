@@ -3,8 +3,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
-import {NavElement, NetworkSwitcherDynamic} from "shared-ui";
-import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
+import { NavElement, NetworkSwitcherDynamic } from "shared-ui";
+import { Box, Button, Text, VStack, useColorMode } from "@chakra-ui/react";
 import { useAutoConnect } from "shared-ui";
 
 const WalletMultiButtonDynamic = dynamic(
@@ -21,18 +21,18 @@ export const AppBar = ({
   setIsNavOpen: (b: boolean) => any;
 }) => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
-  const { colorMode, toggleColorMode, setColorMode} = useColorMode();
+  const { colorMode, toggleColorMode, setColorMode } = useColorMode();
 
   /* 
     a hack to get chakra to always start in dark mode. 
     I wonder if this will cause flashing? 
       - neft
   */
-  useEffect(()=>{
-    if( colorMode !== "dark") {
-      setColorMode("dark")
+  useEffect(() => {
+    if (colorMode !== "dark") {
+      setColorMode("dark");
     }
-  },[colorMode, setColorMode])
+  }, [colorMode, setColorMode]);
 
   return (
     <div>
@@ -67,6 +67,11 @@ export const AppBar = ({
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
+              label="Home"
+              href="/"
+              navigationStarts={() => setIsNavOpen(false)}
+            />
+            <NavElement
               label="Listings"
               href="/listings"
               navigationStarts={() => setIsNavOpen(false)}
@@ -76,7 +81,7 @@ export const AppBar = ({
               href="/mywallet"
               navigationStarts={() => setIsNavOpen(false)}
             />
-       
+
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
           </div>
           <label
@@ -149,16 +154,18 @@ export const AppBar = ({
             >
               <li>
                 <div className="form-control bg-opacity-100">
-                  <label className="cursor-pointer label">
-                    <a>Autoconnect</a>
-                    <input
-                      type="checkbox"
-                      checked={autoConnect}
-                      onChange={(e) => setAutoConnect(e.target.checked)}
-                      className="toggle"
-                    />
-                  </label>
-                  <NetworkSwitcherDynamic />
+                  <VStack>
+                    <label className="cursor-pointer label">
+                      <a>Autoconnect</a>
+                      <input
+                        type="checkbox"
+                        checked={autoConnect}
+                        onChange={(e) => setAutoConnect(e.target.checked)}
+                        className="toggle"
+                      />
+                    </label>
+                    <NetworkSwitcherDynamic />
+                  </VStack>
                 </div>
               </li>
             </ul>

@@ -49,11 +49,12 @@ const accountUpdater =
 export const fetchTokenAccountsByOwner = <T extends unknown, P extends Idl>(
   owner: PublicKey,
   connection: Connection,
+  programId: PublicKey
 ) => ({
   fetcher: async () => {
     const _items: IRpcObject<Buffer>[] = [];
     const results = await connection?.getTokenAccountsByOwner(owner, {
-      programId: TOKEN_PROGRAM_ID
+      programId
     });
 
     for (const result of results.value) {
@@ -96,7 +97,7 @@ export const useTokenAccountsByOwner = (
   key: any
 ) => {
   const { fetcher, listener } = useMemo(
-    () => fetchTokenAccountsByOwner(owner, connection),
+    () => fetchTokenAccountsByOwner(owner, connection, programId),
 
     [connection, owner]
   );

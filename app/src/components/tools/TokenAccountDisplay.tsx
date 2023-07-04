@@ -11,12 +11,15 @@ import {
 } from "shared-ui";
 import { useLegacyTokenRecordByTokenAccount } from "shared-ui";
 import { FixStuckMigrationStateButton } from "./pnftfixer/FixStuckMigrationStateButton";
-import {TokenStandard, TokenDelegateRole} from "@metaplex-foundation/mpl-token-metadata"
+import {
+  TokenStandard,
+  TokenDelegateRole,
+} from "@metaplex-foundation/mpl-token-metadata";
 export const TokenAccountDisplay = ({
   tokenAccount,
-  showAll
+  showAll,
 }: {
-    showAll: boolean,
+  showAll: boolean;
   tokenAccount: IRpcObject<RawAccount>;
 }) => {
   const { connection } = useConnection();
@@ -32,28 +35,43 @@ export const TokenAccountDisplay = ({
   return (
     <Tr
       sx={{
-        display: !showAll && (legacyMetadata?.item?.tokenStandard !== 4 || tokenRecord.item.delegateRole !== TokenDelegateRole.Migration) ? "none" : "show",
+        display:
+          showAll ||
+          tokenRecord?.item.delegateRole === TokenDelegateRole.Migration
+            ? "show"
+            : "none",
       }}
-    >  
+    >
       <Td>
-        <SolscanLink mintId={tokenAccount.item.mint.toBase58()}/>
+        <SolscanLink mintId={tokenAccount.item.mint.toBase58()} />
         {/* <CopyPublicKeyButton publicKey={tokenAccount.item.mint.toBase58()} /> */}
       </Td>
-      <Td>
-        {legacyMetadata?.item.data.name}
-      </Td>
+      <Td>{legacyMetadata?.item.data.name}</Td>
       <Td>
         <CopyPublicKeyButton publicKey={tokenAccount.pubkey.toBase58()} />
       </Td>
-      <Td>{legacyMetadata?.item?.tokenStandard === TokenStandard.ProgrammableNonFungible? 'pNFT': 'NFT'}</Td>
-      <Td>{tokenRecord?.item.delegateRole === TokenDelegateRole.Staking ? 'Staking'
-      : tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ? 'Migration'
-      : 'Other'}</Td>
       <Td>
-        {tokenRecord?.item.delegateRole === TokenDelegateRole.Migration && <FixStuckMigrationStateButton
-          params={{ tokenAccounts: [tokenAccount] }}
-          formatting={{}}
-        />}
+        {legacyMetadata?.item?.tokenStandard ===
+        TokenStandard.ProgrammableNonFungible
+          ? "pNFT"
+          : "NFT"}
+      </Td>
+      <Td>
+        {tokenRecord?.item.delegateRole === TokenDelegateRole.Staking
+          ? "Staking"
+          : tokenRecord?.item.delegateRole === TokenDelegateRole.Migration
+          ? "Migration"
+          : "Other"}
+      </Td>
+      <Td>
+        {tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ||
+          (tokenRecord?.item.delegateRole === TokenDelegateRole.Staking &&
+            tokenRecord.item.lockedTransfer === null && (
+              <FixStuckMigrationStateButton
+                params={{ tokenAccounts: [tokenAccount] }}
+                formatting={{}}
+              />
+            ))}
       </Td>
     </Tr>
   );

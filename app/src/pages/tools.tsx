@@ -7,9 +7,10 @@ import { Demo } from "@/components/demo/Demo";
 import { InscriptionsProgramProvider, LibrePlexProgramProvider } from "shared-ui";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Tools } from "@/components/tools/Tools";
+import { useMemo } from "react";
 
 const DemoPage = () => {
-  const queryClient = new QueryClient({});
+  const queryClient = useMemo(()=>new QueryClient({}),[]);
 
   return (
     <QueryClientProvider client={queryClient}>

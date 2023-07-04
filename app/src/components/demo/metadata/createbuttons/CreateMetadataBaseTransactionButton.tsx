@@ -1,7 +1,7 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
 import {
   MINT_SIZE,
-  TOKEN_PROGRAM_ID,
+  TOKEN_2022_PROGRAM_ID,
   createAssociatedTokenAccountInstruction,
   createInitializeMint2Instruction,
   createMintToInstruction,
@@ -92,7 +92,7 @@ export const createMetadata = async (
 
   const signers = [mint];
 
-  const ata = getAssociatedTokenAddressSync(mint.publicKey, wallet.publicKey);
+  const ata = getAssociatedTokenAddressSync(mint.publicKey, wallet.publicKey, false, TOKEN_2022_PROGRAM_ID);
 
   instructions.push(
     SystemProgram.createAccount({
@@ -100,20 +100,21 @@ export const createMetadata = async (
       newAccountPubkey: mint.publicKey,
       space: MINT_SIZE,
       lamports: mintLamports,
-      programId: TOKEN_PROGRAM_ID,
+      programId: TOKEN_2022_PROGRAM_ID,
     }),
     createInitializeMint2Instruction(
       mint.publicKey,
       0,
       wallet.publicKey,
       wallet.publicKey,
-      TOKEN_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID
     ),
     createAssociatedTokenAccountInstruction(
       wallet.publicKey,
       ata,
       wallet.publicKey,
-      mint.publicKey
+      mint.publicKey,
+      TOKEN_2022_PROGRAM_ID
     ),
     createMintToInstruction(
       mint.publicKey,
@@ -121,7 +122,7 @@ export const createMetadata = async (
       wallet.publicKey,
       1,
       [],
-      TOKEN_PROGRAM_ID
+      TOKEN_2022_PROGRAM_ID
     )
   );
 
