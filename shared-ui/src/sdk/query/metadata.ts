@@ -8,6 +8,7 @@ import { useFetchSingleAccount } from "./singleAccountInfo";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { sha256 } from "js-sha256";
 import { useGpa } from "./gpa";
+import { getMetadataPda } from "../../pdas";
 
 export enum AssetType {
   None,
@@ -219,9 +220,13 @@ export interface Metadata {
 export const decodeMetadata =
   (program: Program<LibreplexWithOrdinals>) =>
   (buffer: Buffer, pubkey: PublicKey) => {
-    const coder = new BorshCoder(program.idl);
-
     try {
+    console.log('AAA');
+    const coder = new BorshCoder(program.idl);
+    console.log({coder});
+
+    
+      console.log({buffer})
       const metadataRaw = coder.accounts.decode<
         IdlAccounts<Libreplex>["metadata"]
       >("metadata", buffer);
@@ -230,17 +235,27 @@ export const decodeMetadata =
         asset: parseAsset(metadataRaw.asset),
         extension: parseExtension(metadataRaw.extension),
       };
+      console.log({metadata});
       return {
         item: metadata ?? null,
         pubkey,
       };
     } catch (e) {
+      console.log(e);
       return {
         item: null,
         pubkey,
       };
     }
   };
+
+  export const useMetadataByMintId = (mintId: PublicKey, connection: Connection) => {
+
+    const metadataId = useMemo(()=>getMetadataPda(mintId)[0],[mintId])
+
+    return useMetadataById(metadataId, connection);
+
+  }
 
 export const useMetadataById = (
   metadataKey: PublicKey,
@@ -250,10 +265,12 @@ export const useMetadataById = (
 
   const q = useFetchSingleAccount(metadataKey, connection);
 
+  const a = decodeMetadata(program);
+  
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeMetadata(program)(q?.data?.item, metadataKey)
+        ? a(q?.data?.item, metadataKey)
         : null;
       return obj;
     } catch (e) {

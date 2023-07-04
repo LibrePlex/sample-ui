@@ -40,6 +40,7 @@ export type {
   Royalties,
   RoyaltyShare,
   GroupInput,
+  Asset
 } from "./sdk";
 
 export { HttpClient, abbreviateKey, cn, notify } from "./utils";

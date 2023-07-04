@@ -1,5 +1,5 @@
 export type { Group, Royalties, RoyaltyShare, Metadata, Inscription,
-  AttributeType, GroupInput, AttributeValue} from "./query";
+  AttributeType, GroupInput, AttributeValue, Asset} from "./query";
 export {
   decodeGroup,
   useGroupsByAuthority,
