@@ -6,7 +6,7 @@ import { Asset } from "shared-ui";
 export const AssetDisplay = ({ asset }: { asset: Asset }) => {
   return (
     <Box>
-      {asset.image && <img src={asset.image.url}  style={{aspectRatio: '1/1', height: '245px'}}/>}
+      {asset.image && <img src={asset.image.url}  style={{aspectRatio: '1/1', width: '100%'}}/>}
     </Box>
   );
 };
