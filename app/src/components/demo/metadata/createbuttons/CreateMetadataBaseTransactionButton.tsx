@@ -74,10 +74,7 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstanceMetadata(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
-  });
+  const librePlexProgram = getProgramInstanceMetadata(connection, wallet);
 
   const { assetType, symbol, name, group, description, mint, extension } = params;
 

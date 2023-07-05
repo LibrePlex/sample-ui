@@ -19,7 +19,7 @@ export const WalletGallery = ({ publicKey }: { publicKey: PublicKey }) => {
   return (
     <Box p={20} display="flex" flexDirection="column">
       {data.filter(item=>item.item).map((item, idx) => (
-        <MintCard key={idx} mint={item} mintId={item.item?.mint!}/>
+        <MintCard key={idx} tokenAccount={{pubkey: item.pubkey, item: item.item!}}/>
       ))}
     </Box>
   );

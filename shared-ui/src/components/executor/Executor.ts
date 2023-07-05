@@ -1,4 +1,4 @@
-import { WalletContextState } from "@solana/wallet-adapter-react";
+import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 import {
   Connection,
   PublicKey,
@@ -15,8 +15,8 @@ export type FetchSignature<P> = (
 
 export const DEFAULT_TIMEOUT = 32000;
 
-export interface IExecutorWallet {
-  publicKey: WalletContextState["publicKey"];
+export interface IExecutorWallet extends Omit<WalletContextState, 'publicKey'|'signTransaction'|'signAllTransactions'> {
+  publicKey: NonNullable<WalletContextState["publicKey"]>;
   signTransaction: WalletContextState["signTransaction"];
   signAllTransactions: WalletContextState["signAllTransactions"];
 }
@@ -223,7 +223,7 @@ export class Executor<P> {
                           ...blockhash,
                         },
                         {
-                          skipPreflight: false,
+                          skipPreflight: true,
                           maxRetries: 5,
                         }
                       );

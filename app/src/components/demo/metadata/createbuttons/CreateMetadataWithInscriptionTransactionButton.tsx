@@ -1,7 +1,7 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
 import {
   MINT_SIZE,
-  TOKEN_PROGRAM_ID,
+  TOKEN_2022_PROGRAM_ID,
   createAssociatedTokenAccountInstruction,
   createInitializeMint2Instruction,
   createMintToInstruction,
@@ -68,10 +68,7 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstanceMetadata(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
-  });
+  const librePlexProgram = getProgramInstanceMetadata(connection,wallet);
 
   const { assetType, symbol, name, description, mint, extension } = params;
 
@@ -88,36 +85,6 @@ export const createMetadata = async (
 
   const ata = getAssociatedTokenAddressSync(mint.publicKey, wallet.publicKey);
 
-  instructions.push(
-    SystemProgram.createAccount({
-      fromPubkey: wallet.publicKey,
-      newAccountPubkey: mint.publicKey,
-      space: MINT_SIZE,
-      lamports: mintLamports,
-      programId: TOKEN_PROGRAM_ID,
-    }),
-    createInitializeMint2Instruction(
-      mint.publicKey,
-      0,
-      wallet.publicKey,
-      wallet.publicKey,
-      TOKEN_PROGRAM_ID
-    ),
-    createAssociatedTokenAccountInstruction(
-      wallet.publicKey,
-      ata,
-      wallet.publicKey,
-      mint.publicKey
-    ),
-    createMintToInstruction(
-      mint.publicKey,
-      ata,
-      wallet.publicKey,
-      1,
-      [],
-      TOKEN_PROGRAM_ID
-    )
-  );
 
   console.log("Creating instruction");
 

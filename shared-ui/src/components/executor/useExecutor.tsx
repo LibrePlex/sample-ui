@@ -4,7 +4,12 @@ import {
   WalletContextState,
 } from "@solana/wallet-adapter-react";
 import { useCallback, useContext, useState, useMemo, useEffect } from "react";
-import { Executor, FetchSignature } from "./Executor";
+import {
+  Executor,
+  FetchSignature,
+  IExecutorParams,
+  IExecutorWallet,
+} from "./Executor";
 import { notify } from "../../utils/notifications";
 
 export enum NotifyType {
@@ -15,11 +20,7 @@ export enum NotifyType {
 export const useExecutor = <P extends unknown>(
   fetch: FetchSignature<{
     params: P;
-    wallet: {
-      publicKey: WalletContextState["publicKey"];
-      signTransaction: WalletContextState["signTransaction"];
-      signAllTransactions: WalletContextState["signAllTransactions"];
-    };
+    wallet: IExecutorWallet;
   }>,
 
   params: P,
@@ -29,12 +30,12 @@ export const useExecutor = <P extends unknown>(
   onInfo?: (msg?: string) => any,
   afterSign?: () => any
 ) => {
-  const { publicKey, signTransaction, signAllTransactions } = useWallet();
+  const wallet = useWallet();
 
-  const {connection} = useContext(ConnectionContext);
+  const { connection } = useContext(ConnectionContext);
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
   const onClick = useCallback(async () => {
-    if (publicKey && signAllTransactions) {
+    if (wallet.publicKey && wallet.signAllTransactions) {
       // console.log({params});
       const executor = new Executor(
         fetch,
@@ -42,19 +43,18 @@ export const useExecutor = <P extends unknown>(
         {
           params,
           wallet: {
-            publicKey,
-            signTransaction,
-            signAllTransactions,
+            ...wallet,
+            publicKey: wallet.publicKey! // checked above this is ok
           },
         },
-        signAllTransactions,
+        wallet.signAllTransactions,
         connection,
         commitment,
-        publicKey,
+        wallet.publicKey,
         onSuccess,
         onInfo || onSuccess,
         onError,
-        ()=>{},
+        () => {},
         afterSign
       );
 
@@ -77,19 +77,21 @@ export const useExecutor = <P extends unknown>(
         setIsExecuting(false);
       }
     } else {
-      notify({type: 'error', message: "Tx runner not ready. Are you logged in?"});
+      notify({
+        type: "error",
+        message: "Tx runner not ready. Are you logged in?",
+      });
     }
   }, [
-    publicKey,
-    signAllTransactions,
+    wallet,
     fetch,
     params,
-    signTransaction,
+
     connection,
     commitment,
     onSuccess,
     onError,
-    afterSign
+    afterSign,
   ]);
 
   return { isExecuting, onClick };

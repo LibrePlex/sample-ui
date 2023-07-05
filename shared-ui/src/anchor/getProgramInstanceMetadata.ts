@@ -8,6 +8,7 @@ export const PROGRAM_ID_INSCRIPTIONS =
 
 import { IDL as IDLMetadata, LibreplexMetadata as Libreplex } from "../types/libreplex_metadata";
 import { IDL as IDLOrdinals, Inscriptions } from "../types/inscriptions";
+import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -30,13 +31,31 @@ export type LibreplexWithOrdinals = {
 };
 export function getProgramInstanceMetadata(
   connection: Connection,
-  wallet: anchor.Wallet
+  wallet: WalletContextState
 ) {
+
+  if (
+    !wallet.publicKey ||
+    !wallet.signAllTransactions ||
+    !wallet.signTransaction
+  ) {
+    throw Error("Wallet not ready");
+  }
   
+
+  const nodeWallet = {
+    ...wallet,
+    signTransaction: wallet.signTransaction!,
+    signAllTransactions: wallet.signAllTransactions!,
+    publicKey: wallet.publicKey!,
+    payer: Keypair.generate(),
+  };
+
+
   if (!wallet.publicKey) return;
   const provider = new anchor.AnchorProvider(
     connection,
-    wallet,
+    nodeWallet,
     anchor.AnchorProvider.defaultOptions()
   );
   // Read the generated IDL.

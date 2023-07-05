@@ -9,24 +9,16 @@ import { WalletGallery } from "../components/gallery/WalletGallery";
 import { QueryClient, QueryClientProvider } from "react-query";
 const Home: NextPage = (props) => {
   const { publicKey } = useWallet();
-  const queryClient = useMemo(() => new QueryClient({}), []);
-
+  
   return (
     <div>
-      <Head>
-        <title>LibrePlex</title>
-        <meta name="description" content="Your wallet" />
-      </Head>
-
-      <QueryClientProvider client={queryClient}>
-        <ContextProvider>
+        
           {publicKey ? (
             <WalletGallery publicKey={publicKey} />
           ) : (
             <Text>Please connect your wallet</Text>
           )}
-        </ContextProvider>
-      </QueryClientProvider>
+
     </div>
   );
 };
