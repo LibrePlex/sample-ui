@@ -1,16 +1,20 @@
-import React from "react"
-import { useListingsByLister } from "shared-ui"
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {Text} from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import React from "react";
 
-export const Listings = () => {
 
-    const {publicKey} = useWallet();
+import { useListingsByLister } from "shared-ui";
+export const ListingGallery = ({ publicKey }: { publicKey: PublicKey }) => {
+  const { connection } = useConnection();
+  const { data } = useListingsByLister(publicKey, connection);
 
-    const {connection} = useConnection();
-    
-    const {data: listings} = useListingsByLister(publicKey, connection)
-    return <>
-        <Text>Listings: {listings.length}</Text>
-    </>
-}
+  return (
+    <Box p={20} display="flex" flexDirection="column">
+      <Text>Listings: {data.length}</Text>
+      {/* {data.filter(item=>item.item).map((item, idx) => (
+        <MintCard key={idx} tokenAccount={{pubkey: item.pubkey, item: item.item!}}/>
+      ))} */}
+    </Box>
+  );
+};

@@ -2,7 +2,7 @@ import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { LibrePlexShopProgramContext } from "../../anchor/LibrePlexShopProgramContext";
 import { LibreplexShop } from "../../types/libreplex_shop";
 import { useGpa } from "./gpa";
@@ -23,10 +23,13 @@ export interface Listing {
 
 export const decodeListing =
   (program: Program<LibreplexShop>) => (buffer: Buffer, pubkey: PublicKey) => {
+    console.log('AAA');
     const coder = new BorshCoder(program.idl);
+    console.log({coder});
     let listing: Listing | null;
     try {
-      const listingRaw = coder.accounts.decode<IdlAccounts<LibreplexShop>["listing"]>("group", buffer);
+      const listingRaw = coder.accounts.decode<IdlAccounts<LibreplexShop>["listing"]>("listing", buffer);
+      console.log({listingRaw});
       listing = {
           ...listingRaw,
           amount: BigInt(listingRaw.amount.toString()),
@@ -44,6 +47,7 @@ export const decodeListing =
           }
       };
     } catch (e) {
+      console.log({e})
       listing = null;
     }
 
@@ -81,16 +85,17 @@ export const useListingsByLister = (
 
   const filters = useMemo(() => {
     if (lister) {
-      const filters = [
+      const filters: any[] = [
         {
           memcmp: {
             offset: 40,
             bytes: lister.toBase58(),
           },
-        },
+        }
+        ,
         {
           memcmp: {
-            offset: 40,
+            offset: 0,
             bytes: bs58.encode(sha256.array("account:Listing").slice(0, 8)),
           },
         },
@@ -102,9 +107,12 @@ export const useListingsByLister = (
   }, [lister]);
 
   const q = useGpa(program.programId, filters, connection, [
-    lister?.toBase58() ?? "",
     "listingsByLister",
   ]);
+
+  useEffect(()=>{
+    console.log({q})
+  },[q])
 
   const decoded = useMemo(
     () => ({

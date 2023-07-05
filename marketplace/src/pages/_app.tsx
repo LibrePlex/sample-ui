@@ -17,7 +17,11 @@ import React from "react";
 import { ContentContainer } from "../components/ContentContainer";
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
-import {QueryClient, QueryClientProvider} from "react-query"
+import { QueryClient, QueryClientProvider } from "react-query";
+import {
+  LibrePlexShopProgramContext,
+  LibrePlexShopProgramProvider,
+} from "shared-ui/src/anchor";
 const manager = createLocalStorageManager("colormode-key");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
@@ -38,11 +42,13 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
               <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
               <LibrePlexProgramProvider>
                 <InscriptionsProgramProvider>
-                  <ContentContainer>
-                    <PortalManager>
-                      <Component {...pageProps} />
-                    </PortalManager>
-                  </ContentContainer>
+                  <LibrePlexShopProgramProvider>
+                    <ContentContainer>
+                      <PortalManager>
+                        <Component {...pageProps} />
+                      </PortalManager>
+                    </ContentContainer>
+                  </LibrePlexShopProgramProvider>
                 </InscriptionsProgramProvider>
               </LibrePlexProgramProvider>
             </div>
