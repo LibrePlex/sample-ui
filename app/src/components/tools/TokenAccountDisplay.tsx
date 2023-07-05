@@ -64,14 +64,14 @@ export const TokenAccountDisplay = ({
           : "Other"}
       </Td>
       <Td>
-        {tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ||
+        {(tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ||
           (tokenRecord?.item.delegateRole === TokenDelegateRole.Staking &&
-            tokenRecord.item.lockedTransfer === null && (
+            tokenRecord.item.lockedTransfer === null)) && (
               <FixStuckMigrationStateButton
                 params={{ tokenAccounts: [tokenAccount] }}
                 formatting={{}}
               />
-            ))}
+            )}
       </Td>
     </Tr>
   );

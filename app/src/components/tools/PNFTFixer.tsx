@@ -10,23 +10,33 @@ import {
   Th,
   Thead,
   Tr,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useMemo, useState } from "react";
 import { useTokenAccountsByOwner } from "shared-ui";
 import { TokenAccountDisplay } from "./TokenAccountDisplay";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { useRouter } from "next/router";
+import { PublicKey } from "@solana/web3.js";
 
 export const PNFTFixer = () => {
   const { publicKey } = useWallet();
   const { connection } = useConnection();
+
+  const router = useRouter();
+
+  const effectiveWallet = useMemo(() => {
+    console.log({w: router.query?.w});
+    return (router.query?.w as string) ?? publicKey?.toBase58();
+  }, [router.query, publicKey]);
+
   const key = useMemo(
-    () => `tokenaccountbywallet-${publicKey?.toBase58()}`,
-    [publicKey]
+    () => `tokenaccountbywallet-${effectiveWallet}`,
+    [effectiveWallet]
   );
   const { data, refetch, isFetching } = useTokenAccountsByOwner(
-    publicKey,
+    effectiveWallet ? new PublicKey(effectiveWallet) : null,
     connection,
     TOKEN_PROGRAM_ID,
     key
@@ -42,7 +52,7 @@ export const PNFTFixer = () => {
   const [showAll, setShowAll] = useState<boolean>(false);
   return (
     <Box sx={{ height: "100%", pb: "150px" }}>
-      <HStack alignItems={'center'}>
+      <HStack alignItems={"center"}>
         <Button onClick={() => refetch()}>Refresh</Button>
         <Checkbox
           checked={showAll}
@@ -56,10 +66,12 @@ export const PNFTFixer = () => {
       </HStack>
 
       {isFetching && <Spinner />}
-      <h5>
-        You have {data.length} mints in your wallet.
-      </h5>
-      <Text>{showAll?"Showing all mints":"Showing pNFTs in stuck migration state."}</Text>
+      <h5>You have {data.length} mints in your wallet.</h5>
+      <Text>
+        {showAll
+          ? "Showing all mints"
+          : "Showing pNFTs in stuck migration state."}
+      </Text>
       <TableContainer sx={{ overflow: "auto", height: "100%" }}>
         <Table>
           <Thead>
@@ -74,7 +86,11 @@ export const PNFTFixer = () => {
           </Thead>
           <Tbody>
             {sortedData.map((item, idx) => (
-              <TokenAccountDisplay key={idx} tokenAccount={item} showAll={showAll}/>
+              <TokenAccountDisplay
+                key={idx}
+                tokenAccount={item}
+                showAll={showAll}
+              />
             ))}
           </Tbody>
         </Table>
