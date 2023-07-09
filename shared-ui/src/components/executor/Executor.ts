@@ -187,6 +187,7 @@ export class Executor<P> {
       try {
         batchId++;
         const thisBatch = remainingTransactions.splice(0, TX_BATCH_SIZE);
+        
         const { signedTransactions, blockhash } =
           await this.getSignedTransactions(thisBatch);
 

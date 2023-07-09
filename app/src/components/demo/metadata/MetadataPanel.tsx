@@ -17,7 +17,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 //     usePermissionsHydratedWithCollections
 // } from "stores/accounts/useCollectionsById";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Group, IRpcObject } from "shared-ui";
 import { Metadata } from "shared-ui";
@@ -32,9 +32,17 @@ export const BaseMetadataPanel = () => {
 
   const { connection } = useConnection();
 
-  const { data: metadata, refetch } = useMetadataByAuthority(
+  const { data: metadataUnordered, refetch } = useMetadataByAuthority(
     publicKey,
     connection
+  );
+
+  const metadata = useMemo(
+    () =>
+      [...metadataUnordered].sort((a, b) =>
+        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
+      ),
+    [metadataUnordered]
   );
 
   const selectedMetadataKeys = useSelectedMetadata(
@@ -105,9 +113,12 @@ export const BaseMetadataPanel = () => {
           }}
         />
         {selectedMetadataKeys.size > 0 && (
-          <DeleteMetadataButton params={[...selectedMetadataKeys].map(item=>({
-            metadata: item
-          }))} formatting={{}} />
+          <DeleteMetadataButton
+            params={[...selectedMetadataKeys].map((item) => ({
+              metadata: item,
+            }))}
+            formatting={{}}
+          />
         )}
         <Button
           onClick={() => {
@@ -140,9 +151,7 @@ export const BaseMetadataPanel = () => {
               <Thead>
                 <Tr>
                   <Th colSpan={5}></Th>
-                  <Th colSpan={4}>
-                    
-                  </Th>
+                  <Th colSpan={4}></Th>
                 </Tr>
 
                 <Tr>

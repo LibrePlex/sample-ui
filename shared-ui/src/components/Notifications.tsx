@@ -19,9 +19,11 @@ export const Notifications = () => {
 
   return (
     <div
-      className={`z-20 fixed inset-20 flex items-end px-4 py-6 pointer-events-none sm:p-6`}
+    style={{position: "fixed", bottom: 0, zIndex: 10000}}
+      // className={`z-20 fixed inset-20 flex items-end px-4 py-6 pointer-events-none sm:p-6`}
     >
-      <div className={`flex flex-col w-full`}>
+      <div className={`flex flex-col w-full`}
+      >
         {reversedNotifications.map((n, idx) => (
           <Notification
             key={`${n.message}${idx}`}
@@ -57,7 +59,7 @@ export const Notification = ({ type, message, description, txid, onHide }: any) 
   useEffect(() => {
     const id = setTimeout(() => {
       onHide()
-    }, 8000);
+    }, 80000);
 
     return () => {
       clearInterval(id);
@@ -66,10 +68,11 @@ export const Notification = ({ type, message, description, txid, onHide }: any) 
 
   return (
     <div
-      className={`max-w-sm w-full bg-bkg-1 shadow-lg rounded-md mt-2 pointer-events-auto ring-1 ring-black ring-opacity-5 p-2 mx-4 mb-12 overflow-hidden`}
+      // className={`max-w-sm w-full bg-bkg-1 shadow-lg rounded-md mt-2 pointer-events-auto ring-1 ring-black ring-opacity-5 p-2 mx-4 mb-12 overflow-hidden`}
+      style={{zIndex: 10000, cursor: 'pointer', pointerEvents: "all"}}
     >
-      <div className={`p-4 rounded-md bg-gradient-to-r from-purple-900 from-10% via-purple-600 via-30% to-emerald-500 to-90%`}>
-        <div className={`flex items-center`}>
+      <div className={`p-4 rounded-md bg-gradient-to-r from-purple-900 from-10% via-purple-600 via-30% to-emerald-500 to-90%`} >
+        <div className={`flex items-center`} >
           <div className={`flex-shrink-0`}>
             {type === 'success' ? (
               <CheckCircleIcon className={`h-8 w-8 mr-1 text-green`} />

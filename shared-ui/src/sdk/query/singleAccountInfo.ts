@@ -28,7 +28,12 @@ export const fetchSingleAccount = (
 
       return {
         pubkey: accountKey,
-        item: result[0]?.data || null,
+        item: result[0]?.data
+          ? {
+              buffer: result[0]?.data,
+              balance: result[0].balance || BigInt(0),
+            }
+          : null,
       };
     } else {
       return null;
@@ -59,9 +64,16 @@ const accountUpdater =
     } else {
       queryClient.setQueryData(
         key,
-        (old: IRpcObject<Buffer | undefined> | undefined) => {
+        (
+          old:
+            | IRpcObject<{ buffer: Buffer; balance: bigint } | undefined>
+            | undefined
+        ) => {
           const newOrUpdatedItem = {
-            item: accountInfo.data,
+            item: {
+              buffer: accountInfo.data,
+              balance: BigInt(accountInfo.lamports),
+            },
             pubkey: accountId,
           };
           return newOrUpdatedItem;
@@ -99,7 +111,10 @@ export const useFetchSingleAccount = (
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<Buffer | null> | null>([accountId], fetcher);
+  const q = useQuery<IRpcObject<{
+    buffer: Buffer;
+    balance: bigint;
+  } | null> | null>([accountId], fetcher);
 
   /// intercept account changes and refetch as needed
   useEffect(() => {

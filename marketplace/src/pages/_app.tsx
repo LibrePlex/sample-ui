@@ -22,6 +22,10 @@ import {
   LibrePlexShopProgramContext,
   LibrePlexShopProgramProvider,
 } from "shared-ui/src/anchor";
+import {
+  ShopOwnerContext,
+  ShopOwnerProvider,
+} from "../components/ShopOwnerContext";
 const manager = createLocalStorageManager("colormode-key");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
@@ -38,19 +42,22 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <QueryClientProvider client={queryClient}>
           <ContextProvider>
             <div className="flex flex-col h-screen bg-[#121212]">
-              <Notifications />
-              <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-              <LibrePlexProgramProvider>
-                <InscriptionsProgramProvider>
-                  <LibrePlexShopProgramProvider>
-                    <ContentContainer>
-                      <PortalManager>
-                        <Component {...pageProps} />
-                      </PortalManager>
-                    </ContentContainer>
-                  </LibrePlexShopProgramProvider>
-                </InscriptionsProgramProvider>
-              </LibrePlexProgramProvider>
+              <ShopOwnerProvider>
+                <Notifications />
+
+                <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+                <LibrePlexProgramProvider>
+                  <InscriptionsProgramProvider>
+                    <LibrePlexShopProgramProvider>
+                      <ContentContainer>
+                        <PortalManager>
+                          <Component {...pageProps} />
+                        </PortalManager>
+                      </ContentContainer>
+                    </LibrePlexShopProgramProvider>
+                  </InscriptionsProgramProvider>
+                </LibrePlexProgramProvider>
+              </ShopOwnerProvider>
             </div>
           </ContextProvider>
         </QueryClientProvider>

@@ -42,8 +42,7 @@ export const deleteMetadata = async (
   }[] = [];
 
   const librePlexProgram = getProgramInstanceMetadata(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
+    ...wallet
   });
 
 

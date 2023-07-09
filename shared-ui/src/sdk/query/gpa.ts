@@ -23,13 +23,13 @@ const accountUpdater = (
     console.log("Account updated", accountInfo);
 
     const newOrUpdatedItem = {
-      item: accountInfo.accountInfo,
+      item: accountInfo.accountInfo.data,
       pubkey: accountInfo.accountId
     }
     console.log({key})
 
-    const fn: Updater<IRpcObject<AccountInfo<Buffer> | undefined>[] | undefined,
-       IRpcObject<AccountInfo<Buffer> | undefined>[] > = (old: IRpcObject<AccountInfo<Buffer> | undefined>[] | undefined ) => {
+    const fn: Updater<IRpcObject<Buffer | undefined>[] | undefined,
+       IRpcObject<Buffer | undefined>[] > = (old: IRpcObject<Buffer | undefined>[] | undefined ) => {
       const found = (old ?? []).find((item) =>
         item.pubkey.equals(accountInfo.accountId)
       );
@@ -59,6 +59,8 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
         filters,
       });
 
+      console.log({results, filters});
+;
       for (const result of results?.values()??[]) {
         // const obj = decode(result.account.data, result.pubkey);
 

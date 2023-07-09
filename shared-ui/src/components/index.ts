@@ -15,3 +15,5 @@ export {
 export {Notifications} from "./Notifications"
 export {NetworkSwitcherDynamic} from "./NetworkSwitcher"
 export {NavElement} from "./navelement"
+
+export {GroupSelector} from "./GroupSelector"

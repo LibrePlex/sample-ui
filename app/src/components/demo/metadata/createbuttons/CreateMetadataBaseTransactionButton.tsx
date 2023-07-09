@@ -196,6 +196,22 @@ export const createMetadata = async (
     instructions.push(instruction);
   }
 
+  if( group ) {
+    instructions.push(
+      await librePlexProgram.methods.groupAdd().accounts({
+        metadataAuthority: wallet.publicKey,
+        groupAuthority: wallet.publicKey,
+        payer: wallet.publicKey,
+        metadata,
+        delegatedGroupWidePermissions: null,
+        delegatedMetadataSpecificPermissions: null,
+        group,
+        systemProgram: SystemProgram.programId
+      }).instruction()
+    )
+  }
+
+
   console.log("INSTRUCTION CREATED");
 
   data.push({

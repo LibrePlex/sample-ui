@@ -5,7 +5,7 @@ import { Text } from "@chakra-ui/react";
 import { ContextProvider, useTokenAccountsByOwner } from "shared-ui";
 import React, { useMemo } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { WalletGallery } from "../components/gallery/WalletGallery";
+import { WalletGallery } from "../components/gallery/wallet/WalletGallery";
 import { QueryClient, QueryClientProvider } from "react-query";
 const Home: NextPage = (props) => {
   const { publicKey } = useWallet();

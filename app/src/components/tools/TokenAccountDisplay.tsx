@@ -1,20 +1,18 @@
 import { Td, Tr } from "@chakra-ui/react";
+import {
+    TokenDelegateRole,
+    TokenStandard,
+} from "@metaplex-foundation/mpl-token-metadata";
 import { RawAccount } from "@solana/spl-token";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useMemo } from "react";
 import {
-  CopyPublicKeyButton,
-  IRpcObject,
-  SolscanLink,
-  getLegacyMetadataPda,
-  useLegacyMetadataByMintId,
+    CopyPublicKeyButton,
+    IRpcObject,
+    SolscanLink,
+    useLegacyMetadataByMintId,
+    useLegacyTokenRecordByTokenAccount
 } from "shared-ui";
-import { useLegacyTokenRecordByTokenAccount } from "shared-ui";
 import { FixStuckMigrationStateButton } from "./pnftfixer/FixStuckMigrationStateButton";
-import {
-  TokenStandard,
-  TokenDelegateRole,
-} from "@metaplex-foundation/mpl-token-metadata";
 export const TokenAccountDisplay = ({
   tokenAccount,
   showAll,
@@ -67,11 +65,11 @@ export const TokenAccountDisplay = ({
         {(tokenRecord?.item.delegateRole === TokenDelegateRole.Migration ||
           (tokenRecord?.item.delegateRole === TokenDelegateRole.Staking &&
             tokenRecord.item.lockedTransfer === null)) && (
-              <FixStuckMigrationStateButton
-                params={{ tokenAccounts: [tokenAccount] }}
-                formatting={{}}
-              />
-            )}
+          <FixStuckMigrationStateButton
+            params={{ tokenAccounts: [tokenAccount] }}
+            formatting={{}}
+          />
+        )}
       </Td>
     </Tr>
   );

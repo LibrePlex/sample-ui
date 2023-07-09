@@ -28,7 +28,7 @@ import {
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
 import { CopyPublicKeyButton, Group, IRpcObject } from "shared-ui";
-import { GroupSelector } from "./GroupSelector";
+import { GroupSelector } from "shared-ui";
 
 enum View {
   Standalone,

@@ -19,14 +19,16 @@ import {
 import { useCallback, useMemo, useState } from "react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Group, IRpcObject, LibreplexMetadata, decodeGroup, useGroupsByAuthority } from "shared-ui";
+import {
+  Group,
+  IRpcObject,
+  decodeGroup,
+  useGroupsByAuthority
+} from "shared-ui";
 import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";
 import useSelectedCollections from "./useSelectedCollections";
-import { IdlAccounts } from "@coral-xyz/anchor";
-
-
 
 export const CollectionsPanel = () => {
   // const { publicKey } = useWallet();
@@ -58,7 +60,18 @@ export const CollectionsPanel = () => {
 
   const { publicKey } = useWallet();
 
-  const { data: groups, refetch } = useGroupsByAuthority(publicKey, connection);
+  const { data: unorderedGroups, refetch } = useGroupsByAuthority(
+    publicKey,
+    connection
+  );
+
+  const groups = useMemo(
+    () =>
+      [...unorderedGroups].sort((a, b) =>
+        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
+      ),
+    [unorderedGroups]
+  );
 
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {

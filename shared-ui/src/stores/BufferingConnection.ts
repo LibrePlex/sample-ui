@@ -16,7 +16,7 @@ export class BufferingConnection {
   static rpcBuffers: { [key: string]: BufferingConnection } = {};
   private accountRequests: {
     accountId: PublicKey;
-    cb: (a: { data: Buffer | null; accountId: PublicKey }) => any;
+    cb: (a: { data: Buffer | null; accountId: PublicKey, balance: bigint }) => any;
   }[];
   private connection: Connection;
   private firstPendingTimestamp: number | null;
@@ -66,11 +66,13 @@ export class BufferingConnection {
             batchRequests[idx].cb({
               accountId: batchRequests[idx].accountId,
               data: a.data,
+              balance: BigInt(a.lamports)
             });
           } else {
             batchRequests[idx].cb({
               accountId: batchRequests[idx].accountId,
               data: null,
+              balance: BigInt(0)
             });
           }
         }
@@ -80,6 +82,7 @@ export class BufferingConnection {
           id.cb({
             accountId: id.accountId,
             data: null,
+            balance: BigInt(0)
           });
         }
       }
@@ -129,8 +132,8 @@ export class BufferingConnection {
       this.firstPendingTimestamp = currentTimestamp;
     }
 
-    const promise = new Promise<{ accountId: PublicKey; data: Buffer | null }>((resolve, reject) => {
-      const cb = (val: { accountId: PublicKey; data: Buffer | null }) => {
+    const promise = new Promise<{ accountId: PublicKey; data: Buffer | null, balance: bigint }>((resolve, reject) => {
+      const cb = (val: { accountId: PublicKey; data: Buffer | null, balance: bigint }) => {
         resolve(val);
       };
 

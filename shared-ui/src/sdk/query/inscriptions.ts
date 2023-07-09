@@ -72,7 +72,7 @@ export const useInscriptionById = (
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item ? decodeInscription(program)(q?.data?.item, ordinalKey) : undefined;
+      const obj = q?.data?.item ? decodeInscription(program)(q?.data?.item.buffer, ordinalKey) : undefined;
       return obj;
     } catch (e) {
       return null;

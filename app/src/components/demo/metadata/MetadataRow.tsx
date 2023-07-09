@@ -215,7 +215,7 @@ export const MetadataRow = ({
                 <ModalBody>
                   <Heading>{item.item.extension?'y':'n'}</Heading>
                   <AttributesDisplay
-                    attributes={item.item.extension?.nft?.attributes??[]}
+                    attributes={[...(item.item.extension?.nft?.attributes??[])]}
                     group={group}
                   />
                 </ModalBody>

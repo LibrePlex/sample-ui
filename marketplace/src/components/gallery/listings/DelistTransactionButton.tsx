@@ -1,15 +1,16 @@
 import {
   getMinimumBalanceForRentExemptMint,
   getAssociatedTokenAddressSync,
+  TOKEN_PROGRAM_ID,
   TOKEN_2022_PROGRAM_ID,
-  ASSOCIATED_TOKEN_PROGRAM_ID
+  ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import {
   Connection,
   Keypair,
   PublicKey,
   TransactionInstruction,
-  SystemProgram
+  SystemProgram,
 } from "@solana/web3.js";
 import BN from "bn.js";
 import React from "react";
@@ -17,36 +18,30 @@ import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
   IExecutorParams,
+  IRpcObject,
   ITransactionTemplate,
-  getListingPda,
-  getProgramInstanceShop
+  Listing,
+  getProgramInstanceShop,
 } from "shared-ui";
 
-import { Price, notify } from "shared-ui";
+import { RawAccount } from "@solana/spl-token";
+
+import {  notify } from "shared-ui";
 
 export enum AssetType {
   Image,
   Inscription,
 }
 
-// export type Asset = {
-//   type: AssetType.Image,
-// } | {
-//   type: AssetType.Ordinal
-// }
-
-export interface ICreateMetadata {
-  price: Price;
-  mint: PublicKey;
-  tokenAccount: PublicKey;
-  amount: BigInt;
+export interface IExecuteTrade {
+  listing: IRpcObject<Listing>;
 }
 
 // start at 0. We can extend as needed
 export const ORDINAL_DEFAULT_LENGTH = 0;
 
-export const listMint = async (
-  { wallet, params }: IExecutorParams<ICreateMetadata>,
+export const delist = async (
+  { wallet, params }: IExecutorParams<IExecuteTrade>,
   connection: Connection
 ): Promise<{
   data?: ITransactionTemplate[];
@@ -63,67 +58,55 @@ export const listMint = async (
   if (!librePlexProgram) {
     throw Error("IDL not ready");
   }
-
-  const { price, mint, tokenAccount } = params;
+  const { listing } = params;
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
   let instructions: TransactionInstruction[] = [];
 
-  let priceInput = price.native
-    ? {
-        native: {
-          lamports: new BN(price.native.lamports.toString()),
-        },
-      }
-    : price.spl
-    ? {
-        spl: {
-          mint: price.spl.mint,
-          amount: new BN(price.spl.amount.toString()),
-        },
-      }
-    : null;
-
-  if (!priceInput) {
-    throw Error("Unexpected price type");
-  }
-
-  const [listing, listingBump] = getListingPda(mint);
-
   const escrowTokenAccount = getAssociatedTokenAddressSync(
-    mint,
-    listing,
+    listing.item.mint,
+    listing.pubkey,
     true,
     TOKEN_2022_PROGRAM_ID
-  )
+  );
+
+  const listerPaymentTokenAccount = getAssociatedTokenAddressSync(
+    listing.item.mint,
+    listing.item.lister,
+    true,
+    TOKEN_2022_PROGRAM_ID
+  );
+
+  const listerTokenAccount = getAssociatedTokenAddressSync(
+    listing.item.mint,
+    wallet.publicKey,
+    false,
+    TOKEN_2022_PROGRAM_ID
+  );
 
   const instruction = await librePlexProgram.methods
-    .list({
-      // native / spl etc
-      price: priceInput,
-      amount: new BN(1), // for NFTs the amount is always 1
-      listingBump,
-    })
+    .delist()
     .accounts({
-      lister: wallet.publicKey,
-      mint,
-      listing,
+      lister: listing.item.lister,
+      mint: listing.item.mint,
+      listing: listing.pubkey,
       escrowTokenAccount,
-      listerTokenAccount: tokenAccount,
-      
+      listerTokenAccount,
+      listingGroup: listing.item.group,
       // usual solana gubbins
       systemProgram: SystemProgram.programId,
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-      tokenProgram: TOKEN_2022_PROGRAM_ID
+      tokenProgram: TOKEN_PROGRAM_ID,
+      tokenProgram2022: TOKEN_2022_PROGRAM_ID
     })
     .instruction();
   instructions.push(instruction);
 
   data.push({
     instructions,
-    description: `List mint`,
+    description: `Delist`,
     signers: [],
   });
 
@@ -134,18 +117,18 @@ export const listMint = async (
   };
 };
 
-export const ListMintTransactionButton = (
+export const DelistTransactionButton = (
   props: Omit<
-    GenericTransactionButtonProps<ICreateMetadata>,
+    GenericTransactionButtonProps<IExecuteTrade>,
     "transactionGenerator"
   >
 ) => {
   return (
-      <GenericTransactionButton<ICreateMetadata>
-        text={"List"}
-        transactionGenerator={listMint}
-        onError={(msg) => notify({ message: msg ?? "Unknown error" })}
-        {...props}
-      />
+    <GenericTransactionButton<IExecuteTrade>
+      text={"Delist"}
+      transactionGenerator={delist}
+      onError={(msg) => notify({ message: msg ?? "Unknown error" })}
+      {...props}
+    />
   );
 };

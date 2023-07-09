@@ -2,20 +2,20 @@ import create, { State } from 'zustand'
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js'
 
 interface UserSOLBalanceStore extends State {
-  balance: number;
+  balance: bigint;
   getUserSOLBalance: (publicKey: PublicKey, connection: Connection) => void
 }
 
 export const useUserSolBalanceStore = create<UserSOLBalanceStore>((set, _get) => ({
-  balance: 0,
+  balance: BigInt(0),
   getUserSOLBalance: async (publicKey, connection) => {
-    let balance = 0;
+    let balance = BigInt(0);
     try {
-      balance = await connection.getBalance(
+      balance = BigInt(await connection.getBalance(
         publicKey,
         'confirmed'
-      );
-      balance = balance / LAMPORTS_PER_SOL;
+      ));
+      balance = balance / BigInt(LAMPORTS_PER_SOL);
     } catch (e) {
       console.log(`error getting balance: `, e);
     }

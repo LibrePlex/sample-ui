@@ -93,8 +93,6 @@ export const useTokenAccountsByOwner = (
   owner: PublicKey,
   connection: Connection,
   programId: PublicKey,
-  // decode: DecodeType<T, P>,
-  key: any
 ) => {
   const { fetcher, listener } = useMemo(
     () => fetchTokenAccountsByOwner(owner, connection, programId),
@@ -103,6 +101,8 @@ export const useTokenAccountsByOwner = (
   );
 
   const queryClient = useQueryClient();
+
+  const key = useMemo(()=>`tokenaccountsbyowner-${owner.toBase58()}`,[owner])
 
   const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
 
