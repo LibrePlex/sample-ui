@@ -31,7 +31,7 @@ export type LibreplexWithOrdinals = {
 };
 export function getProgramInstanceMetadata(
   connection: Connection,
-  wallet: WalletContextState
+  wallet: Pick<WalletContextState, 'publicKey' |'signAllTransactions'|'signTransaction'>
 ) {
 
   if (
@@ -44,11 +44,9 @@ export function getProgramInstanceMetadata(
   
 
   const nodeWallet = {
-    ...wallet,
     signTransaction: wallet.signTransaction!,
     signAllTransactions: wallet.signAllTransactions!,
     publicKey: wallet.publicKey!,
-    payer: Keypair.generate(),
   };
 
 

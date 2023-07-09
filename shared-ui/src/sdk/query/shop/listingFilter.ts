@@ -1,4 +1,3 @@
-import { IRpcObject } from 'components/executor/IRpcObject';
 import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
@@ -9,13 +8,14 @@ import { LibreplexShop } from "../../../types/libreplex_shop";
 import { useGpa } from "../gpa";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 
-
-
-
 export type Price =
-  | { native: { lamports: bigint }; spl?: never, unknown?: never }
-  | { spl: { mint: PublicKey; amount: bigint }; native?: never, unknown?: never }
-  | { unknown: null, native?: never, spl?: never};
+  | { native: { lamports: bigint }; spl?: never; unknown?: never }
+  | {
+      spl: { mint: PublicKey; amount: bigint };
+      native?: never;
+      unknown?: never;
+    }
+  | { unknown: null; native?: never; spl?: never };
 
 export interface Listing {
   mint: PublicKey;
@@ -24,20 +24,23 @@ export interface Listing {
   lister: PublicKey;
 }
 
-export type ListingFilter = IdlAccounts<LibreplexShop>["listingFilter"]
+export type ListingFilter = IdlAccounts<LibreplexShop>["listingFilter"];
 
 export const decodeListingFilter =
   (program: Program<LibreplexShop>) => (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     let listing: Listing | null;
     try {
-      const listingFilter = coder.accounts.decode<ListingFilter>("listingFilter", buffer);
+      const listingFilter = coder.accounts.decode<ListingFilter>(
+        "listingFilter",
+        buffer
+      );
       return {
         item: listingFilter,
-        pubkey
-      }
+        pubkey,
+      };
     } catch (e) {
-      console.log({e})
+      console.log({ e });
       listing = null;
     }
 
@@ -47,7 +50,10 @@ export const decodeListingFilter =
     };
   };
 
-export const useListingFilterById = (groupKey: PublicKey, connection: Connection) => {
+export const useListingFilterById = (
+  groupKey: PublicKey,
+  connection: Connection
+) => {
   const program = useContext(LibrePlexShopProgramContext);
 
   // do not remove
@@ -95,12 +101,13 @@ export const useListingFiltersByGroup = (
             offset: 8,
             bytes: listingGroup.toBase58(),
           },
-        }
-        ,
+        },
         {
           memcmp: {
             offset: 0,
-            bytes: bs58.encode(sha256.array("account:ListingFilter").slice(0, 8)),
+            bytes: bs58.encode(
+              sha256.array("account:ListingFilter").slice(0, 8)
+            ),
           },
         },
       ];
@@ -120,13 +127,15 @@ export const useListingFiltersByGroup = (
       data:
         q?.data
           ?.map((item) => decodeListingFilter(program)(item.item, item.pubkey))
-          .filter((item) => item.item).map(item=>({...item, deleted: deletedIds.has(item.pubkey.toBase58())})) ?? [],
+          .filter((item) => item.item)
+          .map((item) => ({
+            ...item,
+            deleted: deletedIds.has(item.pubkey.toBase58()),
+          })) ?? [],
     }),
 
     [program, q?.data, q, deletedIds]
   );
-
-
 
   return decoded;
 };

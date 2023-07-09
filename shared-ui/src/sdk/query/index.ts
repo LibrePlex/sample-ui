@@ -4,6 +4,7 @@ export type {
   AttributeType,
   GroupInput,
   AttributeValue,
+  RoyaltyShare
 } from "./metadata/group";
 export type {
   Metadata,

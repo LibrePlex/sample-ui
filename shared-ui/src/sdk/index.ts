@@ -1,7 +1,7 @@
 export type {
   Group,
   // Royalties,
-  // RoyaltyShare,
+  RoyaltyShare,
   Metadata,
   Inscription,
   AttributeType,

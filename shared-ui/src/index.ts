@@ -50,7 +50,7 @@ export type {
   Inscription,
   Metadata,
   // Royalties,
-  // RoyaltyShare,
+  RoyaltyShare,
   GroupInput,
   Asset,
   Listing,

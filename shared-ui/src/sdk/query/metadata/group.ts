@@ -20,6 +20,7 @@ export type PermittedSigners = IdlTypes<Libreplex>["Royalties"];
 export type AttributeValue = IdlTypes<Libreplex>["AttributeValue"];
 
 
+export type RoyaltyShare = IdlTypes<Libreplex>["RoyaltyShare"];
 
 
 // export type TemplateConfiguration =
