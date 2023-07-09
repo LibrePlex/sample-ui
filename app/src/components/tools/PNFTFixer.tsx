@@ -38,8 +38,7 @@ export const PNFTFixer = () => {
   const { data, refetch, isFetching } = useTokenAccountsByOwner(
     effectiveWallet ? new PublicKey(effectiveWallet) : null,
     connection,
-    TOKEN_PROGRAM_ID,
-    key
+    TOKEN_PROGRAM_ID
   );
 
   const sortedData = useMemo(

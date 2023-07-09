@@ -70,10 +70,7 @@ export const createCollection = async (
 
   // console.log({a});
 
-  const librePlexProgram = getProgramInstanceMetadata(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
-  });
+  const librePlexProgram = getProgramInstanceMetadata(connection,wallet);
 
   const { symbol, name, permittedSigners, attributeTypes, description, royalties } = params;
 
