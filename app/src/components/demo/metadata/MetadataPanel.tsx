@@ -17,9 +17,9 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 //     usePermissionsHydratedWithCollections
 // } from "stores/accounts/useCollectionsById";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 
-import { Group, IRpcObject } from "shared-ui";
+import { Group, IRpcObject, LibrePlexProgramContext } from "shared-ui";
 import { Metadata } from "shared-ui";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
@@ -77,6 +77,8 @@ export const BaseMetadataPanel = () => {
 
   const [activeMetadata, setActiveMetadata] = useState<IRpcObject<Metadata>>();
 
+  const {program} = useContext(LibrePlexProgramContext)
+
   return (
     <Box
       sx={{
@@ -114,9 +116,7 @@ export const BaseMetadataPanel = () => {
         />
         {selectedMetadataKeys.size > 0 && (
           <DeleteMetadataButton
-            params={[...selectedMetadataKeys].map((item) => ({
-              metadata: item,
-            }))}
+            params={{metadataKeys: [...selectedMetadataKeys],metadataProgramId: program.programId}}
             formatting={{}}
           />
         )}

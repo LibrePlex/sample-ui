@@ -1,6 +1,6 @@
 import { CalendarIcon } from "@chakra-ui/icons";
 import { Textarea } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 import {
   Accordion,
@@ -17,7 +17,7 @@ import {
 
 import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { Group, RoyaltyShare } from "shared-ui";
+import { Group, LibrePlexProgramContext, RoyaltyShare } from "shared-ui";
 import { AttributesPanel } from "./AttributesPanel";
 import { CreateCollectionTransactionButton } from "./CreateGroupButton";
 import { PermittedSignersPanel } from "./PermittedSignersPanel";
@@ -52,6 +52,7 @@ export const EditGroupPanel = ({ onSuccess }: { onSuccess: () => any }) => {
         : null,
     [royaltyShares, royaltyBps]
   );
+  const {program} = useContext(LibrePlexProgramContext)
 
   return (
     <Stack spacing={4}>
@@ -160,6 +161,7 @@ export const EditGroupPanel = ({ onSuccess }: { onSuccess: () => any }) => {
       <CreateCollectionTransactionButton
         onSuccess={onSuccess}
         params={{
+          metadataProgramId: program.programId,
           name,
           description,
           symbol,

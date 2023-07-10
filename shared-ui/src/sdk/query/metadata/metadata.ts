@@ -249,10 +249,15 @@ export const decodeMetadata =
   };
 
 export const useMetadataByMintId = (
+  
   mintId: PublicKey | null,
   connection: Connection
 ) => {
-  const metadataId = useMemo(() => mintId ? getMetadataPda(mintId)[0] : null, [mintId]);
+
+  const {program} = useContext(LibrePlexProgramContext)
+
+
+  const metadataId = useMemo(() => mintId && program ? getMetadataPda(program.programId, mintId)[0] : null, [mintId, program.programId]);
 
   return useMetadataById(metadataId, connection);
 };
@@ -261,7 +266,7 @@ export const useMetadataById = (
   metadataKey: PublicKey | null,
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const {program} = useContext(LibrePlexProgramContext);
 
   const q = useFetchSingleAccount(metadataKey, connection);
 
@@ -285,7 +290,7 @@ export const useMetadataByAuthority = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const {program} = useContext(LibrePlexProgramContext);
 
   const filters = useMemo(() => {
     if (publicKey) {
@@ -337,7 +342,7 @@ export const useMetadataByGroup = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const {program} = useContext(LibrePlexProgramContext);
 
   const filters = useMemo(() => {
     if (publicKey) {

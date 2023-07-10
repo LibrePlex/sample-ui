@@ -1,10 +1,11 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Connection, Keypair } from "@solana/web3.js";
+import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 
 export const PROGRAM_ID_METADATA =
   "LibrQsXf9V1DmTtJLkEghoaF1kjJcAzWiEGoJn8mz7p";
 export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
+  
 
 import { IDL as IDLMetadata, LibreplexMetadata as Libreplex } from "../types/libreplex_metadata";
 import { IDL as IDLOrdinals, Inscriptions } from "../types/inscriptions";
@@ -30,6 +31,7 @@ export type LibreplexWithOrdinals = {
   )[];
 };
 export function getProgramInstanceMetadata(
+  programId: PublicKey,
   connection: Connection,
   wallet: Pick<WalletContextState, 'publicKey' |'signAllTransactions'|'signTransaction'>
 ) {
@@ -65,7 +67,6 @@ export function getProgramInstanceMetadata(
     types: [...IDLMetadata.types, ...IDLOrdinals.types],
   };
   // Address of the deployed program.
-  const programId = PROGRAM_ID_METADATA;
   // Generate the program client from IDL.
   const program = new anchor.Program(idl, programId, provider);
   return program;

@@ -7,6 +7,7 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
+import { useContext } from "react";
 import { AttributeType, getProgramInstanceMetadata } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
@@ -20,6 +21,7 @@ import { getPermissionsPda } from "shared-ui";
 import { Group } from "shared-ui";
 import { notify } from "shared-ui";
 import { LibreplexMetadata } from "shared-ui";
+import { LibrePlexProgramContext, LibrePlexShopProgramContext } from "shared-ui/src/anchor";
 
 
 export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
@@ -33,6 +35,7 @@ export interface ICreateCollection {
   attributeTypes: AttributeType[];
   royalties: GroupInput["royalties"];
   permittedSigners: GroupInput["permittedSigners"]
+  metadataProgramId: PublicKey,
 }
 
 export const createCollection = async (
@@ -57,22 +60,12 @@ export const createCollection = async (
   const [group] = getGroupPda(seed.publicKey);
 
   const [permissions] = getPermissionsPda(group, wallet.publicKey);
+  
+  const { symbol, name, permittedSigners, attributeTypes, description, royalties, metadataProgramId } = params;
 
-  // const a = createDeleteCollectionInstruction({
-  //   authority: wallet.publicKey,
-  //       collectionData: collectionPda,
-  //       collectionSeed: seed.publicKey,
-  //       receiver: wallet.publicKey,
-  //       systemProgram: SystemProgram.programId,
-  // }, {
-  //   bumpCollectionData: 1
-  // })
+  const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection,wallet);
 
-  // console.log({a});
-
-  const librePlexProgram = getProgramInstanceMetadata(connection,wallet);
-
-  const { symbol, name, permittedSigners, attributeTypes, description, royalties } = params;
+  
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!

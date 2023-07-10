@@ -51,7 +51,8 @@ export interface ICreateMetadata {
   group: PublicKey | null,
   extension: {
     attributes: number[]
-  } | null
+  } | null,
+  metadataProgramId: PublicKey
 }
 
 // start at 0. We can extend as needed
@@ -74,11 +75,13 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstanceMetadata(connection, wallet);
+  const { assetType, symbol, name, group, description, mint, extension, metadataProgramId } = params;
 
-  const { assetType, symbol, name, group, description, mint, extension } = params;
+  const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection, wallet);
 
-  const [metadata] = getMetadataPda(mint.publicKey);
+
+
+  const [metadata] = getMetadataPda(metadataProgramId, mint.publicKey);
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!

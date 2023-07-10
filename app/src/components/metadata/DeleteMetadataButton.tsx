@@ -19,11 +19,13 @@ import {useDeletedKeyStore} from "shared-ui";
 
 
 export interface IDeleteMetadata {
-  metadata: PublicKey,
+  metadataProgramId: PublicKey,
+  metadataKeys: PublicKey[],
+
 }
 
 export const deleteMetadata = async (
-  { wallet, params }: IExecutorParams<IDeleteMetadata[]>,
+  { wallet, params }: IExecutorParams<IDeleteMetadata>,
   connection: Connection
 ): Promise<{
   data?: ITransactionTemplate[];
@@ -41,15 +43,15 @@ export const deleteMetadata = async (
     description: string;
   }[] = [];
 
-  const librePlexProgram = getProgramInstanceMetadata(connection, {
+    const {metadataProgramId, metadataKeys} = params
+  const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection, {
     ...wallet
   });
 
 
 
-  for (const metadataToDelete of params) {
-    const { metadata } = metadataToDelete;
-
+  for (const metadata of metadataKeys) {
+    
 
     const instruction = await librePlexProgram.methods
     .deleteMetadata()
@@ -87,7 +89,7 @@ export const deleteMetadata = async (
 
 export const DeleteMetadataButton = (
   props: Omit<
-    GenericTransactionButtonProps<IDeleteMetadata[]>,
+    GenericTransactionButtonProps<IDeleteMetadata>,
     "transactionGenerator"
   >
 ) => {
@@ -95,13 +97,13 @@ export const DeleteMetadataButton = (
 
   return (
     <>
-      <GenericTransactionButton<IDeleteMetadata[]>
-        text={`Delete (${props.params.length})` }
+      <GenericTransactionButton<IDeleteMetadata>
+        text={`Delete (${props.params.metadataKeys.length})` }
         transactionGenerator={deleteMetadata}
         {...props}
         onSuccess={(msg) => {
-          for( const metadata of props.params) {
-            addDeletedKey(metadata.metadata);
+          for( const metadata of props.params.metadataKeys) {
+            addDeletedKey(metadata);
           }
           props.onSuccess && props.onSuccess(msg);
         }}

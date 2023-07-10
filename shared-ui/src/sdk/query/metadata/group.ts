@@ -147,7 +147,7 @@ export const decodeGroup =
   };
 
 export const useGroupById = (groupKey: PublicKey | null, connection: Connection) => {
-  const program = useContext(LibrePlexProgramContext);
+  const {program} = useContext(LibrePlexProgramContext);
 
   // do not remove
 
@@ -170,7 +170,7 @@ export const useGroupsByAuthority = (
   authority: PublicKey | null,
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const {program} = useContext(LibrePlexProgramContext);
 
   const filters = useMemo(() => {
     if (authority) {

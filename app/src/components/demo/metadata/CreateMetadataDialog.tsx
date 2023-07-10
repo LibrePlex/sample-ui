@@ -18,7 +18,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from "react";
 import { MutableInfoPanel } from "../collections/metadatadialog/MutableInfoDialog";
 import { AttributeSelectorPanel } from "../collections/metadatadialog/AttributeSelectorPanel";
 import { KeyGenerator } from "@/components/KeyGenerator";
@@ -27,7 +27,7 @@ import {
   AssetType,
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
-import { CopyPublicKeyButton, Group, IRpcObject } from "shared-ui";
+import { CopyPublicKeyButton, Group, IRpcObject, LibrePlexProgramContext } from "shared-ui";
 import { GroupSelector } from "shared-ui";
 
 enum View {
@@ -87,6 +87,8 @@ export const CreateMetadataDialog = ({
   useEffect(() => {
     setStatus(Status.NotStarted);
   }, [generatedMint]);
+
+  const {program} = useContext(LibrePlexProgramContext)
 
   return (
     <Modal isOpen={open} onClose={onClose}>
@@ -226,6 +228,7 @@ export const CreateMetadataDialog = ({
                   setSelectedMint(generatedMint);
                 }}
                 params={{
+                  metadataProgramId: program.programId,
                   name,
                   mint: generatedMint,
                   symbol,

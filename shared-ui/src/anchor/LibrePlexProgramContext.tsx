@@ -8,10 +8,12 @@ import {
   getProgramInstanceMetadata,
 } from "./getProgramInstanceMetadata";
 import React from "react";
+import { PublicKey } from "@solana/web3.js";
 
-export const LibrePlexProgramContext = createContext<
-  Program<LibreplexWithOrdinals>
->(undefined!);
+export const LibrePlexProgramContext = createContext<{
+  program: Program<LibreplexWithOrdinals>;
+  setProgramId: (p: PublicKey) => any;
+}>(undefined!);
 
 export const LibrePlexProgramProvider = ({
   children,
@@ -22,28 +24,33 @@ export const LibrePlexProgramProvider = ({
 
   const [program, setProgram] = useState<Program<LibreplexWithOrdinals>>();
 
+  const [programId, setProgramId] = useState<PublicKey>(new PublicKey("LibrQsXf9V1DmTtJLkEghoaF1kjJcAzWiEGoJn8mz7p"));
+
   const { connection } = useConnection();
 
   useEffect(() => {
-
-    const publicKey = wallet.publicKey
+    const publicKey = wallet.publicKey;
     const signTransaction = wallet.signTransaction;
     const signAllTransactions = wallet.signAllTransactions;
-    const anchorWallet = publicKey && signTransaction && signAllTransactions? {
-      ...wallet,
-      publicKey,
-      signTransaction,
-      signAllTransactions,
-      payer: Keypair.generate(),
-    } : undefined
-    const program = anchorWallet ? 
-    getProgramInstanceMetadata(connection, anchorWallet ): undefined;
-    console.log({program}); 
-    setProgram(program);
-  }, [wallet, connection]);
+    const anchorWallet =
+      publicKey && signTransaction && signAllTransactions
+        ? {
+            ...wallet,
+            publicKey,
+            signTransaction,
+            signAllTransactions,
+            payer: Keypair.generate(),
+          }
+        : undefined;
+    const _program = anchorWallet
+      ? getProgramInstanceMetadata(programId, connection, anchorWallet)
+      : undefined;
+    console.log({ _program });
+    setProgram(_program);
+  }, [wallet, connection, programId]);
 
   return program?.programId ? (
-    <LibrePlexProgramContext.Provider value={program}>
+    <LibrePlexProgramContext.Provider value={{program, setProgramId}}>
       {children}
     </LibrePlexProgramContext.Provider>
   ) : (

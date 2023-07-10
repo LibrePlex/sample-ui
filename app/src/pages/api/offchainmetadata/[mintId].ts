@@ -10,13 +10,13 @@ import {
 } from "@solana/web3.js";
 import { IMetadataJson } from "models/IMetadataJson";
 import { NextApiHandler } from "next";
-import { HttpClient, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata } from "shared-ui";
+import { HttpClient, PROGRAM_ID_METADATA, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata } from "shared-ui";
 import { getAttrValue } from "utils/getAttrValue";
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;
 
-  const libreMetadataPda = getMetadataPda(new PublicKey(mintId));
+  const libreMetadataPda = getMetadataPda(new PublicKey(PROGRAM_ID_METADATA), new PublicKey(mintId));
   const libreMetadataExtendedPda = getMetadataExtendedPda(libreMetadataPda[0]);
 
   const connection = new Connection(
@@ -38,6 +38,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
   }
 
   const libreProgram = getProgramInstanceMetadata(
+    new PublicKey(PROGRAM_ID_METADATA),
     connection,
     new Wallet(Keypair.generate())
   );

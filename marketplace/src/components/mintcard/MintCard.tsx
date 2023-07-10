@@ -6,8 +6,8 @@ import {
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import React, { ReactNode } from "react";
-import { useMetadataByMintId } from "shared-ui";
+import React, { ReactNode, useContext } from "react";
+import { LibrePlexProgramContext, useMetadataByMintId } from "shared-ui";
 import { AssetDisplay } from "./assetdisplay/AssetDisplay";
 
 
@@ -19,6 +19,7 @@ export const MintCard = ({
   mint: PublicKey;
   children?: ReactNode;
 }  & BoxProps) => {
+  const {} = useContext(LibrePlexProgramContext)
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mint, connection);
 
