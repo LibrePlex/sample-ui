@@ -249,16 +249,16 @@ export const decodeMetadata =
   };
 
 export const useMetadataByMintId = (
-  mintId: PublicKey,
+  mintId: PublicKey | null,
   connection: Connection
 ) => {
-  const metadataId = useMemo(() => getMetadataPda(mintId)[0], [mintId]);
+  const metadataId = useMemo(() => mintId ? getMetadataPda(mintId)[0] : null, [mintId]);
 
   return useMetadataById(metadataId, connection);
 };
 
 export const useMetadataById = (
-  metadataKey: PublicKey,
+  metadataKey: PublicKey | null,
   connection: Connection
 ) => {
   const program = useContext(LibrePlexProgramContext);
@@ -269,7 +269,7 @@ export const useMetadataById = (
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item ? a(q?.data?.item.buffer, metadataKey) : null;
+      const obj = q?.data?.item && metadataKey ? a(q?.data?.item.buffer, metadataKey) : null;
       return obj;
     } catch (e) {
       return null;

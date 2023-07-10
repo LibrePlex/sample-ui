@@ -33,7 +33,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                 <ContentContainer>
                   <PortalManager>
                     <Component {...pageProps} />
-                    <Footer />
+                    {/* <Footer /> */}
                   </PortalManager>
                 </ContentContainer>
                 

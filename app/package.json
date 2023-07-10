@@ -48,6 +48,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
+    "react-json-view": "^1.21.3",
     "react-query": "^3.39.3",
     "yarn": "^1.22.19",
     "zustand": "^3.6.9"

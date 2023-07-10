@@ -145,17 +145,6 @@ export const Demo = () => {
             <CollectionsPanel />
           </TabPanel>
 
-          {/* <TabPanel
-        open={view === View.Permissions}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "start",
-        }}
-      >
-        <PermissionsPanel />
-      </TabPanel> */}
-
           <TabPanel open={view === View.Repos}>
             <Box
               display="flex"
