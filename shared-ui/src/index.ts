@@ -78,6 +78,7 @@ export {
   NetworkSwitcherDynamic,
   NavElement,
   GroupSelector,
+  AssetDisplay
 } from "./components";
 
 export {

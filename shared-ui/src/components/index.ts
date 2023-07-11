@@ -17,3 +17,4 @@ export {NetworkSwitcherDynamic} from "./NetworkSwitcher"
 export {NavElement} from "./navelement"
 
 export {GroupSelector} from "./GroupSelector"
+export {AssetDisplay} from "./assetdisplay/AssetDisplay"
