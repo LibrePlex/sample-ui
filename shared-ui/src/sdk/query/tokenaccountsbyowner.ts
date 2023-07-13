@@ -78,7 +78,7 @@ export const fetchTokenAccountsByOwner = <T extends unknown, P extends Idl>(
             {
               memcmp: {
                 offset: 32,
-                bytes: owner.toBase58(),
+                bytes: owner?.toBase58()??'',
               },
             }
           ]
@@ -102,7 +102,7 @@ export const useTokenAccountsByOwner = (
 
   const queryClient = useQueryClient();
 
-  const key = useMemo(()=>`tokenaccountsbyowner-${owner.toBase58()}`,[owner])
+  const key = useMemo(()=>`tokenaccountsbyowner-${owner?.toBase58()}`,[owner])
 
   const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
 

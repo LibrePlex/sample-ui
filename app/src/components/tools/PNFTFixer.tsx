@@ -44,7 +44,7 @@ export const PNFTFixer = () => {
   const sortedData = useMemo(
     () =>
       [...data].sort((a, b) =>
-        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
+        a.pubkey?.toBase58().localeCompare(b.pubkey?.toBase58())
       ),
     [data]
   );
