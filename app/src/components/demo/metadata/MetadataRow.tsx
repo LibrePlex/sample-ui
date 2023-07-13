@@ -33,6 +33,7 @@ import {useDeletedKeyStore} from "shared-ui";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
 import { IdlAccounts } from "@coral-xyz/anchor";
+import { ScannerLink } from "@/components/ScannerLink";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
@@ -125,7 +126,7 @@ export const MetadataRow = ({
               </Box>
               <Box display="flex" w={"100%"} justifyContent={"space-between"}>
                 {item.item.mint && (
-                  <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} /> 
+                  <ScannerLink mintId={item.item.mint} /> 
                 )}
                 (mint)
               </Box>
