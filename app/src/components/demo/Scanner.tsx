@@ -44,6 +44,7 @@ import dynamic from "next/dynamic";
 import { PublicKey } from "@solana/web3.js";
 import { AttributesPanel } from "./collections/editCollectionDialog/AttributesPanel";
 import { AttributesDisplay } from "../metadata/AttributesDisplay";
+import { useRouter } from "next/router";
 
 const ReactJson = dynamic(import("react-json-view"), { ssr: false });
 
@@ -68,6 +69,14 @@ export const LibreScanner = () => {
   const group = useGroupById(metadata?.item.group, connection);
 
   const [view, setView] = useState<View>(View.Params);
+
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(router.query.mintId) {
+      setMintId((router.query.mintId ?? '')as string);
+    }
+  },[router?.query])
 
   return (
     <Box
