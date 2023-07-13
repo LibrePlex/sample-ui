@@ -51,6 +51,9 @@ export const ContentContainer: React.FC<Props> = ({
             <NavElement label="Why" href="/why" />
           </li>
           <li>
+            <NavElement label="Tools" href="/tools" />
+          </li>
+          <li>
             <NavElement label="Costs" href="/costs" />
           </li>
           <li>
