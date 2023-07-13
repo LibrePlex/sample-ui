@@ -133,10 +133,10 @@ export const MetadataRow = ({
               {inscription ? (
                 <InscriptionCell inscription={inscription} />
               ) : item.item.asset.image ? (
-                "On-chain image"
-              ) : (
-                "Other"
-              )}
+                "On-chain metadata"
+              ) : item.item.asset.json ? (
+                "Off-chain metadata"
+              ) : "Other"}
 
               {/* 
               <Button
