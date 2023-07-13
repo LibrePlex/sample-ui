@@ -15,7 +15,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton, LibreplexMetadata } from "shared-ui";
+import { AssetDisplay, CopyPublicKeyButton, LibreplexMetadata } from "shared-ui";
 import { IRpcObject } from "shared-ui";
 
 import { useConnection } from "@solana/wallet-adapter-react";
@@ -61,7 +61,7 @@ export const MetadataRow = ({
   const { connection } = useConnection();
 
   
-  const instructionId = useMemo(
+  const inscriptionId = useMemo(
     () =>
       item.item.asset?.inscription
         ? item.item.asset?.inscription.accountId
@@ -69,7 +69,7 @@ export const MetadataRow = ({
     [item.item]
   );
 
-  const inscription = useInscriptionById(instructionId, connection);
+  const inscription = useInscriptionById(inscriptionId, connection);
 
   const group = useGroupById(item?.item?.group ?? null, connection);
 
@@ -107,7 +107,8 @@ export const MetadataRow = ({
               inscription={inscription}
               afterUpdate={() => {}}
             />
-          ) : (
+          ) : item.item.asset.json ? 
+          <AssetDisplay asset={item.item.asset}/>: (
             <Text>Cannot upload this asset type</Text>
           )}
         </Box>
