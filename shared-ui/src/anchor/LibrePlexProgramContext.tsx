@@ -1,7 +1,7 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
-import { Program } from "@coral-xyz/anchor";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Keypair } from "@solana/web3.js";
+import { Program, Wallet as  AnchorWallet} from "@coral-xyz/anchor";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Keypair, Transaction } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import {
   LibreplexWithOrdinals,
@@ -14,6 +14,29 @@ export const LibrePlexProgramContext = createContext<{
   program: Program<LibreplexWithOrdinals>;
   setProgramId: (p: PublicKey) => any;
 }>(undefined!);
+
+export class LibreWallet implements AnchorWallet {
+
+  constructor(readonly payer: Keypair) {
+      this.payer = payer
+  }
+
+  async signTransaction(tx: any): Promise<any> {
+      tx.partialSign(this.payer);
+      return tx;
+  }
+
+  async signAllTransactions(txs: any[]): Promise<any[]> {
+      return txs.map((t) => {
+          t.partialSign(this.payer);
+          return t;
+      });
+  }
+
+  get publicKey(): PublicKey {
+      return this.payer.publicKey;
+  }
+}
 
 export const LibrePlexProgramProvider = ({
   children,
@@ -29,24 +52,27 @@ export const LibrePlexProgramProvider = ({
   const { connection } = useConnection();
 
   useEffect(() => {
-    const publicKey = wallet.publicKey;
-    const signTransaction = wallet.signTransaction;
-    const signAllTransactions = wallet.signAllTransactions;
-    const anchorWallet =
-      publicKey && signTransaction && signAllTransactions
-        ? {
-            ...wallet,
-            publicKey,
-            signTransaction,
-            signAllTransactions,
-            payer: Keypair.generate(),
-          }
-        : undefined;
-    const _program = anchorWallet
-      ? getProgramInstanceMetadata(programId, connection, anchorWallet)
-      : undefined;
+    // const publicKey = wallet.publicKey;
+    // const signTransaction = wallet.signTransaction;
+    // const signAllTransactions = wallet.signAllTransactions;
+    // const anchorWallet =
+    //   publicKey && signTransaction && signAllTransactions
+    //     ? {
+    //         ...wallet,
+    //         publicKey,
+    //         signTransaction,
+    //         signAllTransactions,
+    //         payer: Keypair.generate(),
+    //       }
+    //     : undefined;
+    try {
+    const _program =  getProgramInstanceMetadata(programId, connection, new LibreWallet(Keypair.generate()));
+    // const _program = anchorWallet
+    //   ? getProgramInstanceMetadata(programId, connection, anchorWallet)
+    //   : undefined;
     console.log({ _program });
     setProgram(_program);
+    } catch (e) {}
   }, [wallet, connection, programId]);
 
   return program?.programId ? (

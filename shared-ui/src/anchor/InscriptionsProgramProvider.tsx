@@ -6,6 +6,7 @@ import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { Inscriptions } from "../types/inscriptions";
 import { getProgramInstanceOrdinals } from "./getProgramInstanceOrdinals";
+import { LibreWallet } from "./LibrePlexProgramContext";
 
 export const InscriptionsProgramContext = createContext<Program<Inscriptions>>(
   undefined!
@@ -23,10 +24,9 @@ export const InscriptionsProgramProvider = ({
   const { connection } = useConnection();
 
   useEffect(() => {
-    const program = getProgramInstanceOrdinals(connection, {
-      ...wallet,
-      payer: Keypair.generate(),
-    });
+    const program = getProgramInstanceOrdinals(connection, 
+      new LibreWallet(Keypair.generate())
+    );
     
     setProgram(
       program,

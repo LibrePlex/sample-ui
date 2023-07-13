@@ -4,6 +4,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 import { LibreplexShop } from "../types/libreplex_shop";
 import { getProgramInstanceShop } from "./getProgramInstanceShop";
+import { LibreWallet } from "./LibrePlexProgramContext";
+import { Keypair } from "@solana/web3.js";
 
 export const LibrePlexShopProgramContext = createContext<Program<LibreplexShop>>(
   undefined!
@@ -21,9 +23,7 @@ export const LibrePlexShopProgramProvider = ({
   const { connection } = useConnection();
 
   useEffect(() => {
-    const program = wallet
-      ? getProgramInstanceShop(connection, wallet)
-      : undefined;
+    const program = getProgramInstanceShop(connection, new LibreWallet(Keypair.generate()));
     setProgram(program);
   }, [wallet, connection]);
 
