@@ -72,11 +72,11 @@ export const LibreScanner = () => {
 
   const router = useRouter();
 
-  useEffect(()=>{
-    if(router.query.mintId) {
-      setMintId((router.query.mintId ?? '')as string);
+  useEffect(() => {
+    if (router.query.mintId) {
+      setMintId((router.query.mintId ?? "") as string);
     }
-  },[router?.query])
+  }, [router?.query]);
 
   return (
     <Box
@@ -134,10 +134,7 @@ export const LibreScanner = () => {
         )}
       </HStack>
       {metadata && (
-        <Box
-          sx={{ overflow: "auto", display: "flex", flexDirection: "column" }}
-          gap={3}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column" }} gap={3}>
           <VStack gap={2}>
             <HStack gap={2} justify={"start"} w="100%">
               <Box maxH={"300px"} aspectRatio={"1/1"}>
@@ -214,7 +211,10 @@ export const LibreScanner = () => {
               </VStack>
             </HStack>
           </VStack>
-          <ReactJson theme="monokai" src={metadata ?? {}} />
+          <ReactJson
+            theme="monokai"
+            src={metadata ?? {}}
+          />
           <HStack>
             <Heading size="md">Group</Heading>
 
