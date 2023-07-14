@@ -94,7 +94,6 @@ export const delist = async (
       listing: listing.pubkey,
       escrowTokenAccount,
       listerTokenAccount,
-      listingGroup: listing.item.group,
       // usual solana gubbins
       systemProgram: SystemProgram.programId,
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,

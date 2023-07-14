@@ -24,7 +24,7 @@ export {
   useMetadataByMintId,
 } from "./metadata/metadata";
 
-export { useTokenAccountsByOwner } from "./tokenaccountsbyowner";
+export { useTokenAccountsByOwner, useTokenAccountById} from "./tokenaccountsbyowner";
 
 export {
   useLegacyMetadataByMintId,

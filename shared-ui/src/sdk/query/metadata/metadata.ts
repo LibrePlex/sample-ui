@@ -270,7 +270,7 @@ export const useMetadataById = (
 
   const q = useFetchSingleAccount(metadataKey, connection);
 
-  const a = decodeMetadata(program);
+  const a = useMemo(()=>decodeMetadata(program),[program]);
 
   const decoded = useMemo(() => {
     try {
@@ -279,7 +279,7 @@ export const useMetadataById = (
     } catch (e) {
       return null;
     }
-  }, [metadataKey, program, q.data?.item]);
+  }, [metadataKey, program, q.data?.item, a]);
 
   return decoded;
 

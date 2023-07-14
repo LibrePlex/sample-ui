@@ -1,15 +1,17 @@
-import { BorshCoder, IdlAccounts,IdlTypes, Program } from "@coral-xyz/anchor";
-import { Connection, PublicKey, GetProgramAccountsFilter } from "@solana/web3.js";
+import { BorshCoder, IdlAccounts, IdlTypes, Program } from "@coral-xyz/anchor";
+import {
+  Connection,
+  PublicKey,
+  GetProgramAccountsFilter,
+} from "@solana/web3.js";
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { LibrePlexShopProgramContext } from "../../../anchor/LibrePlexShopProgramContext";
 import { LibreplexShop } from "../../../types/libreplex_shop";
-import { LibreplexMetadata} from "../../../types/libreplex_metadata";
+import { LibreplexMetadata } from "../../../types/libreplex_metadata";
 import { useGpa } from "../gpa";
 import { useFetchSingleAccount } from "../singleAccountInfo";
-
-
 
 // export type Price =
 //   | { native: { lamports: bigint }; spl?: never, unknown?: never }
@@ -26,8 +28,6 @@ import { useFetchSingleAccount } from "../singleAccountInfo";
 export type Listing = IdlAccounts<LibreplexShop>["listing"];
 
 export type Price = IdlTypes<LibreplexShop>["Price"];
-
-
 
 export const decodeListing =
   (program: Program<LibreplexShop>) => (buffer: Buffer, pubkey: PublicKey) => {
@@ -53,7 +53,7 @@ export const decodeListing =
       //     }
       // };
     } catch (e) {
-      console.log({e})
+      console.log({ e });
       listing = null;
     }
 
@@ -97,8 +97,7 @@ export const useListingsByLister = (
             offset: 40,
             bytes: lister.toBase58(),
           },
-        }
-        ,
+        },
         {
           memcmp: {
             offset: 0,
@@ -116,9 +115,9 @@ export const useListingsByLister = (
     "listingsByLister",
   ]);
 
-  useEffect(()=>{
-    console.log({q})
-  },[q])
+  useEffect(() => {
+    console.log({ q });
+  }, [q]);
 
   const decoded = useMemo(
     () => ({
@@ -135,46 +134,72 @@ export const useListingsByLister = (
   return decoded;
 };
 
-
-// use with caution 
-export const useAllListings = (
-  connection: Connection
-) => {
+// use with caution
+export const useAllListings = (connection: Connection) => {
   const program = useContext(LibrePlexShopProgramContext);
 
+  const [deletedIds, setDeletedIds] = useState<Set<string>>(new Set());
+  const [executedIds, setExecutedIds] = useState<Set<string>>(new Set());
+
   const filters = useMemo(() => {
-      const filters: any[] = [
-        {
-          memcmp: {
-            offset: 0,
-            bytes: bs58.encode(sha256.array("account:Listing").slice(0, 8)),
-          },
+    const filters: any[] = [
+      {
+        memcmp: {
+          offset: 0,
+          bytes: bs58.encode(sha256.array("account:Listing").slice(0, 8)),
         },
-      ];
-      return filters;
-    
+      },
+    ];
+    return filters;
+  }, [program]);
+
+  useEffect(() => {
+    let listener = program.addEventListener(
+      "DeleteEvent",
+      (event, slot, sig) => {
+        setDeletedIds((old) => new Set([...old, event.id.toString()]));
+      }
+    );
+    return () => {
+      program.removeEventListener(listener);
+    };
+  }, [program]);
+
+  useEffect(() => {
+    let listener = program.addEventListener(
+      "ExecuteEvent",
+      (event, slot, sig) => {
+        console.log('Executed', event);
+        setExecutedIds((old) => new Set([...old, event.id.toString()]));
+      }
+    );
+    return () => {
+      program.removeEventListener(listener);
+    };
   }, []);
 
-  const q = useGpa(program.programId, filters, connection, [
-    `allListings`,
-  ]);
+  const q = useGpa(program.programId, filters, connection, [`allListings`]);
 
   const decoded = useMemo(
     () => ({
       ...q,
       data:
-        q?.data
-          ?.map((item) => decodeListing(program)(item.item, item.pubkey))
-          .filter((item) => item.item) ?? [],
+        (
+          q?.data
+            ?.map((item) => decodeListing(program)(item.item, item.pubkey))
+            .filter((item) => item.item) ?? []
+        ).map((item) => ({
+          ...item,
+          deleted: deletedIds.has(item.pubkey.toBase58()),
+          executed: executedIds.has(item.pubkey.toBase58())
+        })) ?? [],
     }),
 
-    [program, q]
+    [program, q, deletedIds, executedIds]
   );
 
   return decoded;
 };
-
-
 
 export const useListingsByGroup = (
   group: PublicKey | null | undefined,
@@ -190,8 +215,7 @@ export const useListingsByGroup = (
             offset: 8 + 32 + 32 + 8 + 1,
             bytes: group.toBase58(),
           },
-        }
-        ,
+        },
         {
           memcmp: {
             offset: 0,
@@ -221,7 +245,7 @@ export const useListingsByGroup = (
     [program, q]
   );
 
-  console.log({t:'listings', decoded, q, group: group?.toBase58()})
+  console.log({ t: "listings", decoded, q, group: group?.toBase58() });
 
   return decoded;
 };

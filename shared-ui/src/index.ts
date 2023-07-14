@@ -34,6 +34,7 @@ export {
   useMetadataById,
   useMetadataByGroup,
   useTokenAccountsByOwner,
+  useTokenAccountById,
   useLegacyMetadataByMintId,
   useLegacyTokenRecordByTokenAccount,
   useListingById,

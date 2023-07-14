@@ -26,20 +26,20 @@ export const useTokenAccountsForPurchase = (
   const balance = useMemo(()=>data?.item?.balance,[data])
 
   useEffect(()=>{
-    console.log({balance});
-  },[balance])
+    console.log({balance, publicKey: publicKey.toBase58()});
+  },[balance, publicKey])
 
   return useMemo(
     () =>
       listing.item.price.native
-        ? listing.item.price.native.lamports <= (balance ?? 0)
+        ? BigInt(listing.item.price.native.lamports.toString()) <= (balance ?? 0)
           ? publicKey
           : undefined
         : listing.item.price.spl
         ? tokenAccounts.find(
             (item) =>
               item.item!.mint === listing.item.price.spl?.mint &&
-              item.item!.amount >= listing.item.price.spl?.amount
+              BigInt(item.item!.amount.toString()) >= BigInt(listing.item.price.spl?.amount.toString()??"0")
           )?.pubkey
         : undefined,
     [tokenAccounts, listing]

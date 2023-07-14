@@ -24,7 +24,7 @@ export const MintCard = ({
   const metadata = useMetadataByMintId(mint, connection);
 
   return (
-    <Box {...rest} maxW={"200px"} minW={"200px"} maxH="250px">
+    <Box {...rest} maxW={"200px"} minW={"200px"}>
       <AssetDisplay asset={metadata?.item?.asset} />
 
       <VStack>

@@ -1,8 +1,39 @@
 import { Box, Skeleton } from "@chakra-ui/react";
-import React from "react";
-import { Asset } from "shared-ui";
+import React, { useEffect, useState } from "react";
+import { Asset, HttpClient } from "shared-ui";
+
+
+
+export interface IOffchainJson {
+  // add more fields as needed
+  image: string
+}
 
 export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
+  
+  const [offchainJson, setOffchainJson] = useState<IOffchainJson>()
+
+  useEffect(()=>{
+    let active = true;
+    (async()=>{
+    if( asset?.json) {
+      const httpClient = new HttpClient('');
+
+      const {data} = await httpClient.get<IOffchainJson>(asset.json.url);
+
+      active && setOffchainJson(data);
+    } else {
+      active && setOffchainJson(undefined);
+    }
+  }
+    )()
+    return () =>{
+      active = false;
+    }
+
+  },[asset?.json])
+
+  
   return (
     <Box width="100%">
       {asset?.image ? (
@@ -10,7 +41,12 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
           src={asset.image.url}
           style={{ aspectRatio: "1/1", width: "100%" }}
         />
-      ) : (
+      ) : 
+      asset?.json ? 
+        <img 
+        src={offchainJson?.image}/> :
+      
+      (
         <Skeleton style={{ aspectRatio: "1/1", width: "100%" }}></Skeleton>
       )}
     </Box>

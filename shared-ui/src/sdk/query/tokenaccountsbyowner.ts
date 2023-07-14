@@ -13,6 +13,7 @@ import { IRpcObject } from "../../components/executor/IRpcObject";
 import { useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { Updater } from "react-query/types/core/utils";
+import { useFetchSingleAccount } from "./singleAccountInfo";
 
 const accountUpdater =
   (queryClient: QueryClient, key: any) => (accountInfo: KeyedAccountInfo) => {
@@ -132,4 +133,28 @@ export const useTokenAccountsByOwner = (
   );
 
   return decoded;
+};
+
+
+
+export const useTokenAccountById = (
+  tokenAccountId: PublicKey | null,
+  connection: Connection
+) => {
+  
+  const q = useFetchSingleAccount(tokenAccountId, connection);
+
+  
+  const decoded = useMemo(() => {
+    try {
+      const obj = q?.data?.item ? AccountLayout.decode(q?.data?.item.buffer) : null;
+      return obj;
+    } catch (e) {
+      return null;
+    }
+  }, [q.data?.item]);
+
+  return decoded;
+
+  // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
 };

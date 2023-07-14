@@ -39,14 +39,6 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
     },
   });
 
-  const { connection } = useConnection();
-  const { ownerPublicKey } = useContext(ShopOwnerContext);
-
-  const [selectedListingGroup, setSelectedListingGroup] =
-    useState<IRpcObject<ListingGroup>>();
-
-  const { data: groups } = useListingGroupsByAdmin(ownerPublicKey, connection);
-
   const [solAmount, setSolAmount] = useState<string>("1");
 
   useEffect(() => {
@@ -60,87 +52,35 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
     } catch (e) {}
   }, [solAmount]);
 
-  const activeGroupFilters = useListingFiltersByGroup(
-    selectedListingGroup?.pubkey ?? null,
-    connection
-  );
-
-  useEffect(() => {
-    console.log({ activeGroupFilters });
-  }, [activeGroupFilters]);
-
-  const metadata = useMetadataByMintId(item.item?.mint, connection);
-
-  const activeFilter = useMemo(() => {
-    const g = metadata?.item?.group;
-    return g
-      ? activeGroupFilters.data.find((item) =>
-          item.item?.filterType?.group?.pubkey.equals(g)
-        )
-      : undefined;
-  }, [activeGroupFilters, metadata]);
-
   return (
     <HStack justifyContent={"start"} alignItems="end" p={2}>
-      <VStack alignItems={"start"}>
-        <Text>Choose group</Text>
-        <HStack>
-          {groups
-            .filter((item) => item.item)
-            .map((item) => (
-              <Button
-                colorScheme="teal"
-                variant={
-                  selectedListingGroup?.pubkey.equals(item.pubkey)
-                    ? "solid"
-                    : "outline"
-                }
-                onClick={() => {
-                  setSelectedListingGroup({ ...item, item: item.item! });
-                }}
-              >
-                {item.item?.name}
-              </Button>
-            ))}
-        </HStack>
-
-        <Collapse in={selectedListingGroup !== undefined}>
-          <FormControl>
-            <FormLabel>Amount</FormLabel>
-            <InputGroup>
-              <Input
-                min={0}
-                step={0.0001}
-                placeholder="Sol amount"
-                value={solAmount}
-                onChange={(e) => {
-                  setSolAmount(e.currentTarget.value);
-                }}
-              />
-              <InputRightAddon children="SOL" />
-            </InputGroup>
-          </FormControl>
-        </Collapse>
-
-        <PriceSelector price={price} setPrice={setPrice} />
-
-        {selectedListingGroup &&
-          (activeFilter ? (
-            <ListMintTransactionButton
-              params={{
-                mint: item.item!.mint,
-                tokenAccount: item.pubkey,
-                amount: BigInt(1),
-                price,
-                listingGroup: selectedListingGroup.pubkey,
-                listingFilter: activeFilter.pubkey,
+        <FormControl>
+          <FormLabel>Amount</FormLabel>
+          <InputGroup>
+            <Input
+              min={0}
+              step={0.0001}
+              placeholder="Sol amount"
+              value={solAmount}
+              onChange={(e) => {
+                setSolAmount(e.currentTarget.value);
               }}
-              formatting={{}}
             />
-          ) : (
-            <Text>This item cannot be listed here</Text>
-          ))}
-      </VStack>
+            <InputRightAddon children="SOL" />
+          </InputGroup>
+        </FormControl>
+
+        {/* <PriceSelector price={price} setPrice={setPrice} /> */}
+
+        <ListMintTransactionButton
+          params={{
+            mint: item.item!.mint,
+            tokenAccount: item.pubkey,
+            amount: BigInt(1),
+            price,
+          }}
+          formatting={{}}
+        />
     </HStack>
   );
 };

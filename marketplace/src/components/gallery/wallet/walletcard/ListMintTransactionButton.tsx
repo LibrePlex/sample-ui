@@ -19,6 +19,7 @@ import {
   IExecutorParams,
   ITransactionTemplate,
   Listing,
+  PROGRAM_ID_METADATA,
   Price,
   getListingPda,
   getMetadataPda,
@@ -37,8 +38,6 @@ export interface IListMint {
   mint: PublicKey;
   tokenAccount: PublicKey;
   amount: BigInt;
-  listingGroup: PublicKey;
-  listingFilter: PublicKey;
 }
 
 // start at 0. We can extend as needed
@@ -63,19 +62,19 @@ export const listMint = async (
     throw Error("IDL not ready");
   }
 
-  const { price, mint, tokenAccount, listingGroup, listingFilter } = params;
+  const { price, mint, tokenAccount } = params;
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
   let instructions: TransactionInstruction[] = [];
 
-  let priceInput = price.native
+  let priceInput = price.native?.lamports
     ? {
         native: {
           lamports: price.native.lamports,
         },
-      }
+      } 
     : price.spl
     ? {
         spl: {
@@ -89,10 +88,10 @@ export const listMint = async (
     throw Error("Unexpected price type");
   }
 
-
-
-  const [metadata] = getMetadataPda(new PublicKey(mint));
-  
+  const [metadata] = getMetadataPda(
+    new PublicKey(PROGRAM_ID_METADATA),
+    new PublicKey(mint)
+  );
 
   const [listing, listingBump] = getListingPda(mint);
 
@@ -106,7 +105,7 @@ export const listMint = async (
   const instruction = await librePlexProgram.methods
     .list({
       // native / spl etc
-      price: priceInput,
+      price: priceInput as any,
       amount: new BN(1), // for NFTs the amount is always 1
       listingBump,
     })
@@ -117,8 +116,6 @@ export const listMint = async (
       listing,
       escrowTokenAccount,
       listerTokenAccount: tokenAccount,
-      listingGroup,
-      listingFilter,
       // usual solana gubbins
       systemProgram: SystemProgram.programId,
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,

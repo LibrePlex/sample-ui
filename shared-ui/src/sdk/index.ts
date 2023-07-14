@@ -15,6 +15,7 @@ export type {
   Price
 } from "./query";
 export {
+  useTokenAccountById,
   decodeGroup,
   useGroupsByAuthority,
   useMetadataByAuthority,
