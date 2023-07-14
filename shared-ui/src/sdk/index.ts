@@ -9,9 +9,6 @@ export type {
   AttributeValue,
   Asset,
   Listing,
-  // Price,
-  ListingGroup,
-  ListingFilterType,
   Price
 } from "./query";
 export {
@@ -30,7 +27,6 @@ export {
   useListingById,
   useListingsByLister,
   useMetadataByMintId,
-  useListingGroupsByAdmin,
   useListingsByGroup,
   useAllListings
 } from "./query";
