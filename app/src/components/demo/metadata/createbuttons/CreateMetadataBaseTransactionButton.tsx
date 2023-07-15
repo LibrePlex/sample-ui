@@ -126,7 +126,7 @@ export const createMetadata = async (
     )
   );
 
-  console.log("Creating instruction");
+  console.log("Creating instruction", assetType);
 
   if (assetType === AssetType.Image) {
     const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
@@ -198,6 +198,8 @@ export const createMetadata = async (
       .instruction();
     instructions.push(instruction);
   }
+
+  console.log({group});
 
   if( group ) {
     instructions.push(

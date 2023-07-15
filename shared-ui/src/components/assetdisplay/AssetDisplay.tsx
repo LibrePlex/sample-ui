@@ -2,6 +2,7 @@ import { Box, Skeleton } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Asset } from "../../sdk/query/metadata/metadata";
 import { HttpClient } from "../../utils";
+import { AssetDisplayInscription } from "./AssetDisplayInscription";
 
 
 export interface IOffchainJson {
@@ -33,6 +34,10 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
 
   },[asset?.json])
 
+  useEffect(()=>{
+    console.log({asset});
+  },[asset])
+
   
   return (
     <Box width="100%">
@@ -45,6 +50,9 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
       asset?.json ? 
         <img 
         src={offchainJson?.image}/> :
+      asset?.inscription ? 
+        <AssetDisplayInscription inscriptionId={asset?.inscription.accountId}/>
+      :
       
       (
         <Skeleton style={{ aspectRatio: "1/1", width: "100%" }}></Skeleton>

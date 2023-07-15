@@ -70,10 +70,13 @@ export const InscriptionUploader = ({
 
   useEffect(() => {
     if (inscription) {
+      console.log('Data length', inscription.item.dataBytes.length);
       const base = Buffer.from(inscription.item.dataBytes).toString("base64");
+      console.log({base});
       const dataType = base.split("/")[0];
       const dataSubType = base.split("/")[1];
       const data = base.split("/").slice(2).join("/");
+      console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
       setCurrentBase64Image(`data:${dataType}/${dataSubType};base64,${data}==`);
     }
   }, [inscription, inscription?.item.dataBytes]);
@@ -92,6 +95,10 @@ export const InscriptionUploader = ({
     }
   }, [base64]);
   //  const base64 = useMemo(()=>getBase64(selectedImage),[selectedImage])
+
+  useEffect(()=>{
+    console.log({currentBase64Image});
+  },[currentBase64Image])
 
   return (
     <Box

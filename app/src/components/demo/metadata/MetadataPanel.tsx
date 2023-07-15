@@ -181,6 +181,7 @@ export const BaseMetadataPanel = () => {
               </Thead>
 
               <Tbody>
+                
                 {metadata?.map((item, idx) => (
                   <MetadataRow
                     key={idx}
