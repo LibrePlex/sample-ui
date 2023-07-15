@@ -18,3 +18,5 @@ export {NavElement} from "./navelement"
 
 export {GroupSelector} from "./GroupSelector"
 export {AssetDisplay} from "./assetdisplay/AssetDisplay"
+
+export {ScannerLink} from "./ScannerLink"

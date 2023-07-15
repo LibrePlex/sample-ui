@@ -6,8 +6,6 @@ import React from 'react';
 export const NetworkSwitcher: FC = () => {
   const { networkConfiguration, setNetworkConfiguration } = useNetworkConfiguration();
 
-  console.log(networkConfiguration);
-
   return (
     <label className="cursor-pointer label">
       <a>Network</a>
