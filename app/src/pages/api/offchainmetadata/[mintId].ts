@@ -10,8 +10,10 @@ import {
 } from "@solana/web3.js";
 import { IMetadataJson } from "models/IMetadataJson";
 import { NextApiHandler } from "next";
-import { HttpClient, PROGRAM_ID_METADATA, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata } from "shared-ui";
+import { HttpClient, PROGRAM_ID_METADATA, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata, getProgramInstanceOrdinals } from "shared-ui";
+import { decodeInscription } from "shared-ui";
 import { getAttrValue } from "utils/getAttrValue";
+
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;
@@ -39,6 +41,11 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
 
   const libreProgram = getProgramInstanceMetadata(
     new PublicKey(PROGRAM_ID_METADATA),
+    connection,
+    new Wallet(Keypair.generate())
+  );
+
+  const libreInscriptionsProgram = getProgramInstanceOrdinals(
     connection,
     new Wallet(Keypair.generate())
   );
@@ -74,6 +81,29 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     }
   }
   // if we have an extended obj, grab the collection
+  let inscription, base64Image;
+  if( libreMetadataObj.asset.inscription ) {
+
+    const inscriptionAccount = await connection.getAccountInfo(
+      libreMetadataObj.asset.inscription.accountId
+    )
+    if (inscriptionAccount) {
+      const item = decodeInscription(libreInscriptionsProgram)(
+        inscriptionAccount.data,
+        libreMetadataObj.group
+      );
+      inscription = item;
+      const base = Buffer.from(inscription.item.dataBytes).toString("base64");
+      console.log({base});
+      const dataType = base.split("/")[0];
+      const dataSubType = base.split("/")[1];
+      const data = base.split("/").slice(2).join("/");
+      console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
+      base64Image =`data:${dataType}/${dataSubType};base64,${data}==`;
+    }
+
+
+  }
 
   console.log({ group, royalties: group?.item.royalties });
 
@@ -100,7 +130,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
       group?.item.royalties?.bps ??
       jsondata.seller_fee_basis_points,
-    image: libreMetadataObj?.asset?.image?.url ?? jsondata.image,
+    image: libreMetadataObj?.asset?.image?.url ?? libreMetadataObj.asset.inscription ? base64Image : jsondata?.image,
     attributes:
       group?.item.attributeTypes.map((item, idx) => ({
         trait_type: item.name,

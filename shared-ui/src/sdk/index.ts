@@ -29,5 +29,6 @@ export {
   useMetadataByMintId,
   useListingsByGroup,
   useAllListings,
-  useGroupedMetadataByOwner
+  useGroupedMetadataByOwner,
+  decodeInscription
 } from "./query";

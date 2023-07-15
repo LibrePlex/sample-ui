@@ -1,3 +1,4 @@
+import { decodeInscription } from './sdk/query/inscriptions';
 export {
   ContextProvider,
   useAutoConnect,
@@ -27,6 +28,7 @@ export {
 export {
   decodeGroup,
   decodeMetadata,
+  decodeInscription,
   useGroupById,
   useGroupsByAuthority,
   useInscriptionById,
