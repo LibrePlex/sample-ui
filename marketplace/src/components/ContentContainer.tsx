@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { Text } from "@chakra-ui/react";
 import { NavElement } from "./navelement";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   children: ReactNode;
@@ -15,6 +16,8 @@ export const ContentContainer: React.FC<Props> = ({
   setIsNavOpen,
   children,
 }: Props) => {
+  const { publicKey } = useWallet();
+
   return (
     <div className="flex-1 drawer h-52">
       <input
@@ -44,9 +47,12 @@ export const ContentContainer: React.FC<Props> = ({
             <NavElement label="Listings" href="/Listings" />
           </li>
 
-          <li>
-            <NavElement label="Wallet" href="/wallet" />
-          </li>
+          {
+            publicKey &&
+            <li>
+            <NavElement label="Wallet" href={`/user/${publicKey.toBase58()}`} />
+            </li>
+          }
          
         </ul>
       </div>
