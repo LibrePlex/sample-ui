@@ -34,10 +34,6 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
 
   },[asset?.json])
 
-  useEffect(()=>{
-    console.log({asset});
-  },[asset])
-
   
   return (
     <Box width="100%">

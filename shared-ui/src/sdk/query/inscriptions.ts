@@ -15,12 +15,10 @@ export type Inscription = {
 export const decodeInscription =
   (program: Program<Inscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
-    console.log('buffer length', buffer.length);
-    console.log([...buffer]);
     const inscriptionBase = coder.accounts.decode<Inscription>("inscription", buffer);
     const inscription = {
       ...inscriptionBase,
-      dataBytes: [...buffer.subarray(76, inscriptionBase.size)],
+      dataBytes: [...buffer.subarray(76)],
     };
 
     return {

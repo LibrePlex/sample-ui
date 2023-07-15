@@ -70,7 +70,6 @@ export const LibrePlexProgramProvider = ({
     // const _program = anchorWallet
     //   ? getProgramInstanceMetadata(programId, connection, anchorWallet)
     //   : undefined;
-    console.log({ _program });
     setProgram(_program);
     } catch (e) {}
   }, [wallet, connection, programId]);

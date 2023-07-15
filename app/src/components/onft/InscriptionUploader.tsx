@@ -37,6 +37,12 @@ export const InscriptionUploader = ({
     setSelectedImage(undefined);
   }, []);
 
+  useEffect(()=>{
+    (async()=>{
+      console.log({f:selectedImage?.name, buf: (await selectedImage?.arrayBuffer())?.byteLength});
+    })()
+  },[selectedImage?.name])
+
   useEffect(() => {
     setStatus(Status.NotStarted);
   }, [selectedImage]);
@@ -51,11 +57,11 @@ export const InscriptionUploader = ({
 
   const [base64, setBase64] = useState<string>();
   useEffect(() => {
+    console.log({selectedImage});
     if (selectedImage) {
       var reader = new FileReader();
       reader.readAsDataURL(selectedImage);
       reader.onload = function () {
-        // console.log({ r: reader.result });
         setBase64(reader.result as string);
       };
       reader.onerror = function (error) {
@@ -86,8 +92,10 @@ export const InscriptionUploader = ({
       const elems = base64.split(",");
       const prefix = base64.split(";");
       const prefixDataType = prefix[0].split(":")[1];
-
-      return Buffer.from(`${prefixDataType}/${elems[1]}`, "base64");
+      
+      const str = `${prefixDataType}/${elems[1]}`;
+      console.log(str)
+      return Buffer.from(str, "base64");
       // const elems = base64.split(",");
       // return base64 ? Buffer.from(elems[elems.length - 1], "base64") : [];
     } else {
