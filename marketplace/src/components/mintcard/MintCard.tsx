@@ -25,7 +25,7 @@ export const MintCard = ({
     <Box {...rest} maxW={"200px"} minW={"200px"}>
       <AssetDisplay asset={metadata?.item?.asset} />
 
-      <VStack>
+      <VStack style={{paddingTop: 12}}>
         <HStack>
           <Heading size="md">{metadata?.item?.name ?? "-"}</Heading>
           <ScannerLink mintId={mint} />

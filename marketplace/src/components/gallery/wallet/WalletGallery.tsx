@@ -20,10 +20,10 @@ export const WalletGallery = ({ publicKey }: { publicKey: PublicKey }) => {
 
   return (
     <Box p={20} display="flex" flexDirection="row" flexWrap={"wrap"} gap={2}>
-      <VStack>
+      <VStack align='start' gap={16}>
         {groupedMetadata.map((item, idx) => (
-          <VStack key={idx} align='start'>
-            <Heading>Group: {item.group?.item.name}</Heading>
+          <VStack key={idx} align='start' gap={8}>
+            <Heading>{item.group?.item.name}</Heading>
             <HStack wrap={'wrap'}>
             {item.items.map((item, idx2) => (
               <MintCard key={idx2} mint={item.item.mint} />

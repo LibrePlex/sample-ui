@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { NavElement, NetworkSwitcherDynamic } from "shared-ui";
 import { Box, Button, Text, VStack, useColorMode } from "@chakra-ui/react";
 import { useAutoConnect } from "shared-ui";
-
+import { useWallet } from "@solana/wallet-adapter-react";
 const WalletMultiButtonDynamic = dynamic(
   async () =>
     (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -22,7 +22,7 @@ export const AppBar = ({
 }) => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
   const { colorMode, toggleColorMode, setColorMode } = useColorMode();
-
+  const { publicKey } = useWallet();
   /* 
     a hack to get chakra to always start in dark mode. 
     I wonder if this will cause flashing? 
@@ -48,9 +48,9 @@ export const AppBar = ({
             >
               <Box display={"flex"} h={"100%"} mt={7} mb={6}>
                 <img
-                  src="LibrePlexLongLogo.png"
-                  height={"35px"}
-                  style={{ maxHeight: "35px" }}
+                  src="../LibrePlexLongLogo.png"
+                  height={"26px"}
+                  style={{ maxHeight: "26px" }}
                 />
               </Box>
             </Link>
@@ -76,11 +76,14 @@ export const AppBar = ({
               href="/listings"
               navigationStarts={() => setIsNavOpen(false)}
             />
-            <NavElement
+            {
+              publicKey &&
+              <NavElement
               label="Wallet"
-              href="/mywallet"
+              href={`/user/${publicKey.toBase58()}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
+            }
 
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
           </div>
