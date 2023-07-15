@@ -1,7 +1,4 @@
-import {
-  Box,
-  VStack
-} from "@chakra-ui/react";
+import { Box, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import React, { useMemo } from "react";
@@ -12,31 +9,29 @@ import { useTokenAccountsByOwner } from "shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
 import { WalletAction } from "./walletcard/WalletAction";
 import { CreateListingModal } from "./walletcard/CreateListingModal";
+import { useGroupedMetadataByOwner } from "shared-ui";
 export const WalletGallery = ({ publicKey }: { publicKey: PublicKey }) => {
   const { connection } = useConnection();
-  const { data } = useTokenAccountsByOwner(
-    publicKey,
-    connection,
-    TOKEN_2022_PROGRAM_ID
-  );
 
-  const sortedData = useMemo(
-    () =>
-      data.sort((a, b) =>
-        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
-      ),
-    [data]
+  const { data: groupedMetadata } = useGroupedMetadataByOwner(
+    publicKey,
+    connection
   );
 
   return (
-      <Box p={20} display="flex" flexDirection="row" flexWrap={'wrap'} gap={2}>
-        {sortedData
-          .filter((item) => item.item)
-          .map((item, idx) => (
-            <MintCard key={idx} mint={item.item?.mint!}>
-              {item.item ? <CreateListingModal item={{...item, item: item.item!}} /> : <></>}
-            </MintCard>
-          ))}
-      </Box>
+    <Box p={20} display="flex" flexDirection="row" flexWrap={"wrap"} gap={2}>
+      <VStack>
+        {groupedMetadata.map((item, idx) => (
+          <VStack key={idx} align='start'>
+            <Heading>Group: {item.group?.item.name}</Heading>
+            <HStack wrap={'wrap'}>
+            {item.items.map((item, idx2) => (
+              <MintCard key={idx2} mint={item.item.mint} />
+            ))}
+            </HStack>
+          </VStack>
+        ))}
+      </VStack>
+    </Box>
   );
 };

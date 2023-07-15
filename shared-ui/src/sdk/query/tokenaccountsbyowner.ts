@@ -98,7 +98,7 @@ export const useTokenAccountsByOwner = (
   const { fetcher, listener } = useMemo(
     () => fetchTokenAccountsByOwner(owner, connection, programId),
 
-    [connection, owner]
+    [connection, owner, programId]
   );
 
   const queryClient = useQueryClient();

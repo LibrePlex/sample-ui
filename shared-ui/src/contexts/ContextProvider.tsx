@@ -30,6 +30,7 @@ const ReactUIWalletModalProviderDynamic = dynamic(
 );
 
 const getRpcUrlFromNetwork = (network: WalletAdapterNetwork | "local") => {
+  console.log({network});
   if (network === WalletAdapterNetwork.Devnet) {
     return process.env.NEXT_PUBLIC_DEVNET_URL ?? clusterApiUrl(network);
   } else if (network === WalletAdapterNetwork.Mainnet) {

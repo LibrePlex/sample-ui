@@ -15,7 +15,7 @@ export const MintCard = ({
   ...rest
 }: {
   mint: PublicKey;
-  children?: ReactNode;
+  children?: ReactNode; 
 } & BoxProps) => {
   const {} = useContext(LibrePlexProgramContext);
   const { connection } = useConnection();

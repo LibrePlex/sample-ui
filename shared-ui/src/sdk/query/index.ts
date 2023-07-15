@@ -22,6 +22,7 @@ export {
   useMetadataById,
   decodeMetadata,
   useMetadataByMintId,
+  useGroupedMetadataByOwner
 } from "./metadata/metadata";
 
 export { useTokenAccountsByOwner, useTokenAccountById} from "./tokenaccountsbyowner";

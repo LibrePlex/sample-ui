@@ -41,7 +41,8 @@ export {
   useListingsByLister,
   useMetadataByMintId,
   useListingsByGroup,
-  useAllListings
+  useAllListings,
+  useGroupedMetadataByOwner
 } from "./sdk";
 export type {
   AttributeType,

@@ -28,5 +28,6 @@ export {
   useListingsByLister,
   useMetadataByMintId,
   useListingsByGroup,
-  useAllListings
+  useAllListings,
+  useGroupedMetadataByOwner
 } from "./query";
