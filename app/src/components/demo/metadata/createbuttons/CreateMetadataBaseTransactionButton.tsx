@@ -187,6 +187,14 @@ export const createMetadata = async (
           maxDataLength: ORDINAL_DEFAULT_LENGTH,
           authority: wallet.publicKey,
         },
+        extension: extension ? {
+          nft: {
+            attributes: Buffer.from(extension.attributes),
+            signers: [],
+            royalties: null,
+            license: null
+          }
+        } : null
       })
       .accounts({
         metadata,

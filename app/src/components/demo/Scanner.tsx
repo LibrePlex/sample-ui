@@ -136,10 +136,11 @@ export const LibreScanner = () => {
       {metadata && (
         <Box sx={{ display: "flex", flexDirection: "column" }} gap={3}>
           <VStack gap={2}>
-            <HStack gap={2} justify={"start"} w="100%">
-              <Box maxH={"300px"} aspectRatio={"1/1"}>
+            <HStack gap={2} justify={"start"} w="100%" maxH={"330px"}>
+              <VStack maxH={"300px"} aspectRatio={"1/1"} align='center'>
                 <AssetDisplay asset={metadata.item.asset} />
-              </Box>
+                <Heading size="md">{metadata.item.name}</Heading>
+              </VStack>
               <VStack justify={"start"} h={"100%"} align={"start"}>
                 <HStack>
                   <Button
@@ -204,7 +205,7 @@ export const LibreScanner = () => {
                   <AttributesDisplay
                     group={group}
                     attributes={[
-                      ...(metadata?.item.extension.nft.attributes ?? []),
+                      ...(metadata?.item.extension?.nft?.attributes ?? []),
                     ]}
                   />
                 )}

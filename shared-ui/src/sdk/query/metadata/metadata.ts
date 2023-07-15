@@ -39,6 +39,7 @@ export const decodeMetadata =
 
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
+      console.log({metadataRaw});
       return {
         item: metadataRaw ?? null, //metadata ?? null,
         pubkey,
