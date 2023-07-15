@@ -33,7 +33,7 @@ import {useDeletedKeyStore} from "shared-ui";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
 import { IdlAccounts } from "@coral-xyz/anchor";
-import { ScannerLink } from "@/components/ScannerLink";
+import { ScannerLink } from "shared-ui";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
