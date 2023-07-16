@@ -125,7 +125,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     ...jsondata,
     name: libreMetadataObj.name ?? jsondata.name,
     symbol: libreMetadataObj.symbol ?? jsondata.symbol,
-    description: libreMetadataObj.description ?? jsondata.description,
+    description: libreMetadataObj?.asset?.image?.description ?? libreMetadataObj?.asset?.inscription?.description ?? jsondata.description,
     seller_fee_basis_points:
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
       group?.item.royalties?.bps ??

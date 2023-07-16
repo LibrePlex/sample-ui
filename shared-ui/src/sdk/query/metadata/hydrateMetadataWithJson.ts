@@ -1,41 +1,37 @@
-
-
 import { getAttrValue } from "./getAttrValue";
 import { Inscription } from "..";
 import { Group } from "./group";
 import { Metadata } from "./metadata";
 import { IRpcObject } from "../../../components";
 
-
 export interface IAttributeJson {
-    trait_type: string;
-    value: string | number;
-  }
-  
-  export interface IFileJson {
-    uri: string;
-    type: string;
-  }
-  
-  export interface ICreator {
-      address: string;
-      share: number;
-    }
-  
-  export interface IMetadataJson {
-    name: string;
-    symbol: string;
-    description?: string ;
-    seller_fee_basis_points?: number ;
-    image?: string;
-    attributes: IAttributeJson[];
-    properties: {
-      files: IFileJson[];
-      category?: string;
-      creators: ICreator[]
-    };
-  }
-  
+  trait_type: string;
+  value: string | number;
+}
+
+export interface IFileJson {
+  uri: string;
+  type: string;
+}
+
+export interface ICreator {
+  address: string;
+  share: number;
+}
+
+export interface IMetadataJson {
+  name: string;
+  symbol: string;
+  description?: string;
+  seller_fee_basis_points?: number;
+  image?: string;
+  attributes: IAttributeJson[];
+  properties: {
+    files: IFileJson[];
+    category?: string;
+    creators: ICreator[];
+  };
+}
 
 export const hydrateMetadataWithJson = (
   libreMetadataObj: Metadata,
@@ -45,13 +41,15 @@ export const hydrateMetadataWithJson = (
   const retval: IMetadataJson = {
     name: libreMetadataObj.name,
     symbol: libreMetadataObj.symbol,
-    description: libreMetadataObj.description ?? undefined,
+    description:
+      libreMetadataObj?.asset?.image?.description ??
+      libreMetadataObj?.asset?.inscription?.description ??
+      undefined,
     seller_fee_basis_points:
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
-      group?.item?.royalties?.bps ?? undefined,
-    image:
-      libreMetadataObj?.asset?.image?.url ??
-      base64Image ?? undefined,
+      group?.item?.royalties?.bps ??
+      undefined,
+    image: libreMetadataObj?.asset?.image?.url ?? base64Image ?? undefined,
     attributes:
       group?.item?.attributeTypes.map((item, idx) => ({
         trait_type: item.name,

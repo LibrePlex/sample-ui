@@ -135,12 +135,12 @@ export const createMetadata = async (
       .createMetadata({
         name,
         symbol,
-        description,
         updateAuthority: wallet.publicKey,
         
         asset: {
           image: {
             url,
+            description,
           },
         },
         extension: extension ? {
