@@ -44,7 +44,8 @@ export {
   useMetadataByMintId,
   useListingsByGroup,
   useAllListings,
-  useGroupedMetadataByOwner
+  useGroupedMetadataByOwner,
+  getBase64FromInscription
 } from "./sdk";
 export type {
   AttributeType,

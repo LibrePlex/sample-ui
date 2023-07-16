@@ -4,18 +4,32 @@ import { InscriptionsProgramContext } from "../../anchor/InscriptionsProgramProv
 import { useContext, useMemo } from "react";
 import { Inscriptions } from "../../types/inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
+import { IRpcObject } from "../../components";
 
 export type Inscription = {
-  authority: PublicKey,
-  root: PublicKey,
-  size: number,
+  authority: PublicKey;
+  root: PublicKey;
+  size: number;
   dataBytes: number[];
+};
+
+export const getBase64FromInscription = (
+  inscription: IRpcObject<Inscription>
+) => {
+  const base = Buffer.from(inscription.item.dataBytes).toString("base64");
+  const dataType = base.split("/")[0];
+  const dataSubType = base.split("/")[1];
+  const data = base.split("/").slice(2).join("/");
+  return `data:${dataType}/${dataSubType};base64,${data}==`;
 };
 
 export const decodeInscription =
   (program: Program<Inscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
-    const inscriptionBase = coder.accounts.decode<Inscription>("inscription", buffer);
+    const inscriptionBase = coder.accounts.decode<Inscription>(
+      "inscription",
+      buffer
+    );
     const inscription = {
       ...inscriptionBase,
       dataBytes: [...buffer.subarray(76)],
@@ -73,7 +87,9 @@ export const useInscriptionById = (
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item ? decodeInscription(program)(q?.data?.item.buffer, ordinalKey) : undefined;
+      const obj = q?.data?.item
+        ? decodeInscription(program)(q?.data?.item.buffer, ordinalKey)
+        : undefined;
       return obj;
     } catch (e) {
       return null;

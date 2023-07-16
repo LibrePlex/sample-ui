@@ -1,3 +1,5 @@
+import { IMetadataJson, hydrateMetadataWithJson } from "./hydrateMetadataWithJson";
+
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { LibreplexWithOrdinals } from "../../../anchor/getProgramInstanceMetadata";
 import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
@@ -11,11 +13,12 @@ import { sha256 } from "js-sha256";
 import { useGpa } from "../gpa";
 import { getMetadataPda } from "../../../pdas";
 import { useTokenAccountsByOwner } from "../tokenaccountsbyowner";
-import { Group } from "./group";
+import { AttributeType, Group } from "./group";
 
-import { BufferingConnection, IRpcObject } from "shared-ui";
+import { BufferingConnection, IRpcObject, Inscription, getBase64FromInscription } from "shared-ui";
 import { useMultipleMetadataById as useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
+import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
 
 export enum AssetType {
   None,
@@ -39,7 +42,7 @@ export const decodeMetadata =
 
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
-      console.log({metadataRaw});
+      console.log({ metadataRaw });
       return {
         item: metadataRaw ?? null, //metadata ?? null,
         pubkey,
@@ -218,17 +221,34 @@ export const useGroupedMetadataByOwner = (
   const { data: metadata, isFetching: isFetchingMetadata } =
     useMultipleMetadataById(metadataIds, connection);
 
-  
+  const inscriptionIds = useMemo(
+    () =>
+      metadata
+        .filter((item) => item.item?.asset.inscription?.accountId)
+        .map((item) => item.item!.asset.inscription!.accountId),
+    [metadata]
+  );
+
+  const { data: inscriptions, isFetching: fetchingInscriptions } =
+    useMultipleInscriptionsById(inscriptionIds, connection);
+
+  const inscriptionDict = useMemo(() => {
+    const _inscriptiondDict: { [key: string]: IRpcObject<Inscription> } = {};
+    for (const inscription of inscriptions) {
+      _inscriptiondDict[inscription.pubkey.toBase58()] = inscription;
+    }
+    return _inscriptiondDict;
+  }, [inscriptions]);
 
   const groupIds = useMemo(
-    () => [
-      ...new Set(
-        metadata
-          .filter((item) => item.item?.group)
-          .map((item) => item.item!.group!)
-          
-      ),
-    ].sort((a,b)=>a.toBase58().localeCompare(b.toBase58())),
+    () =>
+      [
+        ...new Set(
+          metadata
+            .filter((item) => item.item?.group)
+            .map((item) => item.item!.group!)
+        ),
+      ].sort((a, b) => a.toBase58().localeCompare(b.toBase58())),
     [metadata]
   );
 
@@ -241,7 +261,7 @@ export const useGroupedMetadataByOwner = (
     const _groupDict: { [key: string]: IRpcObject<Group> } = {};
     for (const group of groups) {
       if (group.item) {
-        _groupDict[group.pubkey.toBase58()] = {...group, item: group.item!};
+        _groupDict[group.pubkey.toBase58()] = { ...group, item: group.item! };
       }
     }
     return _groupDict;
@@ -250,30 +270,55 @@ export const useGroupedMetadataByOwner = (
   const groupedMetadata = useMemo(() => {
     const _groupedMetadata: {
       group: IRpcObject<Group> | null;
-      items: IRpcObject<Metadata>[];
+      items: IRpcObject<Metadata&{renderedJson?: IMetadataJson}>[];
     }[] = [];
 
     for (const m of metadata) {
       if (m.item?.group) {
+
+        
         const g = _groupedMetadata.find((item) =>
           item.group?.pubkey.equals(m.item!.group!)
         );
+
+
+        const inscription = m.item?.asset.inscription?.accountId.toBase58() ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()] : null;
+
+        const base64Image = inscription ? getBase64FromInscription(inscription) : null;
+
+        const renderedJson = hydrateMetadataWithJson(
+          m.item!,
+          g?.group??null,
+          base64Image
+        );
+
         if (g) {
-          g.items.push({...m, item: m.item!});
+          g.items.push({ ...m, item: {...m.item!, renderedJson}  });
         } else {
           _groupedMetadata.push({
             group: groupDict[m.item.group.toBase58()],
-            items: [{...m, item: m.item!}],
+            items: [{ ...m, item: {...m.item!, renderedJson}  }],
           });
         }
       } else {
-        const g = _groupedMetadata.find((item) => item.group === null);
+        const g = _groupedMetadata.find((item) => item.group === null) ?? null;
+
+        const inscription = m.item?.asset.inscription?.accountId.toBase58() ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()] : null;
+
+        const base64Image = inscription ? getBase64FromInscription(inscription) : null;
+
+        const renderedJson = hydrateMetadataWithJson(
+          m.item!,
+          g?.group??null,
+          base64Image
+        );
+
         if (g) {
-          g.items.push({...m, item: m.item!});
+          g.items.push({ ...m, item: {...m.item!, renderedJson} });
         } else {
           _groupedMetadata.push({
             group: null,
-            items: [{...m, item: m.item!}],
+            items: [{ ...m, item: {...m.item!, renderedJson} }],
           });
         }
       }
@@ -282,9 +327,9 @@ export const useGroupedMetadataByOwner = (
     return _groupedMetadata;
   }, [metadata, groups]);
 
-  useEffect(()=>{
-    console.log({metadata, groups, metadataIds})
-  },[metadata, groups, metadataIds])
+  useEffect(() => {
+    console.log({ metadata, groups, metadataIds });
+  }, [metadata, groups, metadataIds]);
 
   // useEffect(()=>{
   //   console.log({metadata, groups})
@@ -292,6 +337,10 @@ export const useGroupedMetadataByOwner = (
 
   return {
     data: groupedMetadata,
-    isFetching: isFetchingMints || isFetchingMetadata|| isFetchingGroups,
+    isFetching:
+      isFetchingMints ||
+      isFetchingMetadata ||
+      isFetchingGroups ||
+      fetchingInscriptions,
   };
 };

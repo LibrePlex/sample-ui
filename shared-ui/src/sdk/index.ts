@@ -30,5 +30,6 @@ export {
   useListingsByGroup,
   useAllListings,
   useGroupedMetadataByOwner,
-  decodeInscription
+  decodeInscription,
+  getBase64FromInscription
 } from "./query";

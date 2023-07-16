@@ -33,7 +33,7 @@ export {
 } from "./legacymetadata";
 
 // inscription stuff
-export { useInscriptionById, decodeInscription } from "./inscriptions";
+export { useInscriptionById, decodeInscription, getBase64FromInscription } from "./inscriptions";
 export type { Inscription } from "./inscriptions";
 
 // shop stuff
