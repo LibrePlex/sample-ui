@@ -154,8 +154,9 @@ export const useAllListings = (connection: Connection) => {
   }, [program]);
 
   useEffect(() => {
+    
     let listener = program.addEventListener(
-      "DeleteEvent",
+      "DelistEvent",
       (event, slot, sig) => {
         setDeletedIds((old) => new Set([...old, event.id.toString()]));
       }
@@ -176,7 +177,7 @@ export const useAllListings = (connection: Connection) => {
     return () => {
       program.removeEventListener(listener);
     };
-  }, []);
+  }, [program]);
 
   const q = useGpa(program.programId, filters, connection, [`allListings`]);
 
