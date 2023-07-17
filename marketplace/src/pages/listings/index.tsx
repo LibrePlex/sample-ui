@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import React from "react";
-import { ListingGallery } from "../components/gallery/listings/Listings";
+import { ListingGallery } from "../../components/gallery/listings/Listings";
 const Home: NextPage = (props) => {
   return (
     <div>

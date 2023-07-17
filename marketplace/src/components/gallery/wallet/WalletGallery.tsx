@@ -5,7 +5,9 @@ import { PublicKey } from "@solana/web3.js";
 
 import { useGroupedMetadataByOwner } from "shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
-export const WalletGallery = ({ publicKey }: { publicKey: PublicKey }) => {
+export const WalletGallery = ({ publicKey, onSelectMint }: { 
+  onSelectMint: (mint: PublicKey) => any,
+  publicKey: PublicKey }) => {
   const { connection } = useConnection();
 
   const { data: groupedMetadata } = useGroupedMetadataByOwner(
@@ -21,7 +23,7 @@ export const WalletGallery = ({ publicKey }: { publicKey: PublicKey }) => {
             <Heading>{item.group?.item.name}</Heading>
             <HStack wrap={"wrap"}>
               {item.items.map((item, idx2) => (
-                <MintCard key={idx2} mint={item.item.mint} />
+                <MintCard key={idx2} onSelectMint={onSelectMint} mint={item.metadata.item.mint} />
               ))}
             </HStack>
           </VStack>

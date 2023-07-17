@@ -1,40 +1,81 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
+
 import { HomeView } from "../../views";
-import { Center, Text } from "@chakra-ui/react";
-import { ContextProvider, useTokenAccountsByOwner } from "shared-ui";
-import React, { useEffect, useMemo, useState } from "react";
+import { Box, Center, Text } from "@chakra-ui/react";
+import {
+  ContextProvider,
+  MintDisplay,
+  usePublicKeyOrNull,
+  useTokenAccountsByOwner,
+} from "shared-ui";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletGallery } from "../../components/gallery/wallet/WalletGallery";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useRouter } from "next/router";
 import { PublicKey } from "@solana/web3.js";
+import { ListMintTransactionButton } from "@/components/gallery/wallet/walletcard/ListMintTransactionButton";
+import { WalletAction } from "@/components/gallery/wallet/walletcard/WalletAction";
 
 const Home: NextPage = (props) => {
   const router = useRouter();
-  const [pubkey, setPubkey] = useState<PublicKey>(null)
+  const [pubkey, setPubkey] = useState<PublicKey>(null);
 
   useEffect(() => {
     try {
-      new PublicKey(router.query.pubkey)
-      setPubkey(new PublicKey(router.query.pubkey))
-    } catch (error) {
+      new PublicKey(router.query.pubkey);
+      setPubkey(new PublicKey(router.query.pubkey));
+    } catch (error) {}
+  }, [router.query.pubkey]);
 
-    }
-  }, [router.query.pubkey])
-  
+  const selectMint = useCallback(
+    (mint: PublicKey) => {
+      // router.pathname = '/listings/[mintId]';
+      router.query.mintId = mint.toBase58();
+      router.push(router);
+    },
+    [router]
+  );
 
+  const mintId = useMemo(() => router.query.mintId, [router.query]);
 
+  const mint = usePublicKeyOrNull(mintId as string);
 
-  
+  const { connection } = useConnection();
+
+  const { data: tokenAccounts } = useTokenAccountsByOwner(
+    pubkey,
+    connection,
+    TOKEN_2022_PROGRAM_ID
+  );
+
+  const selectedMintTokenAccount = useMemo(
+    () => mint && tokenAccounts.find((ta) => ta.item.mint.equals(mint)),
+    [tokenAccounts, mint]
+  );
+
   return (
-    <div style={{display: 'flex', alignItems: 'flex-start'}}>
-          {pubkey ? (
-            <WalletGallery publicKey={pubkey} />
-          ) : (
-            <Center style={{minHeight: '500px'}}><Text>Must be valid public key</Text></Center>
-          )}
-
+    <div style={{ display: "flex", alignItems: "flex-start" }}>
+      {pubkey ? (
+        mint ? (
+          <Box w={"100%"}>
+            <Center style={{ minHeight: "500px" }}>
+              <MintDisplay
+                mint={mint}
+                actions={selectedMintTokenAccount && <WalletAction item={selectedMintTokenAccount} />}
+              />
+            </Center>
+          </Box>
+        ) : (
+          <WalletGallery publicKey={pubkey} onSelectMint={selectMint} />
+        )
+      ) : (
+        <Center style={{ minHeight: "500px" }}>
+          <Text>Must be valid public key</Text>
+        </Center>
+      )}
     </div>
   );
 };

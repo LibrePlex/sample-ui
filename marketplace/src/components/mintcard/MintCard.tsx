@@ -1,28 +1,38 @@
 import { Box, BoxProps, HStack, Heading, VStack } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import React, { ReactNode, useContext } from "react";
+import { useRouter } from "next/router";
+import React, { ReactNode, useCallback, useContext } from "react";
 import {
   LibrePlexProgramContext,
   ScannerLink,
   useMetadataByMintId,
 } from "shared-ui";
-import { AssetDisplay } from "./assetdisplay/AssetDisplay";
+import { AssetDisplay } from "shared-ui";
 
 export const MintCard = ({
   mint,
   children,
+  onSelectMint,
   ...rest
 }: {
   mint: PublicKey;
+  onSelectMint?: (mint: PublicKey) => any,
   children?: ReactNode; 
 } & BoxProps) => {
   const {} = useContext(LibrePlexProgramContext);
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mint, connection);
 
+  const router = useRouter();
+
+
   return (
-    <Box {...rest} maxW={"200px"} minW={"200px"}>
+    <Box {...rest} maxW={"200px"} minW={"200px"} sx={{
+      cursor: 'pointer'
+    }} onClick={()=>{
+      onSelectMint && onSelectMint(mint)
+    }}>
       <AssetDisplay asset={metadata?.item?.asset} />
 
       <VStack style={{paddingTop: 12}}>

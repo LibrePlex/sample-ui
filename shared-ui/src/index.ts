@@ -80,7 +80,8 @@ export {
   NavElement,
   GroupSelector,
   AssetDisplay,
-  ScannerLink
+  ScannerLink,
+  MintDisplay
 } from "./components";
 
 export {

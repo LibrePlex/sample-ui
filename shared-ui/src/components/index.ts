@@ -20,3 +20,5 @@ export {GroupSelector} from "./GroupSelector"
 export {AssetDisplay} from "./assetdisplay/AssetDisplay"
 
 export {ScannerLink} from "./ScannerLink"
+
+export {MintDisplay} from "./MintDisplay"
