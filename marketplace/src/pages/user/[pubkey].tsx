@@ -3,7 +3,7 @@ import Head from "next/head";
 import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 
 import { HomeView } from "../../views";
-import { Box, Center, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Text } from "@chakra-ui/react";
 import {
   ContextProvider,
   MintDisplay,
@@ -31,9 +31,13 @@ const Home: NextPage = (props) => {
   }, [router.query.pubkey]);
 
   const selectMint = useCallback(
-    (mint: PublicKey) => {
-      // router.pathname = '/listings/[mintId]';
-      router.query.mintId = mint.toBase58();
+    (mint: PublicKey | undefined) => {
+      if( mint) {
+        router.query.mintId = mint?.toBase58()
+      } else {
+        const {mintId, ...rest} = router.query
+        router.query = rest;
+      }
       router.push(router);
     },
     [router]
@@ -61,6 +65,9 @@ const Home: NextPage = (props) => {
       {pubkey ? (
         mint ? (
           <Box w={"100%"}>
+            <Button m={30} onClick={()=>{
+              selectMint(undefined)
+            }}>Back to wallet</Button>
             <Center style={{ minHeight: "500px" }}>
               <MintDisplay
                 mint={mint}
