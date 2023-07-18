@@ -11,18 +11,21 @@ import {
   Thead,
   Tr,
   Text,
+  Heading,
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useTokenAccountsByOwner } from "shared-ui";
 import { TokenAccountDisplay } from "./TokenAccountDisplay";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useRouter } from "next/router";
 import { PublicKey } from "@solana/web3.js";
+import { NetworkConfigurationContext } from "shared-ui/src/contexts/NetworkConfigurationProvider";
 
 export const PNFTFixer = () => {
   const { publicKey } = useWallet();
   const { connection } = useConnection();
+  const {networkConfiguration} = useContext(NetworkConfigurationContext)
 
   const router = useRouter();
 
@@ -51,6 +54,8 @@ export const PNFTFixer = () => {
   const [showAll, setShowAll] = useState<boolean>(false);
   return (
     <Box sx={{ height: "100%", pb: "150px" }}>
+      <Heading size="md">You are connected to {networkConfiguration}.</Heading>
+      <Text>You can switch between localnet/devnet/mainnet in the top right hand corner of the page.</Text>
       <HStack alignItems={"center"}>
         <Button onClick={() => refetch()}>Refresh</Button>
         <Checkbox
@@ -63,6 +68,7 @@ export const PNFTFixer = () => {
           Show all mints
         </Checkbox>
       </HStack>
+      
 
       {isFetching && <Spinner />}
       <h5>You have {data.length} mints in your wallet.</h5>
