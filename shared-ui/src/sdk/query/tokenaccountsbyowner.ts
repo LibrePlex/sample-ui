@@ -104,7 +104,7 @@ export const useTokenAccountsByOwner = (
 
   const queryClient = useQueryClient();
 
-  const key = useMemo(()=>`tokenaccountsbyowner-${owner?.toBase58()}`,[owner])
+  const key = useMemo(()=>`tokenaccountsbyowner-${owner?.toBase58()}-${connection.rpcEndpoint}`,[owner, connection])
 
   const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
 
