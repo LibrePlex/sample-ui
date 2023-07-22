@@ -33,7 +33,7 @@ export const LibrePlexShopProgramProvider = ({
     </LibrePlexShopProgramContext.Provider>
   ) : (
     <Box sx={{ display: "flex" }} columnGap={2}>
-      <Text>Loading anchor program...</Text>
+      <Text>Loading shop program...</Text>
       <Spinner />
     </Box>
   );

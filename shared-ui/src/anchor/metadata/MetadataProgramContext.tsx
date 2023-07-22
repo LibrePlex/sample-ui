@@ -70,22 +70,22 @@ export const MetadataProgramProvider = ({
 
 
 
-  const store = useRef<StoreApi<DeletedKeysState>>();
+  const [store, setStore] = useState<StoreApi<DeletedKeysState>>();
 
   useEffect(() => {
     if (program) {
-      store.current = createDeletedKeyStore(program);
+      setStore(createDeletedKeyStore(program));
     }
   }, [program]);
 
 
-  return program?.programId && store.current ? (
-    <MetadataProgramContext.Provider value={{ program, store: store.current, setProgramId }}>
+  return program?.programId && store ? (
+    <MetadataProgramContext.Provider value={{ program, store, setProgramId }}>
       {children}
     </MetadataProgramContext.Provider>
   ) : (
     <Box sx={{ display: "flex" }} columnGap={2}>
-      <Text>Loading anchor program...</Text>
+      <Text>Loading metadata program...</Text>
       <Spinner />
     </Box>
   );

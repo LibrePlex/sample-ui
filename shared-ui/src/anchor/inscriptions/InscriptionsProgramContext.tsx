@@ -39,7 +39,7 @@ export const InscriptionsProgramProvider = ({
     </InscriptionsProgramContext.Provider>
   ) : (
     <Box sx={{ display: "flex" }} columnGap={2}>
-      <Text>Loading anchor program (inscriptions)...</Text>
+      <Text>Loading inscriptions program...</Text>
       <Spinner />
     </Box>
   );
