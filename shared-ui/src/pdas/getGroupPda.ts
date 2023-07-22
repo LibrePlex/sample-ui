@@ -2,7 +2,7 @@
 import { PublicKey } from "@solana/web3.js";
 
 import { GROUP } from "./constants";
-import { PROGRAM_ID_METADATA } from "../anchor/getProgramInstanceMetadata";
+import { PROGRAM_ID_METADATA } from "../anchor/metadata/getProgramInstanceMetadata";
 
 
 export const getGroupPda = (seed: PublicKey) => {

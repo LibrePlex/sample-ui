@@ -27,7 +27,7 @@ import {
   AssetType,
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
-import { CopyPublicKeyButton, Group, IRpcObject, LibrePlexProgramContext } from "shared-ui";
+import { CopyPublicKeyButton, Group, IRpcObject, MetadataProgramContext } from "shared-ui";
 import { GroupSelector } from "shared-ui";
 
 enum View {
@@ -88,7 +88,7 @@ export const CreateMetadataDialog = ({
     setStatus(Status.NotStarted);
   }, [generatedMint]);
 
-  const {program} = useContext(LibrePlexProgramContext)
+  const {program} = useContext(MetadataProgramContext)
 
   return (
     <Modal isOpen={open} onClose={onClose}>

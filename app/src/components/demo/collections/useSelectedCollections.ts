@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
-import create, { State } from "zustand";
+import {create } from "zustand";
 
-interface CollectionsStore extends State {
+interface CollectionsStore  {
   selectedCollectionKeys: Set<PublicKey>;
   toggleSelectedCollection: (
     publicKey: PublicKey,
@@ -14,17 +14,19 @@ const useSelectedCollections = create<CollectionsStore>(
   (set, _get) => ({
     selectedCollectionKeys: new Set(),
     toggleSelectedCollection: async (publicKey: PublicKey, b: boolean) => {
-      set((s) => {
-        s.selectedCollectionKeys = new Set(
+      set((s) => ({
+        ...s,
+        selectedCollectionKeys: new Set(
           b ? [...s.selectedCollectionKeys, publicKey] : 
           [...s.selectedCollectionKeys].filter(item=>item!==publicKey)
-        );
-      });
+        )
+      }));
     },
     setSelectedCollectionKeys: async (selectedCollections: Set<PublicKey>) => {
-      set((s) => {
-        s.selectedCollectionKeys = selectedCollections;
-      });
+      set((s) => ({
+        ...s,
+        selectedCollectionKeys: selectedCollections
+      }));
     },
   })
 );

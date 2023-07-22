@@ -7,29 +7,12 @@ export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
   
 
-import { IDL as IDLMetadata, LibreplexMetadata as Libreplex } from "../types/libreplex_metadata";
-import { IDL as IDLOrdinals, Inscriptions } from "../types/inscriptions";
+import { IDL, LibreplexMetadata } from "../../types/libreplex_metadata";
 import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
-export type LibreplexWithOrdinals = {
-  version: string,
-  name: string,
-  instructions: (
-    | ArrayElement<Libreplex["instructions"]>
-    | ArrayElement<Inscriptions["instructions"]>
-  )[];
-  accounts: (
-    | ArrayElement<Libreplex["accounts"]>
-    | ArrayElement<Inscriptions["accounts"]>
-  )[];
-  types: (
-    | ArrayElement<Libreplex["types"]>
-    | ArrayElement<Inscriptions["types"]>
-  )[];
-};
 export function getProgramInstanceMetadata(
   programId: PublicKey,
   connection: Connection,
@@ -59,13 +42,7 @@ export function getProgramInstanceMetadata(
     anchor.AnchorProvider.defaultOptions()
   );
   // Read the generated IDL.
-  const idl: LibreplexWithOrdinals = {
-    ...IDLMetadata,
-    ...IDLOrdinals,
-    instructions: [...IDLMetadata.instructions, ...IDLOrdinals.instructions],
-    accounts: [...IDLMetadata.accounts, ...IDLOrdinals.accounts],
-    types: [...IDLMetadata.types, ...IDLOrdinals.types],
-  };
+  const idl = IDL;
   // Address of the deployed program.
   // Generate the program client from IDL.
   const program = new anchor.Program(idl, programId, provider);

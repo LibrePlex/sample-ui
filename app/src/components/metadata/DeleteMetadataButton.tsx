@@ -5,22 +5,24 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstanceMetadata } from "shared-ui";
+import { useContext } from "react";
+import { IRpcObject, Metadata, MetadataProgramContext, PROGRAM_ID_INSCRIPTIONS, getProgramInstanceMetadata } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
 } from "shared-ui";
 import { ITransactionTemplate } from "shared-ui";
+import { useStore } from "zustand";
 
 
-import {useDeletedKeyStore} from "shared-ui";
+
 // import { usePermissionsHydratedWithCollections } from "stores/accounts/useCollectionsById";
 
 
 export interface IDeleteMetadata {
   metadataProgramId: PublicKey,
-  metadataKeys: PublicKey[],
+  metadataObjects: IRpcObject<Metadata>[],
 
 }
 
@@ -43,34 +45,39 @@ export const deleteMetadata = async (
     description: string;
   }[] = [];
 
-    const {metadataProgramId, metadataKeys} = params
+    const {metadataProgramId, metadataObjects} = params
   const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection, {
     ...wallet
   });
 
 
-
-  for (const metadata of metadataKeys) {
+  let instruction;
+  for (const metadata of metadataObjects) {
     
-
-    const instruction = await librePlexProgram.methods
-    .deleteMetadata()
-    .accounts({
-      metadataAuthority: wallet.publicKey,
-      metadata,
-      delegatedMetadataSpecificPermissions: null,
-      systemProgram: SystemProgram.programId,
-    })
-    .instruction();
-
-    // const instruction = createDeleteCollectionInstruction({
-    //   signer: wallet.publicKey,
-    //   signerCollectionPermissions: collectionPermissions,
-    //   collection,
-    //   creator,
-    //   receiver: wallet.publicKey,
-    //   systemProgram: SystemProgram.programId,
-    // });
+    if( metadata.item.asset.inscription) {
+      instruction = await librePlexProgram.methods
+      .deleteMetadataInscription()
+      .accounts({
+        metadataAuthority: wallet.publicKey,
+        metadata: metadata.pubkey,
+        delegatedMetadataSpecificPermissions: null,
+        systemProgram: SystemProgram.programId,
+        inscription: metadata.item.asset.inscription.accountId,
+        inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS
+      })
+      .instruction();
+    }
+    else {
+      instruction = await librePlexProgram.methods
+      .deleteMetadata()
+      .accounts({
+        metadataAuthority: wallet.publicKey,
+        metadata: metadata.pubkey,
+        delegatedMetadataSpecificPermissions: null,
+        systemProgram: SystemProgram.programId,
+      })
+      .instruction();
+    }
 
     let instructions: TransactionInstruction[] = [];
     instructions.push(instruction);
@@ -93,17 +100,20 @@ export const DeleteMetadataButton = (
     "transactionGenerator"
   >
 ) => {
-  const { addDeletedKey } = useDeletedKeyStore();
+
+  const {store} = useContext(MetadataProgramContext)
+
+  const addDeletedKey  = useStore(store, (state)=>state.addDeletedKey);
 
   return (
     <>
       <GenericTransactionButton<IDeleteMetadata>
-        text={`Delete (${props.params.metadataKeys.length})` }
+        text={`Delete (${props.params.metadataObjects.length})` }
         transactionGenerator={deleteMetadata}
         {...props}
         onSuccess={(msg) => {
-          for( const metadata of props.params.metadataKeys) {
-            addDeletedKey(metadata);
+          for( const metadata of props.params.metadataObjects) {
+            addDeletedKey(metadata.pubkey);
           }
           props.onSuccess && props.onSuccess(msg);
         }}

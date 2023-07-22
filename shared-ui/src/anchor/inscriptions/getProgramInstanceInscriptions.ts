@@ -1,14 +1,13 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Connection } from "@solana/web3.js";
 
-export const PROGRAM_ID_METADATA =
-  "LibrQsXf9V1DmTtJLkEghoaF1kjJcAzWiEGoJn8mz7p";
+
 export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
 
-import { IDL as IDLOrdinals } from "../types/inscriptions";
+import { IDL } from "../../types/libreplex_inscriptions";
 
-export function getProgramInstanceOrdinals(
+export function getProgramInstanceInscriptions(
   connection: Connection,
   wallet: any
 ) {
@@ -19,7 +18,7 @@ export function getProgramInstanceOrdinals(
     anchor.AnchorProvider.defaultOptions()
   );
   // Read the generated IDL.
-  const idl = IDLOrdinals;
+  const idl = IDL;
   // Address of the deployed program.
   const programId = PROGRAM_ID_INSCRIPTIONS;
   // Generate the program client from IDL.

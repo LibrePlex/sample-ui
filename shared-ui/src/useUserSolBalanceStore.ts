@@ -1,7 +1,7 @@
 import create, { State } from 'zustand'
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js'
 
-interface UserSOLBalanceStore extends State {
+interface UserSOLBalanceStore {
   balance: bigint;
   getUserSOLBalance: (publicKey: PublicKey, connection: Connection) => void
 }
@@ -19,10 +19,11 @@ export const useUserSolBalanceStore = create<UserSOLBalanceStore>((set, _get) =>
     } catch (e) {
       console.log(`error getting balance: `, e);
     }
-    set((s) => {
-      s.balance = balance;
-      console.log(`balance updated, `, balance);
-    })
+    set((s) => ({
+      ...s,
+      balance:balance
+      // console.log(`balance updated, `, balance);
+    }))
   },
 }));
 

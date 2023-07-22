@@ -1,13 +1,12 @@
 import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { LibrePlexProgramContext } from "../../../anchor/LibrePlexProgramContext";
+import { MetadataProgramContext } from "../../../anchor/metadata/MetadataProgramContext";
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
 import { useContext, useEffect, useMemo } from "react";
-import { LibreplexMetadata as Libreplex } from "../../../types/libreplex_metadata";
+import { LibreplexMetadata as Libreplex, LibreplexMetadata } from "../../../types/libreplex_metadata";
 import BN from "bn.js";
 import { useGpa } from "../gpa";
-import { LibreplexWithOrdinals } from "../../../anchor/getProgramInstanceMetadata";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 // import { Royalties } from "./metadata";
 
@@ -130,7 +129,7 @@ export interface AttributeType {
 // }
 
 export const decodeGroup =
-  (program: Program<LibreplexWithOrdinals>) =>
+  (program: Program<LibreplexMetadata>) =>
   (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     let group: Group | null;
@@ -147,7 +146,7 @@ export const decodeGroup =
   };
 
 export const useGroupById = (groupKey: PublicKey | null, connection: Connection) => {
-  const {program} = useContext(LibrePlexProgramContext);
+  const {program} = useContext(MetadataProgramContext);
 
   // do not remove
 
@@ -170,7 +169,7 @@ export const useGroupsByAuthority = (
   authority: PublicKey | null,
   connection: Connection
 ) => {
-  const {program} = useContext(LibrePlexProgramContext);
+  const {program} = useContext(MetadataProgramContext);
 
   const filters = useMemo(() => {
     if (authority) {

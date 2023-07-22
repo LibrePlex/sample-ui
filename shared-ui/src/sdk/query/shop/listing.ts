@@ -7,7 +7,7 @@ import {
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { LibrePlexShopProgramContext } from "../../../anchor/LibrePlexShopProgramContext";
+import { LibrePlexShopProgramContext } from "../../../anchor/shop/LibrePlexShopProgramContext";
 import { LibreplexShop } from "../../../types/libreplex_shop";
 import { LibreplexMetadata } from "../../../types/libreplex_metadata";
 import { useGpa } from "../gpa";

@@ -11,6 +11,7 @@ import {
   Th,
   Thead,
   Tr,
+  Text
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 // import {
@@ -19,7 +20,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useContext, useMemo, useState } from "react";
 
-import { Group, IRpcObject, LibrePlexProgramContext } from "shared-ui";
+import { Group, IRpcObject, MetadataProgramContext } from "shared-ui";
 import { Metadata } from "shared-ui";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
@@ -45,15 +46,23 @@ export const BaseMetadataPanel = () => {
     [metadataUnordered]
   );
 
+  const metadataDict = useMemo(() => {
+    const _metadataDict: { [key: string]: IRpcObject<Metadata> } = {};
+    for (const m of metadata) {
+      _metadataDict[m.pubkey.toBase58()] = m;
+    }
+    return _metadataDict;
+  }, [metadata]);
+
   const selectedMetadataKeys = useSelectedMetadata(
-    (state) => state.selectedMetadataKeys
+    (state) => state?.selectedMetadataKeys
   );
   const toggleSelectedMetadata = useSelectedMetadata(
-    (state) => state.toggleSelectedMetadataKey
+    (state) => state?.toggleSelectedMetadataKey
   );
 
   const setSelectedMetadataKeys = useSelectedMetadata(
-    (state) => state.setSelectedMetadataKeys
+    (state) => state?.setSelectedMetadataKeys
   );
 
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -61,7 +70,7 @@ export const BaseMetadataPanel = () => {
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
       setSelectedMetadataKeys(
-        new Set(_selectAll ? metadata.map((item) => item.pubkey) : [])
+        new Set(_selectAll ? metadata.map((item) => item.pubkey.toBase58()) : [])
       );
       setSelectAll(_selectAll);
     },
@@ -77,7 +86,7 @@ export const BaseMetadataPanel = () => {
 
   const [activeMetadata, setActiveMetadata] = useState<IRpcObject<Metadata>>();
 
-  const {program} = useContext(LibrePlexProgramContext)
+  const { program } = useContext(MetadataProgramContext);
 
   return (
     <Box
@@ -114,9 +123,14 @@ export const BaseMetadataPanel = () => {
             });
           }}
         />
-        {selectedMetadataKeys.size > 0 && (
+        {selectedMetadataKeys?.size > 0 && (
           <DeleteMetadataButton
-            params={{metadataKeys: [...selectedMetadataKeys],metadataProgramId: program.programId}}
+            params={{
+              metadataObjects: [...selectedMetadataKeys].map(
+                (item) => metadataDict[item]
+              ),
+              metadataProgramId: program.programId,
+            }}
             formatting={{}}
           />
         )}
@@ -181,7 +195,6 @@ export const BaseMetadataPanel = () => {
               </Thead>
 
               <Tbody>
-                
                 {metadata?.map((item, idx) => (
                   <MetadataRow
                     key={idx}

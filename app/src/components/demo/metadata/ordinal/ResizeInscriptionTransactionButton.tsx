@@ -65,11 +65,11 @@ export const resizeInscription = async (
   let sizeRemaining = size - inscription.item.size;
   while (Math.abs(sizeRemaining) > 0) {
     const instructions: TransactionInstruction[] = [];
-    console.log({
-      sizeRemaining,
-      increase: Math.min(sizeRemaining, MAX_CHANGE),
-      decrease: -Math.max(sizeRemaining, -MAX_CHANGE),
-    });
+    // console.log({
+    //   sizeRemaining,
+    //   increase: Math.min(sizeRemaining, MAX_CHANGE),
+    //   decrease: -Math.max(sizeRemaining, -MAX_CHANGE),
+    // });
 
     const instruction = await inscriptionsProgram.methods
       .resizeInscription({
@@ -114,7 +114,7 @@ export const resizeInscription = async (
   };
 };
 
-export const ResizeOrdinalTransactionButton = (
+export const ResizeInscriptionTransactionButton = (
   props: Omit<
     GenericTransactionButtonProps<IResizeInscription>,
     "transactionGenerator"
@@ -123,7 +123,7 @@ export const ResizeOrdinalTransactionButton = (
   return (
     <>
       <GenericTransactionButton<IResizeInscription>
-        text={"Resize inscription"}
+        text={"Resize"}
         transactionGenerator={resizeInscription}
         onError={(msg) => notify({ message: msg })}
         {...props}

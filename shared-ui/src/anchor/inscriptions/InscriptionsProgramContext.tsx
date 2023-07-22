@@ -4,13 +4,14 @@ import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { Inscriptions } from "../types/inscriptions";
-import { getProgramInstanceOrdinals } from "./getProgramInstanceOrdinals";
-import { LibreWallet } from "./LibrePlexProgramContext";
+import { LibreplexInscriptions } from "../../types/libreplex_inscriptions";
+import { getProgramInstanceInscriptions } from "./getProgramInstanceInscriptions";
+import { LibreWallet } from "../metadata/MetadataProgramContext";
+import { InscriptionStoreProvider } from "./InscriptionStoreContext";
 
-export const InscriptionsProgramContext = createContext<Program<Inscriptions>>(
-  undefined!
-);
+export const InscriptionsProgramContext = createContext<
+  Program<LibreplexInscriptions>
+>(undefined!);
 
 export const InscriptionsProgramProvider = ({
   children,
@@ -19,29 +20,26 @@ export const InscriptionsProgramProvider = ({
 }) => {
   const wallet = useWallet();
 
-  const [program, setProgram] = useState<Program<Inscriptions>>();
+  const [program, setProgram] = useState<Program<LibreplexInscriptions>>();
 
   const { connection } = useConnection();
 
   useEffect(() => {
-    const program = getProgramInstanceOrdinals(connection, 
+    const program = getProgramInstanceInscriptions(
+      connection,
       new LibreWallet(Keypair.generate())
     );
-    
-    setProgram(
-      program,
-    );
+
+    setProgram(program);
   }, [wallet, connection]);
 
   return program?.programId ? (
     <InscriptionsProgramContext.Provider value={program}>
-      {children}
+      <InscriptionStoreProvider>{children}</InscriptionStoreProvider>
     </InscriptionsProgramContext.Provider>
   ) : (
-    <Box sx={{display :"flex"}} columnGap={2}>
-      <Text >
-        Loading anchor program... 
-      </Text>
+    <Box sx={{ display: "flex" }} columnGap={2}>
+      <Text>Loading anchor program...</Text>
       <Spinner />
     </Box>
   );

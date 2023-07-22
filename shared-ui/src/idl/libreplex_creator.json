@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.9.0",
   "name": "libreplex_creator",
   "instructions": [
     {
@@ -412,6 +412,10 @@
                 "type": {
                   "option": "string"
                 }
+              },
+              {
+                "name": "output_address",
+                "type": "publicKey"
               }
             ]
           },

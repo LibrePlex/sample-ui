@@ -8,17 +8,18 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton, Group, LibreplexMetadata } from "shared-ui";
+import { CopyPublicKeyButton, Group, LibreplexMetadata, MetadataProgramContext } from "shared-ui";
 import { IRpcObject } from "shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
-import { Dispatch, SetStateAction } from "react";
-import {useDeletedKeyStore} from "shared-ui";
+import { Dispatch, SetStateAction, useContext } from "react";
+
 import { AttributesDialog } from "./AttributesDialog";
 import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog";
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 import { IdlAccounts } from "@coral-xyz/anchor";
+import { useStore } from "zustand";
 
 
 
@@ -36,7 +37,10 @@ export const GroupRow = ({
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
 }) => {
-  const deletedKeys = useDeletedKeyStore((state) => state.deletedKeys);
+
+  const {store} = useContext(MetadataProgramContext)
+
+  const deletedKeys = useStore(store, (state) => state.deletedKeys);
   return (
     <Tr
       sx={{

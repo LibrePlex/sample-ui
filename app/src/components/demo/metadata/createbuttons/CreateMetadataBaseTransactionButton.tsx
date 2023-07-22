@@ -178,15 +178,11 @@ export const createMetadata = async (
     );
 
     const instruction = await librePlexProgram.methods
-      .createOrdinalMetadata({
+      .createInscriptionMetadata({
         updateAuthority: wallet.publicKey,
         name,
         symbol,
         description,
-        inscriptionInput: {
-          maxDataLength: ORDINAL_DEFAULT_LENGTH,
-          authority: wallet.publicKey,
-        },
         extension: extension ? {
           nft: {
             attributes: Buffer.from(extension.attributes),

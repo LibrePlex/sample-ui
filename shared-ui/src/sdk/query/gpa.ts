@@ -19,21 +19,21 @@ import {Updater} from "react-query/types/core/utils"
 const accountUpdater = (
   queryClient: QueryClient, key: any) =>
   (accountInfo: KeyedAccountInfo)=> {
-    console.log({ queryClient });
-    console.log("Account updated", accountInfo);
+    // console.log({ queryClient });
+    // console.log("Account updated", accountInfo);
 
     const newOrUpdatedItem = {
       item: accountInfo.accountInfo.data,
       pubkey: accountInfo.accountId
     }
-    console.log({key})
+    // console.log({key})
 
     const fn: Updater<IRpcObject<Buffer | undefined>[] | undefined,
        IRpcObject<Buffer | undefined>[] > = (old: IRpcObject<Buffer | undefined>[] | undefined ) => {
       const found = (old ?? []).find((item) =>
         item.pubkey.equals(accountInfo.accountId)
       );
-      console.log({ found, old });
+      // console.log({ found, old });
       if( found ) {
         return old?.map((item) =>
             item.pubkey.equals(accountInfo.accountId) ? newOrUpdatedItem : item
@@ -59,7 +59,7 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
         filters,
       });
 
-      console.log({results, filters});
+      // console.log({results, filters});
 ;
       for (const result of results?.values()??[]) {
         // const obj = decode(result.account.data, result.pubkey);

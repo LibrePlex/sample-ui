@@ -1,5 +1,5 @@
 {
-  "version": "0.8.1",
+  "version": "0.9.0",
   "name": "libreplex_metadata",
   "instructions": [
     {
@@ -431,11 +431,6 @@
       "name": "createMetadata",
       "accounts": [
         {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -542,63 +537,6 @@
         }
       ],
       "args": []
-    },
-    {
-      "name": "createOrdinalMetadata",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "metadata",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "metadata"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "mint"
-              }
-            ]
-          }
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "ordinal",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "metadataInput",
-          "type": {
-            "defined": "CreateMetadataInscriptionInput"
-          }
-        }
-      ]
     },
     {
       "name": "createInscriptionMetadata",
@@ -915,12 +853,6 @@
           {
             "name": "symbol",
             "type": "string"
-          },
-          {
-            "name": "inscriptionInput",
-            "type": {
-              "defined": "CreateInscriptionInput"
-            }
           },
           {
             "name": "updateAuthority",
@@ -1426,6 +1358,10 @@
           {
             "name": "ChainRenderer",
             "fields": [
+              {
+                "name": "render_output_address",
+                "type": "publicKey"
+              },
               {
                 "name": "program_id",
                 "type": "publicKey"

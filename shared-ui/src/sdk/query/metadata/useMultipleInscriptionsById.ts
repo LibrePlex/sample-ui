@@ -1,9 +1,10 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
-import { InscriptionsProgramContext, LibrePlexProgramContext, LibrePlexShopProgramContext } from "../../../anchor";
-import { decodeMetadata } from "./metadata";
-import { useMultipleAccountsById } from "./useMultipleAccountsById";
+import {
+  InscriptionsProgramContext
+} from "../../../anchor";
 import { decodeInscription } from "../inscriptions";
+import { useMultipleAccountsById } from "./useMultipleAccountsById";
 
 export const useMultipleInscriptionsById = (
   inscriptionsIds: PublicKey[],

@@ -1,3 +1,4 @@
+import { InscriptionStoreContext } from './anchor/inscriptions/InscriptionStoreContext';
 import { decodeInscription } from './sdk/query/inscriptions';
 export {
   ContextProvider,
@@ -10,20 +11,24 @@ export {
   BufferingConnection,
   useNotificationStore,
   useUserSOLBalanceStore,
-  useDeletedKeyStore,
+
 } from "./stores";
 export type { LibreplexMetadata } from "./types/libreplex_metadata";
+
+export type {LibreplexInscriptions} from "./types/libreplex_inscriptions"
 
 export {
   InscriptionsProgramContext,
   InscriptionsProgramProvider,
-  LibrePlexProgramContext,
-  LibrePlexProgramProvider,
+  MetadataProgramContext,
+  MetadataProgramProvider,
   PROGRAM_ID_INSCRIPTIONS,
   PROGRAM_ID_METADATA,
   getProgramInstanceMetadata,
   getProgramInstanceOrdinals,
   getProgramInstanceShop,
+  LibreWallet,
+  InscriptionStoreContext
 } from "./anchor";
 export {
   decodeGroup,

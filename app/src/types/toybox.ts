@@ -1,82 +1,7 @@
-export type Librecreator = {
+export type Toybox = {
   "version": "0.1.0",
-  "name": "librecreator",
-  "instructions": [
-    {
-      "name": "createCreator",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "creator"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateCreatorInput"
-                },
-                "path": "create_creator_input.seed"
-              }
-            ]
-          }
-        },
-        {
-          "name": "permissions",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "permissions"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Creator",
-                "path": "creator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "signer"
-              }
-            ]
-          }
-        },
-        {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "creatorInput",
-          "type": {
-            "defined": "CreateCreatorInput"
-          }
-        }
-      ]
-    }
-  ],
+  "name": "toybox",
+  "instructions": [],
   "accounts": [
     {
       "name": "creator",
@@ -147,7 +72,7 @@ export type Librecreator = {
   ],
   "types": [
     {
-      "name": "CreateCreatorInput",
+      "name": "CreateMakerInput",
       "type": {
         "kind": "struct",
         "fields": [
@@ -287,85 +212,10 @@ export type Librecreator = {
   ]
 };
 
-export const IDL: Librecreator = {
+export const IDL: Toybox = {
   "version": "0.1.0",
-  "name": "librecreator",
-  "instructions": [
-    {
-      "name": "createCreator",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "creator",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "creator"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateCreatorInput"
-                },
-                "path": "create_creator_input.seed"
-              }
-            ]
-          }
-        },
-        {
-          "name": "permissions",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "permissions"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Creator",
-                "path": "creator"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "signer"
-              }
-            ]
-          }
-        },
-        {
-          "name": "group",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "creatorInput",
-          "type": {
-            "defined": "CreateCreatorInput"
-          }
-        }
-      ]
-    }
-  ],
+  "name": "toybox",
+  "instructions": [],
   "accounts": [
     {
       "name": "creator",
@@ -436,7 +286,7 @@ export const IDL: Librecreator = {
   ],
   "types": [
     {
-      "name": "CreateCreatorInput",
+      "name": "CreateMakerInput",
       "type": {
         "kind": "struct",
         "fields": [

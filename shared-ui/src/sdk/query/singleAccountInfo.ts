@@ -91,7 +91,8 @@ export const useFetchSingleAccount = (
   /* 
     same decoder interface as in useGpa
   */
-  connection: Connection
+  connection: Connection,
+  live?: boolean
 ) => {
   const { fetcher, listener } = useMemo(
     () => fetchSingleAccount(accountId, connection),
@@ -122,7 +123,7 @@ export const useFetchSingleAccount = (
   useEffect(() => {
     let _listeners: number[] = [];
 
-    if (accountId) {
+    if (accountId && live !== false) {
       _listeners.push(
         listener.add(
           accountUpdater(accountId, queryClient, accountId),
@@ -136,7 +137,7 @@ export const useFetchSingleAccount = (
         listener.remove(i);
       }
     };
-  }, [listener, accountId, queryClient]);
+  }, [listener, accountId, queryClient, live]);
 
   return q;
 };

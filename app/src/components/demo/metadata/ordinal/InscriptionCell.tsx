@@ -1,5 +1,8 @@
+
 import { IdlAccounts } from "@coral-xyz/anchor";
-import { IRpcObject, Inscription } from "shared-ui";
+import { useContext } from "react";
+import { IRpcObject, Inscription, InscriptionStoreContext } from "shared-ui";
+import { useStore } from "zustand";
 
 
 
@@ -8,10 +11,16 @@ export const InscriptionCell = ({
 }: {
   inscription: IRpcObject<Inscription>;
 }) => {
+
+  const store = useContext(InscriptionStoreContext);
+ 
+
+  const updatedSize = useStore(store, s=>s.updatedInscriptionSizes[inscription?.pubkey.toBase58()])
+
   return (
     <>
       {inscription
-        ? `Ordinal [${inscription?.item.size.toLocaleString() ?? "-"} bytes]`
+        ? `Ordinal [${updatedSize ?? inscription?.item.size.toLocaleString() ?? "-"} bytes]`
         : ""}
     </>
   );

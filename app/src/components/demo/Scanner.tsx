@@ -1,52 +1,27 @@
 import {
   Box,
-  BoxProps,
   Button,
-  Collapse,
   FormControl,
   FormLabel,
-  Grid,
-  GridItem,
   HStack,
-  Heading,
   Input,
-  LinkBox,
-  LinkOverlay,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Thead,
-  Tr,
-  VStack,
-  useMediaQuery,
+  Text
 } from "@chakra-ui/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { ReactNode, useContext, useEffect, useState } from "react";
-import { CollectionsPanel } from "./collections/CollectionsPanel";
-import useSelectedPermissions from "./permissions/useSelectedPermissions";
-import { BaseMetadataPanel } from "./metadata/MetadataPanel";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useContext, useEffect, useState } from "react";
 
 import {
-  AssetDisplay,
   CopyPublicKeyButton,
-  LibrePlexProgramContext,
-  LibrePlexProgramProvider,
+  MetadataProgramContext,
   MintDisplay,
   PROGRAM_ID_METADATA,
   useGroupById,
-  useMetadataById,
   useMetadataByMintId,
-  useNetworkConfiguration,
-  usePublicKeyOrNull,
+  usePublicKeyOrNull
 } from "shared-ui";
-import { JsonViewer } from "./JsonViewer";
 
 import { PublicKey } from "@solana/web3.js";
-import { AttributesPanel } from "./collections/editCollectionDialog/AttributesPanel";
-import { AttributesDisplay } from "../metadata/AttributesDisplay";
 import { useRouter } from "next/router";
-
 
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");
@@ -55,14 +30,13 @@ export const LibreScanner = () => {
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mintPublicKey, connection);
 
-  const { setProgramId, program } = useContext(LibrePlexProgramContext);
+  const { setProgramId, program } = useContext(MetadataProgramContext);
 
   const [programIdOverride, setProgramIdOverride] = useState<string>("");
 
   const programIdOverridePubkey = usePublicKeyOrNull(programIdOverride);
 
   const group = useGroupById(metadata?.item.group, connection);
-
 
   const router = useRouter();
 
@@ -127,8 +101,7 @@ export const LibreScanner = () => {
           </Button>
         )}
       </HStack>
-      {mintPublicKey && <MintDisplay mint={mintPublicKey}/>}
-
+      {mintPublicKey && <MintDisplay mint={mintPublicKey} />}
     </Box>
   );
 };

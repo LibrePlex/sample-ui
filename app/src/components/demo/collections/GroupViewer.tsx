@@ -53,7 +53,7 @@ export const GroupViewer = ({
   const toggleSelectAll = useCallback(
     (_selectAll: boolean) => {
       setSelectedMetadatakeys(
-        new Set(_selectAll ? items.map((item) => item.pubkey) : [])
+        new Set(_selectAll ? items.map((item) => item.pubkey.toBase58()) : [])
       );
       setSelectAll(_selectAll);
     },

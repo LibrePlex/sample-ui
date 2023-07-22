@@ -7,26 +7,14 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { useContext } from "react";
-import { AttributeType, getProgramInstanceMetadata } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
 import {
-  GenericTransactionButton,
-  GenericTransactionButtonProps,
+  AttributeType, GenericTransactionButton,
+  GenericTransactionButtonProps, IExecutorParams, ITransactionTemplate, getProgramInstanceMetadata
 } from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
 
-import { getGroupPda } from "shared-ui";
-import { getPermissionsPda } from "shared-ui";
-import { Group } from "shared-ui";
-import { notify } from "shared-ui";
-import { LibreplexMetadata } from "shared-ui";
-import { LibrePlexProgramContext, LibrePlexShopProgramContext } from "shared-ui/src/anchor";
-
+import { LibreplexMetadata, getGroupPda, getPermissionsPda, notify } from "shared-ui";
 
 export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
-
-
 
 export interface ICreateCollection {
   name: string;
@@ -34,8 +22,8 @@ export interface ICreateCollection {
   description: string;
   attributeTypes: AttributeType[];
   royalties: GroupInput["royalties"];
-  permittedSigners: GroupInput["permittedSigners"]
-  metadataProgramId: PublicKey,
+  permittedSigners: GroupInput["permittedSigners"];
+  metadataProgramId: PublicKey;
 }
 
 export const createCollection = async (
@@ -60,12 +48,22 @@ export const createCollection = async (
   const [group] = getGroupPda(seed.publicKey);
 
   const [permissions] = getPermissionsPda(group, wallet.publicKey);
-  
-  const { symbol, name, permittedSigners, attributeTypes, description, royalties, metadataProgramId } = params;
 
-  const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection,wallet);
+  const {
+    symbol,
+    name,
+    permittedSigners,
+    attributeTypes,
+    description,
+    royalties,
+    metadataProgramId,
+  } = params;
 
-  
+  const librePlexProgram = getProgramInstanceMetadata(
+    metadataProgramId,
+    connection,
+    wallet
+  );
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
@@ -78,8 +76,7 @@ export const createCollection = async (
     group: group.toBase58(),
     seed: seed.publicKey.toBase58(),
     systemProgram: SystemProgram.programId.toBase58(),
-  })
-
+  });
 
   const instruction = await librePlexProgram.methods
     .createGroup({
@@ -90,8 +87,7 @@ export const createCollection = async (
       royalties,
       permittedSigners,
       url,
-      templateConfiguration: {none: {}},
-    
+      templateConfiguration: { none: {} },
     })
     .accounts({
       authority: wallet.publicKey,

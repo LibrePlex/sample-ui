@@ -2,7 +2,7 @@ import { Metadata as LegacyMetadata } from "@metaplex-foundation/mpl-token-metad
 import {TokenRecord} from "@metaplex-foundation/mpl-token-metadata";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useContext, useEffect, useMemo } from "react";
-import { LibrePlexProgramContext } from "../../anchor/LibrePlexProgramContext";
+import { MetadataProgramContext } from "../../anchor/metadata/MetadataProgramContext";
 import { getLegacyMetadataPda, getLegacyTokenRecordPda } from "../../pdas";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 
@@ -47,7 +47,7 @@ export const useLegacyTokenRecordByTokenAccount = (
   },
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const program = useContext(MetadataProgramContext);
 
   const tokenRecordPda = useMemo(() => tokenAccount.item ? getLegacyTokenRecordPda(tokenAccount.item.mint, tokenAccount.pubkey)[0] : null, 
   [tokenAccount]);
@@ -77,7 +77,7 @@ export const useLegacyMetadataByMintId = (
   mintId: PublicKey,
   connection: Connection
 ) => {
-  const program = useContext(LibrePlexProgramContext);
+  const program = useContext(MetadataProgramContext);
 
   const metadataKey = useMemo(() => getLegacyMetadataPda(mintId)[0], [mintId]);
 

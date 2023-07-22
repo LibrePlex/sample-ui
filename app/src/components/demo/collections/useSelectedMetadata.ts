@@ -1,30 +1,34 @@
 import { PublicKey } from "@solana/web3.js";
-import create, { State } from "zustand";
+import { create, createStore } from "zustand";
 
-interface SelectedMetadata extends State {
-  selectedMetadataKeys: Set<PublicKey>;
+interface SelectedMetadata {
+  selectedMetadataKeys: Set<string>;
   toggleSelectedMetadataKey: (
-    publicKey: PublicKey,
+    publicKey: string,
     b: boolean
   ) => void;
-  setSelectedMetadataKeys: (s: Set<PublicKey>) => void;
+  setSelectedMetadataKeys: (s: Set<string>) => void;
 }
 
 const useSelectedMetadata = create<SelectedMetadata>(
   (set, _get) => ({
     selectedMetadataKeys: new Set(),
-    toggleSelectedMetadataKey: async (publicKey: PublicKey, b: boolean) => {
+    toggleSelectedMetadataKey: async (publicKey: string, b: boolean) => {
       set((s) => {
-        s.selectedMetadataKeys = new Set(
+        console.log({s, publicKey, b})
+        return {
+        ...s,
+        selectedMetadataKeys: new Set(
           b ? [...s.selectedMetadataKeys, publicKey] : 
           [...s.selectedMetadataKeys].filter(item=>item!==publicKey)
-        );
-      });
+        )
+      }});
     },
-    setSelectedMetadataKeys: async (selectedMetadataKeys: Set<PublicKey>) => {
-      set((s) => {
-        s.selectedMetadataKeys = selectedMetadataKeys;
-      });
+    setSelectedMetadataKeys: async (selectedMetadataKeys: Set<string>) => {
+      set((s) => ({
+        ...s,
+        selectedMetadataKeys
+      }));
     },
   })
 );

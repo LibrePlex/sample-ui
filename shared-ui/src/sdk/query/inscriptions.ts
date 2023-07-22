@@ -1,8 +1,8 @@
 import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { InscriptionsProgramContext } from "../../anchor/InscriptionsProgramProvider";
+import { InscriptionsProgramContext } from "../../anchor/inscriptions/InscriptionsProgramContext";
 import { useContext, useMemo } from "react";
-import { Inscriptions } from "../../types/inscriptions";
+import { LibreplexInscriptions } from "../../types/libreplex_inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 import { IRpcObject } from "../../components";
 
@@ -24,12 +24,13 @@ export const getBase64FromInscription = (
 };
 
 export const decodeInscription =
-  (program: Program<Inscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {
+  (program: Program<LibreplexInscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     const inscriptionBase = coder.accounts.decode<Inscription>(
       "inscription",
       buffer
     );
+    // console.log({buffer})
     const inscription = {
       ...inscriptionBase,
       dataBytes: [...buffer.subarray(76)],
@@ -78,23 +79,23 @@ export const decodeInscription =
 // };
 
 export const useInscriptionById = (
-  ordinalKey: PublicKey,
+  inscriptionId: PublicKey,
   connection: Connection
 ) => {
   const program = useContext(InscriptionsProgramContext);
 
-  const q = useFetchSingleAccount(ordinalKey, connection);
+  const q = useFetchSingleAccount(inscriptionId, connection, false);
 
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeInscription(program)(q?.data?.item.buffer, ordinalKey)
+        ? decodeInscription(program)(q?.data?.item.buffer, inscriptionId)
         : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [ordinalKey, program, q.data?.item]);
+  }, [inscriptionId, program, q.data?.item?.buffer.length]);
 
   return decoded;
 

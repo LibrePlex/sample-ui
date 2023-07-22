@@ -1,15 +1,17 @@
-import {
-  Alert,
-  Box,
-  BoxProps,
-  Button,
-  Text
-} from "@chakra-ui/react";
-import { ResizeOrdinalTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
+import { Alert, Box, BoxProps, Button, Text } from "@chakra-ui/react";
+import { ResizeInscriptionTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
 import { ImageSelector } from "@/components/shadowdrive/ImageSelector";
-import { IRpcObject, Inscription } from "shared-ui";
-import { useEffect, useMemo, useState } from "react";
+import {
+  IRpcObject,
+  Inscription,
+  InscriptionStoreContext,
+  InscriptionsProgramContext,
+} from "shared-ui";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
+import { useQueryClient } from "react-query";
+import { PublicKey } from "@solana/web3.js";
+import { useStore } from "zustand";
 
 enum Status {
   NotStarted,
@@ -30,18 +32,11 @@ export const InscriptionUploader = ({
 } & BoxProps) => {
   const [selectedImage, setSelectedImage] = useState<File>();
 
-  // should store the ordinal decoded as base64 format
-  const currentImage = useMemo(() => "https://", []);
+  const store = useContext(InscriptionStoreContext);
 
   useEffect(() => {
     setSelectedImage(undefined);
   }, []);
-
-  useEffect(()=>{
-    (async()=>{
-      console.log({f:selectedImage?.name, buf: (await selectedImage?.arrayBuffer())?.byteLength});
-    })()
-  },[selectedImage?.name])
 
   useEffect(() => {
     setStatus(Status.NotStarted);
@@ -57,7 +52,7 @@ export const InscriptionUploader = ({
 
   const [base64, setBase64] = useState<string>();
   useEffect(() => {
-    console.log({selectedImage});
+    // console.log({ selectedImage });
     if (selectedImage) {
       var reader = new FileReader();
       reader.readAsDataURL(selectedImage);
@@ -74,27 +69,32 @@ export const InscriptionUploader = ({
 
   const [currentBase64Image, setCurrentBase64Image] = useState<string>();
 
+  const updatedInscriptionData = useStore(
+    store,
+    (s) => s.updatedInscriptionData[inscription?.pubkey.toBase58()]
+  );
+
   useEffect(() => {
     if (inscription) {
-      console.log('Data length', inscription.item.dataBytes.length);
-      const base = Buffer.from(inscription.item.dataBytes).toString("base64");
-      console.log({base});
+      const base = (
+        updatedInscriptionData ?? Buffer.from(inscription.item.dataBytes)
+      ).toString("base64");
       const dataType = base.split("/")[0];
       const dataSubType = base.split("/")[1];
       const data = base.split("/").slice(2).join("/");
-      console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
+      // console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
       setCurrentBase64Image(`data:${dataType}/${dataSubType};base64,${data}==`);
     }
-  }, [inscription, inscription?.item.dataBytes]);
+  }, [inscription, inscription?.item.dataBytes, updatedInscriptionData]);
 
   const buf = useMemo(() => {
     if (base64) {
       const elems = base64.split(",");
       const prefix = base64.split(";");
       const prefixDataType = prefix[0].split(":")[1];
-      
+
       const str = `${prefixDataType}/${elems[1]}`;
-      console.log(str)
+      // console.log(str);
       return Buffer.from(str, "base64");
       // const elems = base64.split(",");
       // return base64 ? Buffer.from(elems[elems.length - 1], "base64") : [];
@@ -104,22 +104,54 @@ export const InscriptionUploader = ({
   }, [base64]);
   //  const base64 = useMemo(()=>getBase64(selectedImage),[selectedImage])
 
-  useEffect(()=>{
-    console.log({currentBase64Image});
-  },[currentBase64Image])
+  // useEffect(() => {
+  //   console.log({ currentBase64Image });
+  // }, [currentBase64Image]);
+
+  const sizes = useStore(store, (s) => s.updatedInscriptionSizes);
+
+  const updatedSize = useStore(
+    store,
+    (s) => s.updatedInscriptionSizes[inscription?.pubkey.toBase58()]
+  );
+
+  let currentSize = useMemo(
+    () => (updatedSize !== undefined ? updatedSize : inscription?.item.size),
+    [updatedSize, inscription?.item.size]
+  );
 
   return (
     <Box
       {...rest}
-      sx={{ position: "relative", ...rest.sx }}
+      sx={{ position: "relative", width :"100%" }}
       display="flex"
       flexDir={"column"}
       alignItems="center"
     >
+      {selectedImage && (
+        <Button
+          variant={"solid"}
+          colorScheme="teal"
+          sx={{
+            p: 0,
+            top: 1,
+            right: 1,
+            position: "absolute",
+          }}
+          onClick={() => {
+            setSelectedImage(undefined);
+            // resetWriteStatus(undefined);
+          }}
+        >
+          X
+        </Button>
+      )}
       {selectedImage && (base64 ?? currentBase64Image) && (
         <img
           style={{
             imageRendering: "pixelated",
+            minHeight: "150px",
+            minWidth: "150px",
           }}
           height="150px"
           width="150px"
@@ -163,64 +195,58 @@ export const InscriptionUploader = ({
             alignItems: "center",
           }}
         >
-          {/* {inscription.item.dataLengthMax} */}
-          {buf && inscription && buf.length !== inscription.item.size ? (
+          {inscription && (
             <Box display="flex" flexDir={"column"} alignItems="center">
-              <Text>
-                Size {inscription.item.size.toLocaleString()} {"=>"}{" "}
+              {/* <Text>
+                Size {currentSize.toLocaleString()} {"=>"}{" "}
                 {buf.length.toLocaleString()}
-              </Text>
+              </Text> */}
               <Box
                 width="100%"
                 display={"flex"}
                 flexDirection="column"
                 alignItems={"center"}
               >
-                {buf.length > inscription.item.size ? (
-                  <Text color="#f44">
+                {buf.length > currentSize ? (
+                  <Text p={1} color="#f44">
                     Cost: ~
                     {(
-                      (buf.length - inscription.item.size) *
+                      (buf.length - currentSize) *
                       (0.0009048 - 0.00089784)
                     ).toFixed(4)}
                     SOL
                   </Text>
-                ) : (
-                  <Text color="lightgreen">
+                ) : buf.length < currentSize ? (
+                  <Text p={1} color="lightgreen">
                     Reclaim ~
                     {(
-                      (inscription.item.size - buf.length) *
+                      (currentSize - buf.length) *
                       (0.0009048 - 0.00089784)
                     ).toFixed(4)}{" "}
                     SOL
                   </Text>
+                ) : (
+                  <Text p={1}>Size OK</Text>
                 )}
-                <ResizeOrdinalTransactionButton
-                  params={{
-                    size: buf.length,
-                    inscription,
-                  }}
-                  formatting={{}}
-                />
+                {currentSize !== buf.length ? (
+                  <ResizeInscriptionTransactionButton
+                    params={{
+                      size: buf.length,
+                      inscription,
+                    }}
+                    formatting={{}}
+                  />
+                ) : (
+                  <WriteToInscriptionTransactionButton
+                    params={{
+                      dataBytes: [...buf],
+                      inscription,
+                    }}
+                    formatting={{width :"100%"}}
+                  />
+                )}
               </Box>
             </Box>
-          ) : (
-            <WriteToInscriptionTransactionButton
-              params={{
-                dataBytes: [...buf],
-                inscription,
-              }}
-              formatting={{}}
-            />
-          )}
-          {selectedImage && (
-            <Button
-              onClick={() => {
-                setSelectedImage(undefined);
-              }}
-            >
-              Clear
-            </Button>
           )}
         </Box>
       ) : (

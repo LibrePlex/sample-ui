@@ -4,7 +4,7 @@ import {
   Box
 } from "@chakra-ui/react";
 import { Demo } from "@/components/demo/Demo";
-import { InscriptionsProgramProvider, LibrePlexProgramProvider } from "shared-ui";
+import { InscriptionsProgramProvider, MetadataProgramProvider } from "shared-ui";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useMemo } from "react";
 import { LibreScanner } from "@/components/demo/Scanner";
@@ -23,11 +23,9 @@ const DemoPage = () => {
           alignItems: "center",
         }}
       >
-        <LibrePlexProgramProvider>
-          <InscriptionsProgramProvider>
+        <MetadataProgramProvider>
             <LibreScanner />
-          </InscriptionsProgramProvider>
-        </LibrePlexProgramProvider>
+        </MetadataProgramProvider>
       </Box>
     </QueryClientProvider>
   );

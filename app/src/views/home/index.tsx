@@ -75,7 +75,7 @@ export const HomeView: FC = ({ }) => {
     router.push("/costs");
   };
 
-  const balance = useUserSOLBalanceStore((s) => s.balance);
+  // const balance = useUserSOLBalanceStore((s) => s.balance);
   const { getUserSOLBalance } = useUserSOLBalanceStore();
 
   useEffect(() => {

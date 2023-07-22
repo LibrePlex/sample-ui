@@ -17,7 +17,7 @@ import {
 
 import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { Group, LibrePlexProgramContext, RoyaltyShare } from "shared-ui";
+import { Group, MetadataProgramContext, RoyaltyShare } from "shared-ui";
 import { AttributesPanel } from "./AttributesPanel";
 import { CreateCollectionTransactionButton } from "./CreateGroupButton";
 import { PermittedSignersPanel } from "./PermittedSignersPanel";
@@ -52,7 +52,7 @@ export const EditGroupPanel = ({ onSuccess }: { onSuccess: () => any }) => {
         : null,
     [royaltyShares, royaltyBps]
   );
-  const {program} = useContext(LibrePlexProgramContext)
+  const {program} = useContext(MetadataProgramContext)
 
   return (
     <Stack spacing={4}>

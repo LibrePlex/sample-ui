@@ -1,5 +1,5 @@
 export type LibreplexMetadata = {
-  "version": "0.8.1",
+  "version": "0.9.0",
   "name": "libreplex_metadata",
   "instructions": [
     {
@@ -431,11 +431,6 @@ export type LibreplexMetadata = {
       "name": "createMetadata",
       "accounts": [
         {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -542,63 +537,6 @@ export type LibreplexMetadata = {
         }
       ],
       "args": []
-    },
-    {
-      "name": "createOrdinalMetadata",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "metadata",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "metadata"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "mint"
-              }
-            ]
-          }
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "ordinal",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "metadataInput",
-          "type": {
-            "defined": "CreateMetadataInscriptionInput"
-          }
-        }
-      ]
     },
     {
       "name": "createInscriptionMetadata",
@@ -915,12 +853,6 @@ export type LibreplexMetadata = {
           {
             "name": "symbol",
             "type": "string"
-          },
-          {
-            "name": "inscriptionInput",
-            "type": {
-              "defined": "CreateInscriptionInput"
-            }
           },
           {
             "name": "updateAuthority",
@@ -1426,6 +1358,10 @@ export type LibreplexMetadata = {
           {
             "name": "ChainRenderer",
             "fields": [
+              {
+                "name": "render_output_address",
+                "type": "publicKey"
+              },
               {
                 "name": "program_id",
                 "type": "publicKey"
@@ -1983,7 +1919,7 @@ export type LibreplexMetadata = {
 };
 
 export const IDL: LibreplexMetadata = {
-  "version": "0.8.1",
+  "version": "0.9.0",
   "name": "libreplex_metadata",
   "instructions": [
     {
@@ -2415,11 +2351,6 @@ export const IDL: LibreplexMetadata = {
       "name": "createMetadata",
       "accounts": [
         {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -2526,63 +2457,6 @@ export const IDL: LibreplexMetadata = {
         }
       ],
       "args": []
-    },
-    {
-      "name": "createOrdinalMetadata",
-      "accounts": [
-        {
-          "name": "signer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "metadata",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "metadata"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "mint"
-              }
-            ]
-          }
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "ordinal",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "metadataInput",
-          "type": {
-            "defined": "CreateMetadataInscriptionInput"
-          }
-        }
-      ]
     },
     {
       "name": "createInscriptionMetadata",
@@ -2899,12 +2773,6 @@ export const IDL: LibreplexMetadata = {
           {
             "name": "symbol",
             "type": "string"
-          },
-          {
-            "name": "inscriptionInput",
-            "type": {
-              "defined": "CreateInscriptionInput"
-            }
           },
           {
             "name": "updateAuthority",
@@ -3410,6 +3278,10 @@ export const IDL: LibreplexMetadata = {
           {
             "name": "ChainRenderer",
             "fields": [
+              {
+                "name": "render_output_address",
+                "type": "publicKey"
+              },
               {
                 "name": "program_id",
                 "type": "publicKey"

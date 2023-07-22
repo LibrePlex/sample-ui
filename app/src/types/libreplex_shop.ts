@@ -1,5 +1,5 @@
 export type LibreplexShop = {
-  "version": "0.1.0",
+  "version": "0.3.1",
   "name": "libreplex_shop",
   "instructions": [
     {
@@ -12,6 +12,11 @@ export type LibreplexShop = {
         },
         {
           "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "metadata",
           "isMut": false,
           "isSigner": false
         },
@@ -29,7 +34,6 @@ export type LibreplexShop = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Mint",
                 "path": "mint"
               }
             ]
@@ -42,7 +46,7 @@ export type LibreplexShop = {
         },
         {
           "name": "listerTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -89,7 +93,32 @@ export type LibreplexShop = {
           "isSigner": false
         },
         {
+          "name": "escrowTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "listerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
           "isMut": false,
           "isSigner": false
         }
@@ -137,23 +166,24 @@ export type LibreplexShop = {
         },
         {
           "name": "buyerTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "listerPaymentTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "buyerPaymentTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "paymentMint",
           "isMut": false,
-          "isSigner": false
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "systemProgram",
@@ -167,6 +197,11 @@ export type LibreplexShop = {
         },
         {
           "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
           "isMut": false,
           "isSigner": false
         }
@@ -189,18 +224,58 @@ export type LibreplexShop = {
             "type": "publicKey"
           },
           {
-            "name": "price",
-            "type": {
-              "defined": "Price"
-            }
-          },
-          {
             "name": "amount",
             "type": "u64"
           },
           {
-            "name": "escrowWalletBump",
+            "name": "listingBump",
             "type": "u8"
+          },
+          {
+            "name": "group",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "price",
+            "type": {
+              "defined": "Price"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "listingFilter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "listingGroup",
+            "type": "publicKey"
+          },
+          {
+            "name": "seed",
+            "type": "publicKey"
+          },
+          {
+            "name": "filterType",
+            "type": {
+              "defined": "ListingFilterType"
+            }
+          },
+          {
+            "name": "listingsActive",
+            "type": "u32"
+          },
+          {
+            "name": "listingsCreated",
+            "type": "u32"
+          },
+          {
+            "name": "listingsSold",
+            "type": "u32"
           }
         ]
       }
@@ -223,7 +298,7 @@ export type LibreplexShop = {
             "type": "u64"
           },
           {
-            "name": "escrowWalletBump",
+            "name": "listingBump",
             "type": "u8"
           }
         ]
@@ -258,24 +333,96 @@ export type LibreplexShop = {
           }
         ]
       }
+    },
+    {
+      "name": "ListingFilterType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Creator",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          },
+          {
+            "name": "Lister",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          },
+          {
+            "name": "Group",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "DelistEvent",
+      "fields": [
+        {
+          "name": "id",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ExecuteEvent",
+      "fields": [
+        {
+          "name": "id",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
     }
   ],
   "errors": [
     {
       "code": 6000,
-      "name": "BadOwner",
-      "msg": "Bad owner"
+      "name": "GroupHasActiveFilters",
+      "msg": "Group has active filters"
     },
     {
       "code": 6001,
-      "name": "BadMint",
-      "msg": "Bad mint"
+      "name": "UnsupportFilterType",
+      "msg": "Unsupported filter type"
+    },
+    {
+      "code": 6002,
+      "name": "ListerNotAllowed",
+      "msg": "Lister not allowed"
+    },
+    {
+      "code": 6003,
+      "name": "GroupNotAllowed",
+      "msg": "Group not allowed"
+    },
+    {
+      "code": 6004,
+      "name": "GroupHasActiveListings",
+      "msg": "Group has active listings"
     }
   ]
 };
 
 export const IDL: LibreplexShop = {
-  "version": "0.1.0",
+  "version": "0.3.1",
   "name": "libreplex_shop",
   "instructions": [
     {
@@ -288,6 +435,11 @@ export const IDL: LibreplexShop = {
         },
         {
           "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "metadata",
           "isMut": false,
           "isSigner": false
         },
@@ -305,7 +457,6 @@ export const IDL: LibreplexShop = {
               {
                 "kind": "account",
                 "type": "publicKey",
-                "account": "Mint",
                 "path": "mint"
               }
             ]
@@ -318,7 +469,7 @@ export const IDL: LibreplexShop = {
         },
         {
           "name": "listerTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -365,7 +516,32 @@ export const IDL: LibreplexShop = {
           "isSigner": false
         },
         {
+          "name": "escrowTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "listerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
           "isMut": false,
           "isSigner": false
         }
@@ -413,23 +589,24 @@ export const IDL: LibreplexShop = {
         },
         {
           "name": "buyerTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "listerPaymentTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "buyerPaymentTokenAccount",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "paymentMint",
           "isMut": false,
-          "isSigner": false
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "systemProgram",
@@ -443,6 +620,11 @@ export const IDL: LibreplexShop = {
         },
         {
           "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram2022",
           "isMut": false,
           "isSigner": false
         }
@@ -465,18 +647,58 @@ export const IDL: LibreplexShop = {
             "type": "publicKey"
           },
           {
-            "name": "price",
-            "type": {
-              "defined": "Price"
-            }
-          },
-          {
             "name": "amount",
             "type": "u64"
           },
           {
-            "name": "escrowWalletBump",
+            "name": "listingBump",
             "type": "u8"
+          },
+          {
+            "name": "group",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "price",
+            "type": {
+              "defined": "Price"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "listingFilter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "listingGroup",
+            "type": "publicKey"
+          },
+          {
+            "name": "seed",
+            "type": "publicKey"
+          },
+          {
+            "name": "filterType",
+            "type": {
+              "defined": "ListingFilterType"
+            }
+          },
+          {
+            "name": "listingsActive",
+            "type": "u32"
+          },
+          {
+            "name": "listingsCreated",
+            "type": "u32"
+          },
+          {
+            "name": "listingsSold",
+            "type": "u32"
           }
         ]
       }
@@ -499,7 +721,7 @@ export const IDL: LibreplexShop = {
             "type": "u64"
           },
           {
-            "name": "escrowWalletBump",
+            "name": "listingBump",
             "type": "u8"
           }
         ]
@@ -534,18 +756,90 @@ export const IDL: LibreplexShop = {
           }
         ]
       }
+    },
+    {
+      "name": "ListingFilterType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Creator",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          },
+          {
+            "name": "Lister",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          },
+          {
+            "name": "Group",
+            "fields": [
+              {
+                "name": "pubkey",
+                "type": "publicKey"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "DelistEvent",
+      "fields": [
+        {
+          "name": "id",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ExecuteEvent",
+      "fields": [
+        {
+          "name": "id",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
     }
   ],
   "errors": [
     {
       "code": 6000,
-      "name": "BadOwner",
-      "msg": "Bad owner"
+      "name": "GroupHasActiveFilters",
+      "msg": "Group has active filters"
     },
     {
       "code": 6001,
-      "name": "BadMint",
-      "msg": "Bad mint"
+      "name": "UnsupportFilterType",
+      "msg": "Unsupported filter type"
+    },
+    {
+      "code": 6002,
+      "name": "ListerNotAllowed",
+      "msg": "Lister not allowed"
+    },
+    {
+      "code": 6003,
+      "name": "GroupNotAllowed",
+      "msg": "Group not allowed"
+    },
+    {
+      "code": 6004,
+      "name": "GroupHasActiveListings",
+      "msg": "Group has active listings"
     }
   ]
 };

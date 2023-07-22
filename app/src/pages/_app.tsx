@@ -8,9 +8,14 @@ import Head from "next/head";
 import { FC, useState } from "react";
 import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
-import { InscriptionsProgramProvider, LibrePlexProgramProvider, Notifications } from "shared-ui";
+import {
+  InscriptionsProgramProvider,
+  MetadataProgramProvider,
+  Notifications,
+} from "shared-ui";
 import { ContextProvider } from "shared-ui";
 import { ContentContainer } from "../components/ContentContainer";
+
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 
@@ -26,9 +31,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
       <ChakraProvider colorModeManager={manager}>
         <ContextProvider>
-          <div className="flex flex-col h-screen bg-[#121212]">
-            <Notifications />
-            
+          <MetadataProgramProvider>
+            <InscriptionsProgramProvider>
+              <div className="flex flex-col h-screen bg-[#121212]">
+                <Notifications />
+
                 <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
                 <ContentContainer>
                   <PortalManager>
@@ -36,8 +43,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                     {/* <Footer /> */}
                   </PortalManager>
                 </ContentContainer>
-                
-          </div>
+              </div>
+            </InscriptionsProgramProvider>
+          </MetadataProgramProvider>
         </ContextProvider>
       </ChakraProvider>
     </>

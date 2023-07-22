@@ -4,7 +4,7 @@ import { Connection } from "@solana/web3.js";
 export const PROGRAM_ID_SHOP =
   "ListjawGEdhxuAErSyYwcTEGWQswFoi6FScnGG1RKSB";
 
-import { IDL} from "../types/libreplex_shop";
+import { IDL} from "../../types/libreplex_shop";
 
 export function getProgramInstanceShop(
   connection: Connection,

@@ -4,12 +4,11 @@ import {
 } from "./hydrateMetadataWithJson";
 
 import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
-import { LibreplexWithOrdinals } from "../../../anchor/getProgramInstanceMetadata";
 import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { LibrePlexProgramContext } from "../../../anchor/LibrePlexProgramContext";
+import { MetadataProgramContext } from "../../../anchor/metadata/MetadataProgramContext";
 import { useContext, useMemo, useEffect, useState } from "react";
-import { LibreplexMetadata as Libreplex } from "../../../types/libreplex_metadata";
+import { LibreplexMetadata as Libreplex, LibreplexMetadata } from "../../../types/libreplex_metadata";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { sha256 } from "js-sha256";
@@ -38,19 +37,19 @@ export enum AssetType {
   Unknown,
 }
 
-export type Asset = IdlTypes<LibreplexWithOrdinals>["Asset"];
+export type Asset = IdlTypes<LibreplexMetadata>["Asset"];
 
 export type Metadata = IdlAccounts<Libreplex>["metadata"];
 
 export const decodeMetadata =
-  (program: Program<LibreplexWithOrdinals>) =>
+  (program: Program<LibreplexMetadata>) =>
   (buffer: Buffer, pubkey: PublicKey) => {
     try {
       const coder = new BorshCoder(program.idl);
 
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
-      console.log({ metadataRaw });
+      // console.log({ metadataRaw });
       return {
         item: metadataRaw ?? null, //metadata ?? null,
         pubkey,
@@ -68,7 +67,7 @@ export const useMetadataByMintId = (
   mintId: PublicKey | null,
   connection: Connection
 ) => {
-  const { program } = useContext(LibrePlexProgramContext);
+  const { program } = useContext(MetadataProgramContext);
 
   const metadataId = useMemo(
     () =>
@@ -83,7 +82,7 @@ export const useMetadataById = (
   metadataKey: PublicKey | null,
   connection: Connection
 ) => {
-  const { program } = useContext(LibrePlexProgramContext);
+  const { program } = useContext(MetadataProgramContext);
 
   const q = useFetchSingleAccount(metadataKey, connection);
 
@@ -110,7 +109,7 @@ export const useMetadataByAuthority = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
-  const { program } = useContext(LibrePlexProgramContext);
+  const { program } = useContext(MetadataProgramContext);
 
   const filters = useMemo(() => {
     if (publicKey) {
@@ -162,7 +161,7 @@ export const useMetadataByGroup = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
-  const { program } = useContext(LibrePlexProgramContext);
+  const { program } = useContext(MetadataProgramContext);
 
   const filters = useMemo(() => {
     if (publicKey) {
@@ -214,7 +213,7 @@ export const useGroupedMetadataByOwner = (
   owner: PublicKey,
   connection: Connection
 ) => {
-  const { program } = useContext(LibrePlexProgramContext);
+  const { program } = useContext(MetadataProgramContext);
   const { data: ownedMints, isFetching: isFetchingMints } =
     useTokenAccountsByOwner(owner, connection, TOKEN_2022_PROGRAM_ID);
 

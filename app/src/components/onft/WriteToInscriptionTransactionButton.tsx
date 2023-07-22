@@ -1,21 +1,16 @@
+import { Progress, Text } from "@chakra-ui/react";
 import {
   Connection,
   Keypair,
-  PublicKey,
   SystemProgram,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
-import { getProgramInstanceOrdinals } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+import { useContext, useEffect, useMemo } from "react";
 import {
   GenericTransactionButton,
-  GenericTransactionButtonProps,
+  GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate, Inscription, InscriptionStoreContext, getProgramInstanceOrdinals, notify
 } from "shared-ui";
-import { IRpcObject } from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
-import { Inscription } from "shared-ui";
-
-import { notify } from "shared-ui";
+import { useStore } from "zustand";
 
 export enum AssetType {
   Image,
@@ -62,26 +57,13 @@ export const writeToInscription = async (
 
   const { inscription, dataBytes } = params;
 
-  //   const instruction = await inscriptionsProgram.methods
-  //     .resizeInscription({
-  //       size: dataBytes.length,
-  //     })
-  //     .accounts({
-  //       inscription: inscription.pubkey,
-  //       systemProgram: SystemProgram.programId,
-  //     })
-  //     .instruction();
-  //   instructions.push(instruction);
-
   const remainingBytes = [...dataBytes];
   let startPos = 0;
   while (remainingBytes.length > 0) {
+    console.log("BATCH CREATING", remainingBytes.length);
     const instructions: TransactionInstruction[] = [];
     const byteBatch = remainingBytes.splice(0, BATCH_SIZE);
-    console.log({
-      byteBatch,
-      startPos,
-    });
+
     instructions.push(
       await inscriptionsProgram.methods
         .writeToInscription({
@@ -103,9 +85,7 @@ export const writeToInscription = async (
       signers: [],
     });
   }
-
   console.log({ data });
-
   return {
     data,
   };
@@ -117,14 +97,68 @@ export const WriteToInscriptionTransactionButton = (
     "transactionGenerator"
   >
 ) => {
+  const expectedCount = useMemo(
+    () => Math.ceil(props.params.dataBytes.length / BATCH_SIZE),
+    [props.params.dataBytes.length]
+  );
+  const store = useContext(InscriptionStoreContext);
+
+  const resetWriteStatus = useStore(store, (s) => s.resetWriteStatus);
+  const setUpdatedInscriptionData = useStore(
+    store,
+    (s) => s.setUpdatedInscriptionData
+  );
+  const updatedInscriptionData = useStore(
+    store,
+    (s) => s.updatedInscriptionData[props.params.inscription?.pubkey.toBase58()]
+  );
+  const writeStates = useStore(
+    store,
+    (s) => s.writeStates[props.params.inscription?.pubkey.toBase58()]
+  );
+  useEffect(() => {
+    resetWriteStatus(props.params.inscription.pubkey.toBase58());
+  }, [props.params.inscription.pubkey, resetWriteStatus]);
+
+  useEffect(() => {
+    if (
+      expectedCount > 0 &&
+      expectedCount === writeStates &&
+      updatedInscriptionData === undefined
+    ) {
+      setUpdatedInscriptionData(
+        props.params.inscription.pubkey.toBase58(),
+        Buffer.from(props.params.dataBytes)
+      );
+    }
+  }, [
+    expectedCount,
+    writeStates,
+    updatedInscriptionData,
+    setUpdatedInscriptionData,
+    props.params.inscription.pubkey,
+    props.params.dataBytes,
+  ]);
+
   return (
     <>
-      <GenericTransactionButton<IWriteToInscription>
-        text={"Write"}
-        transactionGenerator={writeToInscription}
-        onError={(msg) => notify({ message: msg })}
-        {...props}
-      />
+      <div style={{ width: "100%" }}>
+        <Progress
+          size="xs"
+          colorScheme="pink"
+          value={(writeStates / expectedCount) * 100}
+        />
+      </div>
+      {writeStates === expectedCount ? (
+        <Text p={2}>Inscribed</Text>
+      ) : (
+        <GenericTransactionButton<IWriteToInscription>
+          text={"Write"}
+          transactionGenerator={writeToInscription}
+          onError={(msg) => notify({ message: msg })}
+          {...props}
+        />
+      )}
     </>
   );
 };

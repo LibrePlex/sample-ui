@@ -15,25 +15,24 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { AssetDisplay, CopyPublicKeyButton, LibreplexMetadata } from "shared-ui";
-import { IRpcObject } from "shared-ui";
+import {
+  AssetDisplay,
+  CopyPublicKeyButton,
+  IRpcObject,
+  LibreplexMetadata,
+} from "shared-ui";
 
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 import { AttributesDisplay } from "@/components/metadata/AttributesDisplay";
 import { SignersDisplay } from "@/components/metadata/SignersDisplay";
 import { InscriptionUploader } from "@/components/onft/InscriptionUploader";
 import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
-import { getMetadataExtendedPda } from "shared-ui";
-import { useGroupById } from "shared-ui";
-import { useInscriptionById } from "shared-ui";
-import { Metadata } from "shared-ui";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import {useDeletedKeyStore} from "shared-ui";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { Dispatch, SetStateAction, useContext, useMemo, useState } from "react";
+import { Metadata, MetadataProgramContext, ScannerLink, useGroupById, useInscriptionById } from "shared-ui";
+import { useStore } from "zustand";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
-import { IdlAccounts } from "@coral-xyz/anchor";
-import { ScannerLink } from "shared-ui";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
@@ -47,21 +46,19 @@ export const MetadataRow = ({
   activeMetadata: IRpcObject<Metadata> | undefined;
   setActiveMetadata: Dispatch<SetStateAction<IRpcObject<Metadata>>>;
   item: IRpcObject<Metadata>;
-  selectedMetadataObjs: Set<PublicKey>;
-  toggleSelectedMetadata: (pubkey: PublicKey, b: boolean) => any;
+  selectedMetadataObjs: Set<string>;
+  toggleSelectedMetadata: (pubkey: string, b: boolean) => any;
 }) => {
-  const deletedKeys = useDeletedKeyStore((state) => state.deletedKeys);
+  const { store } = useContext(MetadataProgramContext);
 
-  const [open, setOpen] = useState<boolean>(false);
+  const deletedKeys = useStore(store, (state) => state.deletedKeys);
 
   const [attributesOpen, setAttributesOpen] = useState<boolean>(false);
 
   const [signersOpen, setSignersOpen] = useState<boolean>(false);
 
-  
   const { connection } = useConnection();
 
-  
   const inscriptionId = useMemo(
     () =>
       item.item.asset?.inscription
@@ -87,9 +84,13 @@ export const MetadataRow = ({
       >
         <Center>
           <Checkbox
-            isChecked={selectedMetadataObjs.has(item.pubkey)}
+            isChecked={selectedMetadataObjs?.has(item.pubkey.toBase58())}
             onChange={(e) => {
-              toggleSelectedMetadata(item.pubkey, e.currentTarget.checked);
+              toggleSelectedMetadata &&
+                toggleSelectedMetadata(
+                  item.pubkey.toBase58(),
+                  e.currentTarget.checked
+                );
             }}
           />
         </Center>
@@ -108,8 +109,9 @@ export const MetadataRow = ({
               inscription={inscription}
               afterUpdate={() => {}}
             />
-          ) : item.item.asset.json ? 
-          <AssetDisplay asset={item.item.asset}/>: (
+          ) : item.item.asset.json ? (
+            <AssetDisplay asset={item.item.asset} />
+          ) : (
             <Text>Cannot upload this asset type</Text>
           )}
         </Box>
@@ -121,23 +123,25 @@ export const MetadataRow = ({
             <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
               <Text fontSize="2xl">{item.item.name}</Text>
               <Box display="flex" w={"100%"} justifyContent={"space-between"}>
-                
-                <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} /> (metadata)
+                <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />{" "}
+                (metadata)
               </Box>
-              <Box display="flex" w={"100%"} justifyContent={"space-between"}>
-                {item.item.mint && (
-                  <ScannerLink mintId={item.item.mint} /> 
-                )}
+              <Box display="flex" w={"100%"} justifyContent={"space-between"} alignItems='center'>
+                
+                <CopyPublicKeyButton publicKey={item.item.mint.toBase58()}/>
+                {item.item.mint && <ScannerLink mintId={item.item.mint} />}
                 (mint)
               </Box>
-              
+
               {inscription ? (
                 <InscriptionCell inscription={inscription} />
               ) : item.item.asset.image ? (
                 "On-chain metadata"
               ) : item.item.asset.json ? (
                 "Off-chain metadata"
-              ) : "Other"}
+              ) : (
+                "Other"
+              )}
 
               {/* 
               <Button
@@ -171,7 +175,7 @@ export const MetadataRow = ({
                 setSignersOpen(true);
               }}
             >
-              Signers: {item.item.extension?.nft?.signers?.length??0}
+              Signers: {item.item.extension?.nft?.signers?.length ?? 0}
             </Button>
             <Modal
               isOpen={signersOpen}
@@ -189,7 +193,7 @@ export const MetadataRow = ({
                     Permitted signers are configured at collection level.
                   </Text>
                   <SignersDisplay
-                    signers={item.item.extension?.nft?.signers??[]}
+                    signers={item.item.extension?.nft?.signers ?? []}
                     group={group}
                   />
                 </ModalBody>
@@ -202,7 +206,7 @@ export const MetadataRow = ({
                 setAttributesOpen(true);
               }}
             >
-              {item.item.extension?.nft?.attributes.length??0}
+              {item.item.extension?.nft?.attributes.length ?? 0}
             </Button>
             <Modal
               isOpen={attributesOpen}
@@ -215,9 +219,11 @@ export const MetadataRow = ({
                 <ModalHeader>Attributes</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <Heading>{item.item.extension?'y':'n'}</Heading>
+                  <Heading>{item.item.extension ? "y" : "n"}</Heading>
                   <AttributesDisplay
-                    attributes={[...(item.item.extension?.nft?.attributes??[])]}
+                    attributes={[
+                      ...(item.item.extension?.nft?.attributes ?? []),
+                    ]}
                     group={group}
                   />
                 </ModalBody>
@@ -226,9 +232,7 @@ export const MetadataRow = ({
           </Td>
         </>
       ) : (
-        <Td colSpan={4}>
-              No group assigned
-        </Td>
+        <Td colSpan={4}>No group assigned</Td>
       )}
     </Tr>
   );

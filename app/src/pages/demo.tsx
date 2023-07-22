@@ -1,15 +1,13 @@
 "use client";
 
-import {
-  Box
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Demo } from "@/components/demo/Demo";
-import { InscriptionsProgramProvider, LibrePlexProgramProvider } from "shared-ui";
+
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useMemo } from "react";
 
 const DemoPage = () => {
-  const queryClient = useMemo(()=>new QueryClient({}),[]);
+  const queryClient = useMemo(() => new QueryClient({}), []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -22,11 +20,9 @@ const DemoPage = () => {
           alignItems: "center",
         }}
       >
-        <LibrePlexProgramProvider>
-          <InscriptionsProgramProvider>
-            <Demo />
-          </InscriptionsProgramProvider>
-        </LibrePlexProgramProvider>
+        
+                <Demo />
+                
       </Box>
     </QueryClientProvider>
   );

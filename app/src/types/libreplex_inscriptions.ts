@@ -248,46 +248,6 @@ export type LibreplexInscriptions = {
       ]
     },
     {
-      "name": "InscriptionResizeEvent",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "size",
-          "type": "u32",
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "InscriptionResizeFinal",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "size",
-          "type": "u32",
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "InscriptionWriteEvent",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        }
-      ]
-    },
-    {
       "name": "InscriptionEvent",
       "fields": [
         {
@@ -560,46 +520,6 @@ export const IDL: LibreplexInscriptions = {
   "events": [
     {
       "name": "InscriptionEventDelete",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "InscriptionResizeEvent",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "size",
-          "type": "u32",
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "InscriptionResizeFinal",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "size",
-          "type": "u32",
-          "index": false
-        }
-      ]
-    },
-    {
-      "name": "InscriptionWriteEvent",
       "fields": [
         {
           "name": "id",
