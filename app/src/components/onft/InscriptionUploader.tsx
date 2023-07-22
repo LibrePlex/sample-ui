@@ -1,17 +1,15 @@
-import { Alert, Box, BoxProps, Button, Text } from "@chakra-ui/react";
 import { ResizeInscriptionTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
 import { ImageSelector } from "@/components/shadowdrive/ImageSelector";
+import { Alert, Box, BoxProps, Button, Text } from "@chakra-ui/react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   IRpcObject,
   Inscription,
   InscriptionStoreContext,
-  InscriptionsProgramContext,
+  getBase64FromDatabytes
 } from "shared-ui";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
-import { useQueryClient } from "react-query";
-import { PublicKey } from "@solana/web3.js";
 import { useStore } from "zustand";
+import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
 
 enum Status {
   NotStarted,
@@ -76,14 +74,17 @@ export const InscriptionUploader = ({
 
   useEffect(() => {
     if (inscription) {
-      const base = (
+      const { url } = getBase64FromDatabytes(
         updatedInscriptionData ?? Buffer.from(inscription.item.dataBytes)
-      ).toString("base64");
-      const dataType = base.split("/")[0];
-      const dataSubType = base.split("/")[1];
-      const data = base.split("/").slice(2).join("/");
+      );
+      // const base = (
+      //    ??
+      // ).toString("base64");
+      // const dataType = base.split("/")[0];
+      // const dataSubType = base.split("/")[1];
+      // const data = base.split("/").slice(2).join("/");
       // console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
-      setCurrentBase64Image(`data:${dataType}/${dataSubType};base64,${data}==`);
+      setCurrentBase64Image(url);
     }
   }, [inscription, inscription?.item.dataBytes, updatedInscriptionData]);
 
@@ -94,7 +95,7 @@ export const InscriptionUploader = ({
       const prefixDataType = prefix[0].split(":")[1];
 
       const str = `${prefixDataType}/${elems[1]}`;
-      // console.log(str);
+      // console.log(base64, base64url.encode);
       return Buffer.from(str, "base64");
       // const elems = base64.split(",");
       // return base64 ? Buffer.from(elems[elems.length - 1], "base64") : [];
@@ -123,7 +124,7 @@ export const InscriptionUploader = ({
   return (
     <Box
       {...rest}
-      sx={{ position: "relative", width :"100%" }}
+      sx={{ position: "relative", width: "100%" }}
       display="flex"
       flexDir={"column"}
       alignItems="center"
@@ -242,7 +243,7 @@ export const InscriptionUploader = ({
                       dataBytes: [...buf],
                       inscription,
                     }}
-                    formatting={{width :"100%"}}
+                    formatting={{ width: "100%" }}
                   />
                 )}
               </Box>

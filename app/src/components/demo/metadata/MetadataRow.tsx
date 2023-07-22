@@ -14,6 +14,7 @@ import {
   Td,
   Text,
   Tr,
+  VStack,
 } from "@chakra-ui/react";
 import {
   AssetDisplay,
@@ -29,10 +30,17 @@ import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { Dispatch, SetStateAction, useContext, useMemo, useState } from "react";
-import { Metadata, MetadataProgramContext, ScannerLink, useGroupById, useInscriptionById } from "shared-ui";
+import {
+  Metadata,
+  MetadataProgramContext,
+  ScannerLink,
+  useGroupById,
+  useInscriptionById,
+} from "shared-ui";
 import { useStore } from "zustand";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
+import { RemoveGroupTransactionButton } from "./RemoveGroupTransactionButton";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
@@ -52,6 +60,8 @@ export const MetadataRow = ({
   const { store } = useContext(MetadataProgramContext);
 
   const deletedKeys = useStore(store, (state) => state.deletedKeys);
+
+  const isDeleted = useMemo(() => deletedKeys.has(item.pubkey), [deletedKeys]);
 
   const [attributesOpen, setAttributesOpen] = useState<boolean>(false);
 
@@ -96,25 +106,31 @@ export const MetadataRow = ({
         </Center>
       </Td>
       <Td>
-        <Box>
-          {item.item.asset?.image ? (
-            <ImageUploader
-              currentImage={item.item.asset?.image.url}
-              linkedAccountId={item.item.mint.toBase58()}
-              fileId={""}
-              afterUpdate={() => {}}
-            />
-          ) : item.item.asset?.inscription ? (
-            <InscriptionUploader
-              inscription={inscription}
-              afterUpdate={() => {}}
-            />
-          ) : item.item.asset.json ? (
-            <AssetDisplay asset={item.item.asset} />
-          ) : (
-            <Text>Cannot upload this asset type</Text>
-          )}
-        </Box>
+        {isDeleted ? (
+          <Center>
+            <Text>Deleted</Text>
+          </Center>
+        ) : (
+          <Box>
+            {item.item.asset?.image ? (
+              <ImageUploader
+                currentImage={item.item.asset?.image.url}
+                linkedAccountId={item.item.mint.toBase58()}
+                fileId={""}
+                afterUpdate={() => {}}
+              />
+            ) : item.item.asset?.inscription ? (
+              <InscriptionUploader
+                inscription={inscription}
+                afterUpdate={() => {}}
+              />
+            ) : item.item.asset.json ? (
+              <AssetDisplay asset={item.item.asset} />
+            ) : (
+              <Text>Cannot upload this asset type</Text>
+            )}
+          </Box>
+        )}
       </Td>
 
       <Td>
@@ -126,9 +142,13 @@ export const MetadataRow = ({
                 <CopyPublicKeyButton publicKey={item.pubkey.toBase58()} />{" "}
                 (metadata)
               </Box>
-              <Box display="flex" w={"100%"} justifyContent={"space-between"} alignItems='center'>
-                
-                <CopyPublicKeyButton publicKey={item.item.mint.toBase58()}/>
+              <Box
+                display="flex"
+                w={"100%"}
+                justifyContent={"space-between"}
+                alignItems="center"
+              >
+                <CopyPublicKeyButton publicKey={item.item.mint.toBase58()} />
                 {item.item.mint && <ScannerLink mintId={item.item.mint} />}
                 (mint)
               </Box>
@@ -159,7 +179,15 @@ export const MetadataRow = ({
       {group ? (
         <>
           <Td>
-            <CopyPublicKeyButton publicKey={group.pubkey.toBase58()} />
+            <VStack>
+              <CopyPublicKeyButton publicKey={group.pubkey.toBase58()} />
+              <RemoveGroupTransactionButton
+                params={{
+                  metadata: item,
+                }}
+                formatting={{}}
+              />
+            </VStack>
           </Td>
 
           <Td>

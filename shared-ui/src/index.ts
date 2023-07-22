@@ -50,7 +50,7 @@ export {
   useListingsByGroup,
   useAllListings,
   useGroupedMetadataByOwner,
-  getBase64FromInscription
+  getBase64FromDatabytes
 } from "./sdk";
 export type {
   AttributeType,

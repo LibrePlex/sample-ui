@@ -21,7 +21,7 @@ import {
   BufferingConnection,
   IRpcObject,
   Inscription,
-  getBase64FromInscription,
+  getBase64FromDatabytes,
 } from "shared-ui";
 import { useMultipleMetadataById as useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
@@ -305,14 +305,19 @@ export const useGroupedMetadataByOwner = (
           ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()]
           : null;
 
-        const base64Image = inscription
-          ? getBase64FromInscription(inscription)
+        const base64 = inscription
+          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes))
           : null;
+
+        if( !base64?.url ) {
+          console.log('Could not decode base64 url');
+          continue;
+        }
 
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
           g?.group ?? null,
-          base64Image
+          base64?.url
         );
 
         if (g) {
@@ -343,14 +348,19 @@ export const useGroupedMetadataByOwner = (
           ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()]
           : null;
 
-        const base64Image = inscription
-          ? getBase64FromInscription(inscription)
+          const base64 = inscription
+          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes))
           : null;
+
+        if( !base64?.url ) {
+          console.log('Could not decode base64 url');
+          continue;
+        }
 
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
           g?.group ?? null,
-          base64Image
+          base64?.url
         );
         if (m.item) {
           if (g) {

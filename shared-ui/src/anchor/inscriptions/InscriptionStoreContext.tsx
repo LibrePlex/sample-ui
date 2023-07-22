@@ -5,7 +5,8 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useRef
+  useRef,
+  useState
 } from "react";
 import {
   InscriptionsProgramContext
@@ -27,16 +28,16 @@ export const InscriptionStoreProvider = ({
 }) => {
   const program = useContext(InscriptionsProgramContext);
 
-  const store = useRef<StoreApi<InscriptionLiveEventState>>();
+  const [store, setStore] = useState<StoreApi<InscriptionLiveEventState>>();
 
   useEffect(() => {
-    if (program) {
-      store.current = createInscriptionLiveEventStore(program);
+    if (program?.programId) {
+      setStore(createInscriptionLiveEventStore(program));
     }
   }, [program]);
 
-  return store.current ? (
-    <InscriptionStoreContext.Provider value={store.current}>
+  return store ? (
+    <InscriptionStoreContext.Provider value={store}>
       {children}
     </InscriptionStoreContext.Provider>
   ) : (

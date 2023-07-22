@@ -5,6 +5,7 @@ import { useContext, useMemo } from "react";
 import { LibreplexInscriptions } from "../../types/libreplex_inscriptions";
 import { useFetchSingleAccount } from "./singleAccountInfo";
 import { IRpcObject } from "../../components";
+import base64url from "base64url";
 
 export type Inscription = {
   authority: PublicKey;
@@ -13,14 +14,15 @@ export type Inscription = {
   dataBytes: number[];
 };
 
-export const getBase64FromInscription = (
-  inscription: IRpcObject<Inscription>
+export const getBase64FromDatabytes = (
+  dataBytes: Buffer
 ) => {
-  const base = Buffer.from(inscription.item.dataBytes).toString("base64");
+  const base = dataBytes.toString("base64");
+  console.log({base});
   const dataType = base.split("/")[0];
   const dataSubType = base.split("/")[1];
   const data = base.split("/").slice(2).join("/");
-  return `data:${dataType}/${dataSubType};base64,${data}==`;
+  return {dataType, url: `data:${dataType}/${dataSubType};base64,${data}==`}
 };
 
 export const decodeInscription =
@@ -30,10 +32,16 @@ export const decodeInscription =
       "inscription",
       buffer
     );
-    // console.log({buffer})
+
+    const dataBytes= [...buffer.subarray(76)];
+
+    const {dataType} = getBase64FromDatabytes(Buffer.from(dataBytes));
+
+
     const inscription = {
       ...inscriptionBase,
-      dataBytes: [...buffer.subarray(76)],
+      dataBytes,
+      dataType
     };
 
     return {
@@ -41,42 +49,6 @@ export const decodeInscription =
       pubkey,
     };
   };
-
-// export const useInscriptionsById = (
-//   ordinalKeys: PublicKey[],
-//   connection: Connection
-// ) => {
-//   const program  = useContext(OrdinalsProgramContext);
-
-//   const q = useFetchMultiAccounts(ordinalKeys, connection);
-
-//   useEffect(()=>{
-//     console.log({q})
-//   },[q])
-//   const decoded = useMemo(
-//     () => ({
-//       ...q,
-//       data:
-//         q?.data
-//           ?.map((item) => {
-//             try {
-//               const obj = decodeInscription(program)(item.item, item.pubkey);
-//               return obj;
-//             } catch (e) {
-//               console.log(e);
-//               return null;
-//             }
-//           })
-//           .filter((item) => item) ?? [],
-//     }),
-
-//     [program, q]
-//   );
-
-//   return decoded;
-
-//   // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
-// };
 
 export const useInscriptionById = (
   inscriptionId: PublicKey,
