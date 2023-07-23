@@ -7,30 +7,22 @@ import {
 import {
   RawAccount,
   TOKEN_PROGRAM_ID,
-  closeAccount,
-  createAccount,
   createCloseAccountInstruction,
   createInitializeAccountInstruction,
   getAccountLenForMint,
-  getMint,
+  getMint
 } from "@solana/spl-token";
 import {
   Connection,
   Keypair,
   SystemProgram,
-  Transaction,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
 import { useState } from "react";
-import { getProgramInstanceOrdinals } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
-  GenericTransactionButtonProps,
+  GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate
 } from "shared-ui";
-import { IRpcObject } from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
-import { Inscription } from "shared-ui";
 
 import { notify } from "shared-ui";
 
@@ -167,7 +159,7 @@ export const FixStuckMigrationStateButton = (
 ) => {
   const [success, setSuccess] = useState<boolean>(false);
   return (
-    <HStack justifyContent={'center'}>
+    <HStack justifyContent={"center"}>
       {success ? (
         <Text>Fixed</Text>
       ) : (

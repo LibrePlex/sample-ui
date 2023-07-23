@@ -46,10 +46,10 @@ export const decodeMetadata =
   (buffer: Buffer, pubkey: PublicKey) => {
     try {
       const coder = new BorshCoder(program.idl);
-
+      console.log({buffer});
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
-      // console.log({ metadataRaw });
+      console.log({ metadataRaw });
       return {
         item: metadataRaw ?? null, //metadata ?? null,
         pubkey,
@@ -306,10 +306,10 @@ export const useGroupedMetadataByOwner = (
           : null;
 
         const base64 = inscription
-          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes))
+          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), m.item.asset.inscription?.dataType??'')
           : null;
 
-        if( !base64?.url ) {
+        if( !base64 ) {
           console.log('Could not decode base64 url');
           continue;
         }
@@ -317,7 +317,7 @@ export const useGroupedMetadataByOwner = (
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
           g?.group ?? null,
-          base64?.url
+          base64
         );
 
         if (g) {
@@ -344,15 +344,16 @@ export const useGroupedMetadataByOwner = (
       } else {
         const g = _groupedMetadata.find((item) => item.group === null) ?? null;
 
+
         const inscription = m.item?.asset.inscription?.accountId.toBase58()
           ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()]
           : null;
 
           const base64 = inscription
-          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes))
+          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), m.item?.asset.inscription?.dataType??'')
           : null;
 
-        if( !base64?.url ) {
+        if( !base64 ) {
           console.log('Could not decode base64 url');
           continue;
         }
@@ -360,7 +361,7 @@ export const useGroupedMetadataByOwner = (
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
           g?.group ?? null,
-          base64?.url
+          base64
         );
         if (m.item) {
           if (g) {

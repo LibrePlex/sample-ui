@@ -6,6 +6,7 @@ import {
   IRpcObject,
   Inscription,
   InscriptionStoreContext,
+  Metadata,
   getBase64FromDatabytes
 } from "shared-ui";
 import { useStore } from "zustand";
@@ -22,9 +23,11 @@ export const InscriptionUploader = ({
   inscription,
   onImageUpload,
   afterUpdate,
+  metadata,
   ...rest
 }: {
   inscription: IRpcObject<Inscription>;
+  metadata: IRpcObject<Metadata>,
   onImageUpload?: () => any;
   afterUpdate: () => any;
 } & BoxProps) => {
@@ -74,9 +77,11 @@ export const InscriptionUploader = ({
 
   useEffect(() => {
     if (inscription) {
-      const { url } = getBase64FromDatabytes(
-        updatedInscriptionData ?? Buffer.from(inscription.item.dataBytes)
+      const url = getBase64FromDatabytes(
+        updatedInscriptionData ?? Buffer.from(inscription.item.dataBytes),
+        metadata.item.asset?.inscription.dataType
       );
+      console.log({url});
       // const base = (
       //    ??
       // ).toString("base64");
@@ -86,21 +91,21 @@ export const InscriptionUploader = ({
       // console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
       setCurrentBase64Image(url);
     }
-  }, [inscription, inscription?.item.dataBytes, updatedInscriptionData]);
+  }, [inscription, inscription?.item.dataBytes, updatedInscriptionData, metadata]);
 
-  const buf = useMemo(() => {
+  const {buf, dataType} = useMemo(() => {
     if (base64) {
       const elems = base64.split(",");
       const prefix = base64.split(";");
       const prefixDataType = prefix[0].split(":")[1];
 
-      const str = `${prefixDataType}/${elems[1]}`;
-      // console.log(base64, base64url.encode);
-      return Buffer.from(str, "base64");
+      const str = `${elems[1]}`;
+      console.log({base64, str, prefixDataType});
+      return {buf: Buffer.from(str, "base64"), dataType: prefixDataType}
       // const elems = base64.split(",");
       // return base64 ? Buffer.from(elems[elems.length - 1], "base64") : [];
     } else {
-      return [];
+      return {buf: [], dataType: undefined};
     }
   }, [base64]);
   //  const base64 = useMemo(()=>getBase64(selectedImage),[selectedImage])
@@ -240,6 +245,8 @@ export const InscriptionUploader = ({
                 ) : (
                   <WriteToInscriptionTransactionButton
                     params={{
+                      dataType,
+                      metadata,
                       dataBytes: [...buf],
                       inscription,
                     }}

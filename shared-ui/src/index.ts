@@ -25,7 +25,7 @@ export {
   PROGRAM_ID_INSCRIPTIONS,
   PROGRAM_ID_METADATA,
   getProgramInstanceMetadata,
-  getProgramInstanceOrdinals,
+  getProgramInstanceInscriptions,
   getProgramInstanceShop,
   LibreWallet,
   InscriptionStoreContext

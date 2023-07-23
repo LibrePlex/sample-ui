@@ -10,7 +10,7 @@ import {
 } from "@solana/web3.js";
 import { IMetadataJson } from "models/IMetadataJson";
 import { NextApiHandler } from "next";
-import { HttpClient, PROGRAM_ID_METADATA, decodeGroup, decodeMetadata, getMetadataExtendedPda, getMetadataPda, getProgramInstanceMetadata, getProgramInstanceOrdinals } from "shared-ui";
+import { HttpClient, PROGRAM_ID_METADATA, decodeGroup, decodeMetadata, getBase64FromDatabytes, getMetadataExtendedPda, getMetadataPda, getProgramInstanceInscriptions, getProgramInstanceMetadata } from "shared-ui";
 import { decodeInscription } from "shared-ui";
 import { getAttrValue } from "utils/getAttrValue";
 
@@ -45,7 +45,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     new Wallet(Keypair.generate())
   );
 
-  const libreInscriptionsProgram = getProgramInstanceOrdinals(
+  const libreInscriptionsProgram = getProgramInstanceInscriptions(
     connection,
     new Wallet(Keypair.generate())
   );
@@ -93,13 +93,15 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
         libreMetadataObj.group
       );
       inscription = item;
-      const base = Buffer.from(inscription.item.dataBytes).toString("base64");
-      console.log({base});
-      const dataType = base.split("/")[0];
-      const dataSubType = base.split("/")[1];
-      const data = base.split("/").slice(2).join("/");
-      console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
-      base64Image =`data:${dataType}/${dataSubType};base64,${data}==`;
+
+      base64Image = getBase64FromDatabytes(inscription.item.dataBytes, libreMetadataObj.asset.inscription.dataType);
+      // const base = Buffer.from(inscription.item.dataBytes).toString("base64");
+      // console.log({base});
+      // const dataType = base.split("/")[0];
+      // const dataSubType = base.split("/")[1];
+      // const data = base.split("/").slice(2).join("/");
+      // console.log(`data:${dataType}/${dataSubType};base64,${data}==`);
+      // base64Image =`data:${dataType}/${dataSubType};base64,${data}==`;
     }
 
 

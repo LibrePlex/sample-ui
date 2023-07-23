@@ -48,11 +48,11 @@ export interface ICreateMetadata {
   assetType: AssetType;
   description: string | null;
   mint: Keypair;
-  group: PublicKey | null,
+  group: PublicKey | null;
   extension: {
-    attributes: number[]
-  } | null,
-  metadataProgramId: PublicKey
+    attributes: number[];
+  } | null;
+  metadataProgramId: PublicKey;
 }
 
 // start at 0. We can extend as needed
@@ -75,11 +75,22 @@ export const createMetadata = async (
     description: string;
   }[] = [];
 
-  const { assetType, symbol, name, group, description, mint, extension, metadataProgramId } = params;
+  const {
+    assetType,
+    symbol,
+    name,
+    group,
+    description,
+    mint,
+    extension,
+    metadataProgramId,
+  } = params;
 
-  const librePlexProgram = getProgramInstanceMetadata(metadataProgramId, connection, wallet);
-
-
+  const librePlexProgram = getProgramInstanceMetadata(
+    metadataProgramId,
+    connection,
+    wallet
+  );
 
   const [metadata] = getMetadataPda(metadataProgramId, mint.publicKey);
 
@@ -92,7 +103,12 @@ export const createMetadata = async (
 
   const signers = [mint];
 
-  const ata = getAssociatedTokenAddressSync(mint.publicKey, wallet.publicKey, false, TOKEN_2022_PROGRAM_ID);
+  const ata = getAssociatedTokenAddressSync(
+    mint.publicKey,
+    wallet.publicKey,
+    false,
+    TOKEN_2022_PROGRAM_ID
+  );
 
   instructions.push(
     SystemProgram.createAccount({
@@ -136,21 +152,23 @@ export const createMetadata = async (
         name,
         symbol,
         updateAuthority: wallet.publicKey,
-        
+
         asset: {
           image: {
             url,
             description,
           },
         },
-        extension: extension ? {
-          nft: {
-            attributes: Buffer.from(extension.attributes),
-            signers: [],
-            royalties: null,
-            license: null
-          }
-        } : null
+        extension: extension
+          ? {
+              nft: {
+                attributes: Buffer.from(extension.attributes),
+                signers: [],
+                royalties: null,
+                license: null,
+              },
+            }
+          : null,
       })
       .accounts({
         metadata,
@@ -161,16 +179,16 @@ export const createMetadata = async (
       .instruction();
     instructions.push(instruction);
   } else if (assetType === AssetType.Inscription) {
-    const ordinal = Keypair.generate();
+    const inscription = Keypair.generate();
 
     const ordinalLamports = await connection.getMinimumBalanceForRentExemption(
       8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH
     );
-    signers.push(ordinal);
+    signers.push(inscription);
     instructions.push(
       SystemProgram.createAccount({
         fromPubkey: wallet.publicKey,
-        newAccountPubkey: ordinal.publicKey,
+        newAccountPubkey: inscription.publicKey,
         space: 8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH,
         lamports: ordinalLamports,
         programId: new PublicKey(PROGRAM_ID_INSCRIPTIONS),
@@ -178,23 +196,28 @@ export const createMetadata = async (
     );
 
     const instruction = await librePlexProgram.methods
-      .createInscriptionMetadata({
-        updateAuthority: wallet.publicKey,
-        name,
-        symbol,
-        description,
-        extension: extension ? {
-          nft: {
-            attributes: Buffer.from(extension.attributes),
-            signers: [],
-            royalties: null,
-            license: null
-          }
-        } : null
-      })
+      .createInscriptionMetadata(
+        {
+          updateAuthority: wallet.publicKey,
+          name,
+          symbol,
+          description,
+          dataType: "",
+          extension: extension
+            ? {
+                nft: {
+                  attributes: Buffer.from(extension.attributes),
+                  signers: [],
+                  royalties: null,
+                  license: null,
+                },
+              }
+            : null,
+        }
+      )
       .accounts({
         metadata,
-        ordinal: ordinal.publicKey,
+        inscription: inscription.publicKey,
         mint: mint.publicKey,
         systemProgram: SystemProgram.programId,
         inscriptionsProgram: new PublicKey(PROGRAM_ID_INSCRIPTIONS),
@@ -203,23 +226,25 @@ export const createMetadata = async (
     instructions.push(instruction);
   }
 
-  console.log({group});
+  console.log({ group });
 
-  if( group ) {
+  if (group) {
     instructions.push(
-      await librePlexProgram.methods.groupAdd().accounts({
-        metadataAuthority: wallet.publicKey,
-        groupAuthority: wallet.publicKey,
-        payer: wallet.publicKey,
-        metadata,
-        delegatedGroupWidePermissions: null,
-        delegatedMetadataSpecificPermissions: null,
-        group,
-        systemProgram: SystemProgram.programId
-      }).instruction()
-    )
+      await librePlexProgram.methods
+        .groupAdd()
+        .accounts({
+          metadataAuthority: wallet.publicKey,
+          groupAuthority: wallet.publicKey,
+          payer: wallet.publicKey,
+          metadata,
+          delegatedGroupWidePermissions: null,
+          delegatedMetadataSpecificPermissions: null,
+          group,
+          systemProgram: SystemProgram.programId,
+        })
+        .instruction()
+    );
   }
-
 
   console.log("INSTRUCTION CREATED");
 

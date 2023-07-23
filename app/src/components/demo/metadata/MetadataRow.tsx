@@ -123,6 +123,7 @@ export const MetadataRow = ({
               <InscriptionUploader
                 inscription={inscription}
                 afterUpdate={() => {}}
+                metadata={item}
               />
             ) : item.item.asset.json ? (
               <AssetDisplay asset={item.item.asset} />

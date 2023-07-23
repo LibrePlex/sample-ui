@@ -5,7 +5,7 @@ import {
   SystemProgram,
   TransactionInstruction
 } from "@solana/web3.js";
-import { getProgramInstanceOrdinals } from "shared-ui";
+import { getProgramInstanceInscriptions } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
@@ -55,7 +55,7 @@ export const resizeInscription = async (
     description: string;
   }[] = [];
 
-  const inscriptionsProgram = getProgramInstanceOrdinals(connection, {
+  const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });

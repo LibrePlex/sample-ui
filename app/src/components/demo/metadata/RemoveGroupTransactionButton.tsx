@@ -10,7 +10,6 @@ import {
   Metadata,
   PROGRAM_ID_METADATA,
   getProgramInstanceMetadata,
-  getProgramInstanceOrdinals,
 } from "shared-ui";
 import { IExecutorParams } from "shared-ui";
 import {

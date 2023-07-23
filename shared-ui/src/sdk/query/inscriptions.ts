@@ -14,15 +14,13 @@ export type Inscription = {
   dataBytes: number[];
 };
 
+
 export const getBase64FromDatabytes = (
-  dataBytes: Buffer
+  dataBytes: Buffer,
+  dataType: string,
 ) => {
   const base = dataBytes.toString("base64");
-  console.log({base});
-  const dataType = base.split("/")[0];
-  const dataSubType = base.split("/")[1];
-  const data = base.split("/").slice(2).join("/");
-  return {dataType, url: `data:${dataType}/${dataSubType};base64,${data}==`}
+  return `data:${dataType};base64,${base}`
 };
 
 export const decodeInscription =
@@ -35,13 +33,10 @@ export const decodeInscription =
 
     const dataBytes= [...buffer.subarray(76)];
 
-    const {dataType} = getBase64FromDatabytes(Buffer.from(dataBytes));
-
 
     const inscription = {
       ...inscriptionBase,
       dataBytes,
-      dataType
     };
 
     return {

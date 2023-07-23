@@ -2,13 +2,25 @@ import { Progress, Text } from "@chakra-ui/react";
 import {
   Connection,
   Keypair,
+  PublicKey,
   SystemProgram,
-  TransactionInstruction
+  TransactionInstruction,
 } from "@solana/web3.js";
 import { useContext, useEffect, useMemo } from "react";
 import {
   GenericTransactionButton,
-  GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate, Inscription, InscriptionStoreContext, getProgramInstanceOrdinals, notify
+  GenericTransactionButtonProps,
+  IExecutorParams,
+  IRpcObject,
+  ITransactionTemplate,
+  Inscription,
+  InscriptionStoreContext,
+  LibreWallet,
+  Metadata,
+  PROGRAM_ID_METADATA,
+  getProgramInstanceInscriptions,
+  getProgramInstanceMetadata,
+  notify,
 } from "shared-ui";
 import { useStore } from "zustand";
 
@@ -25,6 +37,8 @@ export enum AssetType {
 
 export interface IWriteToInscription {
   inscription: IRpcObject<Inscription>;
+  metadata: IRpcObject<Metadata>;
+  dataType: string;
   dataBytes: number[];
 }
 
@@ -50,15 +64,41 @@ export const writeToInscription = async (
     description: string;
   }[] = [];
 
-  const inscriptionsProgram = getProgramInstanceOrdinals(connection, {
+  const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
     ...wallet,
     payer: Keypair.generate(),
   });
 
-  const { inscription, dataBytes } = params;
+  const metadataProgram = getProgramInstanceMetadata(
+    new PublicKey(PROGRAM_ID_METADATA),
+    connection,
+    new LibreWallet(Keypair.generate())
+  );
+
+  const { inscription, dataBytes, dataType, metadata } = params;
 
   const remainingBytes = [...dataBytes];
   let startPos = 0;
+  data.push({
+    instructions: [
+      await metadataProgram.methods
+        .updateInscriptionDatatype({
+          dataType,
+        })
+        .accounts({
+          editor: wallet.publicKey,
+          metadata: metadata.pubkey,
+          delegatedGroupWidePermissions: null,
+          delegatedMetadataSpecificPermissions: null,
+          group: metadata.item.group,
+          systemProgram: SystemProgram.programId,
+        })
+        .instruction(),
+    ],
+    description: "Update inscription datatype",
+    signers: [],
+  });
+
   while (remainingBytes.length > 0) {
     console.log("BATCH CREATING", remainingBytes.length);
     const instructions: TransactionInstruction[] = [];
