@@ -47,7 +47,7 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
         <img 
         src={offchainJson?.image}/> :
       asset?.inscription ? 
-        <AssetDisplayInscription inscriptionId={asset?.inscription.accountId}/>
+        <AssetDisplayInscription inscriptionId={asset?.inscription.accountId} dataType={asset.inscription.dataType}/>
       :
       
       (

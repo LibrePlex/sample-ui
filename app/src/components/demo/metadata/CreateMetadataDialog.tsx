@@ -239,7 +239,7 @@ export const CreateMetadataDialog = ({
                       attributes
                 }}}
                 formatting={{
-                  isDisabled: status !== Status.NotStarted,
+                  // isDisabled: status !== Status.NotStarted,
                 }}
               />
             )}

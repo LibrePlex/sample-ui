@@ -9,7 +9,7 @@ import { IDL } from "../../types/libreplex_inscriptions";
 
 export function getProgramInstanceInscriptions(
   connection: Connection,
-  wallet: any
+  wallet: anchor.Wallet
 ) {
   if (!wallet.publicKey) return;
   const provider = new anchor.AnchorProvider(

@@ -67,11 +67,7 @@ export const Demo = () => {
         LibrePlex Manager
       </h1>
       {/* {selectedPermissionKeys.size} */}
-      {networkConfiguration === "mainnet-beta" ? (
-        <Box>
-          Demo is not available on mainnet yet! Please switch to devnet to test.
-        </Box>
-      ) : (
+      
         <Box>
           <Box
             display="flex"
@@ -188,7 +184,6 @@ export const Demo = () => {
             </Box>
           </TabPanel>
         </Box>
-      )}
     </Box>
   );
 };

@@ -1,25 +1,25 @@
-import { Inscription, useInscriptionById } from "../../sdk/query/inscriptions";
+import { Inscription, getBase64FromDatabytes, useInscriptionById } from "../../sdk/query/inscriptions";
 import { IRpcObject } from "..";
 import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { Metadata } from "sdk/query/metadata/metadata";
 
-export const AssetDisplayInscription = ({inscriptionId}:{inscriptionId: PublicKey}) => {
+export const AssetDisplayInscription = ({inscriptionId, dataType}:{inscriptionId: PublicKey, dataType: string}) => {
   const { connection } = useConnection();
   const inscription = useInscriptionById(inscriptionId, connection);
 
   const [currentBase64Image, setCurrentBase64Image] = useState<string>();
   useEffect(() => {
     if (inscription) {
-      const base = Buffer.from(inscription.item.dataBytes).toString("base64");
-      console.log({base})
-      const dataType = base.split("/")[0];
-      const dataSubType = base.split("/")[1];
-      const data = base.split("/").slice(2).join("/");
-      setCurrentBase64Image(`data:${dataType}/${dataSubType};base64,${data}==`);
+      const url = getBase64FromDatabytes(
+        Buffer.from(inscription.item.dataBytes),
+        dataType ??''
+      );
+      setCurrentBase64Image(url);
     }
-  }, [inscription, inscription?.item.dataBytes]);
+  }, [inscription, inscription?.item.dataBytes, dataType]);
 
   return (
     <img
