@@ -96,7 +96,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
           <Box>
             {actions}
           </Box>
-          <Box height="330px" maxH={"330px"} maxW={"550px"}>
+          <Box height="330px" maxH={"330px"} maxW={"550px"} >
             <VStack
               justify={"start"}
               h={"100%"}
@@ -104,6 +104,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
               align={"start"}
               maxW={"100%"}
               overflow="auto"
+              
             >
               <HStack>
                 <Button
@@ -139,7 +140,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
                   height: "100%",
                   maxHeight: "100%",
                   maxW: "100%",
-                  // background: "red",
+                  
                   w: "100%",
                 }}
               >

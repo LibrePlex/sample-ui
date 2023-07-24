@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { Metadata } from "sdk/query/metadata/metadata";
+
 
 export const AssetDisplayInscription = ({inscriptionId, dataType}:{inscriptionId: PublicKey, dataType: string}) => {
   const { connection } = useConnection();
