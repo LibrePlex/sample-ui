@@ -41,10 +41,17 @@ export const LibreScanner = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.mintId) {
+    if (router.query.mintId && mintId !== router.query.mintId) {
       setMintId((router.query.mintId ?? "") as string);
     }
   }, [router?.query]);
+
+  useEffect(()=>{
+    if( mintPublicKey && router.query.mintId !== mintPublicKey?.toBase58()) {
+      router.query.mintId = mintPublicKey.toBase58()
+      router.push(router)
+    }
+  },[router, mintPublicKey])
 
   return (
     <Box

@@ -103,8 +103,6 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
               maxH={"330px"}
               align={"start"}
               maxW={"100%"}
-              overflow="auto"
-              
             >
               <HStack>
                 <Button
