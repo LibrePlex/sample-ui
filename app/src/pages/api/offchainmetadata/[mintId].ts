@@ -94,7 +94,8 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       );
       inscription = item;
         console.log({dataType: libreMetadataObj.asset.inscription.dataType});
-      base64Image = getBase64FromDatabytes(inscription.item.dataBytes, libreMetadataObj.asset.inscription.dataType);
+        console.log({dataBytes: inscription.item.dataBytes});
+      base64Image = getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), libreMetadataObj.asset.inscription.dataType);
       // const base = Buffer.from(inscription.item.dataBytes).toString("base64");
       // console.log({base});
       // const dataType = base.split("/")[0];
@@ -132,7 +133,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
       group?.item.royalties?.bps ??
       jsondata.seller_fee_basis_points,
-    image: libreMetadataObj?.asset?.image?.url ?? libreMetadataObj.asset.inscription ? base64Image : jsondata?.image,
+    image: base64Image ?? jsondata?.image ?? libreMetadataObj?.asset?.image?.url,
     attributes:
       group?.item.attributeTypes.map((item, idx) => ({
         trait_type: item.name,
