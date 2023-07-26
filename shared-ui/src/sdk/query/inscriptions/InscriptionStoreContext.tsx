@@ -8,15 +8,14 @@ import React, {
   useRef,
   useState
 } from "react";
-import {
-  InscriptionsProgramContext
-} from "shared-ui";
+
 import { StoreApi } from "zustand";
 import {
   InscriptionLiveEventState,
   InscriptionWriteStore,
   createInscriptionLiveEventStore as createInscriptionLiveEventStore,
 } from "./inscriptionLiveEventStore";
+import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
 
 export const InscriptionStoreContext =
   createContext<InscriptionWriteStore | null>(null);

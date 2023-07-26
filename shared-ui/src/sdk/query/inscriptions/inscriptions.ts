@@ -1,11 +1,12 @@
 import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { InscriptionsProgramContext } from "../../anchor/inscriptions/InscriptionsProgramContext";
+
 import { useContext, useMemo } from "react";
-import { LibreplexInscriptions } from "../../types/libreplex_inscriptions";
-import { useFetchSingleAccount } from "./singleAccountInfo";
-import { IRpcObject } from "../../components";
+import { LibreplexInscriptions } from "../../../types/libreplex_inscriptions";
+import { useFetchSingleAccount } from "../singleAccountInfo";
+import { IRpcObject } from "../../../components";
 import base64url from "base64url";
+import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
 
 export type Inscription = {
   authority: PublicKey;

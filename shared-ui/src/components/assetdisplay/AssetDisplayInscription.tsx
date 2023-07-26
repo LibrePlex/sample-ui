@@ -1,9 +1,7 @@
-import { Inscription, getBase64FromDatabytes, useInscriptionById } from "../../sdk/query/inscriptions";
-import { IRpcObject } from "..";
-import { useEffect, useMemo, useState } from "react";
-import React from "react";
-import { PublicKey } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import React, { useEffect, useState } from "react";
+import { getBase64FromDatabytes, useInscriptionById } from "../../sdk/query/inscriptions/inscriptions";
 
 
 export const AssetDisplayInscription = ({inscriptionId, dataType}:{inscriptionId: PublicKey, dataType: string}) => {

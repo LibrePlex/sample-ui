@@ -10,11 +10,10 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import {
   ContextProvider,
   InscriptionsProgramProvider,
-  LibrePlexProgramProvider,
   Notifications,
 } from "shared-ui";
 import {
-  LibrePlexShopProgramProvider
+  LibrePlexShopProgramProvider, MetadataProgramProvider
 } from "shared-ui/src/anchor";
 import { AppBar } from "../components/AppBar";
 import { ContentContainer } from "../components/ContentContainer";
@@ -42,7 +41,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                 <Notifications />
 
                 <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-                <LibrePlexProgramProvider>
+                <MetadataProgramProvider>
                   <InscriptionsProgramProvider>
                     <LibrePlexShopProgramProvider>
                       <ContentContainer>
@@ -52,7 +51,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                       </ContentContainer>
                     </LibrePlexShopProgramProvider>
                   </InscriptionsProgramProvider>
-                </LibrePlexProgramProvider>
+                </MetadataProgramProvider>
             </div>
           </ContextProvider>
         </QueryClientProvider>

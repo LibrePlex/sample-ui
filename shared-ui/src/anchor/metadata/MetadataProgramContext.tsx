@@ -12,11 +12,14 @@ import React from "react";
 import { PublicKey } from "@solana/web3.js";
 import { LibreplexMetadata } from "../../types/libreplex_metadata";
 import { StoreApi } from "zustand";
-import { DeletedKeysState, createDeletedKeyStore } from "../../stores/deletedKeyStore";
+import {
+  DeletedKeysState,
+  createDeletedKeyStore,
+} from "../../stores/deletedKeyStore";
 
 export const MetadataProgramContext = createContext<{
   program: Program<LibreplexMetadata>;
-  store: StoreApi<DeletedKeysState>,
+  store: StoreApi<DeletedKeysState>;
   setProgramId: (p: PublicKey) => any;
 }>(undefined!);
 
@@ -65,19 +68,22 @@ export const MetadataProgramProvider = ({
         new LibreWallet(Keypair.generate())
       );
       setProgram(_program);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e, connection, program)
+    }
   }, [wallet, connection, programId]);
-
-
 
   const [store, setStore] = useState<StoreApi<DeletedKeysState>>();
 
   useEffect(() => {
-    if (program) {
-      setStore(createDeletedKeyStore(program));
+    try {
+      if (program) {
+        setStore(createDeletedKeyStore(program));
+      }
+    } catch (e) {
+      console.log(e, connection, program);
     }
-  }, [program]);
-
+  }, [program, connection]);
 
   return program?.programId && store ? (
     <MetadataProgramContext.Provider value={{ program, store, setProgramId }}>

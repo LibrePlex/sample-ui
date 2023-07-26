@@ -33,9 +33,11 @@ export {
 } from "./legacymetadata";
 
 // inscription stuff
-export { useInscriptionById, decodeInscription, getBase64FromDatabytes } from "./inscriptions";
-export type { Inscription } from "./inscriptions";
-
+export { useInscriptionById, decodeInscription, getBase64FromDatabytes,
+ } from "./inscriptions/inscriptions";
+export type { Inscription } from "./inscriptions/inscriptions";
+export {InscriptionsProgramProvider} from "./inscriptions/InscriptionsProgramContext"
+export {InscriptionStoreContext} from "./inscriptions/InscriptionStoreContext"
 // shop stuff
 export { useListingById, useListingsByLister, useListingsByGroup, useAllListings } from "./shop/listing";
 

@@ -1,10 +1,9 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
-import {
-  InscriptionsProgramContext
-} from "../../../anchor";
-import { decodeInscription } from "../inscriptions";
+
+import { decodeInscription } from "../inscriptions/inscriptions";
 import { useMultipleAccountsById } from "./useMultipleAccountsById";
+import { InscriptionsProgramContext } from "../inscriptions/InscriptionsProgramContext";
 
 export const useMultipleInscriptionsById = (
   inscriptionsIds: PublicKey[],

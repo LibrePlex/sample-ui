@@ -4,10 +4,12 @@ import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { LibreplexInscriptions } from "../../types/libreplex_inscriptions";
 import { getProgramInstanceInscriptions } from "./getProgramInstanceInscriptions";
-import { LibreWallet } from "../metadata/MetadataProgramContext";
 import { InscriptionStoreProvider } from "./InscriptionStoreContext";
+
+import { LibreWallet } from "../../../anchor/metadata/MetadataProgramContext";
+import { LibreplexInscriptions } from "../../../types";
+
 
 export const InscriptionsProgramContext = createContext<
   Program<LibreplexInscriptions>

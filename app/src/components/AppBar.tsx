@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
@@ -7,6 +7,8 @@ import { NetworkSwitcherDynamic } from "shared-ui";
 import { NavElement } from "./navelement";
 import { Box, Button, Text, VStack, useColorMode } from "@chakra-ui/react";
 import { useAutoConnect } from "shared-ui";
+import queryString from 'query-string'
+import { useRouter } from "next/router";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -34,6 +36,11 @@ export const AppBar = ({
       setColorMode("dark");
     }
   }, [colorMode, setColorMode]);
+
+  const router = useRouter();
+
+  const query = useMemo(()=>queryString.stringify(router.query),[router.query])
+  // const url = query ? `${router.pathname}?${query}` : router.pathname
 
   return (
     <div>
@@ -69,27 +76,27 @@ export const AppBar = ({
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
               label="Design"
-              href="/design"
+              href={`/design?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
               label="Savings"
-              href="/costs"
+              href={`/costs?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
               label="Tools"
-              href="/tools"
+              href={`/tools?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
               label="Scanner"
-              href="/scanner"
+              href={`/scanner?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
               label="Demo"
-              href="/demo"
+              href={`/demo?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />

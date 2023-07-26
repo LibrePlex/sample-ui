@@ -1,8 +1,10 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useMemo } from "react";
 import Link from "next/link";
 import React from "react";
 import { Text } from "@chakra-ui/react";
 import { NavElement } from "./navelement";
+import { useRouter } from "next/router";
+import queryString from 'query-string'
 
 interface Props {
   children: ReactNode;
@@ -15,6 +17,12 @@ export const ContentContainer: React.FC<Props> = ({
   setIsNavOpen,
   children,
 }: Props) => {
+
+
+  const router = useRouter();
+
+  const query = useMemo(()=>queryString.stringify(router.query),[router.query])
+
   return (
     <div className="flex-1 drawer h-52">
       <input
@@ -38,26 +46,26 @@ export const ContentContainer: React.FC<Props> = ({
             </Text>
           </li>
           <li>
-            <NavElement label="Home" href="/" />
+            <NavElement label="Home" href={`/?${query}`} />
           </li>
 
           <li>
-            <NavElement label="Mission" href="/mission" />
+            <NavElement label="Mission" href={`/mission?${query}`} />
           </li>
           <li>
-            <NavElement label="Design" href="/design" />
+            <NavElement label="Design" href={`/design?${query}`} />
           </li>
           <li>
-            <NavElement label="Why" href="/why" />
+            <NavElement label="Why" href={`/why?${query}`} />
           </li>
           <li>
-            <NavElement label="Tools" href="/tools" />
+            <NavElement label="Tools" href={`/tools?${query}`} />
           </li>
           <li>
-            <NavElement label="Costs" href="/costs" />
+            <NavElement label="Costs" href={`/costs?${query}`} />
           </li>
           <li>
-            <NavElement label="Demo" href="/demo" />
+            <NavElement label="Demo" href={`/demo?${query}`}/>
           </li>
         </ul>
       </div>

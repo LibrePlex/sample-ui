@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/router";
 import React, { ReactNode, useCallback, useContext } from "react";
 import {
-  LibrePlexProgramContext,
+  MetadataProgramContext,
   ScannerLink,
   useMetadataByMintId,
 } from "shared-ui";
@@ -20,7 +20,7 @@ export const MintCard = ({
   onSelectMint?: (mint: PublicKey) => any,
   children?: ReactNode; 
 } & BoxProps) => {
-  const {} = useContext(LibrePlexProgramContext);
+  const {} = useContext(MetadataProgramContext);
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mint, connection);
 
