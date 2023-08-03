@@ -35,9 +35,9 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
   const connection = new Connection(
     cluster === "localnet"
       ? LOCALNET_URL
-      : cluster === "devnet"
-      ? DEVNET_URL
-      : MAINNET_URL
+      : cluster === "mainnet-beta"
+      ? MAINNET_URL
+      : DEVNET_URL
   );
 
   const libreMetadataAccount = await connection.getMultipleAccountsInfo([
