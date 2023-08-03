@@ -67,6 +67,4 @@ export const useInscriptionById = (
   }, [inscriptionId, program, q.data?.item?.buffer.length]);
 
   return decoded;
-
-  // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
 };

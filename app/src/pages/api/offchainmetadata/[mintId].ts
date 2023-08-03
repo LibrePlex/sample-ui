@@ -95,7 +95,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       inscription = item;
         console.log({dataType: libreMetadataObj.asset.inscription.dataType});
         console.log({dataBytes: inscription.item.dataBytes});
-      base64Image = getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), "image/gif");//libreMetadataObj.asset.inscription.dataType);
+      base64Image = getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), libreMetadataObj.asset.inscription.dataType);
       // const base = Buffer.from(inscription.item.dataBytes).toString("base64");
       // console.log({base});
       // const dataType = base.split("/")[0];
