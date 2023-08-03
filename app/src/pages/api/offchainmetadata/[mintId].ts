@@ -132,7 +132,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     seller_fee_basis_points:
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
       group?.item.royalties?.bps ??
-      jsondata.seller_fee_basis_points,
+      jsondata?.seller_fee_basis_points,
     image: base64Image ?? jsondata?.image ?? libreMetadataObj?.asset?.image?.url,
     attributes:
       group?.item.attributeTypes.map((item, idx) => ({
