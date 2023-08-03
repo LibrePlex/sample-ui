@@ -1,3 +1,4 @@
+import { allowCors } from "@/api/middleware/allowCors";
 import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@/environmentvariables";
 import { Wallet } from "@coral-xyz/anchor";
 import {
@@ -200,4 +201,4 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
   return res.status(200).json(retval);
 };
 
-export default OffchainMetadata;
+export default allowCors(OffchainMetadata);
