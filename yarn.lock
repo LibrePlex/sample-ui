@@ -2488,6 +2488,19 @@
   resolved "https://registry.yarnpkg.com/@ledgerhq/logs/-/logs-6.10.1.tgz#5bd16082261d7364eabb511c788f00937dac588d"
   integrity sha512-z+ILK8Q3y+nfUl43ctCPuR4Y2bIxk/ooCQFwZxhtci1EhAtMDzMAx2W25qx8G1PPL9UUOdnUax19+F0OjXoj4w==
 
+"@libreplex/idls@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.1.5.tgz#c38d3fc0a7e3236535815371747f165d1ccfe0de"
+  integrity sha512-mpTEXyOdsXZlL1+6tmHhxrPQO21iqLq6GV6+2VTQYkre/b+efQIoqVn0f1ef/3WWSLjZgvuDwNk50g6YQ/UK/A==
+
+"@libreplex/sdk@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@libreplex/sdk/-/sdk-0.1.20.tgz#c2a10b79e5cdb2af0182e33bdc8355a4f0faedf9"
+  integrity sha512-AdJgzRUxm3brs58h1t6OfcPsI6zgx5yjsmMxka3FCBy3VQNuZW/0tzLyhhOHmSzl29JEQUtSzn5TypAlvmf4sA==
+  dependencies:
+    "@libreplex/idls" "0.1.5"
+    "@solana/spl-token" "0.3.8"
+
 "@metamask/rpc-errors@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@metamask/rpc-errors/-/rpc-errors-5.1.1.tgz#f82732ad0952d34d219eca42699c0c74bee95a9e"
@@ -3041,6 +3054,15 @@
   dependencies:
     cross-fetch "3.0.6"
 
+"@solana/spl-token@0.3.8", "@solana/spl-token@^0.3.5", "@solana/spl-token@^0.3.6", "@solana/spl-token@^0.3.7":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.8.tgz#8e9515ea876e40a4cc1040af865f61fc51d27edf"
+  integrity sha512-ogwGDcunP9Lkj+9CODOWMiVJEdRtqHAtX2rWF62KxnnSWtMZtV9rDhTrZFshiyJmxDnRL/1nKE1yJHg4jjs3gg==
+  dependencies:
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/buffer-layout-utils" "^0.2.0"
+    buffer "^6.0.3"
+
 "@solana/spl-token@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.2.0.tgz#329bb6babb5de0f9c40035ddb1657f01a8347acd"
@@ -3050,15 +3072,6 @@
     "@solana/buffer-layout-utils" "^0.2.0"
     "@solana/web3.js" "^1.32.0"
     start-server-and-test "^1.14.0"
-
-"@solana/spl-token@^0.3.5", "@solana/spl-token@^0.3.6", "@solana/spl-token@^0.3.7":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.8.tgz#8e9515ea876e40a4cc1040af865f61fc51d27edf"
-  integrity sha512-ogwGDcunP9Lkj+9CODOWMiVJEdRtqHAtX2rWF62KxnnSWtMZtV9rDhTrZFshiyJmxDnRL/1nKE1yJHg4jjs3gg==
-  dependencies:
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/buffer-layout-utils" "^0.2.0"
-    buffer "^6.0.3"
 
 "@solana/wallet-adapter-alpha@^0.1.9":
   version "0.1.9"

@@ -46,10 +46,10 @@ export const decodeMetadata =
   (buffer: Buffer, pubkey: PublicKey) => {
     try {
       const coder = new BorshCoder(program.idl);
-      console.log({buffer});
+      // console.log({buffer});
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
-      console.log({ metadataRaw });
+      // console.log({ metadataRaw });
       return {
         item: metadataRaw ?? null, //metadata ?? null,
         pubkey,

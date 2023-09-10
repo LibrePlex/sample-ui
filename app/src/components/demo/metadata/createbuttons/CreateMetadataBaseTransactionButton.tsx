@@ -1,19 +1,26 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
-import {
-  MINT_SIZE,
-  TOKEN_2022_PROGRAM_ID,
-  createAssociatedTokenAccountInstruction,
-  createInitializeMint2Instruction,
-  createMintToInstruction,
-  getAssociatedTokenAddressSync,
-  getMinimumBalanceForRentExemptMint,
-} from "@solana/spl-token";
+// import {
+//   MINT_SIZE,
+//   TOKEN_2022_PROGRAM_ID,
+//   createAssociatedTokenAccountInstruction,
+//   createInitializeMint2Instruction,
+//   createMintToInstruction,
+//   getAssociatedTokenAddressSync,
+//   getMinimumBalanceForRentExemptMint,
+// } from "@solana/spl-token";
+
+
+// runtime error: TypeError: (0 , _libreplex_sdk__WEBPACK_IMPORTED_MODULE_9__.setupLibreplexReadyMint) is not a function
+// import { setupLibreplexReadyMint } from "@libreplex/sdk"
+
+const setupLibreplexReadyMint = require("@libreplex/sdk").setupLibreplexReadyMint;
 
 import {
   Connection,
   Keypair,
   PublicKey,
   SystemProgram,
+  Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
 import {
@@ -99,48 +106,63 @@ export const createMetadata = async (
 
   let instructions: TransactionInstruction[] = [];
 
-  const mintLamports = await getMinimumBalanceForRentExemptMint(connection);
+
+  const {transaction: txSetup} = await setupLibreplexReadyMint(
+    connection,
+    wallet.publicKey,
+    wallet.publicKey,
+    wallet.publicKey,
+    wallet.publicKey,
+    0,
+    mint,
+    metadata,
+    // no further parameters, this defaults to
+    // 1) no transfer hook
+    // 2) token program 2022
+  ) as {transaction: Transaction}
+
+  // const mintLamports = await getMinimumBalanceForRentExemptMint(connection);
 
   const signers = [mint];
 
-  const ata = getAssociatedTokenAddressSync(
-    mint.publicKey,
-    wallet.publicKey,
-    false,
-    TOKEN_2022_PROGRAM_ID
-  );
+  // const ata = getAssociatedTokenAddressSync(
+  //   mint.publicKey,
+  //   wallet.publicKey,
+  //   false,
+  //   TOKEN_2022_PROGRAM_ID
+  // );
 
-  instructions.push(
-    SystemProgram.createAccount({
-      fromPubkey: wallet.publicKey,
-      newAccountPubkey: mint.publicKey,
-      space: MINT_SIZE,
-      lamports: mintLamports,
-      programId: TOKEN_2022_PROGRAM_ID,
-    }),
-    createInitializeMint2Instruction(
-      mint.publicKey,
-      0,
-      wallet.publicKey,
-      wallet.publicKey,
-      TOKEN_2022_PROGRAM_ID
-    ),
-    createAssociatedTokenAccountInstruction(
-      wallet.publicKey,
-      ata,
-      wallet.publicKey,
-      mint.publicKey,
-      TOKEN_2022_PROGRAM_ID
-    ),
-    createMintToInstruction(
-      mint.publicKey,
-      ata,
-      wallet.publicKey,
-      1,
-      [],
-      TOKEN_2022_PROGRAM_ID
-    )
-  );
+  // instructions.push(
+  //   SystemProgram.createAccount({
+  //     fromPubkey: wallet.publicKey,
+  //     newAccountPubkey: mint.publicKey,
+  //     space: MINT_SIZE,
+  //     lamports: mintLamports,
+  //     programId: TOKEN_2022_PROGRAM_ID,
+  //   }),
+  //   createInitializeMint2Instruction(
+  //     mint.publicKey,
+  //     0,
+  //     wallet.publicKey,
+  //     wallet.publicKey,
+  //     TOKEN_2022_PROGRAM_ID
+  //   ),
+  //   createAssociatedTokenAccountInstruction(
+  //     wallet.publicKey,
+  //     ata,
+  //     wallet.publicKey,
+  //     mint.publicKey,
+  //     TOKEN_2022_PROGRAM_ID
+  //   ),
+  //   createMintToInstruction(
+  //     mint.publicKey,
+  //     ata,
+  //     wallet.publicKey,
+  //     1,
+  //     [],
+  //     TOKEN_2022_PROGRAM_ID
+  //   )
+  // );
 
   console.log("Creating instruction", assetType);
 
@@ -249,7 +271,7 @@ export const createMetadata = async (
   console.log("INSTRUCTION CREATED");
 
   data.push({
-    instructions,
+    instructions: [...txSetup.instructions,...instructions],
     description: `Create metadata`,
     signers,
   });
