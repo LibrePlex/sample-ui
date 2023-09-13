@@ -19,14 +19,13 @@ import {
 import {
   AssetDisplay,
   CopyPublicKeyButton,
-  IRpcObject,
-  LibreplexMetadata,
-} from "shared-ui";
+  IRpcObject
+} from  "@libreplex/shared-ui";
 
-import { AttributesDisplay } from "@/components/metadata/AttributesDisplay";
-import { SignersDisplay } from "@/components/metadata/SignersDisplay";
-import { InscriptionUploader } from "@/components/onft/InscriptionUploader";
-import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
+import { AttributesDisplay } from "@app/components/metadata/AttributesDisplay";
+import { SignersDisplay } from "@app/components/metadata/SignersDisplay";
+import { InscriptionUploader } from "@app/components/onft/InscriptionUploader";
+import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { Dispatch, SetStateAction, useContext, useMemo, useState } from "react";
@@ -36,11 +35,12 @@ import {
   ScannerLink,
   useGroupById,
   useInscriptionById,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
 import { RemoveGroupTransactionButton } from "./RemoveGroupTransactionButton";
+import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 

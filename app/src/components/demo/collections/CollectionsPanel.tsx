@@ -24,7 +24,7 @@ import {
   IRpcObject,
   decodeGroup,
   useGroupsByAuthority
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";

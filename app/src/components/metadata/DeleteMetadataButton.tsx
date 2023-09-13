@@ -6,13 +6,13 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { useContext } from "react";
-import { IRpcObject, Metadata, MetadataProgramContext, PROGRAM_ID_INSCRIPTIONS, getProgramInstanceMetadata } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+import { IRpcObject, Metadata, MetadataProgramContext, PROGRAM_ID_INSCRIPTIONS, getProgramInstanceMetadata } from  "@libreplex/shared-ui";
+import { IExecutorParams } from  "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
+} from  "@libreplex/shared-ui";
+import { ITransactionTemplate } from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 
 

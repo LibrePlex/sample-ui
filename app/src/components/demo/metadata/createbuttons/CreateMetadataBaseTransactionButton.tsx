@@ -1,4 +1,4 @@
-import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
+import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@app/environmentvariables";
 // import {
 //   MINT_SIZE,
 //   TOKEN_2022_PROGRAM_ID,
@@ -13,7 +13,7 @@ import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
 // runtime error: TypeError: (0 , _libreplex_sdk__WEBPACK_IMPORTED_MODULE_9__.setupLibreplexReadyMint) is not a function
 // import { setupLibreplexReadyMint } from "@libreplex/sdk"
 
-const setupLibreplexReadyMint = require("@libreplex/sdk").setupLibreplexReadyMint;
+import {setupLibreplexReadyMint} from "@libreplex/sdk";
 
 import {
   Connection,
@@ -27,16 +27,16 @@ import {
   GroupInput,
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceMetadata,
-} from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { IExecutorParams } from "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { ITransactionTemplate } from "@libreplex/shared-ui";
 
-import { getMetadataPda } from "shared-ui";
-import { notify } from "shared-ui";
+import { getMetadataPda } from "@libreplex/shared-ui";
+import { notify } from "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

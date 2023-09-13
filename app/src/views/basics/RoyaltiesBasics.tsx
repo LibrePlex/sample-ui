@@ -15,7 +15,7 @@ import {
   Tabs,
   UnorderedList,
 } from "@chakra-ui/react";
-import { StyledTabs } from "@/components/tabs/Tabs";
+import { StyledTabs } from "@app/components/tabs/Tabs";
 
 export const RoyaltiesBasics: FC = ({}) => {
   return (

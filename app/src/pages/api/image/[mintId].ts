@@ -1,5 +1,5 @@
-import { allowCors } from "@/api/middleware/allowCors";
-import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@/environmentvariables";
+import { allowCors } from "@app/api/middleware/allowCors";
+import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@app/environmentvariables";
 import { Wallet } from "@coral-xyz/anchor";
 import {
   Connection,
@@ -8,7 +8,6 @@ import {
   Transaction,
   VersionedTransaction,
 } from "@solana/web3.js";
-import { IMetadataJson } from "models/IMetadataJson";
 import { NextApiHandler } from "next";
 import {
   HttpClient,
@@ -20,9 +19,9 @@ import {
   getMetadataPda,
   getProgramInstanceInscriptions,
   getProgramInstanceMetadata,
-} from "shared-ui";
-import { decodeInscription } from "shared-ui";
-import { getAttrValue } from "utils/getAttrValue";
+} from "@libreplex/shared-ui";
+import { decodeInscription } from "@libreplex/shared-ui";
+
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;

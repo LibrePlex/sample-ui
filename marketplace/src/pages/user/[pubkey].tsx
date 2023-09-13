@@ -5,19 +5,17 @@ import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { HomeView } from "../../views";
 import { Box, Button, Center, Text } from "@chakra-ui/react";
 import {
-  ContextProvider,
   MintDisplay,
   usePublicKeyOrNull,
   useTokenAccountsByOwner,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useConnection } from "@solana/wallet-adapter-react";
 import { WalletGallery } from "../../components/gallery/wallet/WalletGallery";
-import { QueryClient, QueryClientProvider } from "react-query";
+
 import { useRouter } from "next/router";
 import { PublicKey } from "@solana/web3.js";
-import { ListMintTransactionButton } from "@/components/gallery/wallet/walletcard/ListMintTransactionButton";
-import { WalletAction } from "@/components/gallery/wallet/walletcard/WalletAction";
+import { WalletAction } from "@marketplace/components/gallery/wallet/walletcard/WalletAction";
 
 const Home: NextPage = (props) => {
   const router = useRouter();

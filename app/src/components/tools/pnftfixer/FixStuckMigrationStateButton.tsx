@@ -22,9 +22,9 @@ import { useState } from "react";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 
-import { notify } from "shared-ui";
+import { notify } from  "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

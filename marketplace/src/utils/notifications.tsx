@@ -1,4 +1,4 @@
-import {useNotificationStore} from "shared-ui";
+import {useNotificationStore} from  "@libreplex/shared-ui";
 
 export function notify(newNotification: {
   type?: string

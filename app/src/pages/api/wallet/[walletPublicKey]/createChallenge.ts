@@ -1,4 +1,4 @@
-import { JWT_SYSTEM_SIGNING_KEY } from "@/environmentvariables";
+import { JWT_SYSTEM_SIGNING_KEY } from "@app/environmentvariables";
 
 import Debug from "debug";
 import jwt from "jsonwebtoken";
@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import joi from "joi";
 const debug = Debug("lister:api");
 import crypto from "crypto";
-import { validateApi, HttpMethod } from "@/api/middleware/validateApi";
+import { validateApi, HttpMethod } from "@app/api/middleware/validateApi";
 
 
 

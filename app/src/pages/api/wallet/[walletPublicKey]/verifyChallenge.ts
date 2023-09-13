@@ -1,7 +1,7 @@
 import {
     COOKIE_KEY_AUTH,
     JWT_SYSTEM_SIGNING_KEY,
-  } from "@/environmentvariables";
+  } from "@app/environmentvariables";
   
   import bs58 from "bs58";
   import joi from "joi";
@@ -13,9 +13,9 @@ import {
   
   
   import Debug from "debug";
-import { ApiErrors } from "@/pages/api/ApiErrors";
+import { ApiErrors } from "@app/pages/api/ApiErrors";
 import { getAuthenticationMessage } from "./createChallenge";
-import {HttpMethod, validateApi} from "@/api/middleware/validateApi";
+import {HttpMethod, validateApi} from "@app/api/middleware/validateApi";
   
   const debug = Debug("api:authenticatedwallet");
   

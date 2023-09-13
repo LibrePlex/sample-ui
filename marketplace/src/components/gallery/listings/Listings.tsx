@@ -2,7 +2,7 @@ import { Box, Button, Center, HStack, Heading, VStack } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo, useState } from "react";
-import { IRpcObject, Listing, useAllListings } from "shared-ui";
+import { IRpcObject, Listing, useAllListings } from  "@libreplex/shared-ui";
 import { ShopOwnerContext } from "../../ShopOwnerContext";
 import { GroupDisplay } from "./groups/GroupDisplay";
 export const ListingGallery = () => {

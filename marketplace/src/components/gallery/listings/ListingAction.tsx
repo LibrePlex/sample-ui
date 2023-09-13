@@ -12,7 +12,7 @@ import {
   useGroupById,
   useMetadataByMintId,
   useTokenAccountById,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { DelistTransactionButton } from "./DelistTransactionButton";
 import { ExecuteTradeTransactionButton } from "./ExecuteTradeTransactionButton";
 import { useTokenAccountsForPurchase } from "./useTokenAccountForPurchase";

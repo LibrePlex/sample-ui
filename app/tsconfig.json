@@ -1,6 +1,6 @@
 {
+  "extends": "../tsconfig",
   "compilerOptions": {
-    "baseUrl": "./src",
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -14,32 +14,13 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noImplicitAny": false,
     "jsx": "preserve",
-    "incremental": true,
-    "rootDir": "./src",
-    "paths": {
-      "@/environmentvariables": [
-        "./environmentvariables.ts"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ],
-      "@/components/*": [
-        "./components/*"
-      ],
-      "@/views/*": [
-        "./views/*"
-      ],
-      "@/stores/*": [
-        "./stores/*"
-      ],
-      "@/api/*": [
-        "./api/*"
-      ]
-    }
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", ".next",],
+ 
+  "include": ["next-env.d.ts", "./app/src/**/*.ts", "./app/src/**/*.tsx"],
+  "exclude": ["node_modules", ".next"],
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "compilerOptions": {

@@ -7,7 +7,7 @@ export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
   
 
-import { IDL, LibreplexMetadata } from "../../types/libreplex_metadata";
+import { IDL} from "@libreplex/idls/lib/cjs/libreplex_metadata";
 import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =

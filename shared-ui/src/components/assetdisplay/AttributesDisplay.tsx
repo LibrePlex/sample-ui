@@ -1,6 +1,6 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { Group } from "../../sdk";
-import { Metadata } from "shared-ui";
+
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
 import React from "react";
 import { IRpcObject } from "..";

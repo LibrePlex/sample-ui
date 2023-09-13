@@ -3,7 +3,7 @@
 // const withPWA = require("next-pwa");
 const p = require("path");
 
-const withTM = require("next-transpile-modules")(["@libreplex/shared-ui"]);
+const withTM = require("next-transpile-modules")(["@libreplex/app"]);
 
 const nextConfig = {
   reactStrictMode: true,

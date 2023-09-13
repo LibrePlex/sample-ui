@@ -1,9 +1,9 @@
-import { MintCard } from "@/components/mintcard/MintCard";
+import { MintCard } from "@marketplace/components/mintcard/MintCard";
 import { HStack, Heading, Skeleton, VStack, Text } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import React from "react";
-import { IRpcObject, Listing, useGroupById } from "shared-ui";
+import { IRpcObject, Listing, useGroupById } from  "@libreplex/shared-ui";
 import { ListingAction } from "../ListingAction";
 
 export const GroupDisplay = ({

@@ -3,9 +3,9 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
-import { NavElement, NetworkSwitcherDynamic } from "shared-ui";
+import { NavElement, NetworkSwitcherDynamic } from  "@libreplex/shared-ui";
 import { Box, Button, Text, VStack, useColorMode } from "@chakra-ui/react";
-import { useAutoConnect } from "shared-ui";
+import { useAutoConnect } from  "@libreplex/shared-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 const WalletMultiButtonDynamic = dynamic(
   async () =>

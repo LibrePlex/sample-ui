@@ -5,7 +5,7 @@ import {
   Listing,
   useTokenAccountsByOwner,
   useUserSolBalanceStore,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";

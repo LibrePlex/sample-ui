@@ -97,7 +97,7 @@ export const useTokenAccountsByOwner = (
 ) => {
   const { fetcher, listener } = useMemo(
     () => owner ? fetchTokenAccountsByOwner(owner, connection, programId) : 
-    {fetcher: ()=>[], listener: {add: ()=>{}, remove: ()=>{}}},
+    {fetcher: ()=>[] as any[], listener: {add: ()=>{}, remove: ()=>{}}},
 
     [connection, owner, programId]
   );

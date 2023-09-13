@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@app/environmentvariables": ["app/src/environmentvariables.ts"],
+      "@app/pages/*": ["app/src/pages/*"],
+      "@app/components/*": ["app/src/components/*"],
+      "@app/views/*": ["app/src/views/*"],
+      "@app/stores/*": ["app/src/stores/*"],
+      "@app/api/*": ["app/src/api/*"],
+      "@app/utils/*": ["app/src/utils/*"],
+      "@app/models/*": ["app/src/models/*"],
+
+      "@marketplace/components/*": ["marketplace/src/components/*"],
+
+      "@shared-ui/contexts/*": ["shared-ui/src/contexts/*"],
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+}

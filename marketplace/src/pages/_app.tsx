@@ -11,7 +11,7 @@ import {
   ContextProvider,
   InscriptionsProgramProvider,
   Notifications,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import {
   LibrePlexShopProgramProvider, MetadataProgramProvider
 } from "shared-ui/src/anchor";

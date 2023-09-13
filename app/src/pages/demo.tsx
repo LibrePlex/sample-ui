@@ -1,10 +1,11 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
-import { Demo } from "@/components/demo/Demo";
+import { Demo } from "../components/demo/Demo";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useMemo } from "react";
+import React from "react";
 
 const DemoPage = () => {
   const queryClient = useMemo(() => new QueryClient({}), []);

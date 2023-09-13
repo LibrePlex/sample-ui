@@ -18,7 +18,7 @@ import {
 import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
 
 export const InscriptionStoreContext =
-  createContext<InscriptionWriteStore | null>(null);
+  createContext<InscriptionWriteStore>(undefined!);
 
 export const InscriptionStoreProvider = ({
   children,

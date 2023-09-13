@@ -15,8 +15,9 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "shared-ui";
-import { Group } from "shared-ui";
+import { CopyPublicKeyButton } from  "@libreplex/shared-ui";
+import { Group } from  "@libreplex/shared-ui";
+import React from "react";
 import { useState } from "react";
 
 export const RoyaltiesDialog = ({
@@ -27,15 +28,15 @@ export const RoyaltiesDialog = ({
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
-      {royalties.shares.length > 0 ? (
+      {(royalties?.shares.length ?? 0)> 0 ? (
         <>
           <Button
             onClick={() => {
               setOpen(true);
             }}
           >
-            Royalties: {(royalties?.bps / 100).toFixed(2)}% (
-            {royalties.shares.length})
+            Royalties: {((royalties?.bps ?? 0) / 100).toFixed(2)}% (
+            {(royalties?.shares?.length??0)})
           </Button>
           <Modal
             isOpen={open}
@@ -58,7 +59,7 @@ export const RoyaltiesDialog = ({
                     <Thead>
                       <Tr>
                         <Th colSpan={2}>
-                          Percentage: {(royalties?.bps / 100).toFixed(2)}%
+                          Percentage: {((royalties?.bps??0) / 100).toFixed(2)}%
                         </Th>
                       </Tr>
                     </Thead>
@@ -69,7 +70,7 @@ export const RoyaltiesDialog = ({
                       </Tr>
                     </Thead>
                     <Tbody>
-                      {royalties.shares.map((item, idx) => (
+                      {(royalties?.shares??[]).map((item, idx) => (
                         <Tr key={idx}>
                           <Td>
                             <CopyPublicKeyButton

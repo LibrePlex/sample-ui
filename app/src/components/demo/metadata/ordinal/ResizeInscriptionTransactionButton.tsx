@@ -5,17 +5,17 @@ import {
   SystemProgram,
   TransactionInstruction
 } from "@solana/web3.js";
-import { getProgramInstanceInscriptions } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+import { getProgramInstanceInscriptions } from  "@libreplex/shared-ui";
+import { IExecutorParams } from  "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "shared-ui";
-import { IRpcObject } from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
-import { Inscription } from "shared-ui";
+} from  "@libreplex/shared-ui";
+import { IRpcObject } from  "@libreplex/shared-ui";
+import { ITransactionTemplate } from  "@libreplex/shared-ui";
+import { Inscription } from  "@libreplex/shared-ui";
 
-import { notify } from "shared-ui";
+import { notify } from  "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

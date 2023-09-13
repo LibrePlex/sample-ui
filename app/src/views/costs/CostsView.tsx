@@ -1,30 +1,18 @@
-import { FC } from "react";
-import { SignMessage } from "../../components/SignMessage";
-import { SendTransaction } from "../../components/SendTransaction";
-import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
 import {
   Box,
   Center,
   Heading,
-  Link,
-  ListItem,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
   Table,
-  Tabs,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
-  Tr,
-  Text,
-  UnorderedList,
+  Tr
 } from "@chakra-ui/react";
-import { StyledTabs } from "@/components/tabs/Tabs";
+import { FC } from "react";
 import { MintTaxInfoDialog } from "./MintTaxInfoDialog";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import React from "react";
 
 export const CostsView: FC = ({}) => {
   return (
@@ -206,7 +194,6 @@ export const CostsView: FC = ({}) => {
                 </Td>
               </Tr>
 
-            
               <Tr>
                 <Td>License</Td>
 
@@ -218,7 +205,9 @@ export const CostsView: FC = ({}) => {
                     alignItems={"center"}
                   >
                     <Center>
-                      <Text sx={{ color: "lightgreen", fontWeight: "800" }}>MIT</Text>
+                      <Text sx={{ color: "lightgreen", fontWeight: "800" }}>
+                        MIT
+                      </Text>
                     </Center>
                   </Box>
                 </Td>

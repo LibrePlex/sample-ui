@@ -1,7 +1,7 @@
 import { HStack, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Dispatch, SetStateAction } from "react";
-import { Price } from "shared-ui";
+import { Price } from  "@libreplex/shared-ui";
 
 export const PriceSelector = ({
   price,

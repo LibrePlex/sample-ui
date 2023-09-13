@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@libreplex/shared-ui": "*",
     "@chakra-ui/react": "^2.7.1",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "20.3.1",

@@ -7,8 +7,8 @@ import {
   MetadataProgramContext,
   ScannerLink,
   useMetadataByMintId,
-} from "shared-ui";
-import { AssetDisplay } from "shared-ui";
+} from  "@libreplex/shared-ui";
+import { AssetDisplay } from  "@libreplex/shared-ui";
 
 export const MintCard = ({
   mint,

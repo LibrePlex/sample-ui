@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { CostsView } from "@/views/costs/CostsView";
+import { CostsView } from "../views/costs/CostsView";
+import React from "react";
 
 const Basics: NextPage = (props) => {
   return (
