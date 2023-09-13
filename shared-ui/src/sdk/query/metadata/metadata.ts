@@ -1,3 +1,4 @@
+import { IRpcObject } from '@libreplex/shared-ui/dist';
 
 import { LibreplexMetadata } from '@libreplex/idls/lib/types/libreplex_metadata';
 import {
@@ -22,7 +23,7 @@ import { useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
 import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
 import { Inscription, getBase64FromDatabytes } from '../inscriptions/inscriptions';
-import { IRpcObject } from 'index';
+
 
 export enum AssetType {
   None,

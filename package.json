@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "app",
-    "shared-ui"
+    "shared-ui",
+    "marketplace"
   ],
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -14,10 +15,7 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "lerna run clean && lerna run build",
-    "build2": "yarn --cwd solita solita && yarn --cwd sdk tsc && yarn --cwd app build",
-    "libreplex:deploy:devnet": "anchor build -p libreplex && anchor deploy -p libreplex --provider.cluster https://api.devnet.solana.com --provider.wallet ~/.config/solana/libreplex-deployer.json",
-    "libreplex:deploy:mainnet": "anchor build -p libreplex && anchor deploy -p libreplex --provider.cluster  https://api.mainnet-beta.solana.com --provider.wallet ~/.config/solana/libreplex-deployer.json"
+    "build": "lerna run clean && lerna run build"
   },
   "dependencies": {
     "@types/node": "20.2.3",

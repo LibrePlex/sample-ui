@@ -19,7 +19,7 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
-import { useUserSOLBalanceStore } from "shared-ui";
+import { useUserSOLBalanceStore } from  "@libreplex/shared-ui";
 import router from "next/router";
 
 const info = [

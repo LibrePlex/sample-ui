@@ -1,8 +1,8 @@
 import { Box, Center, Checkbox, Td, Text, Tr } from "@chakra-ui/react";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { Group, IRpcObject, getMetadataExtendedPda } from "shared-ui";
-import { Metadata, useMetadataById } from "shared-ui";
-import { CopyPublicKeyButton } from "shared-ui";
+import { Group, IRpcObject, getMetadataExtendedPda } from  "@libreplex/shared-ui";
+import { Metadata, useMetadataById } from  "@libreplex/shared-ui";
+import { CopyPublicKeyButton } from  "@libreplex/shared-ui";
 import { NftMetadataDisplay } from "./ExtendedMetadataDisplay";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useMemo } from "react";

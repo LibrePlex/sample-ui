@@ -15,8 +15,8 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton } from "shared-ui";
-import { Group } from "shared-ui";
+import { CopyPublicKeyButton } from  "@libreplex/shared-ui";
+import { Group } from  "@libreplex/shared-ui";
 import React from "react";
 import { useState } from "react";
 

@@ -10,7 +10,7 @@
     "declaration": true,
     "declarationMap": true,
     "strict": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "downlevelIteration": true,
     "sourceMap": true,

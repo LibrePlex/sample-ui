@@ -1,6 +1,6 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { Group, IRpcObject } from "shared-ui";
-import { Metadata } from "shared-ui";
+import { Group, IRpcObject } from  "@libreplex/shared-ui";
+import { Metadata } from  "@libreplex/shared-ui";
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
 
 export const AttributesDisplay = ({

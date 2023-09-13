@@ -24,12 +24,15 @@
       "@app/environmentvariables": ["app/src/environmentvariables.ts"],
       "@app/pages/*": ["app/src/pages/*"],
       "@app/components/*": ["app/src/components/*"],
-      "@app/views/*": ["./app/src/views/*"],
-      "@app/stores/*": ["./app/src/stores/*"],
-      "@app/api/*": ["./app/src/api/*"],
-      "@app/utils/*": ["./app/src/utils/*"],
-      "@app/models/*": ["./app/src/models/*"],
-      "@shared-ui/contexts/*": ["./shared-ui/src/contexts/*"],
+      "@app/views/*": ["app/src/views/*"],
+      "@app/stores/*": ["app/src/stores/*"],
+      "@app/api/*": ["app/src/api/*"],
+      "@app/utils/*": ["app/src/utils/*"],
+      "@app/models/*": ["app/src/models/*"],
+
+      "@marketplace/components/*": ["marketplace/src/components/*"],
+
+      "@shared-ui/contexts/*": ["shared-ui/src/contexts/*"],
     },
     "plugins": [
       {

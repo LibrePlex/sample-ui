@@ -20,7 +20,7 @@ import {
   AssetDisplay,
   CopyPublicKeyButton,
   IRpcObject
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 
 import { AttributesDisplay } from "@app/components/metadata/AttributesDisplay";
 import { SignersDisplay } from "@app/components/metadata/SignersDisplay";
@@ -35,7 +35,7 @@ import {
   ScannerLink,
   useGroupById,
   useInscriptionById,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";

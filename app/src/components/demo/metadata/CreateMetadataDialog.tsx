@@ -27,8 +27,8 @@ import {
   AssetType,
   CreateMetadataTransactionButton,
 } from "./createbuttons/CreateMetadataBaseTransactionButton";
-import { CopyPublicKeyButton,IRpcObject, MetadataProgramContext } from "shared-ui";
-import { GroupSelector } from "shared-ui";
+import { CopyPublicKeyButton,IRpcObject, MetadataProgramContext } from  "@libreplex/shared-ui";
+import { GroupSelector } from  "@libreplex/shared-ui";
 import React from "react";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";

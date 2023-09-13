@@ -4,7 +4,7 @@ import {
   Box
 } from "@chakra-ui/react";
 
-import { MetadataProgramProvider } from "shared-ui";
+import { MetadataProgramProvider } from  "@libreplex/shared-ui";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useMemo } from "react";
 import { LibreScanner } from "../components/demo/Scanner";

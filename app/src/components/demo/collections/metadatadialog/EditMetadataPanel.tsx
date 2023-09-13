@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Box, Button, Collapse, Heading, Stack, Text } from "@chakra-ui/react";
 
 
-import { IRpcObject } from "shared-ui";
+import { IRpcObject } from  "@libreplex/shared-ui";
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
 import { IdlAccounts } from "@coral-xyz/anchor";
 

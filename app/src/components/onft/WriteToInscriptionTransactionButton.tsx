@@ -21,7 +21,7 @@ import {
   getProgramInstanceInscriptions,
   getProgramInstanceMetadata,
   notify,
-} from "shared-ui";
+} from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 
 export enum AssetType {

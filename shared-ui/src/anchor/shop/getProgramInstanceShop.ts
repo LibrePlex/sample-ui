@@ -5,7 +5,7 @@ export const PROGRAM_ID_SHOP =
   "ListjawGEdhxuAErSyYwcTEGWQswFoi6FScnGG1RKSB";
 
 
-import {IDL} from "@libreplex/idls/lib/types/libreplex_shop"
+import {IDL} from "@libreplex/idls/lib/cjs/libreplex_shop"
 export function getProgramInstanceShop(
   connection: Connection,
   wallet: any
