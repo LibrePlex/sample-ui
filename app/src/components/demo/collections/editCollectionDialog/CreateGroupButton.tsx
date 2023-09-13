@@ -10,9 +10,11 @@ import {
 import {
   AttributeType, GenericTransactionButton,
   GenericTransactionButtonProps, IExecutorParams, ITransactionTemplate, getProgramInstanceMetadata
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 
-import { LibreplexMetadata, getGroupPda, getPermissionsPda, notify } from "shared-ui";
+import {getGroupPda, getPermissionsPda, notify } from "@libreplex/shared-ui";
+
+import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
 
 export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
 

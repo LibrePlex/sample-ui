@@ -1,5 +1,5 @@
 import { Button, Collapse } from "@chakra-ui/react";
-import { Group, IRpcObject } from "shared-ui";
+import { Group, IRpcObject } from "@libreplex/shared-ui";
 import { useState } from "react";
 import { AttributesDisplay } from "./AttributesDisplay";
 

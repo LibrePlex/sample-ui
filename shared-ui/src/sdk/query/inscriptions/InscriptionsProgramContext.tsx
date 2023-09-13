@@ -8,7 +8,8 @@ import { getProgramInstanceInscriptions } from "./getProgramInstanceInscriptions
 import { InscriptionStoreProvider } from "./InscriptionStoreContext";
 
 import { LibreWallet } from "../../../anchor/metadata/MetadataProgramContext";
-import { LibreplexInscriptions } from "../../../types";
+
+import { LibreplexInscriptions } from "@libreplex/idls/lib/types/libreplex_inscriptions";
 
 
 export const InscriptionsProgramContext = createContext<

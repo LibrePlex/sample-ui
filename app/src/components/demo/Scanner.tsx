@@ -18,7 +18,7 @@ import {
   useGroupById,
   useMetadataByMintId,
   usePublicKeyOrNull
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/router";

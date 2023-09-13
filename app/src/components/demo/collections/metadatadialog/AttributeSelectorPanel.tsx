@@ -1,8 +1,8 @@
 import { Box, Table, Td, Text, Thead } from "@chakra-ui/react";
-import { LibreplexMetadata, IRpcObject, Group } from "shared-ui";
+import {IRpcObject, Group } from "@libreplex/shared-ui";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { AttributeSelectorRow } from "./AttributeSelectorRow";
-import { IdlAccounts } from "@coral-xyz/anchor";
+
 
 
 

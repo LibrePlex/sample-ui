@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -15,33 +18,44 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "rootDir": "./src",
+    "baseUrl": "./src",
     "paths": {
-      "@/environmentvariables": [
-        "./environmentvariables.ts"
-      ],
-      "@/pages/*": [
-        "./pages/*"
-      ],
       "@/components/*": [
         "./components/*"
-      ],
-      "@/views/*": [
-        "./views/*"
-      ],
-      "@/stores/*": [
-        "./stores/*"
-      ],
-      "@/api/*": [
-        "./api/*"
       ]
-    }
+      // "@/environmentvariables": [
+      //   "./src/app/environmentvariables.ts"
+      // ],
+      // "@/pages/*": [
+      //   "./src/app/pages/*"
+      // ],
+      // "@/views/*": [
+      //   "./src/app/views/*"
+      // ],
+      // "@/stores/*": [
+      //   "./src/app/stores/*"
+      // ],
+      // "@/api/*": [
+      //   "./src/app/api/*"
+      // ]
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", ".next",],
+  "include": [
+    "next-env.d.ts",
+    "./app/src/**/*.ts",
+    "./app/src/**/*.tsx",
+    "../shared-ui/src/**/*.tsx",
+    "../shared-ui/src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ],
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
+    "require": [
+      "tsconfig-paths/register"
+    ],
     "compilerOptions": {
       "module": "commonjs"
     }

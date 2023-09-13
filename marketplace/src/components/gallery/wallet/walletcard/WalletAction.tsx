@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import {
   IRpcObject,
   Price
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 import { ListMintTransactionButton } from "./ListMintTransactionButton";
 
 export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {

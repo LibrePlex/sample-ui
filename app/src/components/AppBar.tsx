@@ -3,10 +3,10 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
-import { NetworkSwitcherDynamic } from "shared-ui";
+import { NetworkSwitcherDynamic } from "@libreplex/shared-ui";
 import { NavElement } from "./navelement";
 import { Box, Button, Text, VStack, useColorMode } from "@chakra-ui/react";
-import { useAutoConnect } from "shared-ui";
+import { useAutoConnect } from "@libreplex/shared-ui";
 import queryString from 'query-string'
 import { useRouter } from "next/router";
 

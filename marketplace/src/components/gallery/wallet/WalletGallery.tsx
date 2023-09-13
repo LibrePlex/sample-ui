@@ -3,7 +3,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
 
-import { useGroupedMetadataByOwner } from "shared-ui";
+import { useGroupedMetadataByOwner } from "@libreplex/shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
 export const WalletGallery = ({ publicKey, onSelectMint }: { 
   onSelectMint: (mint: PublicKey) => any,

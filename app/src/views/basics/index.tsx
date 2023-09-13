@@ -1,7 +1,5 @@
 import { FC } from "react";
-import { SignMessage } from "../../components/SignMessage";
-import { SendTransaction } from "../../components/SendTransaction";
-import { SendVersionedTransaction } from "../../components/SendVersionedTransaction";
+
 import {
   Box,
   ListItem,
@@ -17,6 +15,7 @@ import { MetadataBasics } from "./MetadataBasics";
 import { CollectionBasics } from "./CollectionBasics";
 import { RoyaltiesBasics } from "./RoyaltiesBasics";
 import { CreatorVerificationBasics } from "./CreatorVerificationBasics";
+import React from "react";
 
 export const BasicsView: FC = ({}) => {
   return (

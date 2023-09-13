@@ -24,11 +24,11 @@ import {
   Listing,
   Metadata,
   getProgramInstanceShop,
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 
 import { RawAccount } from "@solana/spl-token";
 
-import { Price, notify } from "shared-ui";
+import { Price, notify } from "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

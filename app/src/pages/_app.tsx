@@ -12,8 +12,8 @@ import {
   InscriptionsProgramProvider,
   MetadataProgramProvider,
   Notifications,
-} from "shared-ui";
-import { ContextProvider } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { ContextProvider } from "@libreplex/shared-ui";
 import { ContentContainer } from "../components/ContentContainer";
 
 require("@solana/wallet-adapter-react-ui/styles.css");

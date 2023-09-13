@@ -1,4 +1,4 @@
-import { AttributeValue } from "shared-ui"
+import { AttributeValue } from "@libreplex/shared-ui"
 
 export const getAttrValue = (attr: AttributeValue) => {
     return !attr ? '' : attr.u8 ?  attr.u8.value

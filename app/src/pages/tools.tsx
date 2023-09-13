@@ -2,6 +2,7 @@
 
 import { Tools } from "@/components/tools/Tools";
 import { Box } from "@chakra-ui/react";
+import React from "react";
 import { useMemo } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 

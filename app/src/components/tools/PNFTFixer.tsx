@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext, useMemo, useState } from "react";
-import { useTokenAccountsByOwner } from "shared-ui";
+import { useTokenAccountsByOwner } from "@libreplex/shared-ui";
 import { TokenAccountDisplay } from "./TokenAccountDisplay";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useRouter } from "next/router";

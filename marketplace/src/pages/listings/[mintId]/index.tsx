@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo } from "react";
-import { MintDisplay, usePublicKeyOrNull } from "shared-ui";
+import { MintDisplay, usePublicKeyOrNull } from "@libreplex/shared-ui";
 const Home: NextPage = (props) => {
   const router = useRouter();
 

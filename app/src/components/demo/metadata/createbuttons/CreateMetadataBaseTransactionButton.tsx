@@ -27,16 +27,16 @@ import {
   GroupInput,
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceMetadata,
-} from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { IExecutorParams } from "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { ITransactionTemplate } from "@libreplex/shared-ui";
 
-import { getMetadataPda } from "shared-ui";
-import { notify } from "shared-ui";
+import { getMetadataPda } from "@libreplex/shared-ui";
+import { notify } from "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

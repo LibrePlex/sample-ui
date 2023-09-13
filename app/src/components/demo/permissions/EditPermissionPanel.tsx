@@ -21,8 +21,8 @@ import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { RoyaltyShare } from "shared-ui";
-import { abbreviateKey } from "shared-ui";
+import { RoyaltyShare } from "@libreplex/shared-ui";
+import { abbreviateKey } from "@libreplex/shared-ui";
 import { CreateCollectionTransactionButton } from "./CreatePermissionButton";
 import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
 

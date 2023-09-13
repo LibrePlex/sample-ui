@@ -20,13 +20,13 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useContext, useMemo, useState } from "react";
 
-import { Group, IRpcObject, MetadataProgramContext } from "shared-ui";
-import { Metadata } from "shared-ui";
+import { Group, IRpcObject, MetadataProgramContext } from "@libreplex/shared-ui";
+import { Metadata } from "@libreplex/shared-ui";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
 import { MetadataRow } from "./MetadataRow";
 import { DeleteMetadataButton } from "@/components/metadata/DeleteMetadataButton";
-import { useMetadataByAuthority } from "shared-ui";
+import { useMetadataByAuthority } from "@libreplex/shared-ui";
 
 export const BaseMetadataPanel = () => {
   const { publicKey } = useWallet();

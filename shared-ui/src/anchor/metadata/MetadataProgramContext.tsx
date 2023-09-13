@@ -10,12 +10,12 @@ import { ReactNode, createContext, useEffect, useRef, useState } from "react";
 import { getProgramInstanceMetadata } from "./getProgramInstanceMetadata";
 import React from "react";
 import { PublicKey } from "@solana/web3.js";
-import { LibreplexMetadata } from "../../types/libreplex_metadata";
 import { StoreApi } from "zustand";
 import {
   DeletedKeysState,
   createDeletedKeyStore,
 } from "../../stores/deletedKeyStore";
+import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
 
 export const MetadataProgramContext = createContext<{
   program: Program<LibreplexMetadata>;

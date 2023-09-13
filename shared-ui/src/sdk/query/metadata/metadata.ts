@@ -1,3 +1,4 @@
+import { LibreplexMetadata } from '@libreplex/idls/lib/types/libreplex_metadata';
 import {
   IMetadataJson,
   hydrateMetadataWithJson,
@@ -8,7 +9,6 @@ import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { MetadataProgramContext } from "../../../anchor/metadata/MetadataProgramContext";
 import { useContext, useMemo, useEffect, useState } from "react";
-import { LibreplexMetadata as Libreplex, LibreplexMetadata } from "../../../types/libreplex_metadata";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { sha256 } from "js-sha256";
@@ -22,8 +22,8 @@ import {
   IRpcObject,
   Inscription,
   getBase64FromDatabytes,
-} from "shared-ui";
-import { useMultipleMetadataById as useMultipleMetadataById } from "./useMultipleMetadataById";
+} from "@libreplex/shared-ui";
+import { useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
 import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
 
@@ -39,7 +39,7 @@ export enum AssetType {
 
 export type Asset = IdlTypes<LibreplexMetadata>["Asset"];
 
-export type Metadata = IdlAccounts<Libreplex>["metadata"];
+export type Metadata = IdlAccounts<LibreplexMetadata>["metadata"];
 
 export const decodeMetadata =
   (program: Program<LibreplexMetadata>) =>

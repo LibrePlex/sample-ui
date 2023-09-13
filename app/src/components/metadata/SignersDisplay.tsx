@@ -1,7 +1,7 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { CopyPublicKeyButton, IRpcObject } from "shared-ui";
-import { Group } from "shared-ui";
+import { CopyPublicKeyButton, IRpcObject } from "@libreplex/shared-ui";
+import { Group } from "@libreplex/shared-ui";
 
 export const SignersDisplay = ({
   signers,

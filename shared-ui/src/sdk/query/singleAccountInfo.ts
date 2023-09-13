@@ -8,7 +8,7 @@ import {
 import { IRpcObject } from "../../components/executor/IRpcObject";
 import { useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
-import { BufferingConnection } from "shared-ui";
+import { BufferingConnection } from "@libreplex/shared-ui";
 
 export type DecodeType<T extends unknown, P extends Idl> = (
   buf: Buffer,

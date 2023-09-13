@@ -14,7 +14,7 @@ import {
   import { RawAccount } from "@solana/spl-token";
 
   import React, { useState } from "react";
-  import { Group, GroupSelector, IRpcObject, Metadata } from "shared-ui";
+  import { Group, GroupSelector, IRpcObject, Metadata } from "@libreplex/shared-ui";
 import { WalletAction } from "./WalletAction";
   
   export const CreateListingModal = ({item}:{item: IRpcObject<RawAccount>}) => {

@@ -4,22 +4,22 @@ import { MetadataProgramContext } from "../../../anchor/metadata/MetadataProgram
 import bs58 from "bs58";
 import { sha256 } from "js-sha256";
 import { useContext, useEffect, useMemo } from "react";
-import { LibreplexMetadata as Libreplex, LibreplexMetadata } from "../../../types/libreplex_metadata";
 import BN from "bn.js";
 import { useGpa } from "../gpa";
 import { useFetchSingleAccount } from "../singleAccountInfo";
+import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
 // import { Royalties } from "./metadata";
 
-export type Group = IdlAccounts<Libreplex>["group"];
+export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
-export type GroupInput = IdlTypes<Libreplex>["GroupInput"];
+export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
 
-export type PermittedSigners = IdlTypes<Libreplex>["Royalties"];
+export type PermittedSigners = IdlTypes<LibreplexMetadata>["Royalties"];
 
-export type AttributeValue = IdlTypes<Libreplex>["AttributeValue"];
+export type AttributeValue = IdlTypes<LibreplexMetadata>["AttributeValue"];
 
 
-export type RoyaltyShare = IdlTypes<Libreplex>["RoyaltyShare"];
+export type RoyaltyShare = IdlTypes<LibreplexMetadata>["RoyaltyShare"];
 
 
 // export type TemplateConfiguration =

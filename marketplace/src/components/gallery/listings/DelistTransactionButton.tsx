@@ -22,11 +22,11 @@ import {
   ITransactionTemplate,
   Listing,
   getProgramInstanceShop,
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 
 import { RawAccount } from "@solana/spl-token";
 
-import {  notify } from "shared-ui";
+import {  notify } from "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,

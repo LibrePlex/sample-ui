@@ -1,42 +1,25 @@
 // Next, React
-import { FC, useEffect, useState } from "react";
-import Link from "next/link";
+import { FC, useEffect } from "react";
 
 // Wallet
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 // Components
-import { RequestAirdrop } from "../../components/RequestAirdrop";
 
 // Store
-import {useUserSOLBalanceStore} from "shared-ui";
+import Background from "@/components/Background";
+import { WhatMakesGreatGrid } from "@/components/tables/WhatMakesGreatGrid";
 import {
   Box,
   Button,
-  Card,
-  Container,
   Grid,
   GridItem,
   Heading,
-  Image,
-  LinkBox,
-  LinkOverlay,
-  Spacer,
   Stack,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
-import Background from "@/components/Background";
-import { WhatMakesGreatGrid } from "@/components/tables/WhatMakesGreatGrid";
+import { useUserSOLBalanceStore } from "@libreplex/shared-ui";
 import router from "next/router";
 
 const info = [
@@ -67,7 +50,7 @@ const info = [
   },
 ];
 
-export const HomeView: FC = ({ }) => {
+export const HomeView: FC = ({}) => {
   const wallet = useWallet();
   const { connection } = useConnection();
   const handleClickCosts = () => {
@@ -94,7 +77,7 @@ export const HomeView: FC = ({ }) => {
               templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(1, 1fr)" }}
               mt={"5.5vh"}
               gap={4}
-            // mb={10}
+              // mb={10}
             >
               {/* <GridItem
                 colSpan={{ base: 0, md: 1 }}
@@ -130,25 +113,22 @@ export const HomeView: FC = ({ }) => {
               </GridItem>
             </Grid>
           </Box>{" "}
-
-          <Box
-            maxW="80vw"
-          >
+          <Box maxW="80vw">
             <Box
               sx={{
-                '&::-webkit-scrollbar': {
-                  width: '10px !important',
-                  height: "3px !important"
+                "&::-webkit-scrollbar": {
+                  width: "10px !important",
+                  height: "3px !important",
                 },
-                '&::-webkit-scrollbar-thumb': {
+                "&::-webkit-scrollbar-thumb": {
                   background: "grey",
-                  borderRadius: '24px',
-                  padding: "23px !important"
+                  borderRadius: "24px",
+                  padding: "23px !important",
                 },
-                '&::-webkit-scrollbar-button': {
+                "&::-webkit-scrollbar-button": {
                   margin: "23px 0",
                   padding: "23px",
-                }
+                },
               }}
               className="mockup-code bg-primary border-2 border-[#FFFFFF9f] p-6 px-10 my-2"
             >
@@ -174,9 +154,9 @@ export const HomeView: FC = ({ }) => {
           <Heading size="2xl">The Mission.</Heading>
           <Box mt={2} sx={{ maxWidth: "700px" }}>
             <Text fontSize={"md"} color={"gray.100"}>
-              To provide a community-driven, open
-              license protocol to the Solana SPL Token and NFT community. The
-              protocol must meet the following criteria:
+              To provide a community-driven, open license protocol to the Solana
+              SPL Token and NFT community. The protocol must meet the following
+              criteria:
             </Text>
           </Box>
           <Box width={"100%"} mt={5}>
@@ -335,6 +315,6 @@ export const HomeView: FC = ({ }) => {
           </Grid>
         </Box>
       </div>
-    </div >
+    </div>
   );
 };

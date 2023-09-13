@@ -5,13 +5,13 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { getGroupPda, getProgramInstanceMetadata } from "shared-ui";
-import { IExecutorParams } from "shared-ui";
+import { getGroupPda, getProgramInstanceMetadata } from "@libreplex/shared-ui";
+import { IExecutorParams } from "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "shared-ui";
-import { ITransactionTemplate } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { ITransactionTemplate } from "@libreplex/shared-ui";
 
 
 export interface INftCollectionData {

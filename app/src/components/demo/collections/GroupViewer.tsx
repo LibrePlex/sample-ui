@@ -10,7 +10,7 @@ import {
   Thead,
   Tr
 } from "@chakra-ui/react";
-import { Group, IRpcObject, Metadata, useMetadataByGroup } from "shared-ui";
+import { Group, IRpcObject, Metadata, useMetadataByGroup } from "@libreplex/shared-ui";
 import {
   Dispatch,
   SetStateAction,

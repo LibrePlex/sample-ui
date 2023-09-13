@@ -12,9 +12,6 @@ export {
   useUserSOLBalanceStore,
 
 } from "./stores";
-export type { LibreplexMetadata } from "./types/libreplex_metadata";
-
-export type {LibreplexInscriptions} from "./types/libreplex_inscriptions"
 
 export {
   MetadataProgramContext,

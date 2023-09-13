@@ -20,8 +20,8 @@ import {
   getMetadataPda,
   getProgramInstanceInscriptions,
   getProgramInstanceMetadata,
-} from "shared-ui";
-import { decodeInscription } from "shared-ui";
+} from "@libreplex/shared-ui";
+import { decodeInscription } from "@libreplex/shared-ui";
 import { getAttrValue } from "utils/getAttrValue";
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {

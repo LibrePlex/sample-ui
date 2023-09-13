@@ -1,7 +1,10 @@
 {
-  "name": "@libreplex/app",
+  "name": "app",
   "version": "0.2.0",
   "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,6 +19,7 @@
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^1.0.5",
+    "@libreplex/idls": "^0.1.5",
     "@libreplex/sdk": "^0.1.20",
     "@metaplex-foundation/js": "0.18.3",
     "@noble/ed25519": "^1.7.1",
@@ -67,5 +71,12 @@
   },
   "engines": {
     "node": ">=16"
+  },
+  "resolutions": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.9",
+    "@coral-xyz/anchor": "^0.28.0"
   }
 }

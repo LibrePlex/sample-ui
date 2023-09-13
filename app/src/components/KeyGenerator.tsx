@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { CopyPublicKeyButton } from "shared-ui";
+import { CopyPublicKeyButton } from "@libreplex/shared-ui";
 import { Keypair } from "@solana/web3.js";
 
 export const KeyGenerator = ({

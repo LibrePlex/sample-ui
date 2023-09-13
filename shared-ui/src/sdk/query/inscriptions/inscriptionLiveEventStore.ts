@@ -1,5 +1,6 @@
 import { Program } from "@coral-xyz/anchor";
-import { LibreplexInscriptions } from "shared-ui";
+
+import { LibreplexInscriptions } from "@libreplex/idls/lib/types/libreplex_inscriptions";
 import { createStore } from "zustand";
 
 interface InscriptionWrites {

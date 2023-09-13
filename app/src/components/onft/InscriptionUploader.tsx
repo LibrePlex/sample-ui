@@ -8,7 +8,7 @@ import {
   InscriptionStoreContext,
   Metadata,
   getBase64FromDatabytes
-} from "shared-ui";
+} from "@libreplex/shared-ui";
 import { useStore } from "zustand";
 import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
 

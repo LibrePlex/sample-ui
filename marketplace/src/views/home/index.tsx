@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import Background from "../../components/Background";
 import router from "next/router";
-import {useUserSolBalanceStore} from "shared-ui";
+import {useUserSolBalanceStore} from "@libreplex/shared-ui";
 import React from "react";
 
 const info = [
