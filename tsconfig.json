@@ -19,35 +19,17 @@
     "jsx": "preserve",
     "incremental": true,
     "rootDir": ".",
-    "isolatedModules": true,
+    "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "./app/src/components/*"
-      ],
-      "@/environmentvariables": [
-        "./app/src/environmentvariables.ts"
-      ],
-      "@/pages/*": [
-        "./app/src/pages/*"
-      ],
-      "@/views/*": [
-        "./app/src/views/*"
-      ],
-      "@/stores/*": [
-        "./app/src/stores/*"
-      ],
-      "@/api/*": [
-        "./app/src/api/*"
-      ],
-      "@/utils/*": [
-        "./app/src/utils/*"
-      ],
-      "@/models/*": [
-        "./app/src/models/*"
-      ],
-      "@/hooks/*": [
-        "./app/src/hooks/*"
-      ]
+      "@app/environmentvariables": ["app/src/environmentvariables.ts"],
+      "@app/pages/*": ["app/src/pages/*"],
+      "@app/components/*": ["app/src/components/*"],
+      "@app/views/*": ["./app/src/views/*"],
+      "@app/stores/*": ["./app/src/stores/*"],
+      "@app/api/*": ["./app/src/api/*"],
+      "@app/utils/*": ["./app/src/utils/*"],
+      "@app/models/*": ["./app/src/models/*"],
+      "@shared-ui/contexts/*": ["./shared-ui/src/contexts/*"],
     },
     "plugins": [
       {

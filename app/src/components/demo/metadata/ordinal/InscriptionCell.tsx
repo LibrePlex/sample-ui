@@ -1,7 +1,7 @@
 
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useContext } from "react";
-import { IRpcObject, Inscription } from "@libreplex/shared-ui";
+import { IRpcObject, Inscription } from "shared-ui";
 import { useStore } from "zustand";
 import {InscriptionStoreContext} from "shared-ui"
 import React from "react";

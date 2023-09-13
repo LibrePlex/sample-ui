@@ -11,7 +11,7 @@ import {
     SolscanLink,
     useLegacyMetadataByMintId,
     useLegacyTokenRecordByTokenAccount
-} from "@libreplex/shared-ui";
+} from "shared-ui";
 import { FixStuckMigrationStateButton } from "./pnftfixer/FixStuckMigrationStateButton";
 export const TokenAccountDisplay = ({
   tokenAccount,

@@ -6,12 +6,12 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import {
   COOKIE_KEY_AUTH,
   JWT_SYSTEM_SIGNING_KEY,
-} from "@/environmentvariables";
+} from "@app/environmentvariables";
 
 
 import jwtDecode from "jsonwebtoken";
 import { HttpMethod } from "./validateApi";
-import { ApiErrors } from "@/pages/api/ApiErrors";
+import { ApiErrors } from "@app/pages/api/ApiErrors";
 
 const debug = Debug("lister:api:middleware");
 

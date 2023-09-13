@@ -7,8 +7,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 // Components
 
 // Store
-import Background from "@/components/Background";
-import { WhatMakesGreatGrid } from "@/components/tables/WhatMakesGreatGrid";
+import Background from "@app/components/Background";
+import { WhatMakesGreatGrid } from "@app/components/tables/WhatMakesGreatGrid";
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
-import { useUserSOLBalanceStore } from "@libreplex/shared-ui";
+import { useUserSOLBalanceStore } from "shared-ui";
 import router from "next/router";
 
 const info = [

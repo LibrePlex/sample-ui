@@ -10,7 +10,7 @@ import {
   Tabs,
   UnorderedList,
 } from "@chakra-ui/react";
-import { StyledTabs } from "@/components/tabs/Tabs";
+import { StyledTabs } from "@app/components/tabs/Tabs";
 import { MetadataBasics } from "./MetadataBasics";
 import { CollectionBasics } from "./CollectionBasics";
 import { RoyaltiesBasics } from "./RoyaltiesBasics";

@@ -1,5 +1,5 @@
-import { allowCors } from "@/api/middleware/allowCors";
-import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@/environmentvariables";
+import { allowCors } from "@app/api/middleware/allowCors";
+import { DEVNET_URL, LOCALNET_URL, MAINNET_URL } from "@app/environmentvariables";
 import { Wallet } from "@coral-xyz/anchor";
 import {
   Connection,

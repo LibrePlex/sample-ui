@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { usePublicKeyOrNull } from "../../../../hooks/usePublicKeyOrNull";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { abbreviateKey } from "@libreplex/shared-ui";
+import { abbreviateKey } from "shared-ui";
 import { IdlTypes } from "@coral-xyz/anchor";
 
 import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"

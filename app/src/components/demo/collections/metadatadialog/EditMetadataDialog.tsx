@@ -8,7 +8,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { EditMetadataPanel } from "./EditMetadataPanel";
-import { Group, IRpcObject } from "@libreplex/shared-ui";
+import { Group, IRpcObject } from "shared-ui";
 
 export const EditMetadataDialog = ({
   open,

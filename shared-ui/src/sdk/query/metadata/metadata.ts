@@ -1,3 +1,4 @@
+
 import { LibreplexMetadata } from '@libreplex/idls/lib/types/libreplex_metadata';
 import {
   IMetadataJson,
@@ -15,17 +16,13 @@ import { sha256 } from "js-sha256";
 import { useGpa } from "../gpa";
 import { getMetadataPda } from "../../../pdas";
 import { useTokenAccountsByOwner } from "../tokenaccountsbyowner";
-import { AttributeType, Group } from "./group";
+import { Group } from "./group";
 
-import {
-  BufferingConnection,
-  IRpcObject,
-  Inscription,
-  getBase64FromDatabytes,
-} from "@libreplex/shared-ui";
 import { useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
 import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
+import { Inscription, getBase64FromDatabytes } from '../inscriptions/inscriptions';
+import { IRpcObject } from 'index';
 
 export enum AssetType {
   None,

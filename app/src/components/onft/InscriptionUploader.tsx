@@ -1,5 +1,5 @@
-import { ResizeInscriptionTransactionButton } from "@/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
-import { ImageSelector } from "@/components/shadowdrive/ImageSelector";
+import { ResizeInscriptionTransactionButton } from "@app/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
+import { ImageSelector } from "@app/components/shadowdrive/ImageSelector";
 import { Alert, Box, BoxProps, Button, Text } from "@chakra-ui/react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import {
@@ -8,7 +8,7 @@ import {
   InscriptionStoreContext,
   Metadata,
   getBase64FromDatabytes
-} from "@libreplex/shared-ui";
+} from "shared-ui";
 import { useStore } from "zustand";
 import { WriteToInscriptionTransactionButton } from "./WriteToInscriptionTransactionButton";
 

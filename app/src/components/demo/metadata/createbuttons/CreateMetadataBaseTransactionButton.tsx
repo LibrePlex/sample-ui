@@ -1,4 +1,4 @@
-import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@/environmentvariables";
+import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@app/environmentvariables";
 // import {
 //   MINT_SIZE,
 //   TOKEN_2022_PROGRAM_ID,
@@ -27,16 +27,16 @@ import {
   GroupInput,
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceMetadata,
-} from "@libreplex/shared-ui";
-import { IExecutorParams } from "@libreplex/shared-ui";
+} from "shared-ui";
+import { IExecutorParams } from "shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from "@libreplex/shared-ui";
-import { ITransactionTemplate } from "@libreplex/shared-ui";
+} from "shared-ui";
+import { ITransactionTemplate } from "shared-ui";
 
-import { getMetadataPda } from "@libreplex/shared-ui";
-import { notify } from "@libreplex/shared-ui";
+import { getMetadataPda } from "shared-ui";
+import { notify } from "shared-ui";
 
 export enum AssetType {
   Image,

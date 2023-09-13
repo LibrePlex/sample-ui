@@ -15,10 +15,10 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Group } from "@libreplex/shared-ui";
+import { Group } from "shared-ui";
 import { useState } from "react";
 // import { getAttrValue } from "./editCollectionDialog/AttributeTypeRow";
-import { AttributeType } from "@libreplex/shared-ui";
+import { AttributeType } from "shared-ui";
 import React from "react";
 
 export const AttributesDialog = ({

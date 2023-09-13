@@ -157,7 +157,7 @@ export class Executor<P> {
     }
     return {
       blockhash,
-      signedTransactions: signedTransactions.map((item, idx) => ({
+      signedTransactions: signedTransactions.map((item: Transaction, idx: number) => ({
         transaction: item,
         description: transactions[idx].description,
       })),

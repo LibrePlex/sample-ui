@@ -4,7 +4,7 @@ import { Button, ButtonProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { EditMetadataDialog } from "./EditMetadataDialog";
 
-import { Group, IRpcObject } from "@libreplex/shared-ui";
+import { Group, IRpcObject } from "shared-ui";
 import React from "react";
 
 export const AddMetadataButton = ({

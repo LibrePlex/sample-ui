@@ -8,11 +8,11 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton, Group, MetadataProgramContext } from "@libreplex/shared-ui";
-import { IRpcObject } from "@libreplex/shared-ui";
+import { CopyPublicKeyButton, Group, MetadataProgramContext } from "shared-ui";
+import { IRpcObject } from "shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
-import { ImageUploader } from "@/components/shadowdrive/ImageUploader";
+import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
 import { Dispatch, SetStateAction, useContext } from "react";
 
 import { AttributesDialog } from "./AttributesDialog";

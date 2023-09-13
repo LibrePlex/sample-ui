@@ -13,7 +13,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Group } from "@libreplex/shared-ui";
+import { Group } from "shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 // import { AttributeTypeRow } from "./AttributeTypeRow";
 import { AddIcon, CalendarIcon } from "@chakra-ui/icons";

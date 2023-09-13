@@ -22,7 +22,7 @@ import {
   useMetadataById,
   useNetworkConfiguration,
   usePublicKeyOrNull,
-} from "@libreplex/shared-ui";
+} from "shared-ui";
 
 export const JsonViewer = ({obj}:{obj: any}) => {
 

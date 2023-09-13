@@ -3,7 +3,7 @@ import { verify } from '@noble/ed25519';
 import { useWallet } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
 import { FC, useCallback } from 'react';
-import { notify } from "@libreplex/shared-ui";
+import { notify } from "shared-ui";
 
 export const SignMessage: FC = () => {
     const { publicKey, signMessage } = useWallet();

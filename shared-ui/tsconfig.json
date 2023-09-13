@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig",
   "compilerOptions": {
     "outDir": "./dist",
     "module": "CommonJS",
@@ -17,19 +18,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "rootDir": "./src",
-    "baseUrl": "./src",
-    "paths": {
-      "@target": [
-        "./target/*"
-      ],
-      "@/components": [
-        "./components/*"
-      ],
-      "types": [
-        "./types/*"
-      ]
-    }
+    "baseUrl": "./src"
   },
   "include": [
     "next-env.d.ts",
