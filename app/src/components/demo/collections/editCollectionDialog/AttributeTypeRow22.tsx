@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { MinusIcon } from "@chakra-ui/icons";
 import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
 import { Group } from "@libreplex/shared-ui";
-import { getAttrValue } from "utils/getAttrValue";
+import { getAttrValue } from "@/utils/getAttrValue";
 
 
 

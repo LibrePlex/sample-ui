@@ -18,35 +18,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./src",
-    "paths": {
-      "@/components/*": [
-        "./components/*"
-      ]
-      // "@/environmentvariables": [
-      //   "./src/app/environmentvariables.ts"
-      // ],
-      // "@/pages/*": [
-      //   "./src/app/pages/*"
-      // ],
-      // "@/views/*": [
-      //   "./src/app/views/*"
-      // ],
-      // "@/stores/*": [
-      //   "./src/app/stores/*"
-      // ],
-      // "@/api/*": [
-      //   "./src/app/api/*"
-      // ]
-    },
     "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "./app/src/**/*.ts",
-    "./app/src/**/*.tsx",
-    "../shared-ui/src/**/*.tsx",
-    "../shared-ui/src/**/*.ts"
+    "./app/src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

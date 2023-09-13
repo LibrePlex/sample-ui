@@ -1,2 +1,0 @@
-export { HomeView } from "./home";
-

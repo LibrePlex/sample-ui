@@ -11,7 +11,7 @@ const DemoPage = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Box
+      <Box  
         w={"100vw"}
         h={"100vh"}
         display={"flex"}

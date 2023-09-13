@@ -1,5 +1,5 @@
 import { Td, Tr } from "@chakra-ui/react";
-import { getAttrValue } from "utils/getAttrValue";
+import { getAttrValue } from "@/utils/getAttrValue";
 import { Group, IRpcObject } from "@libreplex/shared-ui";
 
 export const AttributeDisplayRow = ({

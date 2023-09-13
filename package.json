@@ -5,8 +5,7 @@
   "private": true,
   "workspaces": [
     "app",
-    "shared-ui",
-    "marketplace"
+    "shared-ui"
   ],
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",

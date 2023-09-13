@@ -27,6 +27,7 @@ import { CreateMetadataDialog } from "./CreateMetadataDialog";
 import { MetadataRow } from "./MetadataRow";
 import { DeleteMetadataButton } from "@/components/metadata/DeleteMetadataButton";
 import { useMetadataByAuthority } from "@libreplex/shared-ui";
+import React from "react";
 
 export const BaseMetadataPanel = () => {
   const { publicKey } = useWallet();

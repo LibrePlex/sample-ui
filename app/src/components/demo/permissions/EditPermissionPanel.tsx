@@ -20,11 +20,10 @@ import {
 import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 
-import { useWallet } from "@solana/wallet-adapter-react";
 import { RoyaltyShare } from "@libreplex/shared-ui";
 import { abbreviateKey } from "@libreplex/shared-ui";
 import { CreateCollectionTransactionButton } from "./CreatePermissionButton";
-import { usePublicKeyOrNull } from "hooks/usePublicKeyOrNull";
+import { usePublicKeyOrNull } from "@/hooks/usePublicKeyOrNull";
 
 export const EditPermissionPanel = ({onSuccess}:{onSuccess: () => any;}) => {
   const [name, setName] = useState<string>("");

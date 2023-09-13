@@ -8,7 +8,6 @@ import {
   Transaction,
   VersionedTransaction,
 } from "@solana/web3.js";
-import { IMetadataJson } from "models/IMetadataJson";
 import { NextApiHandler } from "next";
 import {
   HttpClient,
@@ -22,7 +21,7 @@ import {
   getProgramInstanceMetadata,
 } from "@libreplex/shared-ui";
 import { decodeInscription } from "@libreplex/shared-ui";
-import { getAttrValue } from "utils/getAttrValue";
+
 
 const OffchainMetadata: NextApiHandler = async (req, res) => {
   const { mintId, cluster } = req.query;

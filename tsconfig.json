@@ -20,6 +20,35 @@
     "incremental": true,
     "rootDir": ".",
     "isolatedModules": true,
+    "paths": {
+      "@/components/*": [
+        "./app/src/components/*"
+      ],
+      "@/environmentvariables": [
+        "./app/src/environmentvariables.ts"
+      ],
+      "@/pages/*": [
+        "./app/src/pages/*"
+      ],
+      "@/views/*": [
+        "./app/src/views/*"
+      ],
+      "@/stores/*": [
+        "./app/src/stores/*"
+      ],
+      "@/api/*": [
+        "./app/src/api/*"
+      ],
+      "@/utils/*": [
+        "./app/src/utils/*"
+      ],
+      "@/models/*": [
+        "./app/src/models/*"
+      ],
+      "@/hooks/*": [
+        "./app/src/hooks/*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
