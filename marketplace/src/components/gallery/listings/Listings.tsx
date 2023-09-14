@@ -17,10 +17,10 @@ export const ListingGallery = () => {
       [key: string]: (IRpcObject<Listing> & { executed?: boolean })[];
     } = {};
     for (const a of data) {
-      if (_listingsByGroup[a.item.group.toBase58() ?? ""]) {
-        _listingsByGroup[a.item.group.toBase58() ?? ""].push(a);
+      if (_listingsByGroup[a.item.group?.toBase58() ?? ""]) {
+        _listingsByGroup[a.item.group?.toBase58() ?? ""].push(a);
       } else {
-        _listingsByGroup[a.item.group.toBase58() ?? ""] = [a];
+        _listingsByGroup[a.item.group?.toBase58() ?? ""] = [a];
       }
     }
 
@@ -57,7 +57,7 @@ export const ListingGallery = () => {
         }}>Refresh</Button>
         {groupKeys.map((key, idx) => (
           <GroupDisplay
-            groupKey={new PublicKey(key)}
+            groupKey={key.length > 0 ? new PublicKey(key): null}
             listings={listingsByGroup[key]}
             key={idx}
           ></GroupDisplay>

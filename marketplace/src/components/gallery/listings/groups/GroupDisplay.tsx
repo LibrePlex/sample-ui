@@ -10,7 +10,7 @@ export const GroupDisplay = ({
   groupKey,
   listings,
 }: {
-  groupKey: PublicKey;
+  groupKey: PublicKey | null;
   listings: (IRpcObject<Listing> & { executed?: boolean })[];
 }) => {
   const { connection } = useConnection();
