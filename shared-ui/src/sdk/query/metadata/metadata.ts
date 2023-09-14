@@ -1,4 +1,5 @@
-import { IRpcObject } from '@libreplex/shared-ui/dist';
+import { IRpcObject } from './../../../components/executor/IRpcObject';
+
 
 import { LibreplexMetadata } from '@libreplex/idls/lib/types/libreplex_metadata';
 import {
