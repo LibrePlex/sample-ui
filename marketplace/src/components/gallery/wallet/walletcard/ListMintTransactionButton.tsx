@@ -18,9 +18,7 @@ import {
   GenericTransactionButtonProps,
   IExecutorParams,
   ITransactionTemplate,
-  Listing,
   PROGRAM_ID_METADATA,
-  Price,
   getListingPda,
   getMetadataPda,
   getProgramInstanceShop,
@@ -34,7 +32,7 @@ import { notify } from  "@libreplex/shared-ui";
 // }
 
 export interface IListMint {
-  price: Price;
+  price: any; //Price;
   mint: PublicKey;
   tokenAccount: PublicKey;
   amount: BigInt;

@@ -194,7 +194,7 @@ export const MetadataRow = ({
           <Td>
             <RoyaltiesDialog
               royalties={
-                item.item.extension?.nft?.royalties ?? group.item.royalties
+                item.item.extension?.nft?.royalties ?? group?.item?.royalties
               }
             />
           </Td>

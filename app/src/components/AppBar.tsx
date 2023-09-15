@@ -26,16 +26,6 @@ export const AppBar = ({
   const { autoConnect, setAutoConnect } = useAutoConnect();
   const { colorMode, toggleColorMode, setColorMode } = useColorMode();
 
-  /* 
-    a hack to get chakra to always start in dark mode. 
-    I wonder if this will cause flashing? 
-      - neft
-  */
-  useEffect(() => {
-    if (colorMode !== "dark") {
-      setColorMode("dark");
-    }
-  }, [colorMode, setColorMode]);
 
   const router = useRouter();
 

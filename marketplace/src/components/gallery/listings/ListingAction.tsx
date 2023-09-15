@@ -8,7 +8,6 @@ import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 import {
   IRpcObject,
-  Listing,
   useGroupById,
   useMetadataByMintId,
   useTokenAccountById,
@@ -16,6 +15,7 @@ import {
 import { DelistTransactionButton } from "./DelistTransactionButton";
 import { ExecuteTradeTransactionButton } from "./ExecuteTradeTransactionButton";
 import { useTokenAccountsForPurchase } from "./useTokenAccountForPurchase";
+import { Listing } from "./groups/GroupDisplay";
 
 export const ListingAction = ({
   publicKey,
@@ -30,19 +30,19 @@ export const ListingAction = ({
   );
 
   const { connection } = useConnection();
-  const metadata = useMetadataByMintId(listing.item.mint, connection);
+  const metadata = useMetadataByMintId((listing.item as any).mint, connection);
   const group = useGroupById(metadata?.item?.group ?? null, connection);
 
   const solAmount = useMemo(
     () =>
-      (Number(listing.item.price.native?.lamports ?? 0) / 10 ** 9).toFixed(4),
-    [listing.item.price.native?.lamports]
+      (Number((listing.item as any).price.native?.lamports ?? 0) / 10 ** 9).toFixed(4),
+    [(listing.item as any).price.native?.lamports]
   );
 
   const tokenAccountId = useMemo(
     () =>
       getAssociatedTokenAddressSync(
-        listing.item.mint,
+        (listing.item as any).mint,
         listing.pubkey,
         true,
         TOKEN_2022_PROGRAM_ID
@@ -66,7 +66,7 @@ export const ListingAction = ({
         <Text>Delisted</Text>
       ) : listing?.executed ? ( // this is currently not firing, see above
         <Text>Sold</Text>
-      ) : listing.item.lister.equals(publicKey) ? (
+      ) : (listing.item as any).lister.equals(publicKey) ? (
         <DelistTransactionButton
           params={{
             listing,
@@ -77,11 +77,11 @@ export const ListingAction = ({
         <ExecuteTradeTransactionButton
           params={{
             listing: { ...listing, item: listing.item! },
-            mint: listing.item?.mint!,
+            mint: (listing.item as any)?.mint!,
             group,
             metadata,
             buyerPaymentTokenAccount: buyerPaymentTokenAccount ?? null,
-            amount: BigInt(listing.item!.amount.toString()),
+            amount: BigInt((listing.item as any)!.amount.toString()),
           }}
           formatting={{}}
         />

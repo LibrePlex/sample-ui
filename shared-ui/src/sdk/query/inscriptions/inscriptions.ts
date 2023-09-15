@@ -3,7 +3,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 
 import { useContext, useMemo } from "react";
 
-import { LibreplexInscriptions } from "@libreplex/idls/lib/types/libreplex_inscriptions";
+import { LibreplexInscriptions } from "@libreplex/idls/lib/cjs/libreplex_inscriptions";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 import { IRpcObject } from "../../../components";
 import base64url from "base64url";

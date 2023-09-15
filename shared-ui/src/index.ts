@@ -58,7 +58,6 @@ export type {
   RoyaltyShare,
   GroupInput,
   Asset,
-  Listing,
   Price
 } from "./sdk";
 

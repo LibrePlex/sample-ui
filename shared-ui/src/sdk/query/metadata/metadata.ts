@@ -24,6 +24,7 @@ import { useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
 import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
 import { Inscription, getBase64FromDatabytes } from '../inscriptions/inscriptions';
+import { decode } from 'bs58';
 
 
 export enum AssetType {
@@ -45,7 +46,7 @@ export const decodeMetadata =
   (buffer: Buffer, pubkey: PublicKey) => {
     try {
       const coder = new BorshCoder(program.idl);
-      // console.log({buffer});
+      console.log({buffer});
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
       // console.log({ metadataRaw });
@@ -193,16 +194,19 @@ export const useMetadataByGroup = (
     console.log({ filters, connection, q });
   }, [filters, connection, q]);
 
+
+  const decoder = useMemo(()=> decodeMetadata(program),[program, decodeMetadata])
+
   const decoded = useMemo(
     () => ({
       ...q,
       data:
         q?.data
-          ?.map((item) => decodeMetadata(program)(item.item, item.pubkey))
+          ?.map((item) => decoder(item.item, item.pubkey))
           .filter((item) => item.item) ?? [],
     }),
 
-    [program, q]
+    [q?.data, decoder]
   );
 
   return decoded;
@@ -236,9 +240,14 @@ export const useGroupedMetadataByOwner = (
     [program, ownedMints]
   );
 
+    // useEffect(()=>{
+    //   console.log({metadataIds})
+    // },[metadataIds])
+
   const { data: metadata, isFetching: isFetchingMetadata } =
     useMultipleMetadataById(metadataIds, connection);
 
+      
   const inscriptionIds = useMemo(
     () =>
       metadata
@@ -275,6 +284,10 @@ export const useGroupedMetadataByOwner = (
     connection
   );
 
+
+  useEffect(()=>{
+    console.log({metadata, groups, groupIds})
+  },[metadata, groups, groupIds])
   const groupDict = useMemo(() => {
     const _groupDict: { [key: string]: IRpcObject<Group> } = {};
     for (const group of groups) {
@@ -293,9 +306,12 @@ export const useGroupedMetadataByOwner = (
         tokenAccount: IRpcObject<RawAccount | null>;
       }[];
     }[] = [];
-
+    console.log({metadata});
     for (const m of metadata) {
+      
+      console.log({m})
       if (m.item?.group) {
+
         const g = _groupedMetadata.find((item) =>
           item.group?.pubkey.equals(m.item!.group!)
         );
@@ -310,7 +326,6 @@ export const useGroupedMetadataByOwner = (
 
         if( !base64 ) {
           console.log('Could not decode base64 url');
-          continue;
         }
 
         const renderedJson = hydrateMetadataWithJson(
@@ -318,7 +333,7 @@ export const useGroupedMetadataByOwner = (
           g?.group ?? null,
           base64
         );
-
+          console.log({g});
         if (g) {
           g.items.push({
             ...m,
@@ -354,7 +369,6 @@ export const useGroupedMetadataByOwner = (
 
         if( !base64 ) {
           console.log('Could not decode base64 url');
-          continue;
         }
 
         const renderedJson = hydrateMetadataWithJson(
@@ -392,7 +406,7 @@ export const useGroupedMetadataByOwner = (
     }
 
     return _groupedMetadata;
-  }, [metadata, groups]);
+  }, [metadata.length, groups]);
 
   return {
     data: groupedMetadata,

@@ -14,6 +14,26 @@ export const useMultipleGroupsById = (
   const { program } = useContext(MetadataProgramContext);
 
   const decoder = useMemo(()=>decodeGroup(program), [program])
-  return  useMultipleAccountsById(groupIds, connection, decoder)
+  const results = useMultipleAccountsById(groupIds, connection)
+  const decodedGroups = useMemo(()=>{
+    //  console.log({ result, orderedIds });
+
+        const _groups: IRpcObject<Group>[] = [];
+        for (const res of results.data ) {
+          if (res.data) {
+            try {
+              const parsedObj = decoder(res.data, res.accountId);
+              if (parsedObj.item) {
+                _groups.push({ ...parsedObj, item: parsedObj.item! });
+              }
+            } catch (e) {
+              console.log({ e });
+            }
+          }
+        }
+        return _groups;
+  },[decoder, results])
+  return {...results, data: decodedGroups};
+
   
 };

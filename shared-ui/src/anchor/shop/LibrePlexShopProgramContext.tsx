@@ -3,7 +3,7 @@ import { Program } from "@coral-xyz/anchor";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 
-import {LibreplexShop} from "@libreplex/idls/lib/types/libreplex_shop"
+import {LibreplexShop} from "@libreplex/idls/lib/cjs/libreplex_shop"
 import { getProgramInstanceShop } from "./getProgramInstanceShop";
 import { LibreWallet } from "../metadata/MetadataProgramContext";
 import { Keypair } from "@solana/web3.js";

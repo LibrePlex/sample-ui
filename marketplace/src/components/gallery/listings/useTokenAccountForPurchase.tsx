@@ -2,13 +2,12 @@ import { PublicKey } from "@solana/web3.js";
 import React, { useEffect, useMemo } from "react";
 import {
   IRpcObject,
-  Listing,
   useTokenAccountsByOwner,
-  useUserSolBalanceStore,
 } from  "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { Listing } from "./groups/GroupDisplay";
 
 export const useTokenAccountsForPurchase = (
   publicKey: PublicKey,
@@ -31,15 +30,15 @@ export const useTokenAccountsForPurchase = (
 
   return useMemo(
     () =>
-      listing.item.price.native
-        ? BigInt(listing.item.price.native.lamports.toString()) <= (balance ?? 0)
+      (listing.item as any).price.native
+        ? BigInt((listing.item as any).price.native.lamports.toString()) <= (balance ?? 0)
           ? publicKey
           : undefined
-        : listing.item.price.spl
+        : (listing.item as any).price.spl
         ? tokenAccounts.find(
             (item) =>
-              item.item!.mint === listing.item.price.spl?.mint &&
-              BigInt(item.item!.amount.toString()) >= BigInt(listing.item.price.spl?.amount.toString()??"0")
+              item.item!.mint === (listing.item as any).price.spl?.mint &&
+              BigInt(item.item!.amount.toString()) >= BigInt((listing.item as any).price.spl?.amount.toString()??"0")
           )?.pubkey
         : undefined,
     [tokenAccounts, listing]

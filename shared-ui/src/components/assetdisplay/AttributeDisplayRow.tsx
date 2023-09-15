@@ -16,9 +16,9 @@ export const AttributeDisplayRow = ({
 }) => {
   return (
     <Tr>
-      <Td>{group.item.attributeTypes[idx].name}</Td>
+      <Td>{(group.item as any).attributeTypes[idx].name}</Td>
       <Td>
-        {getAttrValue(group.item.attributeTypes[idx].permittedValues[item])}
+        {getAttrValue((group.item as any).attributeTypes[idx].permittedValues[item])}
       </Td>
     </Tr>
   );

@@ -21,14 +21,13 @@ import {
   IExecutorParams,
   IRpcObject,
   ITransactionTemplate,
-  Listing,
   Metadata,
   getProgramInstanceShop,
 } from  "@libreplex/shared-ui";
 
-import { RawAccount } from "@solana/spl-token";
 
 import { Price, notify } from  "@libreplex/shared-ui";
+import { Listing } from "./groups/GroupDisplay";
 
 export enum AssetType {
   Image,
@@ -73,7 +72,7 @@ export const executeTrade = async (
   }
   const { listing, metadata, mint, group, buyerPaymentTokenAccount } = params;
 
-  if (listing.item.price.spl && !buyerPaymentTokenAccount) {
+  if ((listing.item as any).price.spl && !buyerPaymentTokenAccount) {
     throw Error(
       "To buy a listing with SPL token, you must specify a token account"
     );
@@ -93,7 +92,7 @@ export const executeTrade = async (
 
   const listerPaymentTokenAccount = getAssociatedTokenAddressSync(
     mint,
-    listing.item.lister,
+    (listing.item as any).lister,
     true,
     TOKEN_2022_PROGRAM_ID
   );
@@ -116,7 +115,7 @@ export const executeTrade = async (
   const instruction = await librePlexProgram.methods
     .execute()
     .accounts({
-      seller: listing.item.lister,
+      seller: (listing.item as any).lister,
       mint,
       metadata: metadata.pubkey,
       group: metadata.item.group,
@@ -129,7 +128,8 @@ export const executeTrade = async (
       listerPaymentTokenAccount,
       buyerPaymentTokenAccount: buyerPaymentTokenAccount ?? undefined,
       
-      paymentMint: listing.item.price.spl?.mint ?? null, // undefined for native
+      
+      paymentMint: (listing.item as any).price.spl?.mint ?? null, // undefined for native
       
       
       

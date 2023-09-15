@@ -5,6 +5,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import { useGroupedMetadataByOwner } from  "@libreplex/shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
+import { useEffect } from "react";
 export const WalletGallery = ({ publicKey, onSelectMint }: { 
   onSelectMint: (mint: PublicKey) => any,
   publicKey: PublicKey }) => {
@@ -15,9 +16,14 @@ export const WalletGallery = ({ publicKey, onSelectMint }: {
     connection
   );
 
+  useEffect(()=>{
+    console.log({groupedMetadata})
+  },[groupedMetadata])
+
   return (
     <Box p={20} display="flex" flexDirection="row" flexWrap={"wrap"} gap={2}>
       <VStack align="start" gap={16}>
+      <Box ><Heading size={'md'}>Wallet contents</Heading></Box>
         {groupedMetadata.map((item, idx) => (
           <VStack key={idx} align="start" gap={8}>
             <Heading>{item.group?.item.name}</Heading>

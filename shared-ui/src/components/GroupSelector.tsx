@@ -32,7 +32,7 @@ export const GroupSelector = ({
     >
       {groups.data.map((item, idx) => (
         <option key={idx} value={item.pubkey?.toBase58()}>
-          {item.item?.name}
+          {(item.item as any)?.name}
         </option>
       ))}
     </Select>

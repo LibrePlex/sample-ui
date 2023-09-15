@@ -9,7 +9,7 @@ import { InscriptionStoreProvider } from "./InscriptionStoreContext";
 
 import { LibreWallet } from "../../../anchor/metadata/MetadataProgramContext";
 
-import { LibreplexInscriptions } from "@libreplex/idls/lib/types/libreplex_inscriptions";
+import { LibreplexInscriptions } from "@libreplex/idls/lib/cjs/libreplex_inscriptions";
 
 
 export const InscriptionsProgramContext = createContext<

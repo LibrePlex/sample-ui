@@ -1,5 +1,5 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { IRpcObject } from "../../../components";
 import { BufferingConnection } from "../../../stores";
 import { sha256 } from "js-sha256";
@@ -13,73 +13,80 @@ enum Status {
 
 const calculateHash = (ids: PublicKey[]) => {
   let currentHash = "";
-  for( const id of ids) {
-    currentHash = bs58.encode(sha256.array(`${currentHash}${id.toBase58()}`).slice(0, 8))
+  for (const id of ids) {
+    currentHash = bs58.encode(
+      sha256.array(`${currentHash}${id.toBase58()}`).slice(0, 8)
+    );
   }
-  return currentHash
-  
-}
+  return currentHash;
+};
 
-export const useMultipleAccountsById = <T extends unknown>(
+export const useMultipleAccountsById = (
   ids: PublicKey[],
-  connection: Connection,
-  decoder: (buf: Buffer, key: PublicKey) => IRpcObject<T>
+  connection: Connection
 ) => {
-  const [objects, setObjects] = useState<IRpcObject<T>[]>([]);
+  const [objects, setObjects] = useState<
+    { accountId: PublicKey; data: Buffer; balance: bigint }[]
+  >([]);
 
   const orderedIds = useMemo(
-    () =>
-      [...ids].sort((a, b) => a.toBase58().localeCompare(b.toBase58())),
+    () => [...ids].sort((a, b) => a.toBase58().localeCompare(b.toBase58())),
     [ids]
   );
 
+  // const [hash, setHash] = useState<string>("");
 
-  const [hash, setHash] = useState<string>('');
+  const [status, setStatus] = useState<{
+    status: Status;
+    hash: string;
+    orderedIds: PublicKey[];
+  }>({
+    status: Status.Loaded,
+    hash: "",
+    orderedIds: [],
+  });
 
-  useEffect(()=>{
-    const _newHash = calculateHash(orderedIds);
-    if( hash !== _newHash) {
-      setStatus(Status.Ready);
-      setHash(_newHash)
-    }
-  },[hash, orderedIds])
+  const hash = useMemo(
+    () => (connection.rpcEndpoint ? calculateHash(orderedIds) : ""),
+    [orderedIds, connection]
+  );
 
+  const resetStatus = useCallback(() => {
+    setStatus({ status: Status.Ready, hash, orderedIds });
+  }, [hash, orderedIds]);
 
-  const [status, setStatus] = useState<Status>(Status.Ready);
-
-  const [isFetching, setIsFetching] = useState<boolean>(false);
   useEffect(() => {
+    resetStatus();
+  }, [hash]);
+
+  // useEffect(() => {
+  //   setStatus(old=>({ ...old, status: Status.Ready}));
+  // }, [connection]);
+
+  // const [isFetching, setIsFetching] = useState<boolean>(false);
+  const refreshData = useCallback(() => {
     let active = true;
     (async () => {
-      if (status === Status.Ready) {
-        setStatus(Status.Loading);
-        setIsFetching(true);
-        console.log('Fetching');
+      if (status.status === Status.Ready) {
+        active && setStatus((old) => ({ ...old, status: Status.Loading }));
+        console.log("Fetching");
         const bufferingConnection = BufferingConnection.getOrCreate(connection);
         const result = await bufferingConnection.getMultipleAccountsInfo(
-          orderedIds
+          status.orderedIds
         );
-        console.log({result, orderedIds});
+        setObjects([...result.values()]);
 
-        const _groups: IRpcObject<T>[] = [];
-        for (const res of result.values() ?? []) {
-          if (res.data) {
-            const parsedObj = decoder(res.data, res.accountId);
-            if (parsedObj.item) {
-              _groups.push({ ...parsedObj, item: parsedObj.item! });
-            }
-          }
-        }
-        setObjects(_groups);
-         setIsFetching(false);
-         setStatus(Status.Loaded);
+        active && setStatus((old) => ({ ...old, status: Status.Loaded }));
       }
     })();
-    
-  }, [connection, orderedIds, status]);
-  useEffect(()=>{
-    console.log({connection, orderedIds, status});
-  },[connection, orderedIds, status])
+    return () => {
+      active = false;
+    };
+  }, [status]);
 
-  return { isFetching, data: objects };
+  useEffect(() => {
+    refreshData();
+  }, [status, connection]);
+
+  return { isFetching: status.status === Status.Loading, data: objects };
 };

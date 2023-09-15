@@ -3,8 +3,12 @@ import { HStack, Heading, Skeleton, VStack, Text } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import React from "react";
-import { IRpcObject, Listing, useGroupById } from  "@libreplex/shared-ui";
+import { IRpcObject, useGroupById } from "@libreplex/shared-ui";
 import { ListingAction } from "../ListingAction";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { LibreplexShop } from "@libreplex/idls/lib/cjs/libreplex_shop";
+
+export type Listing = IdlAccounts<LibreplexShop>["listing"];
 
 export const GroupDisplay = ({
   groupKey,
@@ -17,8 +21,7 @@ export const GroupDisplay = ({
   const { publicKey } = useWallet();
   const group = useGroupById(groupKey, connection);
 
-  return (
-    <VStack align="start">
+  return <VStack align="start">
       <HStack sx={{ w: "100%" }}>
         {group?.item?.url.length > 0 ? (
           <img
@@ -31,28 +34,27 @@ export const GroupDisplay = ({
           />
         )}
         <VStack align={"end"} sx={{ w: "100%" }}>
-          <Heading size="md">Group: {group?.item.name}</Heading>
-          <Heading size="md">Listings for g({listings.length})</Heading>
+          <Heading size="md">Group: {group?.item?.name}</Heading>
+          <Heading size="md">
+            Listings for group {groupKey?.toBase58()} ({listings.length})
+          </Heading>
         </VStack>
       </HStack>
 
       <HStack wrap={"wrap"}>
-        {listings.map(
-          (item, idx2) => (
-            <MintCard
-              sx={{ position: "relative" }}
-              key={idx2}
-              mint={item.item?.mint!}
-            >
-              <ListingAction
-                publicKey={publicKey}
-                listing={{ ...item, item: item.item! }}
-              />
-            </MintCard>
-          )
-          // <>{item.pubkey.toBase58()}</>
-        )}
+        {listings.map((item, idx2) => (
+          <MintCard
+            sx={{ position: "relative" }}
+            key={idx2}
+            mint={(item.item as any)?.mint!}
+          >
+            <ListingAction
+              publicKey={publicKey}
+              listing={{ ...item, item: item.item! }}
+            />
+          </MintCard>
+        ))}
       </HStack>
     </VStack>
-  );
+ 
 };

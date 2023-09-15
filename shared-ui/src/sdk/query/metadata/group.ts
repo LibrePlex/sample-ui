@@ -7,7 +7,7 @@ import { useContext, useEffect, useMemo } from "react";
 import BN from "bn.js";
 import { useGpa } from "../gpa";
 import { useFetchSingleAccount } from "../singleAccountInfo";
-import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
+import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
 // import { Royalties } from "./metadata";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
@@ -16,11 +16,9 @@ export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
 
 export type PermittedSigners = IdlTypes<LibreplexMetadata>["Royalties"];
 
-export type AttributeValue = IdlTypes<LibreplexMetadata>["AttributeValue"];
-
+export type AttributeValue = any; //IdlTypes<LibreplexMetadata>["AttributeValue"];
 
 export type RoyaltyShare = IdlTypes<LibreplexMetadata>["RoyaltyShare"];
-
 
 // export type TemplateConfiguration =
 //   | {
@@ -113,29 +111,16 @@ export interface AttributeType {
   continuedFromIndex: number;
 }
 
-// export interface Group {
-//   seed: PublicKey;
-//   updateAuthority: PublicKey;
-//   creator: PublicKey;
-//   itemCount: number;
-//   name: string;
-//   symbol: string;
-//   url: string;
-//   description: string;
-//   templateConfiguration: TemplateConfiguration;
-//   royalties: Group["royalties"] | null;
-//   permittedSigners: PublicKey[];
-//   attributeTypes: AttributeType[];
-// }
-
 export const decodeGroup =
   (program: Program<LibreplexMetadata>) =>
   (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     let group: Group | null;
     try {
+      console.log({buffer});
       group = coder.accounts.decode<Group>("group", buffer);
     } catch (e) {
+      console.log({e});
       group = null;
     }
 
@@ -145,23 +130,30 @@ export const decodeGroup =
     };
   };
 
-export const useGroupById = (groupKey: PublicKey | null, connection: Connection) => {
-  const {program} = useContext(MetadataProgramContext);
+export const useGroupById = (
+  groupKey: PublicKey | null,
+  connection: Connection
+) => {
+  const { program } = useContext(MetadataProgramContext);
 
   // do not remove
 
   const q = useFetchSingleAccount(groupKey, connection);
 
+  const decoder = useMemo(() => decodeGroup(program), [program]);
+
   const decoded = useMemo(() => {
+    console.log("decoding", {groupKey, decoder, q});
     try {
-      const obj = groupKey && q?.data?.item
-        ? decodeGroup(program)(q.data.item.buffer, groupKey)
-        : null;
+      const obj =
+        groupKey && q?.data?.item
+          ? decoder(q.data.item.buffer, groupKey)
+          : null;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [groupKey, program, q.data?.item]);
+  }, [groupKey, decoder, q.data?.item]);
   return decoded;
 };
 
@@ -169,7 +161,7 @@ export const useGroupsByAuthority = (
   authority: PublicKey | null,
   connection: Connection
 ) => {
-  const {program} = useContext(MetadataProgramContext);
+  const { program } = useContext(MetadataProgramContext);
 
   const filters = useMemo(() => {
     if (authority) {
@@ -198,11 +190,9 @@ export const useGroupsByAuthority = (
     "groupsByAuthority",
   ]);
 
-
-
-  const createCollectionEventPromise = new Promise<any>((resolve, reject) => {
-    
-  })
+  const createCollectionEventPromise = new Promise<any>(
+    (resolve, reject) => {}
+  );
 
   const decoded = useMemo(
     () => ({

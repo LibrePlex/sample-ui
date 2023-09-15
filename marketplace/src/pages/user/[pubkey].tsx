@@ -3,7 +3,7 @@ import Head from "next/head";
 import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 
 import { HomeView } from "../../views";
-import { Box, Button, Center, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
 import {
   MintDisplay,
   usePublicKeyOrNull,
@@ -60,6 +60,7 @@ const Home: NextPage = (props) => {
 
   return (
     <div style={{ display: "flex", alignItems: "flex-start" }}>
+    
       {pubkey ? (
         mint ? (
           <Box w={"100%"}>

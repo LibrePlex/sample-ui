@@ -20,13 +20,15 @@ import {
   IExecutorParams,
   IRpcObject,
   ITransactionTemplate,
-  Listing,
   getProgramInstanceShop,
 } from  "@libreplex/shared-ui";
 
-import { RawAccount } from "@solana/spl-token";
 
 import {  notify } from  "@libreplex/shared-ui";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import {LibreplexShop} from "@libreplex/idls/lib/cjs/libreplex_shop"
+
+type Listing = IdlAccounts<LibreplexShop>["listing"];
 
 export enum AssetType {
   Image,
@@ -66,21 +68,21 @@ export const delist = async (
   let instructions: TransactionInstruction[] = [];
 
   const escrowTokenAccount = getAssociatedTokenAddressSync(
-    listing.item.mint,
+    (listing.item as any).mint,
     listing.pubkey,
     true,
     TOKEN_2022_PROGRAM_ID
   );
 
-  const listerPaymentTokenAccount = getAssociatedTokenAddressSync(
-    listing.item.mint,
-    listing.item.lister,
-    true,
-    TOKEN_2022_PROGRAM_ID
-  );
+  // const listerPaymentTokenAccount = getAssociatedTokenAddressSync(
+  //   listing.item.mint,
+  //   listing.item.lister,
+  //   true,
+  //   TOKEN_2022_PROGRAM_ID
+  // );
 
   const listerTokenAccount = getAssociatedTokenAddressSync(
-    listing.item.mint,
+    (listing.item as any).mint,
     wallet.publicKey,
     false,
     TOKEN_2022_PROGRAM_ID
@@ -89,8 +91,8 @@ export const delist = async (
   const instruction = await librePlexProgram.methods
     .delist()
     .accounts({
-      lister: listing.item.lister,
-      mint: listing.item.mint,
+      lister: (listing.item as any).lister,
+      mint: (listing.item as any).mint,
       listing: listing.pubkey,
       escrowTokenAccount,
       listerTokenAccount,

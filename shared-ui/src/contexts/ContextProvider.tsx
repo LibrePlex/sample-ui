@@ -5,7 +5,6 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import {
-  BraveWalletAdapter,
   PhantomWalletAdapter,
   SolflareWalletAdapter,
   SolongWalletAdapter,
@@ -52,7 +51,6 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     () => [
       new SolflareWalletAdapter(),
       new PhantomWalletAdapter(),
-      new BraveWalletAdapter(),
       new SolongWalletAdapter(),
     ],
     [network]

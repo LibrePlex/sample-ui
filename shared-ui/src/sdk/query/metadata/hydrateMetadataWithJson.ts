@@ -47,11 +47,11 @@ export const hydrateMetadataWithJson = (
       undefined,
     seller_fee_basis_points:
       libreMetadataObj?.extension?.nft?.royalties?.bps ??
-      group?.item?.royalties?.bps ??
+      (group?.item as any)?.royalties?.bps ??
       undefined,
     image: libreMetadataObj?.asset?.image?.url ?? base64Image ?? undefined,
     attributes:
-      group?.item?.attributeTypes.map((item, idx) => ({
+    (group?.item as any)?.attributeTypes.map((item, idx) => ({
         trait_type: item.name,
         value: getAttrValue(item.permittedValues[idx]),
       })) ?? [],
@@ -75,7 +75,7 @@ export const hydrateMetadataWithJson = (
           : []),
       ],
       creators:
-        group?.item?.royalties?.shares?.map((item) => ({
+      (group?.item as any)?.royalties?.shares?.map((item) => ({
           address: item.recipient.toBase58(),
           share: item.share / 100,
           verified: new Set(

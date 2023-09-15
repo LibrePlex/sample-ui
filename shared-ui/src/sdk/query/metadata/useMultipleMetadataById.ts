@@ -1,7 +1,8 @@
+import { IRpcObject } from "./../../../components/executor/IRpcObject";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { MetadataProgramContext } from "../../../anchor";
-import { decodeMetadata } from "./metadata";
+import { Metadata, decodeMetadata } from "./metadata";
 import { useMultipleAccountsById } from "./useMultipleAccountsById";
 
 export const useMultipleMetadataById = (
@@ -11,6 +12,29 @@ export const useMultipleMetadataById = (
   const { program } = useContext(MetadataProgramContext);
 
   const decoder = useMemo(() => decodeMetadata(program), [program]);
-//   console.log()
-  return useMultipleAccountsById(metadataIds, connection, decoder);
+  const results = useMultipleAccountsById(metadataIds, connection);
+  const decodedMetadata = useMemo(() => {
+    //  console.log({ result, orderedIds });
+
+    const _groups: IRpcObject<Metadata>[] = [];
+    for (const res of results.data) {
+      if (res.data) {
+        try {
+          const parsedObj = decoder(res.data, res.accountId);
+          if (parsedObj.item) {
+            _groups.push({ ...parsedObj, item: parsedObj.item! });
+          }
+        } catch (e) {
+          console.log({ e });
+        }
+      }
+    }
+    return _groups;
+  }, [decoder, results]);
+
+  useEffect(() => {
+    console.log({ decodedMetadata, d: results.data });
+  }, [decodedMetadata, results]);
+
+  return { ...results, data: decodedMetadata };
 };
