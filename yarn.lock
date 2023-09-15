@@ -3310,6 +3310,11 @@
   resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.1.5.tgz#c38d3fc0a7e3236535815371747f165d1ccfe0de"
   integrity sha512-mpTEXyOdsXZlL1+6tmHhxrPQO21iqLq6GV6+2VTQYkre/b+efQIoqVn0f1ef/3WWSLjZgvuDwNk50g6YQ/UK/A==
 
+"@libreplex/idls@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.1.6.tgz#ee793657f129dfd250147594ae06b11ef158e88e"
+  integrity sha512-91JB3HPXht5uiNFmQl8LcxMJ1ZnUx4uTqXOhG1OVD9drJecHGFh4misSyOaL6+kCBbBE4myR/BjZZX+AaXgX0Q==
+
 "@libreplex/sdk@^0.1.20":
   version "0.1.20"
   resolved "https://registry.yarnpkg.com/@libreplex/sdk/-/sdk-0.1.20.tgz#c2a10b79e5cdb2af0182e33bdc8355a4f0faedf9"
@@ -7422,13 +7427,6 @@ debug@2.6.9:
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
   dependencies:
     ms "2.0.0"
-
-debug@4, debug@4.3.4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4, debug@~4.3.1, debug@~4.3.2:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
-  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
-  dependencies:
-    ms "2.1.2"
 
 debug@4, debug@4.3.4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.4, debug@~4.3.1, debug@~4.3.2:
   version "4.3.4"

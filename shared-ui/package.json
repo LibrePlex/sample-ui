@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
-    "@libreplex/idls": "^0.1.5",
+    "@libreplex/idls": "0.1.6",
     "@metaplex-foundation/mpl-token-metadata": "^2.12.0",
     "@solana/spl-token": "^0.3.5",
     "@solana/web3.js": "^1.64.0",
