@@ -83,18 +83,7 @@ export const CollectionsPanel = () => {
     [groups, setSelectedCollectionKeys]
   );
 
-  const collectionDict = useMemo(() => {
-    const _collectionDict: {
-      [key: string]: ReturnType<ReturnType<typeof decodeGroup>>;
-    } = {};
-
-    for (const collection of groups ?? []) {
-      if (collection) {
-        _collectionDict[collection?.pubkey?.toBase58()] = collection;
-      }
-    }
-    return _collectionDict;
-  }, [groups]);
+  
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
     collection: Group | undefined;
@@ -103,16 +92,7 @@ export const CollectionsPanel = () => {
     collection: undefined,
   });
 
-  const deleteCollectionParams = useMemo(() => {
-    return selectedCollectionKeys
-      ? [...selectedCollectionKeys]
-          .filter((item) => collectionDict[item.toBase58()])
-          .map((pubkey) => ({
-            group: pubkey,
-          }))
-      : [];
-  }, [selectedCollectionKeys, collectionDict]);
-
+ 
   const [collection, setCollection] = useState<IRpcObject<Group>>();
 
   return (
@@ -158,7 +138,7 @@ export const CollectionsPanel = () => {
         />
         <Button
           onClick={() => {
-            refetch();
+            // refetch();
           }}
         >
           <RepeatIcon />
@@ -173,7 +153,7 @@ export const CollectionsPanel = () => {
       ) : (
         <Box>
           <Box pt={3} pb={3}>
-            <Heading>Groups ({groups?.length ?? "-"})</Heading>
+            {/* <Heading>Groups ({groups?.length ?? "-"})</Heading> */}
           </Box>
           <TableContainer
             sx={{ maxHeight: "100vh", overflow: "auto", width: "100%" }}
@@ -186,7 +166,7 @@ export const CollectionsPanel = () => {
                       <Checkbox
                         checked={selectAll}
                         onChange={(e) => {
-                          toggleSelectAll(e.currentTarget.checked);
+                          // toggleSelectAll(e.currentTarget.checked);
                         }}
                       />
                     </Center>

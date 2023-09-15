@@ -46,7 +46,7 @@ export const decodeMetadata =
   (buffer: Buffer, pubkey: PublicKey) => {
     try {
       const coder = new BorshCoder(program.idl);
-      console.log({buffer});
+      // console.log({buffer});
       const metadataRaw = coder.accounts.decode<Metadata>("metadata", buffer);
 
       // console.log({ metadataRaw });
@@ -285,9 +285,9 @@ export const useGroupedMetadataByOwner = (
   );
 
 
-  useEffect(()=>{
-    console.log({metadata, groups, groupIds})
-  },[metadata, groups, groupIds])
+  // useEffect(()=>{
+  //   console.log({metadata, groups, groupIds})
+  // },[metadata, groups, groupIds])
   const groupDict = useMemo(() => {
     const _groupDict: { [key: string]: IRpcObject<Group> } = {};
     for (const group of groups) {

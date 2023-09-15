@@ -39,15 +39,6 @@ const TabPanel = ({
 };
 
 export const Demo = () => {
-  const selectedPermissionKeys = useSelectedPermissions(
-    (state) => state.selectedPermissionKeys
-  );
-
-  const { publicKey } = useWallet();
-
-  const { connection } = useConnection();
-
-  const { networkConfiguration } = useNetworkConfiguration();
 
   //   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");

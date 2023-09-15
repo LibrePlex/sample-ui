@@ -113,17 +113,24 @@ export interface AttributeType {
 
 export const decodeGroup =
   (program: Program<LibreplexMetadata>) =>
-  (buffer: Buffer, pubkey: PublicKey) => {
+  (
+    buffer: Buffer,
+    pubkey: PublicKey
+  ): {
+    item: Group | null;
+    pubkey: PublicKey;
+  } => {
     const coder = new BorshCoder(program.idl);
     let group: Group | null;
     try {
-      console.log({buffer});
+      console.log({ buffer });
       group = coder.accounts.decode<Group>("group", buffer);
     } catch (e) {
-      console.log({e});
+      console.log({ e });
       group = null;
     }
 
+    console.log({ group });
     return {
       item: group,
       pubkey,
@@ -143,7 +150,7 @@ export const useGroupById = (
   const decoder = useMemo(() => decodeGroup(program), [program]);
 
   const decoded = useMemo(() => {
-    console.log("decoding", {groupKey, decoder, q});
+    console.log("decoding", { groupKey, decoder, q });
     try {
       const obj =
         groupKey && q?.data?.item
@@ -190,20 +197,17 @@ export const useGroupsByAuthority = (
     "groupsByAuthority",
   ]);
 
-  const createCollectionEventPromise = new Promise<any>(
-    (resolve, reject) => {}
-  );
-
+  const decoder = useMemo(() => decodeGroup(program), [decodeGroup, program]);
   const decoded = useMemo(
     () => ({
       ...q,
       data:
         q?.data
-          ?.map((item) => decodeGroup(program)(item.item, item.pubkey))
+          ?.map((item) => decoder(item.item, item.pubkey))
           .filter((item) => item.item) ?? [],
     }),
 
-    [program, q]
+    [decoder]
   );
 
   return decoded;

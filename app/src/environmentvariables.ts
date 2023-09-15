@@ -1,5 +1,5 @@
 
-console.log({p:process.env})
+
 export const NEXT_PUBLIC_SHDW_ACCOUNT = process.env.NEXT_PUBLIC_SHDW_ACCOUNT;
 export const SHDW_DRIVE_OWNER_SECRET_KEY = process.env.SHDW_DRIVE_OWNER_SECRET_KEY;
 export const NEXT_PUBLIC_STORAGE_BUCKET_KEY = process.env.NEXT_PUBLIC_STORAGE_BUCKET_KEY;
