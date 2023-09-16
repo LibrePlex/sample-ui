@@ -29,6 +29,7 @@ import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
 import { EditGroupDialog } from "./editCollectionDialog/EditGroupDialog";
 import useSelectedCollections from "./useSelectedCollections";
+import React from "react";
 
 export const CollectionsPanel = () => {
   // const { publicKey } = useWallet();
@@ -68,7 +69,7 @@ export const CollectionsPanel = () => {
   const groups = useMemo(
     () =>
       [...unorderedGroups].sort((a, b) =>
-        a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
+        a.item === null ? 1 : a.pubkey.toBase58().localeCompare(b.pubkey.toBase58())
       ),
     [unorderedGroups]
   );
@@ -120,13 +121,7 @@ export const CollectionsPanel = () => {
         >
           Create Group
         </Button>
-        {/* {deleteCollectionParams.length > 0 && (
-          <DeleteCollectionTransactionButton
-            params={deleteCollectionParams}
-            formatting={{}}
-          />
-        )} */}
-
+     
         <EditGroupDialog
           open={editorStatus.open}
           onClose={() => {

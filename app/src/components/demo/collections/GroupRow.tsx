@@ -8,8 +8,12 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { CopyPublicKeyButton, Group, MetadataProgramContext } from  "@libreplex/shared-ui";
-import { IRpcObject } from  "@libreplex/shared-ui";
+import {
+  CopyPublicKeyButton,
+  Group,
+  MetadataProgramContext,
+} from "@libreplex/shared-ui";
+import { IRpcObject } from "@libreplex/shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
@@ -20,9 +24,8 @@ import { PermittedSignersDialog } from "./metadatadialog/PermittedSignersDialog"
 import { RoyaltiesDialog } from "./metadatadialog/RoyaltiesDialog";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useStore } from "zustand";
-
-
-
+import React from "react";
+import { DeleteGroupsButton } from "../../metadata/DeleteGroupsButton";
 
 export const GroupRow = ({
   item,
@@ -37,9 +40,8 @@ export const GroupRow = ({
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
 }) => {
-
-  const {store} = useContext(MetadataProgramContext)
-
+  const { store } = useContext(MetadataProgramContext);
+  const { program } = useContext(MetadataProgramContext);
   const deletedKeys = useStore(store, (state) => state.deletedKeys);
   return (
     <Tr
@@ -84,48 +86,79 @@ export const GroupRow = ({
         />
       </InputGroup> */}
       </Td>
-      <Td>
-        <Stack>
-          <Center>
-            <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
-              <Text fontSize="4xl">{item.item?.name}</Text>
-              <CopyPublicKeyButton publicKey={item.pubkey?.toBase58()} />
+      {item.item ? (
+        <>
+          <Td>
+            <Stack>
+              <Center>
+                <Box
+                  sx={{ display: "flex", flexDirection: "column" }}
+                  rowGap={5}
+                >
+                  <Text fontSize="4xl">{item.item?.name}</Text>
+                  <CopyPublicKeyButton publicKey={item.pubkey?.toBase58()} />
 
-              <Button
-                onClick={() => {
-                  setActiveCollection(item);
-                }}
-              >
-                View items ({item.item?.itemCount?.toString()})
-              </Button>
-            </Box>
-          </Center>
-        </Stack>
-      </Td>
+                  <Button
+                    onClick={() => {
+                      setActiveCollection(item);
+                    }}
+                  >
+                    View items ({item.item?.itemCount?.toString()})
+                  </Button>
+                </Box>
+              </Center>
+            </Stack>
+          </Td>
 
-      <Td>
-        <Center>
-          <Box sx={{ display: "flex", flexDirection: "column" }} rowGap={5}>
-            <Center>{(item.item.royalties?.bps / 100).toFixed(2)}%</Center>
-            {item.item.royalties && (
-              <RoyaltiesDialog royalties={item.item.royalties} />
+          <Td>
+            <Center>
+              {item.item ? (
+                <Box
+                  sx={{ display: "flex", flexDirection: "column" }}
+                  rowGap={5}
+                >
+                  <Center>
+                    {((item.item?.royalties?.bps ?? 0) / 100).toFixed(2)}%
+                  </Center>
+                  {item.item.royalties && (
+                    <RoyaltiesDialog royalties={item.item.royalties} />
+                  )}
+                </Box>
+              ) : (
+                <Box>Corrupt group. Cannot display royalties</Box>
+              )}
+            </Center>
+          </Td>
+
+          <Td isNumeric>
+            <Center>
+              {item.item.royalties?.shares && (
+                <PermittedSignersDialog
+                  permittedSigners={item.item?.permittedSigners}
+                />
+              )}
+            </Center>
+          </Td>
+          <Td isNumeric>
+            {item.item && (
+              <AttributesDialog
+                attributeTypes={item.item.attributeTypes ?? []}
+              />
             )}
-          </Box>
-        </Center>
-      </Td>
-
-      <Td isNumeric>
-        <Center>
-          {item.item.royalties?.shares && (
-            <PermittedSignersDialog
-              permittedSigners={item.item?.permittedSigners}
-            />
-          )}
-        </Center>
-      </Td>
-      <Td isNumeric>
-        <AttributesDialog attributeTypes={item.item.attributeTypes ?? []} />
-      </Td>
+          </Td>
+        </>
+      ) : (
+        <Td colSpan={3}>
+          Corrupt item. Cannot display.
+          <DeleteGroupsButton
+            params={{
+              groupIds: [item.pubkey],
+              metadataProgramId: program.programId,
+            }}
+            formatting={{}}
+          />
+        </Td>
+      )}
     </Tr>
   );
 };

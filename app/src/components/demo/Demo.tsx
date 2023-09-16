@@ -15,6 +15,7 @@ import { CollectionsPanel } from "./collections/CollectionsPanel";
 import useSelectedPermissions from "./permissions/useSelectedPermissions";
 import { BaseMetadataPanel } from "./metadata/MetadataPanel";
 import { useNetworkConfiguration } from  "@libreplex/shared-ui";
+import React from "react";
 
 enum View {
   BaseMetadata = "BaseMetadata",

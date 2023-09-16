@@ -14,6 +14,7 @@ import {
 } from  "@libreplex/shared-ui";
 import { ITransactionTemplate } from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
+import React from "react";
 
 
 
@@ -51,8 +52,23 @@ export const deleteMetadata = async (
   });
 
 
+  let instructions: TransactionInstruction[] = [];
+
+  
+
   let instruction;
   for (const metadata of metadataObjects) {
+
+    if( metadata.item.group ) {
+      instructions.push(await librePlexProgram.methods.groupRemove()
+        .accounts({groupAuthority: wallet.publicKey,
+            metadata: metadata.pubkey,
+            delegatedGroupWidePermissions: null,
+            group: metadata.item.group,
+            systemProgram: SystemProgram.programId
+          } 
+      ).instruction())
+    }
     
     if( metadata.item.asset.inscription) {
       instruction = await librePlexProgram.methods
@@ -68,7 +84,7 @@ export const deleteMetadata = async (
       .instruction();
     }
     else {
-      instruction = await librePlexProgram.methods
+      instruction = await librePlexProgram?.methods
       .deleteMetadata()
       .accounts({
         metadataAuthority: wallet.publicKey,
@@ -79,7 +95,7 @@ export const deleteMetadata = async (
       .instruction();
     }
 
-    let instructions: TransactionInstruction[] = [];
+   
     instructions.push(instruction);
     data.push({
       instructions,

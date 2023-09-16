@@ -1,3 +1,4 @@
+
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 
@@ -8,6 +9,7 @@ export const PROGRAM_ID_INSCRIPTIONS =
   
 
 import { IDL} from "@libreplex/idls/lib/cjs/libreplex_metadata";
+import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata";
 import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
@@ -35,7 +37,6 @@ export function getProgramInstanceMetadata(
   };
 
 
-  if (!wallet.publicKey) return;
   const provider = new anchor.AnchorProvider(
     connection,
     nodeWallet,
@@ -45,6 +46,6 @@ export function getProgramInstanceMetadata(
   const idl = IDL;
   // Address of the deployed program.
   // Generate the program client from IDL.
-  const program = new anchor.Program(idl, programId, provider);
+  const program = new anchor.Program<LibreplexMetadata>(idl, programId, provider)!;
   return program;
 }
