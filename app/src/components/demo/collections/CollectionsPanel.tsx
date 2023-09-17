@@ -22,8 +22,8 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
   Collection,
   IRpcObject,
-  decodeGroup,
-  useGroupsByAuthority
+
+  useCollectionsByAuthority
 } from  "@libreplex/shared-ui";
 import { GroupRow } from "./GroupRow";
 import { GroupViewer } from "./GroupViewer";
@@ -61,7 +61,7 @@ export const CollectionsPanel = () => {
 
   const { publicKey } = useWallet();
 
-  const { data: unorderedGroups, refetch } = useGroupsByAuthority(
+  const { data: unorderedGroups, refetch } = useCollectionsByAuthority(
     publicKey,
     connection
   );

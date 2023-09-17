@@ -1,4 +1,4 @@
-import { HStack, Text } from "@chakra-ui/react";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import {
   TOKEN_2022_PROGRAM_ID,
   getAssociatedTokenAddressSync,
@@ -7,11 +7,12 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 import {
+  CopyPublicKeyButton,
   IRpcObject,
-  useGroupById,
+  useCollectionById,
   useMetadataByMintId,
   useTokenAccountById,
-} from  "@libreplex/shared-ui";
+} from "@libreplex/shared-ui";
 import { DelistTransactionButton } from "./DelistTransactionButton";
 import { ExecuteTradeTransactionButton } from "./ExecuteTradeTransactionButton";
 import { useTokenAccountsForPurchase } from "./useTokenAccountForPurchase";
@@ -31,12 +32,15 @@ export const ListingAction = ({
 
   const { connection } = useConnection();
   const metadata = useMetadataByMintId((listing.item as any).mint, connection);
-  const group = useGroupById(metadata?.item?.group ?? null, connection);
+  const group = useCollectionById(metadata?.item?.collection ?? null, connection);
 
   const solAmount = useMemo(
     () =>
-      (Number((listing.item as any).price.native?.lamports ?? 0) / 10 ** 9).toFixed(4),
-    [(listing.item as any).price.native?.lamports]
+      (
+        Number((listing.item as any).price.native?.lamports ?? 0) /
+        10 ** 9
+      ).toFixed(4),
+    [listing.item]
   );
 
   const tokenAccountId = useMemo(
@@ -50,44 +54,50 @@ export const ListingAction = ({
     [listing]
   );
 
-  // for some reason delete / execute event listeners in useAllListings are not 
+  // for some reason delete / execute event listeners in useAllListings are not
   // triggering - hence using the token account to figure out if a listing is active
   const tokenAccount = useTokenAccountById(tokenAccountId, connection);
 
   return (
-    <HStack>
-      <Text sx={{ position: "absolute", top: 2, right: 2 }}>
-        {solAmount} SOL 
-      </Text>
+    <VStack>
+      <HStack>
+        <Text>Lister:</Text>
+        <CopyPublicKeyButton publicKey={listing.item.lister.toBase58()} />
+      </HStack>
+      <HStack>
+        <Text sx={{ position: "absolute", top: 2, right: 2 }}>
+          {solAmount} SOL
+        </Text>
 
-      {tokenAccount?.amount === BigInt(0) ? (
-        <Text>Inactive</Text>
-      ) : listing.deleted ? ( // this is currently not firing, see above
-        <Text>Delisted</Text>
-      ) : listing?.executed ? ( // this is currently not firing, see above
-        <Text>Sold</Text>
-      ) : (listing.item as any).lister.equals(publicKey) ? (
-        <DelistTransactionButton
-          params={{
-            listing,
-          }}
-          formatting={{}}
-        />
-      ) : buyerPaymentTokenAccount && metadata?.item ? (
-        <ExecuteTradeTransactionButton
-          params={{
-            listing: { ...listing, item: listing.item! },
-            mint: (listing.item as any)?.mint!,
-            group,
-            metadata,
-            buyerPaymentTokenAccount: buyerPaymentTokenAccount ?? null,
-            amount: BigInt((listing.item as any)!.amount.toString()),
-          }}
-          formatting={{}}
-        />
-      ) : (
-        <Text>Insufficient funds</Text>
-      )}
-    </HStack>
+        {tokenAccount?.amount === BigInt(0) ? (
+          <Text>Inactive</Text>
+        ) : listing.deleted ? ( // this is currently not firing, see above
+          <Text>Delisted</Text>
+        ) : listing?.executed ? ( // this is currently not firing, see above
+          <Text>Sold</Text>
+        ) : (listing.item as any).lister.equals(publicKey) ? (
+          <DelistTransactionButton
+            params={{
+              listing,
+            }}
+            formatting={{}}
+          />
+        ) : buyerPaymentTokenAccount && metadata?.item ? (
+          <ExecuteTradeTransactionButton
+            params={{
+              listing: { ...listing, item: listing.item! },
+              mint: (listing.item as any)?.mint!,
+              group,
+              metadata,
+              buyerPaymentTokenAccount: buyerPaymentTokenAccount ?? null,
+              amount: BigInt((listing.item as any)!.amount.toString()),
+            }}
+            formatting={{}}
+          />
+        ) : (
+          <Text>Insufficient funds</Text>
+        )}
+      </HStack>
+    </VStack>
   );
 };

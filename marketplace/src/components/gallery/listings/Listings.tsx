@@ -3,11 +3,10 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo, useState } from "react";
 import { IRpcObject, useAllListings } from  "@libreplex/shared-ui";
-import { ShopOwnerContext } from "../../ShopOwnerContext";
 import { GroupDisplay } from "./groups/GroupDisplay";
 
 
-import {LibreplexShop} from "@libreplex/idls/lib/cjs/libreplex_shop"
+import {LibreplexShop} from "@libreplex/idls/lib/types/libreplex_shop"
 import { IdlAccounts } from "@coral-xyz/anchor";
 type Listing = IdlAccounts<LibreplexShop>["listing"];
 export const ListingGallery = () => {
@@ -22,10 +21,10 @@ export const ListingGallery = () => {
       [key: string]: (IRpcObject<Listing> & { executed?: boolean })[];
     } = {};
     for (const a of data) {
-      if (_listingsByGroup[(a.item as any).group?.toBase58() ?? ""]) {
-        _listingsByGroup[(a.item as any).group?.toBase58() ?? ""].push(a);
+      if (_listingsByGroup[a.item.collection?.toBase58() ?? ""]) {
+        _listingsByGroup[a.item.collection?.toBase58() ?? ""].push(a);
       } else {
-        _listingsByGroup[(a.item as any).group?.toBase58() ?? ""] = [a];
+        _listingsByGroup[a.item.collection?.toBase58() ?? ""] = [a];
       }
     }
 

@@ -33,7 +33,7 @@ import {
   Metadata,
   MetadataProgramContext,
   ScannerLink,
-  useGroupById,
+  useCollectionById,
   useInscriptionById,
 } from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
@@ -41,6 +41,7 @@ import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
 import { InscriptionCell } from "./ordinal/InscriptionCell";
 import { RemoveGroupTransactionButton } from "./RemoveGroupTransactionButton";
 import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
+import React from "react";
 
 export type Group = IdlAccounts<LibreplexMetadata>["group"];
 
@@ -79,7 +80,7 @@ export const MetadataRow = ({
 
   const inscription = useInscriptionById(inscriptionId, connection);
 
-  const group = useGroupById(item?.item?.group ?? null, connection);
+  const group = useCollectionById(item?.item?.collection ?? null, connection);
 
   return (
     <Tr
@@ -175,6 +176,9 @@ export const MetadataRow = ({
             </Box>
           </Center>
         </Stack>
+      </Td>
+      <Td>
+        {item?.item?.collection ? <CopyPublicKeyButton publicKey={item?.item?.collection.toBase58() }/> : <></>}
       </Td>
 
       {group ? (

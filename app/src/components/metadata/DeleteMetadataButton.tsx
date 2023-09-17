@@ -59,12 +59,12 @@ export const deleteMetadata = async (
   let instruction;
   for (const metadata of metadataObjects) {
 
-    if( metadata.item.group ) {
-      instructions.push(await librePlexProgram.methods.groupRemove()
+    if( metadata.item.collection ) {
+      instructions.push(await librePlexProgram.methods.removeMetadataFromCollection()
         .accounts({groupAuthority: wallet.publicKey,
             metadata: metadata.pubkey,
             delegatedGroupWidePermissions: null,
-            group: metadata.item.group,
+            collection: metadata.item.collection,
             systemProgram: SystemProgram.programId
           } 
       ).instruction())

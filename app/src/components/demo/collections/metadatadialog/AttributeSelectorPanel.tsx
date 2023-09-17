@@ -1,10 +1,8 @@
-import { Box, Table, Td, Text, Thead } from "@chakra-ui/react";
-import {IRpcObject, Group } from  "@libreplex/shared-ui";
+import { Box, Table, Tbody, Td, Text, Thead } from "@chakra-ui/react";
+import { IRpcObject, Group } from "@libreplex/shared-ui";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { AttributeSelectorRow } from "./AttributeSelectorRow";
-
-
-
+import React from "react";
 
 export const AttributeSelectorPanel = ({
   attributes,
@@ -23,17 +21,19 @@ export const AttributeSelectorPanel = ({
     <Box p={2}>
       <Text>
         {attributeCount > 0
-          ? `This collection has ${attributeCount} attribute${attributeCount===1?'':'s'}. Select ${attributeCount===1?'it':'them'} below.`
+          ? `This collection has ${attributeCount} attribute${
+              attributeCount === 1 ? "" : "s"
+            }. Select ${attributeCount === 1 ? "it" : "them"} below.`
           : "This collection has no available attributes."}
       </Text>
-      {attributeCount >0 && (
+      {attributeCount > 0 && (
         <Table>
           <Thead>
             <Td>Type</Td>
             <Td>Value</Td>
           </Thead>
-          {collection?.item?.attributeTypes?.map(
-            (item, idx) => (
+          <Tbody>
+            {collection?.item?.attributeTypes?.map((item, idx) => (
               <AttributeSelectorRow
                 key={idx}
                 attributeTypeIdx={idx}
@@ -41,8 +41,8 @@ export const AttributeSelectorPanel = ({
                 attributes={attributes}
                 setAttributes={setAttributes}
               />
-            )
-          )}
+            ))}
+          </Tbody>
         </Table>
       )}
     </Box>

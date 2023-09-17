@@ -118,7 +118,7 @@ export const executeTrade = async (
       seller: (listing.item as any).lister,
       mint,
       metadata: metadata.pubkey,
-      group: metadata.item.group,
+      collection: metadata.item.collection,
       listing: listing.pubkey,
       buyer: wallet.publicKey,
       

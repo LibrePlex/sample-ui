@@ -13,11 +13,11 @@ export type {
 } from "./query";
 export {
   useTokenAccountById,
-  decodeGroup,
-  useGroupsByAuthority,
+  decodeCollection,
+  useCollectionsByAuthority,
   useMetadataByAuthority,
-  useMetadataByGroup,
-  useGroupById,
+  useMetadataByCollection,
+  useCollectionById,
   useInscriptionById,
   useMetadataById,
   decodeMetadata,

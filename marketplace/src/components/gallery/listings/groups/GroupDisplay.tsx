@@ -3,10 +3,10 @@ import { HStack, Heading, Skeleton, VStack, Text } from "@chakra-ui/react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import React from "react";
-import { IRpcObject, useGroupById } from "@libreplex/shared-ui";
+import { IRpcObject, useCollectionById } from "@libreplex/shared-ui";
 import { ListingAction } from "../ListingAction";
 import { IdlAccounts } from "@coral-xyz/anchor";
-import { LibreplexShop } from "@libreplex/idls/lib/cjs/libreplex_shop";
+import { LibreplexShop } from "@libreplex/idls/lib/types/libreplex_shop";
 
 export type Listing = IdlAccounts<LibreplexShop>["listing"];
 
@@ -19,10 +19,13 @@ export const GroupDisplay = ({
 }) => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
-  const group = useGroupById(groupKey, connection);
+  const group = useCollectionById(groupKey, connection);
 
   return <VStack align="start">
       <HStack sx={{ w: "100%" }}>
+
+        {/* <Text>{JSON.stringify(group?.item)}</Text>
+        <Text>{groupKey?.toBase58()}</Text> */}
         {group?.item?.url.length > 0 ? (
           <img
             src={group?.item?.url}
@@ -36,7 +39,7 @@ export const GroupDisplay = ({
         <VStack align={"end"} sx={{ w: "100%" }}>
           <Heading size="md">Group: {group?.item?.name}</Heading>
           <Heading size="md">
-            Listings for group {groupKey?.toBase58()} ({listings.length})
+            Listings ({listings.length})
           </Heading>
         </VStack>
       </HStack>

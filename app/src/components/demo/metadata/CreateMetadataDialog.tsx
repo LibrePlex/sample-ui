@@ -33,7 +33,7 @@ import React from "react";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
 
-export type Group = IdlAccounts<LibreplexMetadata>["group"];
+export type Collection = IdlAccounts<LibreplexMetadata>["collection"];
 
 enum View {
   Standalone,
@@ -61,12 +61,12 @@ export const CreateMetadataDialog = ({
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [isMutable, setIsMutable] = useState<boolean>(false);
 
-  const [selectedGroup, setSelectedGroup] = useState<IRpcObject<Group>>();
+  const [selectedCollection, setSelectedCollection] = useState<IRpcObject<Collection|null>>(null);
 
 
   const numberOfAttributes = useMemo(
-    () => selectedGroup?.item?.attributeTypes?.length ?? 0,
-    [selectedGroup]
+    () => selectedCollection?.item?.attributeTypes?.length ?? 0,
+    [selectedCollection]
   );
 
   const [attributes, setAttributes] = useState<number[]>([
@@ -209,13 +209,13 @@ export const CreateMetadataDialog = ({
               <MutableInfoPanel />
             </Box>
             <GroupSelector
-              selectedGroup={selectedGroup}
-              setSelectedGroup={setSelectedGroup}
+              selectedGroup={selectedCollection}
+              setSelectedGroup={setSelectedCollection}
             />
              <AttributeSelectorPanel
               attributes={attributes}
               setAttributes={setAttributes}
-              collection={selectedGroup}
+              collection={selectedCollection}
             />
 
             <KeyGenerator
@@ -239,7 +239,7 @@ export const CreateMetadataDialog = ({
                   symbol,
                   assetType,
                   description,
-                  group: selectedGroup?.pubkey ?? null,
+                  collection: selectedCollection?.pubkey ?? null,
                   extension: {
                       attributes
                 }}}

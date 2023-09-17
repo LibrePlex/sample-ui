@@ -1,4 +1,4 @@
-import { LibreplexShop } from '@libreplex/idls/lib/cjs/libreplex_shop';
+import { LibreplexShop } from '@libreplex/idls/lib/types/libreplex_shop';
 import { BorshCoder, IdlAccounts, IdlTypes, Program } from "@coral-xyz/anchor";
 import {
   Connection,

@@ -49,7 +49,7 @@ export const decodeInscription =
   };
 
 export const useInscriptionById = (
-  inscriptionId: PublicKey,
+  inscriptionId: PublicKey | null,
   connection: Connection
 ) => {
   const program = useContext(InscriptionsProgramContext);

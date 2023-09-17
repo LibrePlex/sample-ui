@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
-  Group,
+  Collection,
   MetadataProgramContext,
 } from "@libreplex/shared-ui";
 import { IRpcObject } from "@libreplex/shared-ui";
@@ -34,9 +34,9 @@ export const GroupRow = ({
   setActiveCollection,
   activeCollection,
 }: {
-  activeCollection: IRpcObject<Group> | undefined;
-  setActiveCollection: Dispatch<SetStateAction<IRpcObject<Group>>>;
-  item: IRpcObject<Group>;
+  activeCollection: IRpcObject<Collection> | undefined;
+  setActiveCollection: Dispatch<SetStateAction<IRpcObject<Collection>>>;
+  item: IRpcObject<Collection>;
   selectedCollections: Set<PublicKey>;
   toggleSelectedCollection: (pubkey: PublicKey, b: boolean) => any;
 }) => {

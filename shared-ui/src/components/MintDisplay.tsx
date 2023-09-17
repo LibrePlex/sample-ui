@@ -17,7 +17,7 @@ import { PublicKey } from "@solana/web3.js";
 import dynamic from "next/dynamic";
 import React, { ReactNode, useState } from "react";
 import { AssetDisplay, CopyPublicKeyButton } from ".";
-import { useGroupById, useMetadataByMintId } from "../sdk";
+import { useCollectionById, useMetadataByMintId } from "../sdk";
 import { AttributesDisplay } from "./assetdisplay/AttributesDisplay";
 
 const ReactJson = dynamic(import("react-json-view"), { ssr: false });
@@ -35,7 +35,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
 
   const [view, setView] = useState<View>(View.Attributes);
 
-  const group = useGroupById(metadata?.item?.group ?? null, connection);
+  const group = useCollectionById(metadata?.item?.collection ?? null, connection);
 
   return metadata?.item ? (
     <Box sx={{ display: "flex", flexDirection: "column" }} gap={3}>
@@ -78,11 +78,11 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
                     </Td>
                   </Tr>
                   <Tr>
-                    <Td>Group</Td>
+                    <Td>Collection</Td>
                     <Td>
-                      {metadata?.item?.group ? (
+                      {metadata?.item?.collection ? (
                         <CopyPublicKeyButton
-                          publicKey={metadata?.item.group.toBase58()}
+                          publicKey={metadata?.item.collection.toBase58()}
                         />
                       ) : (
                         "-"
@@ -173,7 +173,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
                       <Heading size="md">Group</Heading>
 
                       <CopyPublicKeyButton
-                        publicKey={metadata?.item?.group?.toBase58()}
+                        publicKey={metadata?.item?.collection?.toBase58()}
                       />
                     </HStack>
                     <Box>

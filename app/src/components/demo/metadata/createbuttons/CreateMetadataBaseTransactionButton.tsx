@@ -36,6 +36,7 @@ import { ITransactionTemplate } from "@libreplex/shared-ui";
 
 import { getMetadataPda } from "@libreplex/shared-ui";
 import { notify } from "@libreplex/shared-ui";
+import React from "react";
 
 export enum AssetType {
   Image,
@@ -54,7 +55,7 @@ export interface ICreateMetadata {
   assetType: AssetType;
   description: string | null;
   mint: Keypair;
-  group: PublicKey | null;
+  collection: PublicKey | null;
   extension: {
     attributes: number[];
   } | null;
@@ -85,7 +86,7 @@ export const createMetadata = async (
     assetType,
     symbol,
     name,
-    group,
+    collection,
     description,
     mint,
     extension,
@@ -120,50 +121,7 @@ export const createMetadata = async (
     // 2) token program 2022
   ) as {transaction: Transaction}
 
-  // const mintLamports = await getMinimumBalanceForRentExemptMint(connection);
-
   const signers = [mint];
-
-  // const ata = getAssociatedTokenAddressSync(
-  //   mint.publicKey,
-  //   wallet.publicKey,
-  //   false,
-  //   TOKEN_2022_PROGRAM_ID
-  // );
-
-  // instructions.push(
-  //   SystemProgram.createAccount({
-  //     fromPubkey: wallet.publicKey,
-  //     newAccountPubkey: mint.publicKey,
-  //     space: MINT_SIZE,
-  //     lamports: mintLamports,
-  //     programId: TOKEN_2022_PROGRAM_ID,
-  //   }),
-  //   createInitializeMint2Instruction(
-  //     mint.publicKey,
-  //     0,
-  //     wallet.publicKey,
-  //     wallet.publicKey,
-  //     TOKEN_2022_PROGRAM_ID
-  //   ),
-  //   createAssociatedTokenAccountInstruction(
-  //     wallet.publicKey,
-  //     ata,
-  //     wallet.publicKey,
-  //     mint.publicKey,
-  //     TOKEN_2022_PROGRAM_ID
-  //   ),
-  //   createMintToInstruction(
-  //     mint.publicKey,
-  //     ata,
-  //     wallet.publicKey,
-  //     1,
-  //     [],
-  //     TOKEN_2022_PROGRAM_ID
-  //   )
-  // );
-
-  console.log("Creating instruction", assetType);
 
   if (assetType === AssetType.Image) {
     const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
@@ -189,7 +147,9 @@ export const createMetadata = async (
                 license: null,
               },
             }
-          : null,
+          : {
+            none: {}
+          },
       })
       .accounts({
         metadata,
@@ -233,7 +193,9 @@ export const createMetadata = async (
                   license: null,
                 },
               }
-            : null,
+            : {
+              none: {}
+            },
         }
       )
       .accounts({
@@ -247,9 +209,9 @@ export const createMetadata = async (
     instructions.push(instruction);
   }
 
-  console.log({ group });
+  console.log({ collection });
 
-  if (group) {
+  if (collection) {
     instructions.push(
       await librePlexProgram.methods
         .addMetadataToCollection()
@@ -258,9 +220,9 @@ export const createMetadata = async (
           collectionAuthority: wallet.publicKey,
           payer: wallet.publicKey,
           metadata,
-          delegatedGroupWidePermissions: null,
+          delegatedCollectionWidePermissions: null,
           delegatedMetadataSpecificPermissions: null,
-          group,
+          collection,
           systemProgram: SystemProgram.programId,
         })
         .instruction()
@@ -293,7 +255,7 @@ export const CreateMetadataTransactionButton = (
       <GenericTransactionButton<ICreateMetadata>
         text={"Create metadata"}
         transactionGenerator={createMetadata}
-        onError={(msg) => notify({ message: msg })}
+        onError={(msg) => notify({ message: msg ?? "N/A" })}
         {...props}
       />
     </>

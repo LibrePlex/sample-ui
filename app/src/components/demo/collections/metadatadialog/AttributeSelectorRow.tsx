@@ -2,6 +2,7 @@ import { Box, Button, Tag, Td, Tr } from "@chakra-ui/react";
 import { Group } from  "@libreplex/shared-ui";
 import { Dispatch, SetStateAction } from "react";
 import { getAttrValue } from "../../../../utils/getAttrValue";
+import React from "react";
 
 
 export const AttributeSelectorRow = ({

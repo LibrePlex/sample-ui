@@ -15,13 +15,13 @@ import {
   MetadataProgramContext,
   MintDisplay,
   PROGRAM_ID_METADATA,
-  useGroupById,
   useMetadataByMintId,
   usePublicKeyOrNull
 } from  "@libreplex/shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/router";
+import React from "react";
 
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");
@@ -36,8 +36,7 @@ export const LibreScanner = () => {
 
   const programIdOverridePubkey = usePublicKeyOrNull(programIdOverride);
 
-  const group = useGroupById(metadata?.item.group, connection);
-
+  
   const router = useRouter();
 
   useEffect(() => {

@@ -157,7 +157,7 @@ export const useMetadataByAuthority = (
   return decoded;
 };
 
-export const useMetadataByGroup = (
+export const useMetadataByCollection = (
   publicKey: PublicKey | undefined,
   connection: Connection
 ) => {
@@ -272,8 +272,8 @@ export const useGroupedMetadataByOwner = (
       [
         ...new Set(
           metadata
-            .filter((item) => item.item?.group)
-            .map((item) => item.item!.group!)
+            .filter((item) => item.item?.collection)
+            .map((item) => item.item!.collection!)
         ),
       ].sort((a, b) => a.toBase58().localeCompare(b.toBase58())),
     [metadata]
@@ -310,10 +310,10 @@ export const useGroupedMetadataByOwner = (
     for (const m of metadata) {
       
       // console.log({m})
-      if (m.item?.group) {
+      if (m.item?.collection) {
 
         const g = _groupedMetadata.find((item) =>
-          item.group?.pubkey.equals(m.item!.group!)
+          item.group?.pubkey.equals(m.item!.collection!)
         );
 
         const inscription = m.item?.asset.inscription?.accountId.toBase58()
@@ -342,7 +342,7 @@ export const useGroupedMetadataByOwner = (
           });
         } else {
           _groupedMetadata.push({
-            group: groupDict[m.item.group.toBase58()],
+            group: groupDict[m.item.collection.toBase58()],
             items: [
               {
                 ...m,

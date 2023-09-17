@@ -25,15 +25,15 @@ export {
   
 } from "./anchor";
 export {
-  decodeGroup,
+  decodeCollection,
   decodeMetadata,
   decodeInscription,
-  useGroupById,
-  useGroupsByAuthority,
+  useCollectionById,
+  useCollectionsByAuthority,
   useInscriptionById,
   useMetadataByAuthority,
   useMetadataById,
-  useMetadataByGroup,
+  useMetadataByCollection,
   useTokenAccountsByOwner,
   useTokenAccountById,
   useLegacyMetadataByMintId,

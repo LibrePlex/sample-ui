@@ -11,14 +11,14 @@ export type {
   Asset,
 } from "./metadata/metadata";
 export {
-  decodeCollection as decodeGroup,
-  useCollectionsByAuthority as useGroupsByAuthority,
-  useGroupById,
+  decodeCollection,
+  useCollectionsByAuthority,
+  useCollectionById,
 } from "./metadata/collection";
 
 export {
   useMetadataByAuthority,
-  useMetadataByGroup,
+  useMetadataByCollection,
   useMetadataById,
   decodeMetadata,
   useMetadataByMintId,
