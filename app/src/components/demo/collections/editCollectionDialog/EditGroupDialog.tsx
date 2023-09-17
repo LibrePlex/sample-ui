@@ -20,7 +20,7 @@ export const EditGroupDialog = ({
     <Modal isOpen={open} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create Group</ModalHeader>
+        <ModalHeader>Create Collection</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <EditGroupPanel onSuccess={()=>{}

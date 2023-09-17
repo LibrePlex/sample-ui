@@ -42,6 +42,7 @@ export const LibreScanner = () => {
 
   useEffect(() => {
     if (router.query.mintId && mintId !== router.query.mintId) {
+     
       setMintId((router.query.mintId ?? "") as string);
     }
   }, [router?.query]);
@@ -49,7 +50,10 @@ export const LibreScanner = () => {
   useEffect(()=>{
     if( mintPublicKey && router.query.mintId !== mintPublicKey?.toBase58()) {
       router.query.mintId = mintPublicKey.toBase58()
-      router.push(router)
+      router.push({
+        pathname: '/demo',
+        query: {...router.query, mintId: mintPublicKey.toBase58()},
+      }, undefined, {})
     }
   },[router, mintPublicKey])
 

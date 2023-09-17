@@ -14,14 +14,14 @@ import {
   import { RawAccount } from "@solana/spl-token";
 
   import React, { useState } from "react";
-  import { Group, GroupSelector, IRpcObject, Metadata } from  "@libreplex/shared-ui";
+  import { Collection, GroupSelector, IRpcObject, Metadata } from  "@libreplex/shared-ui";
 import { WalletAction } from "./WalletAction";
   
   export const CreateListingModal = ({item}:{item: IRpcObject<RawAccount>}) => {
     const [open, setOpen] = useState<boolean>(false);
   
     const [selectedGroup, setSelectedGroup] =
-      useState<IRpcObject<Group | null>>();
+      useState<IRpcObject<Collection | null>>();
   
     const [name, setName] = useState<string>("");
   

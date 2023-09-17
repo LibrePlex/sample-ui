@@ -1,4 +1,4 @@
-import { AttributeValue } from "./group"
+import { AttributeValue } from "./collection"
 
 
 export const getAttrValue = (attr: AttributeValue) => {

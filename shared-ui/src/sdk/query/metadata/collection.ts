@@ -12,9 +12,9 @@ import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata"
 import { IDL } from "@libreplex/idls/lib/cjs/libreplex_metadata";
 import { BitKeepWalletAdapter } from "@solana/wallet-adapter-wallets";
 
-export type Group = IdlAccounts<LibreplexMetadata>["group"];
+export type Collection = IdlAccounts<LibreplexMetadata>["collection"];
 
-export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
+export type CollectionInput = IdlTypes<LibreplexMetadata>["CollectionInput"];
 
 export type PermittedSigners = IdlTypes<LibreplexMetadata>["Royalties"];
 
@@ -91,27 +91,27 @@ const blacklistedPubkeys = new Set<string>([
   "8bKjP1fw7tY6CSXnb5iFbMJcHvf8PYsz8kwzyNVVSxGq",
   "8ap24kEqwCsehRdvjEF32A1fF7yUU6TTJUu94WC1sPGB",
 ]);
-export const decodeGroup =
+export const decodeCollection =
   (program: Program<LibreplexMetadata>) =>
   (
     buffer: Buffer,
     pubkey: PublicKey
   ): {
-    item: Group | null;
+    item: Collection | null;
     pubkey: PublicKey;
   } => {
-    let group: Group | null = null;
-    console.log(pubkey.toBase58());
+    let group: Collection | null = null;
+    // console.log(pubkey.toBase58());
     if (!blacklistedPubkeys.has(pubkey.toBase58())) {
       try {
-        console.log({ buffer });
-        group = coder.accounts.decode<Group>("group", buffer);
+        // console.log({ buffer });
+        group = coder.accounts.decode<Collection>("collection", buffer);
       } catch (e) {
         console.log({ e });
       }
     }
 
-    console.log({ group });
+    // console.log({ group });
     return {
       item: group,
       pubkey,
@@ -128,10 +128,10 @@ export const useGroupById = (
 
   const q = useFetchSingleAccount(groupKey, connection);
 
-  const decoder = useMemo(() => decodeGroup(program), [program]);
+  const decoder = useMemo(() => decodeCollection(program), [program]);
 
   const decoded = useMemo(() => {
-    console.log("decoding", { groupKey, decoder, q });
+    // console.log("decoding", { groupKey, decoder, q });
     try {
       const obj =
         groupKey && q?.data?.item
@@ -145,7 +145,7 @@ export const useGroupById = (
   return decoded;
 };
 
-export const useGroupsByAuthority = (
+export const useCollectionsByAuthority = (
   authority: PublicKey | null,
   connection: Connection
 ) => {
@@ -163,7 +163,7 @@ export const useGroupsByAuthority = (
         {
           memcmp: {
             offset: 0,
-            bytes: bs58.encode(sha256.array("account:Group").slice(0, 8)),
+            bytes: bs58.encode(sha256.array("account:Collection").slice(0, 8)),
           },
         },
       ];
@@ -178,7 +178,7 @@ export const useGroupsByAuthority = (
     "groupsByAuthority",
   ]);
 
-  const decoder = useMemo(() => decodeGroup(program), [decodeGroup, program]);
+  const decoder = useMemo(() => decodeCollection(program), [decodeCollection, program]);
   const decoded = useMemo(
     () => ({
       ...q,

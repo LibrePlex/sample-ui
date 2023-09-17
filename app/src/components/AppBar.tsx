@@ -24,8 +24,9 @@ export const AppBar = ({
   setIsNavOpen: (b: boolean) => any;
 }) => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
-  const { colorMode, toggleColorMode, setColorMode } = useColorMode();
+  // const { colorMode, toggleColorMode, setColorMode } = useColorMode();
 
+ 
 
   const router = useRouter();
 

@@ -17,7 +17,7 @@ import React, { useMemo } from "react";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-  Group,
+  Collection,
   IExecutorParams,
   IRpcObject,
   ITransactionTemplate,
@@ -43,7 +43,7 @@ export interface IAccountDefinition {
 export interface IExecuteTrade {
   listing: IRpcObject<Listing>;
   metadata: IRpcObject<Metadata>;
-  group: IRpcObject<Group | null>|null;
+  group: IRpcObject<Collection | null>|null;
   mint: PublicKey;
   buyerPaymentTokenAccount?: PublicKey | null; // null for native
   amount: BigInt;

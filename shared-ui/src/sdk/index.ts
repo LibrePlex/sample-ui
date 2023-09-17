@@ -1,11 +1,11 @@
 export type {
-  Group,
+  Collection,
   // Royalties,
   RoyaltyShare,
   Metadata,
   Inscription,
   AttributeType,
-  GroupInput,
+  CollectionInput,
   AttributeValue,
   Asset,
   Listing,

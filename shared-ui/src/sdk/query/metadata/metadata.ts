@@ -18,7 +18,7 @@ import { sha256 } from "js-sha256";
 import { useGpa } from "../gpa";
 import { getMetadataPda } from "../../../pdas";
 import { useTokenAccountsByOwner } from "../tokenaccountsbyowner";
-import { Group } from "./group";
+import { Collection } from "./collection";
 
 import { useMultipleMetadataById } from "./useMultipleMetadataById";
 import { useMultipleGroupsById } from "./useMultipleGroupsById";
@@ -55,7 +55,7 @@ export const decodeMetadata =
         pubkey,
       };
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       return {
         item: null,
         pubkey,
@@ -138,9 +138,9 @@ export const useMetadataByAuthority = (
     "metadatabyauthority",
   ]);
 
-  useEffect(() => {
-    console.log({ filters, connection, q });
-  }, [filters, connection, q]);
+  // useEffect(() => {
+  //   console.log({ filters, connection, q });
+  // }, [filters, connection, q]);
 
   const decoded = useMemo(
     () => ({
@@ -190,9 +190,9 @@ export const useMetadataByGroup = (
     "metadatabygroup",
   ]);
 
-  useEffect(() => {
-    console.log({ filters, connection, q });
-  }, [filters, connection, q]);
+  // useEffect(() => {
+  //   console.log({ filters, connection, q });
+  // }, [filters, connection, q]);
 
 
   const decoder = useMemo(()=> decodeMetadata(program),[program, decodeMetadata])
@@ -289,7 +289,7 @@ export const useGroupedMetadataByOwner = (
   //   console.log({metadata, groups, groupIds})
   // },[metadata, groups, groupIds])
   const groupDict = useMemo(() => {
-    const _groupDict: { [key: string]: IRpcObject<Group> } = {};
+    const _groupDict: { [key: string]: IRpcObject<Collection> } = {};
     for (const group of groups) {
       if (group.item) {
         _groupDict[group.pubkey.toBase58()] = { ...group, item: group.item! };
@@ -300,16 +300,16 @@ export const useGroupedMetadataByOwner = (
 
   const groupedMetadata = useMemo(() => {
     const _groupedMetadata: {
-      group: IRpcObject<Group> | null;
+      group: IRpcObject<Collection> | null;
       items: {
         metadata: IRpcObject<Metadata & { renderedJson?: IMetadataJson }>;
         tokenAccount: IRpcObject<RawAccount | null>;
       }[];
     }[] = [];
-    console.log({metadata});
+    // console.log({metadata});
     for (const m of metadata) {
       
-      console.log({m})
+      // console.log({m})
       if (m.item?.group) {
 
         const g = _groupedMetadata.find((item) =>

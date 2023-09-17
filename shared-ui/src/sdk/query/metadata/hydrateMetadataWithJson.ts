@@ -1,6 +1,6 @@
 import { getAttrValue } from "./getAttrValue";
-import { Inscription } from "..";
-import { Group } from "./group";
+
+import { Collection } from "./collection";
 import { Metadata } from "./metadata";
 import { IRpcObject } from "../../../components";
 
@@ -35,7 +35,7 @@ export interface IMetadataJson {
 
 export const hydrateMetadataWithJson = (
   libreMetadataObj: Metadata,
-  group: IRpcObject<Group> | null,
+  group: IRpcObject<Collection> | null,
   base64Image: string | null
 ) => {
   const retval: IMetadataJson = {

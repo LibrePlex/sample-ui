@@ -51,12 +51,12 @@ export {
 export type {
   AttributeType,
   AttributeValue,
-  Group,
+  Collection,
   Inscription,
   Metadata,
   // Royalties,
   RoyaltyShare,
-  GroupInput,
+  CollectionInput,
   Asset,
   Price
 } from "./sdk";
@@ -85,7 +85,7 @@ export {
 } from "./components";
 
 export {
-  GROUP,
+  COLLECTION,
   PERMISSIONS,
   METADATA,
   METADATA_EXTENSION,

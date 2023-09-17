@@ -1,20 +1,20 @@
 // metadata stuff
 export type {
-  Group,
+  Collection,
   AttributeType,
-  GroupInput,
+  CollectionInput,
   AttributeValue,
   RoyaltyShare
-} from "./metadata/group";
+} from "./metadata/collection";
 export type {
   Metadata,
   Asset,
 } from "./metadata/metadata";
 export {
-  decodeGroup,
-  useGroupsByAuthority,
+  decodeCollection as decodeGroup,
+  useCollectionsByAuthority as useGroupsByAuthority,
   useGroupById,
-} from "./metadata/group";
+} from "./metadata/collection";
 
 export {
   useMetadataByAuthority,

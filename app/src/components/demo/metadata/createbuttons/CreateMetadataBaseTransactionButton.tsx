@@ -24,7 +24,6 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import {
-  GroupInput,
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceMetadata,
 } from "@libreplex/shared-ui";
@@ -253,10 +252,10 @@ export const createMetadata = async (
   if (group) {
     instructions.push(
       await librePlexProgram.methods
-        .groupAdd()
+        .addMetadataToCollection()
         .accounts({
           metadataAuthority: wallet.publicKey,
-          groupAuthority: wallet.publicKey,
+          collectionAuthority: wallet.publicKey,
           payer: wallet.publicKey,
           metadata,
           delegatedGroupWidePermissions: null,

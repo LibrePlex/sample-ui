@@ -3,14 +3,14 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { IRpcObject } from "./executor";
-import { Group, useGroupsByAuthority } from "../sdk";
+import { Collection, useGroupsByAuthority } from "../sdk";
 
 export const GroupSelector = ({
   selectedGroup,
   setSelectedGroup,
 }: {
-  selectedGroup: IRpcObject<Group | null> | undefined;
-  setSelectedGroup: Dispatch<SetStateAction<IRpcObject<Group | null> | undefined>>;
+  selectedGroup: IRpcObject<Collection | null> | undefined;
+  setSelectedGroup: Dispatch<SetStateAction<IRpcObject<Collection | null> | undefined>>;
 }) => {
   const { publicKey } = useWallet();
 

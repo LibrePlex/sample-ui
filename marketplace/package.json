@@ -11,7 +11,8 @@
   "dependencies": {
     "@coral-xyz/anchor": "^0.28.0",
     "@libreplex/shared-ui": "*",
-    "@libreplex/idls": "0.1.5",
+    "@libreplex/idls": "0.2.0",
+    "@libreplex/sdk": "0.2.0",
     "@chakra-ui/react": "^2.7.1",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "20.3.1",

@@ -20,7 +20,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import {
-  Group,
+  Collection,
   IRpcObject,
   decodeGroup,
   useGroupsByAuthority
@@ -87,14 +87,14 @@ export const CollectionsPanel = () => {
   
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
-    collection: Group | undefined;
+    collection: Collection | undefined;
   }>({
     open: false,
     collection: undefined,
   });
 
  
-  const [collection, setCollection] = useState<IRpcObject<Group>>();
+  const [collection, setCollection] = useState<IRpcObject<Collection>>();
 
   return (
     <Box
@@ -119,7 +119,7 @@ export const CollectionsPanel = () => {
         <Button
           onClick={() => setEditorStatus({ open: true, collection: undefined })}
         >
-          Create Group
+          Create Collection
         </Button>
      
         <EditGroupDialog

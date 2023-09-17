@@ -1,5 +1,5 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { Group } from "../../sdk";
+import { Collection } from "../../sdk";
 
 import { AttributeDisplayRow } from "./AttributeDisplayRow";
 import React from "react";
@@ -9,7 +9,7 @@ export const AttributesDisplay = ({
   attributes,
   group,
 }: {
-  group: IRpcObject<Group>;
+  group: IRpcObject<Collection>;
   attributes: number[];
 }) => {
   return group ? (

@@ -4,7 +4,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Metadata, decodeMetadata } from "./metadata";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { MetadataProgramContext} from "../../../anchor";
-import { Group, decodeGroup } from "./group";
+import { Collection, decodeCollection } from "./collection";
 import { useMultipleAccountsById } from "./useMultipleAccountsById";
 
 export const useMultipleGroupsById = (
@@ -13,12 +13,12 @@ export const useMultipleGroupsById = (
 ) => {
   const { program } = useContext(MetadataProgramContext);
 
-  const decoder = useMemo(()=>decodeGroup(program), [program])
+  const decoder = useMemo(()=>decodeCollection(program), [program])
   const results = useMultipleAccountsById(groupIds, connection)
   const decodedGroups = useMemo(()=>{
     //  console.log({ result, orderedIds });
 
-        const _groups: IRpcObject<Group>[] = [];
+        const _groups: IRpcObject<Collection>[] = [];
         for (const res of results.data ) {
           if (res.data) {
             try {

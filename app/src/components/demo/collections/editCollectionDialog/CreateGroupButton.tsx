@@ -15,16 +15,17 @@ import {
 import {getGroupPda, getPermissionsPda, notify } from  "@libreplex/shared-ui";
 
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
+import React from "react";
 
-export type GroupInput = IdlTypes<LibreplexMetadata>["GroupInput"];
+export type CollectionInput = IdlTypes<LibreplexMetadata>["CollectionInput"];
 
 export interface ICreateCollection {
   name: string;
   symbol: string;
   description: string;
   attributeTypes: AttributeType[];
-  royalties: GroupInput["royalties"];
-  permittedSigners: GroupInput["permittedSigners"];
+  royalties: CollectionInput["royalties"];
+  permittedSigners: CollectionInput["permittedSigners"];
   metadataProgramId: PublicKey;
 }
 
@@ -47,9 +48,9 @@ export const createCollection = async (
 
   const seed = Keypair.generate();
 
-  const [group] = getGroupPda(seed.publicKey);
+  const [collection] = getGroupPda(seed.publicKey);
 
-  const [permissions] = getPermissionsPda(group, wallet.publicKey);
+  const [permissions] = getPermissionsPda(collection, wallet.publicKey);
 
   const {
     symbol,
@@ -70,18 +71,18 @@ export const createCollection = async (
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
-  const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${group.toBase58()}.png`;
+  const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${collection.toBase58()}.png`;
 
   console.log({
     authority: wallet.publicKey.toBase58(),
     permissions: permissions.toBase58(),
-    group: group.toBase58(),
+    collection: collection.toBase58(),
     seed: seed.publicKey.toBase58(),
     systemProgram: SystemProgram.programId.toBase58(),
   });
 
   const instruction = await librePlexProgram.methods
-    .createGroup({
+    .createCollection({
       name,
       symbol,
       description,
@@ -89,11 +90,10 @@ export const createCollection = async (
       royalties,
       permittedSigners,
       url,
-      templateConfiguration: { none: {} },
     })
     .accounts({
       authority: wallet.publicKey,
-      group,
+      collection,
       seed: seed.publicKey,
       systemProgram: SystemProgram.programId,
     })
@@ -123,9 +123,9 @@ export const CreateCollectionTransactionButton = (
   return (
     <>
       <GenericTransactionButton<ICreateCollection>
-        text={"Create group"}
+        text={"Create collection"}
         transactionGenerator={createCollection}
-        onError={(msg) => notify({ message: msg })}
+        onError={(msg) => notify({ message: msg ?? "N/A" })}
         {...props}
       />
     </>

@@ -3,14 +3,14 @@ import { getAttrValue } from "../../sdk/query/metadata/getAttrValue";
 
 import React from "react";
 import { IRpcObject } from "../executor";
-import { Group } from "../../sdk/query/metadata/group";
+import { Collection } from "../../sdk/query/metadata/collection";
 
 export const AttributeDisplayRow = ({
   group,
   idx,
   item,
 }: {
-  group: IRpcObject<Group>;
+  group: IRpcObject<Collection>;
   idx: number;
   item: number;
 }) => {

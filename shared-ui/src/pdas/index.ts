@@ -1,5 +1,5 @@
 import { getLegacyMetadataPda } from './getLegacyMetadataPda';
-export {GROUP, PERMISSIONS, METADATA, METADATA_EXTENSION} from "./constants"
+export {COLLECTION, PERMISSIONS, METADATA, METADATA_EXTENSION} from "./constants"
 export {getGroupPda} from "./getGroupPda"
 
 export {getMetadataExtendedPda} from "./getMetadataExtendedPda"
