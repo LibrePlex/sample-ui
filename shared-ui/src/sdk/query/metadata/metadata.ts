@@ -1,7 +1,6 @@
-import { IRpcObject } from './../../../components/executor/IRpcObject';
+import { IRpcObject } from "./../../../components/executor/IRpcObject";
 
-
-import { LibreplexMetadata } from '@libreplex/idls/lib/types/libreplex_metadata';
+import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
 import {
   IMetadataJson,
   hydrateMetadataWithJson,
@@ -21,11 +20,13 @@ import { useTokenAccountsByOwner } from "../tokenaccountsbyowner";
 import { Collection } from "./collection";
 
 import { useMultipleMetadataById } from "./useMultipleMetadataById";
-import { useMultipleGroupsById } from "./useMultipleGroupsById";
+import { useMultipleCollectionsById } from "./useMultipleCollectionsById";
 import { useMultipleInscriptionsById } from "./useMultipleInscriptionsById";
-import { Inscription, getBase64FromDatabytes } from '../inscriptions/inscriptions';
-import { decode } from 'bs58';
-
+import {
+  Inscription,
+  getBase64FromDatabytes,
+} from "../inscriptions/inscriptions";
+import { decode } from "bs58";
 
 export enum AssetType {
   None,
@@ -187,15 +188,17 @@ export const useMetadataByCollection = (
 
   const q = useGpa(program.programId, filters, connection, [
     publicKey?.toBase58() ?? "",
-    "metadatabygroup",
+    "metadatabycollection",
   ]);
 
   // useEffect(() => {
   //   console.log({ filters, connection, q });
   // }, [filters, connection, q]);
 
-
-  const decoder = useMemo(()=> decodeMetadata(program),[program, decodeMetadata])
+  const decoder = useMemo(
+    () => decodeMetadata(program),
+    [program, decodeMetadata]
+  );
 
   const decoded = useMemo(
     () => ({
@@ -212,7 +215,7 @@ export const useMetadataByCollection = (
   return decoded;
 };
 
-export const useGroupedMetadataByOwner = (
+export const useMetadataGroupedByCollection = (
   owner: PublicKey,
   connection: Connection
 ) => {
@@ -240,14 +243,13 @@ export const useGroupedMetadataByOwner = (
     [program, ownedMints]
   );
 
-    // useEffect(()=>{
-    //   console.log({metadataIds})
-    // },[metadataIds])
+  // useEffect(()=>{
+  //   console.log({metadataIds})
+  // },[metadataIds])
 
   const { data: metadata, isFetching: isFetchingMetadata } =
     useMultipleMetadataById(metadataIds, connection);
 
-      
   const inscriptionIds = useMemo(
     () =>
       metadata
@@ -279,28 +281,25 @@ export const useGroupedMetadataByOwner = (
     [metadata]
   );
 
-  const { data: groups, isFetching: isFetchingGroups } = useMultipleGroupsById(
-    groupIds,
-    connection
-  );
-
+  const { data: collections, isFetching: isFetchingGroups } =
+    useMultipleCollectionsById(groupIds, connection);
 
   // useEffect(()=>{
   //   console.log({metadata, groups, groupIds})
   // },[metadata, groups, groupIds])
-  const groupDict = useMemo(() => {
+  const collectionDict = useMemo(() => {
     const _groupDict: { [key: string]: IRpcObject<Collection> } = {};
-    for (const group of groups) {
+    for (const group of collections) {
       if (group.item) {
         _groupDict[group.pubkey.toBase58()] = { ...group, item: group.item! };
       }
     }
     return _groupDict;
-  }, [groups]);
+  }, [collections]);
 
   const groupedMetadata = useMemo(() => {
     const _groupedMetadata: {
-      group: IRpcObject<Collection> | null;
+      collection: IRpcObject<Collection> | null;
       items: {
         metadata: IRpcObject<Metadata & { renderedJson?: IMetadataJson }>;
         tokenAccount: IRpcObject<RawAccount | null>;
@@ -308,12 +307,10 @@ export const useGroupedMetadataByOwner = (
     }[] = [];
     // console.log({metadata});
     for (const m of metadata) {
-      
       // console.log({m})
       if (m.item?.collection) {
-
         const g = _groupedMetadata.find((item) =>
-          item.group?.pubkey.equals(m.item!.collection!)
+          item.collection?.pubkey.equals(m.item!.collection!)
         );
 
         const inscription = m.item?.asset.inscription?.accountId.toBase58()
@@ -321,19 +318,26 @@ export const useGroupedMetadataByOwner = (
           : null;
 
         const base64 = inscription
-          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), m.item.asset.inscription?.dataType??'')
+          ? getBase64FromDatabytes(
+              Buffer.from(inscription.item.dataBytes),
+              m.item.asset.inscription?.dataType ?? ""
+            )
           : null;
 
-        if( !base64 ) {
-          console.log('Could not decode base64 url');
+        if (!base64) {
+          console.log("Could not decode base64 url");
         }
 
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
-          g?.group ?? null,
+          g?.collection ?? null,
           base64
         );
-          console.log({g});
+        console.log({ g });
+        // if metadata has a collection specified but collection has not been loaded yet, do nothing
+        if (!collectionDict[m.item.collection.toBase58()]) {
+          continue;
+        }
         if (g) {
           g.items.push({
             ...m,
@@ -342,7 +346,7 @@ export const useGroupedMetadataByOwner = (
           });
         } else {
           _groupedMetadata.push({
-            group: groupDict[m.item.collection.toBase58()],
+            collection: collectionDict[m.item.collection.toBase58()],
             items: [
               {
                 ...m,
@@ -356,24 +360,27 @@ export const useGroupedMetadataByOwner = (
           });
         }
       } else {
-        const g = _groupedMetadata.find((item) => item.group === null) ?? null;
-
+        const g =
+          _groupedMetadata.find((item) => item.collection === null) ?? null;
 
         const inscription = m.item?.asset.inscription?.accountId.toBase58()
           ? inscriptionDict[m.item?.asset.inscription?.accountId.toBase58()]
           : null;
 
-          const base64 = inscription
-          ? getBase64FromDatabytes(Buffer.from(inscription.item.dataBytes), m.item?.asset.inscription?.dataType??'')
+        const base64 = inscription
+          ? getBase64FromDatabytes(
+              Buffer.from(inscription.item.dataBytes),
+              m.item?.asset.inscription?.dataType ?? ""
+            )
           : null;
 
-        if( !base64 ) {
-          console.log('Could not decode base64 url');
+        if (!base64) {
+          console.log("Could not decode base64 url");
         }
 
         const renderedJson = hydrateMetadataWithJson(
           m.item!,
-          g?.group ?? null,
+          g?.collection ?? null,
           base64
         );
         if (m.item) {
@@ -388,7 +395,7 @@ export const useGroupedMetadataByOwner = (
             });
           } else {
             _groupedMetadata.push({
-              group: null,
+              collection: null,
               items: [
                 {
                   ...m,
@@ -406,7 +413,7 @@ export const useGroupedMetadataByOwner = (
     }
 
     return _groupedMetadata;
-  }, [metadata.length, groups]);
+  }, [metadata, collectionDict]);
 
   return {
     data: groupedMetadata,

@@ -43,7 +43,7 @@ export {
   useMetadataByMintId,
   useListingsByGroup,
   useAllListings,
-  useGroupedMetadataByOwner,
+  useMetadataGroupedByCollection,
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
   InscriptionStoreContext

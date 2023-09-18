@@ -3,7 +3,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
 
-import { useGroupedMetadataByOwner } from  "@libreplex/shared-ui";
+import { useMetadataGroupedByCollection } from  "@libreplex/shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
 import { useEffect } from "react";
 export const WalletGallery = ({ publicKey, onSelectMint }: { 
@@ -11,7 +11,7 @@ export const WalletGallery = ({ publicKey, onSelectMint }: {
   publicKey: PublicKey }) => {
   const { connection } = useConnection();
 
-  const { data: groupedMetadata } = useGroupedMetadataByOwner(
+  const { data: groupedMetadata } = useMetadataGroupedByCollection(
     publicKey,
     connection
   );
@@ -26,7 +26,7 @@ export const WalletGallery = ({ publicKey, onSelectMint }: {
       <Box ><Heading size={'md'}>Wallet contents</Heading></Box>
         {groupedMetadata.map((item, idx) => (
           <VStack key={idx} align="start" gap={8}>
-            <Heading>{item.group?.item.name}</Heading>
+            <Heading>{item.collection?.item.name}</Heading>
             <HStack wrap={"wrap"}>
               {item.items.map((item, idx2) => (
                 <MintCard key={idx2} onSelectMint={onSelectMint} mint={item.metadata.item.mint} />
