@@ -110,6 +110,10 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
         </Table>
       </HStack>
 
+      <Box>
+        {actions}
+      </Box>
+
       <VStack
               justify={"start"}
               h={"100%"}
