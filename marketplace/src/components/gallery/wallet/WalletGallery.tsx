@@ -21,20 +21,49 @@ export const WalletGallery = ({ publicKey, onSelectMint }: {
   },[groupedMetadata])
 
   return (
-    <Box p={20} display="flex" flexDirection="row" flexWrap={"wrap"} gap={2}>
-      <VStack align="start" gap={16}>
-      <Box ><Heading size={'md'}>Wallet contents</Heading></Box>
-        {groupedMetadata.map((item, idx) => (
-          <VStack key={idx} align="start" gap={8}>
-            <Heading>{item.collection?.item.name}</Heading>
-            <HStack wrap={"wrap"}>
-              {item.items.map((item, idx2) => (
-                <MintCard key={idx2} onSelectMint={onSelectMint} mint={item.metadata.item.mint} />
-              ))}
-            </HStack>
+    <VStack
+    gap={16}
+    alignItems="flex-start"
+    justifyContent="center"
+    style={{marginTop: 64}}
+    width={'100%'}
+    >
+    
+    {
+      groupedMetadata.map((item, id) => (
+        <VStack
+        key={id}
+        gap={8}
+        alignItems="flex-start"
+        justifyContent="center"
+        width={'100%'}
+        >
+
+          <VStack
+          alignItems="flex-start"
+          >
+            <Heading>{item.collection?.item.name} <span style={{color:'gray'}}>({item.items.length})</span></Heading>
+            <span style={{fontSize: 12, color: 'gray'}}>Created by: {item.collection.item.creator.toBase58().slice(0,4)}...{item.collection.item.creator.toBase58().slice(item.collection.item.creator.toBase58().length-4)}</span>
           </VStack>
-        ))}
-      </VStack>
-    </Box>
-  );
-};
+
+          <HStack
+          gap={8}
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          flexWrap="wrap"
+          >
+
+            {item.items.map((item, id2) => (
+              <MintCard key={id2} onSelectMint={onSelectMint} mint={item.metadata.item.mint} />
+            ))}
+          
+          </HStack>
+        
+        </VStack>
+      ))
+    }
+
+
+    </VStack>
+  )
+}

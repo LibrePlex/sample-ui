@@ -40,7 +40,7 @@ export const AssetDisplay = ({ asset }: { asset: Asset | undefined }) => {
       {asset?.image ? (
         <img
           src={asset.image.url}
-          style={{ aspectRatio: "1/1", width: "100%" }}
+          style={{ aspectRatio: "1/1", width: "100%", borderRadius: 8 }}
         />
       ) : 
       asset?.json ? 
