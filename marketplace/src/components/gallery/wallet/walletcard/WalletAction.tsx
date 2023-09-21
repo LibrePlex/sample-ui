@@ -46,6 +46,7 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
             step={0.0001}
             placeholder="Sol amount"
             value={solAmount}
+            type="number"
             onChange={(e) => {
               setSolAmount(e.currentTarget.value);
             }}

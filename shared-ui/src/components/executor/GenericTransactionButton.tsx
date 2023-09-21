@@ -84,6 +84,7 @@ export const GenericTransactionButton = <P extends unknown>({
   return (
     <Button
       disabled={isExecuting}
+      colorScheme="teal"
       {...rest}
       onClick={onClick}
     >

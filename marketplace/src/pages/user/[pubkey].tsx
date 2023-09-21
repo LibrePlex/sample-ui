@@ -103,10 +103,9 @@ const Home: NextPage = (props) => {
                 Back to wallet
               </Button>
 
-              
                 <MintDisplay
                   mint={mint}
-                  actions={selectedMintTokenAccount && <WalletAction item={selectedMintTokenAccount} />}
+                  actions={ publicKey && selectedMintTokenAccount?.item.owner.toBase58() === publicKey?.toBase58() && <WalletAction item={selectedMintTokenAccount} />}
                 />
  
             </VStack>
