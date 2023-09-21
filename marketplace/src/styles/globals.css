@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-color: #9448FF;
+  --secondary-color: #15F097;
+}
+
 html,
 body {
   padding: 0;
@@ -27,5 +32,12 @@ a {
 /* example: override wallet button style */
 .wallet-adapter-button:not([disabled]):hover {
   background-color: #707070;
+}
+
+.gradientText {
+  background: -webkit-linear-gradient(left, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 

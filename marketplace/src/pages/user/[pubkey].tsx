@@ -3,14 +3,14 @@ import Head from "next/head";
 import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 
 import { HomeView } from "../../views";
-import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import {
   MintDisplay,
   usePublicKeyOrNull,
   useTokenAccountsByOwner,
 } from  "@libreplex/shared-ui";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useConnection } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletGallery } from "../../components/gallery/wallet/WalletGallery";
 
 import { useRouter } from "next/router";
@@ -19,12 +19,14 @@ import { WalletAction } from "@marketplace/components/gallery/wallet/walletcard/
 
 const Home: NextPage = (props) => {
   const router = useRouter();
-  const [pubkey, setPubkey] = useState<PublicKey>(null);
+  const [routerPubkey, setRouterPubkey] = useState<PublicKey>(null);
+  const { publicKey } = useWallet()
+  
 
   useEffect(() => {
     try {
       new PublicKey(router.query.pubkey);
-      setPubkey(new PublicKey(router.query.pubkey));
+      setRouterPubkey(new PublicKey(router.query.pubkey));
     } catch (error) {}
   }, [router.query.pubkey]);
 
@@ -48,7 +50,7 @@ const Home: NextPage = (props) => {
   const { connection } = useConnection();
 
   const { data: tokenAccounts } = useTokenAccountsByOwner(
-    pubkey,
+    routerPubkey,
     connection,
     TOKEN_2022_PROGRAM_ID
   );
@@ -59,31 +61,67 @@ const Home: NextPage = (props) => {
   );
 
   return (
-    <div style={{ display: "flex", alignItems: "flex-start" }}>
-    
-      {pubkey ? (
-        mint ? (
-          <Box w={"100%"}>
-            <Button m={30} onClick={()=>{
-              selectMint(undefined)
-            }}>Back to wallet</Button>
+    <>
+
+      <Head>
+        <title>LibrePlex - Wallet {router.query.pubkey}</title>
+      </Head>
+
+      <div
+      style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent:'flex-start',
+      margin: '92px 58px', height: '100%'
+      }}>
+
+        {
+          !mint && 
+          <Heading 
+          size={'4xl'}
+          className="gradientText"
+          style={{opacity: 0.7}}
+          >
+            {router.query.pubkey === publicKey?.toBase58() ? "My Wallet" : `${router.query.pubkey?.slice(0, 4)}...${router.query.pubkey?.slice(router.query.pubkey.length-4)}`}
+          </Heading>
+        }
+        
+        {
+          routerPubkey ? 
+            mint ? 
+            <VStack 
+            w={"100%"}
+            h={'100%'}
+            gap={8}
+            >
+
+              <Button 
+              onClick={()=>{
+                selectMint(undefined)
+              }}
+              my={8}
+              // style={{margin}}
+              >
+                Back to wallet
+              </Button>
+
+              
+                <MintDisplay
+                  mint={mint}
+                  actions={selectedMintTokenAccount && <WalletAction item={selectedMintTokenAccount} />}
+                />
+ 
+            </VStack>
+            :
+            <WalletGallery publicKey={routerPubkey} onSelectMint={selectMint} /> 
+          :
             <Center style={{ minHeight: "500px" }}>
-              <MintDisplay
-                mint={mint}
-                actions={selectedMintTokenAccount && <WalletAction item={selectedMintTokenAccount} />}
-              />
+              <Text>Must be valid public key</Text>
             </Center>
-          </Box>
-        ) : (
-          <WalletGallery publicKey={pubkey} onSelectMint={selectMint} />
-        )
-      ) : (
-        <Center style={{ minHeight: "500px" }}>
-          <Text>Must be valid public key</Text>
-        </Center>
-      )}
-    </div>
-  );
-};
+        }
+
+
+      </div>
+    </>
+  )
+}
 
 export default Home;
