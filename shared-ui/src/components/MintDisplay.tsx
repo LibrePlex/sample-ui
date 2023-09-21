@@ -117,7 +117,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
       <VStack
               justify={"start"}
               h={"100%"}
-              maxH={"330px"}
+              // maxH={"330px"}
               align={"start"}
               maxW={"646px"}
               minW={"100%"}

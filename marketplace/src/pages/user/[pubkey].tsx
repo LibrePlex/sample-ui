@@ -70,7 +70,7 @@ const Home: NextPage = (props) => {
       <div
       style={{
       display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent:'flex-start',
-      margin: '92px 58px', height: '100%'
+      margin: '92px 58px'
       }}>
 
         {
