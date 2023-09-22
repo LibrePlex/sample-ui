@@ -26,7 +26,16 @@ const manager = createLocalStorageManager("colormode-key");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
-  const queryClient = useMemo(() => new QueryClient({}), []);
+  const queryClient = useMemo(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retry: false,
+        staleTime: 24 * 60 * 60 * 1000,
+      },
+    },
+  }), []);
 
   return (
     <>
