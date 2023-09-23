@@ -3,22 +3,29 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo, useState } from "react";
 import { IRpcObject, useAllListings } from  "@libreplex/shared-ui";
-import { GroupDisplay } from "./groups/GroupDisplay";
+import { GroupDisplay } from "./collections/GroupDisplay";
 
 
 import {LibreplexShop} from "@libreplex/idls/lib/types/libreplex_shop"
 import { IdlAccounts } from "@coral-xyz/anchor";
-type Listing = IdlAccounts<LibreplexShop>["listing"];
-export const ListingGallery = () => {
-  const { connection } = useConnection();
+import CollectionCard from "./collections/CollectionCard";
 
-  const { data, refetch } = useAllListings(connection);
+type Listing = {
+  item: IdlAccounts<LibreplexShop>["listing"]
+};
+
+type Props = {
+  data: Listing[];
+}
+
+function ListingGallery({data}: Props){
+
 
   const { publicKey } = useWallet();
   // const listingsByGroup: any[] = useMemo(()=>[],[]);
   const listingsByGroup = useMemo(() => {
     const _listingsByGroup: {
-      [key: string]: (IRpcObject<Listing> & { executed?: boolean })[];
+      [key: string]: (Listing & { executed?: boolean })[];
     } = {};
     for (const a of data) {
       if (_listingsByGroup[a.item.collection?.toBase58() ?? ""]) {
@@ -33,8 +40,8 @@ export const ListingGallery = () => {
         // my listings first
         _listingsByGroup[key] = _listingsByGroup[key].sort(
           (a, b) =>
-            ((a.item as any).lister .equals(publicKey) ? 0 : 1000) -
-            ((b.item as any).lister.equals(publicKey) ? 0 : 1000)
+            (a.item.lister.equals(publicKey) ? 0 : 1000) -
+            (b.item.lister.equals(publicKey) ? 0 : 1000)
         );
       }
     }
@@ -42,33 +49,37 @@ export const ListingGallery = () => {
     return _listingsByGroup;
   }, [data, publicKey]);
 
-  const groupKeys = useMemo(
+  const collectionKeys = useMemo(
     () => Object.keys(listingsByGroup).sort((a, b) => a.localeCompare(b)),
     [listingsByGroup]
   );
 
   return publicKey ? (
     <Box
-      mb={10}
-      p={20}
+      my={10}
+      // p={20}
       display="flex"
       flexDirection="column"
       alignItems={"center"}
+      height="100%"
     >
-      <VStack mt={5}>
-        <Button onClick={()=>{
-          refetch()
-        }}>Refresh</Button>
-        {/* <Text color='white'>{JSON.stringify(groupKeys)}</Text>
-        <Text color='white'>{JSON.stringify(listingsByGroup)}</Text> */}
-        {groupKeys.map((groupKey, idx) => (
-          <GroupDisplay
-            groupKey={groupKey.length > 0 ? new PublicKey(groupKey): null}
-            listings={listingsByGroup[groupKey]}
-            key={idx}
-          ></GroupDisplay>
+      <HStack mt={5} width={'100%'} height={'100%'} gap={8} wrap="wrap">
+
+        {/* <Text color='white'>{JSON.stringify(collectionKeys)}</Text> */}
+        {/* <Text color='white'>{JSON.stringify(listingsByGroup)}</Text> */}
+        {collectionKeys.map((collectionKey, idx) => (
+          <CollectionCard
+          key={idx}
+          collectionKey={collectionKey.length > 0 ? new PublicKey(collectionKey): null}
+          totalListings={listingsByGroup[collectionKey].length}
+          />
+          // <GroupDisplay
+          //   groupKey={groupKey.length > 0 ? new PublicKey(groupKey): null}
+          //   listings={listingsByGroup[groupKey]}
+          //   key={idx}
+          // ></GroupDisplay>
         ))}
-      </VStack>
+      </HStack>
     </Box>
   ) : (
     <Center height="100%">
@@ -76,3 +87,5 @@ export const ListingGallery = () => {
     </Center>
   );
 };
+
+export default ListingGallery

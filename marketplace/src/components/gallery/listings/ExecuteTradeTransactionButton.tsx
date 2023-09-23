@@ -27,7 +27,11 @@ import {
 
 
 import { Price, notify } from  "@libreplex/shared-ui";
-import { Listing } from "./groups/GroupDisplay";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { LibreplexShop } from "@libreplex/idls/lib/types/libreplex_shop";
+
+type Listing = IdlAccounts<LibreplexShop>["listing"];
+
 
 export enum AssetType {
   Image,
