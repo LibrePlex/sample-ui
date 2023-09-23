@@ -1,4 +1,4 @@
-import { Box, HStack, Heading, VStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Heading, VStack, Text, Button, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverFooter, PopoverHeader, PopoverTrigger, Portal } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
@@ -6,8 +6,10 @@ import { PublicKey } from "@solana/web3.js";
 import { useMetadataGroupedByCollection } from  "@libreplex/shared-ui";
 import { MintCard } from "../../mintcard/MintCard";
 import { useEffect } from "react";
-export const WalletGallery = ({ publicKey, onSelectMint }: { 
-  onSelectMint: (mint: PublicKey) => any,
+import { WalletAction } from "./walletcard/WalletAction";
+
+export const WalletGallery = ({ publicKey, isOwner }: { 
+  isOwner: boolean,
   publicKey: PublicKey }) => {
   const { connection } = useConnection();
 
@@ -54,7 +56,31 @@ export const WalletGallery = ({ publicKey, onSelectMint }: {
           >
 
             {item.items.map((item, id2) => (
-              <MintCard key={id2} onSelectMint={onSelectMint} mint={item.metadata.item.mint} />
+              <MintCard key={id2} mint={item.metadata.item.mint}>
+                {
+                  isOwner &&
+                  <Popover>
+                    <PopoverTrigger>
+                      <Button
+                      colorScheme="teal"
+                      size="xs"
+                      >
+                        List
+                      </Button>
+                    </PopoverTrigger>
+                    <Portal>
+                      <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverHeader>List</PopoverHeader>
+                        <PopoverCloseButton />
+                        <PopoverBody>
+                          <WalletAction item={item.tokenAccount} />
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Portal>
+                  </Popover>
+                }
+              </MintCard>
             ))}
           
           </HStack>

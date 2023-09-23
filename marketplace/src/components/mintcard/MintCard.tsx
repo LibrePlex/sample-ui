@@ -24,11 +24,9 @@ const textMotion = {
 export const MintCard = ({
   mint,
   children,
-  onSelectMint,
   ...rest
 }: {
   mint: PublicKey;
-  onSelectMint?: (mint: PublicKey) => any,
   children?: ReactNode; 
 } & BoxProps) => {
   const {} = useContext(MetadataProgramContext);
