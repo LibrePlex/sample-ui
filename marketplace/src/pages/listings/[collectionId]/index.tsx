@@ -76,10 +76,10 @@ function CollectionPage({}: Props) {
                 key={idx}
                 mint={listing.item.mint}
                 >
-                <ListingAction
+                {publicKey && <ListingAction
                     publicKey={publicKey}
                     listing={{ ...listing, item: listing.item }}
-                />
+                />}
                 </MintCard>
             ))}
             </HStack>
