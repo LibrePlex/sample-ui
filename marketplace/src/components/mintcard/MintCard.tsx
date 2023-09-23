@@ -10,6 +10,7 @@ import {
 } from  "@libreplex/shared-ui";
 import { AssetDisplay } from  "@libreplex/shared-ui";
 import { motion } from "framer-motion"
+import Link from "next/link";
 
 const textMotion = {
   default: {
@@ -33,30 +34,23 @@ export const MintCard = ({
   const {} = useContext(MetadataProgramContext);
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mint, connection);
-
   const router = useRouter();
 
 
   return (
     <Box {...rest} maxW={"200px"} minW={"200px"} 
     as={motion.div}
-    initial="default" whileHover="hover">
-      <div
-      style={{
-        cursor: 'pointer'
-      }}
-      onClick={()=>{
-        onSelectMint && onSelectMint(mint)
-      }}
-      >
+    initial="default" whileHover="hover"
+    >
+      <Link href={`/mint/${metadata?.item.mint}`}>
       <AssetDisplay asset={metadata?.item?.asset} />
-      </div>
+      </Link>
+      
 
-      <VStack style={{paddingTop: 12}}  alignItems="flex-start" justifyContent="flex-start">
-        <HStack>
+      <VStack style={{paddingTop: 12}} alignItems="flex-start" justifyContent="flex-start">
+        <Link href={`/mint/${metadata?.item.mint}`}>
           <Heading title={metadata?.item?.name ?? "-"} as={motion.p} size="md" noOfLines={1} variants={textMotion}> {metadata?.item?.name ?? "-"} </Heading>
-          <ScannerLink mintId={mint} />
-        </HStack>
+        </Link>
         {children}
       </VStack>
     </Box>

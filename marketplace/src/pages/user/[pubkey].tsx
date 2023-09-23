@@ -47,18 +47,6 @@ const Home: NextPage = (props) => {
 
   const mint = usePublicKeyOrNull(mintId as string);
 
-  const { connection } = useConnection();
-
-  const { data: tokenAccounts } = useTokenAccountsByOwner(
-    routerPubkey,
-    connection,
-    TOKEN_2022_PROGRAM_ID
-  );
-
-  const selectedMintTokenAccount = useMemo(
-    () => mint && tokenAccounts.find((ta) => ta.item.mint.equals(mint)),
-    [tokenAccounts, mint]
-  );
 
   return (
     <>
@@ -86,30 +74,6 @@ const Home: NextPage = (props) => {
         
         {
           routerPubkey ? 
-            mint ? 
-            <VStack 
-            w={"100%"}
-            h={'100%'}
-            gap={8}
-            >
-
-              <Button 
-              onClick={()=>{
-                selectMint(undefined)
-              }}
-              my={8}
-              // style={{margin}}
-              >
-                Back to wallet
-              </Button>
-
-                <MintDisplay
-                  mint={mint}
-                  actions={ publicKey && selectedMintTokenAccount?.item.owner.toBase58() === publicKey?.toBase58() && <WalletAction item={selectedMintTokenAccount} />}
-                />
- 
-            </VStack>
-            :
             <WalletGallery publicKey={routerPubkey} onSelectMint={selectMint} /> 
           :
             <Center style={{ minHeight: "500px" }}>

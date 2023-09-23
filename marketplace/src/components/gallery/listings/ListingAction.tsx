@@ -16,7 +16,10 @@ import {
 import { DelistTransactionButton } from "./DelistTransactionButton";
 import { ExecuteTradeTransactionButton } from "./ExecuteTradeTransactionButton";
 import { useTokenAccountsForPurchase } from "./useTokenAccountForPurchase";
-import { Listing } from "./groups/GroupDisplay";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { LibreplexShop } from "@libreplex/idls/lib/types/libreplex_shop";
+
+export type Listing = IdlAccounts<LibreplexShop>["listing"];
 
 export const ListingAction = ({
   publicKey,
@@ -59,15 +62,25 @@ export const ListingAction = ({
   const tokenAccount = useTokenAccountById(tokenAccountId, connection);
 
   return (
-    <VStack>
+    <VStack align="start">
+
+      <Text style={{fontSize: 12}} color="gray.400">Listed by: {listing?.item.lister.toBase58().slice(0,4)}...{listing?.item.lister.toBase58().slice(listing?.item.lister.toBase58().length-4)}</Text>
+
       <HStack>
-        <Text>Lister:</Text>
-        <CopyPublicKeyButton publicKey={listing.item.lister.toBase58()} />
-      </HStack>
-      <HStack>
-        <Text sx={{ position: "absolute", top: 2, right: 2 }}>
-          {solAmount} SOL
-        </Text>
+        
+        <HStack align="center" gap={1} 
+        sx={{ 
+          position: "absolute", top: 2, right: 2, padding: 2, fontSize: 12, borderRadius: 8,
+          // background: 'rgba( 255, 255, 255, 0.25 )',
+          background: 'linear-gradient(45deg, #9448FF70, #15F09770)',
+          backdropFilter: 'blur( 4px )',
+          WebkitBackdropFilter: 'blur( 4px )',
+          }}>
+          <img src="../solana.svg" width={12}/>
+          <Text color="white">
+            {solAmount}
+          </Text>
+        </HStack>
 
         {tokenAccount?.amount === BigInt(0) ? (
           <Text>Inactive</Text>
