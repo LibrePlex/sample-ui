@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useCollectionById, useListingsByGroup } from '@libreplex/shared-ui'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useRouter } from 'next/router'
@@ -13,7 +13,7 @@ function CollectionPage({}: Props) {
     const { connection } = useConnection()
     const { publicKey } = useWallet();
     const router = useRouter()
-    const collectionKey = router.query.collectionId ? new PublicKey(router.query.collectionId) : null
+    const collectionKey = useMemo(()=>router.query.collectionId ? new PublicKey(router.query.collectionId) : null,[router.query.collectionId])
     const collection = useCollectionById(collectionKey, connection)
     const { data } = useListingsByGroup(collectionKey, connection)
     const [hasError, setHasError] = useState(false)

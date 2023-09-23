@@ -7,7 +7,10 @@ import {
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
-import { Listing } from "./groups/GroupDisplay";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { LibreplexShop } from "@libreplex/idls/lib/types/libreplex_shop";
+
+type Listing = IdlAccounts<LibreplexShop>["listing"]
 
 export const useTokenAccountsForPurchase = (
   publicKey: PublicKey,
