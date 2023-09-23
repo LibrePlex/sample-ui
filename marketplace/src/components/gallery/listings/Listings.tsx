@@ -54,7 +54,7 @@ function ListingGallery({data}: Props){
     [listingsByGroup]
   );
 
-  return publicKey ? (
+  return (
     <Box
       my={10}
       // p={20}
@@ -81,11 +81,7 @@ function ListingGallery({data}: Props){
         ))}
       </HStack>
     </Box>
-  ) : (
-    <Center height="100%">
-      Please connect your wallet to view / manage listings
-    </Center>
-  );
+  ) 
 };
 
 export default ListingGallery

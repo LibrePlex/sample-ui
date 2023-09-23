@@ -88,7 +88,7 @@ export const ListingAction = ({
           <Text>Delisted</Text>
         ) : listing?.executed ? ( // this is currently not firing, see above
           <Text>Sold</Text>
-        ) : (listing.item as any).lister.equals(publicKey) ? (
+        ) : publicKey && (listing.item as any).lister.equals(publicKey) ? (
           <DelistTransactionButton
             params={{
               listing,
