@@ -3305,10 +3305,10 @@
     yargs "16.2.0"
     yargs-parser "20.2.4"
 
-"@libreplex/idls@0.2.0", "@libreplex/idls@0.3.0", "@libreplex/idls@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.3.2.tgz#49bc78d56f4ebcb70b6fa7ed48a906e33901fd29"
-  integrity sha512-PPsW5CP0yxjuIpDBIb+44HMmgZTlanSKJvSbafbRdjOUenx7PrKfeGTBS1y1u234L2v4TcGchv5IC0NaQuI+nQ==
+"@libreplex/idls@0.2.0", "@libreplex/idls@0.3.0", "@libreplex/idls@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.4.0.tgz#e088c5bad4eb7e46074271abb28dab776af48c85"
+  integrity sha512-OwRBq95r9mCjmK/pRIaxCP3b0I+GCgQcavFtELpIKrnpMPjJ6i32Oz927FfAgc+6+KYbO/TC7wbReApzcocxUQ==
 
 "@libreplex/sdk@0.2.0", "@libreplex/sdk@0.3.1":
   version "0.3.1"

@@ -213,7 +213,7 @@ export const useListingsByGroup = (
       const filters: GetProgramAccountsFilter[] = [
         {
           memcmp: {
-            offset: 8 + 32 + 32 + 8 + 1 + 1 + 8 + 1,
+            offset: 8 + 32 + 32 + 8 + 1 + 1,
             bytes: group.toBase58(),
           },
         },
