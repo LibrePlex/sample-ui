@@ -74,7 +74,7 @@ const Home: NextPage = (props) => {
         
         {
           routerPubkey ? 
-            <WalletGallery publicKey={routerPubkey} onSelectMint={selectMint} /> 
+            <WalletGallery publicKey={routerPubkey} isOwner={router.query.pubkey === publicKey?.toBase58()} /> 
           :
             <Center style={{ minHeight: "500px" }}>
               <Text>Must be valid public key</Text>

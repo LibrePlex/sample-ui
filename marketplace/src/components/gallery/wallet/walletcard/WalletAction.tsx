@@ -39,7 +39,7 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
   return (
     <HStack justifyContent={"start"} alignItems="end" p={2}>
       <FormControl>
-        <FormLabel>Amount</FormLabel>
+        {/* <FormLabel>Amount</FormLabel> */}
         <InputGroup>
           <Input
             min={0}
@@ -57,7 +57,9 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
 
       {/* <PriceSelector price={price} setPrice={setPrice} /> */}
 
-      <ListMintTransactionButton
+      {
+        item &&
+        <ListMintTransactionButton
         params={{
           mint: item.item!.mint,
           tokenAccount: item.pubkey,
@@ -66,6 +68,7 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
         }}
         formatting={{}}
       />
+      }
     </HStack>
   );
 };
