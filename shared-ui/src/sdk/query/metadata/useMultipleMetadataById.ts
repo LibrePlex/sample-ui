@@ -32,9 +32,5 @@ export const useMultipleMetadataById = (
     return _groups;
   }, [decoder, results]);
 
-  useEffect(() => {
-    console.log({ decodedMetadata, d: results.data });
-  }, [decodedMetadata, results]);
-
   return { ...results, data: decodedMetadata };
 };

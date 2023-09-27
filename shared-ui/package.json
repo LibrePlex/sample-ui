@@ -9,6 +9,7 @@
     "@solana/spl-token": "^0.3.5",
     "@solana/web3.js": "^1.64.0",
     "bs58": "^5.0.0",
+    "data-uri-to-buffer": "^5.0.1",
     "typescript": "^5.0.4",
     "zustand": "^4.3.9"
   },

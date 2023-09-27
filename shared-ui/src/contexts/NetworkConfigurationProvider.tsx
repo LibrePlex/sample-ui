@@ -17,7 +17,6 @@ export function useNetworkConfiguration(): NetworkConfigurationState {
 
 export const NetworkConfigurationProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
-    
     const router = useRouter()
     
     const networkConfiguration = useMemo(()=>router.query.env as string ?? 'devnet',[router.query])

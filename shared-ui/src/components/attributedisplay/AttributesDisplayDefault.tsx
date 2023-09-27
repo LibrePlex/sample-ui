@@ -5,7 +5,7 @@ import { AttributeDisplayRow } from "./AttributeDisplayRow";
 import React from "react";
 import { IRpcObject } from "..";
 
-export const AttributesDisplay = ({
+export const AttributesDisplayDefault = ({
   attributes,
   group,
 }: {
@@ -13,14 +13,6 @@ export const AttributesDisplay = ({
   attributes: number[];
 }) => {
   return group ? (
-    // <Box sx={{ 
-    //   display: "flex",
-    //   flexDir: "column",
-    //   justifyContent: "start",
-    //   overflow: "auto", 
-    //   h: "100%",
-    //    maxH: "100%", 
-    //    maxW: "250px" }}>
       <Table>
         <Thead>
           <Tr>

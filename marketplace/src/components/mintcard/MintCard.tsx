@@ -41,7 +41,7 @@ export const MintCard = ({
     initial="default" whileHover="hover"
     >
       <Link href={`/mint/${metadata?.item.mint}`}>
-      <AssetDisplay asset={metadata?.item?.asset} />
+      <AssetDisplay asset={metadata?.item?.asset} mint={mint} />
       </Link>
       
 

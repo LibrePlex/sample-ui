@@ -19,7 +19,7 @@ export const GroupDisplay = ({
 }) => {
   const { connection } = useConnection();
   const { publicKey } = useWallet();
-  const group = useCollectionById(groupKey, connection);
+  const collection = useCollectionById(groupKey, connection);
   const [hasError, setHasError] = useState(false)
 
   return (
@@ -29,9 +29,9 @@ export const GroupDisplay = ({
     gap={4}
     >
 
-        {group?.item?.url.length && !hasError ? 
+        {collection?.item?.url.length && !hasError ? 
           <img
-            src={group?.item?.url}
+            src={collection?.item?.url}
             style={{ minWidth: "135px", maxWidth: "135px", aspectRatio: "1/1", borderRadius: 8 }}
             onError={(e)=>{setHasError(true)}}
           />
@@ -77,9 +77,9 @@ export const GroupDisplay = ({
 
         {/* <Text>{JSON.stringify(group?.item)}</Text>
         <Text>{groupKey?.toBase58()}</Text> */}
-        {group?.item?.url.length > 0 ? (
+        {collection?.item?.url.length > 0 ? (
           <img
-            src={group?.item?.url}
+            src={collection?.item?.url}
             style={{ minWidth: "135px", maxWidth: "135px", aspectRatio: "1/1" }}
           />
         ) : (
@@ -88,7 +88,7 @@ export const GroupDisplay = ({
           />
         )}
         <VStack align={"end"} sx={{ w: "100%" }}>
-          <Heading size="md">Group: {group?.item?.name}</Heading>
+          <Heading size="md">Collection: {collection?.item?.name}</Heading>
           <Heading size="md">
             Listings ({listings.length})
           </Heading>

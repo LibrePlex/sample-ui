@@ -20,7 +20,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useCallback, useContext, useMemo, useState } from "react";
 
-import { Group, IRpcObject, MetadataProgramContext } from  "@libreplex/shared-ui";
+import { Collection, IRpcObject, MetadataProgramContext } from  "@libreplex/shared-ui";
 import { Metadata } from  "@libreplex/shared-ui";
 import useSelectedMetadata from "../collections/useSelectedMetadata";
 import { CreateMetadataDialog } from "./CreateMetadataDialog";
@@ -79,7 +79,7 @@ export const BaseMetadataPanel = () => {
   );
   const [editorStatus, setEditorStatus] = useState<{
     open: boolean;
-    collection: Group | undefined;
+    collection: Collection | undefined;
   }>({
     open: false,
     collection: undefined,
@@ -183,7 +183,7 @@ export const BaseMetadataPanel = () => {
                   <Th>Image</Th>
 
                   <Th>Asset</Th>
-                  <Th>Group</Th>
+                  <Th>Collection</Th>
 
                   <Th>Royalties</Th>
                   <Th>

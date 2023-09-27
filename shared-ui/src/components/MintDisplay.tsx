@@ -15,10 +15,11 @@ import {
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import dynamic from "next/dynamic";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import { AssetDisplay, CopyPublicKeyButton } from ".";
 import { useCollectionById, useMetadataByMintId } from "../sdk";
-import { AttributesDisplay } from "./assetdisplay/AttributesDisplay";
+import { AttributesDisplayDefault } from "./attributedisplay/AttributesDisplayDefault";
+import { AttributesDisplayChainRenderer } from "./attributedisplay/AttributesDisplayChainRenderer";
 
 const ReactJson = dynamic(import("react-json-view"), { ssr: false });
 
@@ -29,7 +30,13 @@ enum View {
   Group,
 }
 
-export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: ReactNode }) => {
+export const MintDisplay = ({
+  mint,
+  actions,
+}: {
+  mint: PublicKey;
+  actions?: ReactNode;
+}) => {
   const { connection } = useConnection();
   const metadata = useMetadataByMintId(mint, connection);
 
@@ -37,34 +44,22 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
 
   const group = useCollectionById(metadata?.item?.collection ?? null, connection);
 
-  return metadata?.item ? 
-    <VStack
-    gap={8}
-    alignItems="center"
-    width={"100%"}
-    maxWidth={"650px"}
-    >
-
-      <HStack
-      alignItems="flex-start"
-      width={"100%"}
-      flexWrap="wrap"
-      gap={4}
-      >
-        
+  return metadata?.item ? (
+    <VStack gap={8} alignItems="center" width={"100%"} maxWidth={"650px"}>
+      <HStack alignItems="flex-start" width={"100%"} flexWrap="wrap" gap={4}>
         <VStack
           maxHeight="330px"
           minHeight="330px"
           aspectRatio={"1/1"}
           align="center"
         >
-          <AssetDisplay asset={metadata.item.asset} />
-          <Heading size="md" noOfLines={1}>{metadata.item.name}</Heading>
+          <AssetDisplay asset={metadata.item.asset} mint={mint} />
+          <Heading size="md" noOfLines={1}>
+            {metadata.item.name}
+          </Heading>
         </VStack>
 
-        <Table
-        maxW={"300px"}
-        >
+        <Table maxW={"300px"}>
           <Tbody>
             <Tr>
               <Td>Name</Td>
@@ -74,9 +69,7 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
               <Td>Metadata</Td>
               <Td>
                 {metadata && (
-                  <CopyPublicKeyButton
-                    publicKey={metadata.pubkey.toBase58()}
-                  />
+                  <CopyPublicKeyButton publicKey={metadata.pubkey.toBase58()} />
                 )}
               </Td>
             </Tr>
@@ -110,272 +103,113 @@ export const MintDisplay = ({ mint, actions }: { mint: PublicKey, actions?: Reac
         </Table>
       </HStack>
 
-      <Box>
-        {actions}
-      </Box>
+      <Box>{actions}</Box>
 
       <VStack
-              justify={"start"}
-              h={"100%"}
-              // maxH={"330px"}
-              align={"start"}
-              maxW={"646px"}
-              minW={"100%"}
-              gap={4}
-            >
-              <HStack>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Attributes);
-                  }}
-                  variant={view === View.Attributes ? "solid" : "outline"}
-                >
-                  Attributes
-                </Button>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Metadata);
-                  }}
-                  variant={view === View.Metadata ? "solid" : "outline"}
-                >
-                  Metadata
-                </Button>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Group);
-                  }}
-                  variant={view === View.Group ? "solid" : "outline"}
-                >
-                  Group
-                </Button>
-              </HStack>
+        justify={"start"}
+        h={"100%"}
+        // maxH={"330px"}
+        align={"start"}
+        maxW={"646px"}
+        minW={"100%"}
+        gap={4}
+      >
+        <HStack>
+          <Button
+            colorScheme="teal"
+            onClick={() => {
+              setView(View.Attributes);
+            }}
+            variant={view === View.Attributes ? "solid" : "outline"}
+          >
+            Attributes
+          </Button>
+          <Button
+            colorScheme="teal"
+            onClick={() => {
+              setView(View.Metadata);
+            }}
+            variant={view === View.Metadata ? "solid" : "outline"}
+          >
+            Metadata
+          </Button>
+          <Button
+            colorScheme="teal"
+            onClick={() => {
+              setView(View.Group);
+            }}
+            variant={view === View.Group ? "solid" : "outline"}
+          >
+            Collection
+          </Button>
+        </HStack>
+        <Box
+          sx={{
+            height: "100%",
+            maxHeight: "100%",
+            maxW: "100%",
+
+            w: "100%",
+          }}
+        >
+          {view === View.Attributes ? (
+            group?.item ? (
               <Box
-                sx={{
-                  height: "100%",
-                  maxHeight: "100%",
-                  maxW: "100%",
-                  
-                  w: "100%",
-                }}
+                maxH={"100%"}
+                overflow={"hidden"}
+
+                // background='red'
               >
-                {view === View.Attributes ? (
-                  group?.item ? (
-                    <Box
-                      maxH={"100%"}
-                      overflow={"hidden"}
-
-                      // background='red'
-                    >
-                      <AttributesDisplay
-                        group={{ ...group, item: group.item! }}
-                        attributes={[
-                          ...(metadata?.item.extension?.nft?.attributes ?? []),
-                        ]}
-                      />
-                    </Box>
-                  ) : (
-                    <></>
-                  )
-                ) : view === View.Metadata ? (
-                  <ReactJson 
-                  style={{
-                    wordBreak: 'break-word'
-                  }}
-                  
-                  theme="monokai" src={metadata ?? {}} />
-                ) : view === View.Group ? (
-                  <Box>
-                    <HStack
-                    mb={4}
-                    >
-                      <Heading size="md">Group</Heading>
-
-                      <CopyPublicKeyButton
-                        publicKey={metadata?.item?.collection?.toBase58()}
-                      />
-                    </HStack>
-                    <Box>
-                      <ReactJson
-                        theme="monokai"
-                        style={{
-                          wordBreak: 'break-word'
-                        }}
-                        src={group ?? {}}
-                      />
-                    </Box>
-                  </Box>
+                {metadata.item.asset.chainRenderer ? (
+                  <AttributesDisplayChainRenderer
+                    asset={metadata.item.asset.chainRenderer}
+                    mint={mint}
+                  />
                 ) : (
-                  <></>
+                  <AttributesDisplayDefault
+                    group={{ ...group, item: group.item! }}
+                    attributes={[
+                      ...(metadata?.item.extension?.nft?.attributes ?? []),
+                    ]}
+                  />
                 )}
               </Box>
-            </VStack>
-    
-    </VStack>
-    :
-    <Box>Missing metadata</Box>
-  
+            ) : (
+              <></>
+            )
+          ) : view === View.Metadata ? (
+            <ReactJson
+              style={{
+                wordBreak: "break-word",
+              }}
+              theme="monokai"
+              src={metadata ?? {}}
+            />
+          ) : view === View.Group ? (
+            <Box>
+              <HStack mb={4}>
+                <Heading size="md">Collection</Heading>
 
-  return metadata?.item ? (
-    <Box sx={{ display: "flex", flexDirection: "column" }} gap={3}>
-      <VStack gap={2}>
-        <SimpleGrid columns={1} gap={10}>
-          <Box height="330px">
-            <HStack>
-              <VStack
-                maxHeight="330px"
-                minHeight="330px"
-                aspectRatio={"1/1"}
-                align="center"
-              >
-                <AssetDisplay asset={metadata.item.asset} />
-                <Heading size="md">{metadata.item.name}</Heading>
-              </VStack>
-
-              <Table>
-                <Tbody>
-                  <Tr>
-                    <Td>Name</Td>
-                    <Td>{metadata?.item.name}</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Metadata</Td>
-                    <Td>
-                      {metadata && (
-                        <CopyPublicKeyButton
-                          publicKey={metadata.pubkey.toBase58()}
-                        />
-                      )}
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Uauth</Td>
-                    <Td>
-                      <CopyPublicKeyButton
-                        publicKey={metadata?.item.updateAuthority.toBase58()}
-                      />
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Collection</Td>
-                    <Td>
-                      {metadata?.item?.collection ? (
-                        <CopyPublicKeyButton
-                          publicKey={metadata?.item.collection.toBase58()}
-                        />
-                      ) : (
-                        "-"
-                      )}
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </HStack>
-          </Box>
-          <Box>
-            {actions}
-          </Box>
-          <Box height="330px" maxH={"330px"} maxW={"550px"} >
-            <VStack
-              justify={"start"}
-              h={"100%"}
-              maxH={"330px"}
-              align={"start"}
-              maxW={"100%"}
-            >
-              <HStack>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Attributes);
-                  }}
-                  variant={view === View.Attributes ? "solid" : "outline"}
-                >
-                  Attributes
-                </Button>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Metadata);
-                  }}
-                  variant={view === View.Metadata ? "solid" : "outline"}
-                >
-                  Metadata
-                </Button>
-                <Button
-                  colorScheme="teal"
-                  onClick={() => {
-                    setView(View.Group);
-                  }}
-                  variant={view === View.Group ? "solid" : "outline"}
-                >
-                  Group
-                </Button>
+                <CopyPublicKeyButton
+                  publicKey={metadata?.item?.collection?.toBase58()}
+                />
               </HStack>
-              <Box
-                sx={{
-                  height: "100%",
-                  maxHeight: "100%",
-                  maxW: "100%",
-                  
-                  w: "100%",
-                }}
-              >
-                {view === View.Attributes ? (
-                  group?.item ? (
-                    <Box
-                      maxH={"100%"}
-                      overflow={"hidden"}
-
-                      // background='red'
-                    >
-                      <AttributesDisplay
-                        group={{ ...group, item: group.item! }}
-                        attributes={[
-                          ...(metadata?.item.extension?.nft?.attributes ?? []),
-                        ]}
-                      />
-                    </Box>
-                  ) : (
-                    <></>
-                  )
-                ) : view === View.Metadata ? (
-                  <ReactJson 
+              <Box>
+                <ReactJson
+                  theme="monokai"
                   style={{
-                    wordBreak: 'break-word'
+                    wordBreak: "break-word",
                   }}
-                  
-                  theme="monokai" src={metadata ?? {}} />
-                ) : view === View.Group ? (
-                  <Box>
-                    <HStack>
-                      <Heading size="md">Group</Heading>
-
-                      <CopyPublicKeyButton
-                        publicKey={metadata?.item?.collection?.toBase58()}
-                      />
-                    </HStack>
-                    <Box>
-                      <ReactJson
-                        theme="monokai"
-                        style={{
-                          wordBreak: 'break-word'
-                        }}
-                        src={group ?? {}}
-                      />
-                    </Box>
-                  </Box>
-                ) : (
-                  <></>
-                )}
+                  src={group ?? {}}
+                />
               </Box>
-            </VStack>
-          </Box>
-        </SimpleGrid>
+            </Box>
+          ) : (
+            <></>
+          )}
+        </Box>
       </VStack>
-    </Box>
+    </VStack>
   ) : (
     <Box>Missing metadata</Box>
   );

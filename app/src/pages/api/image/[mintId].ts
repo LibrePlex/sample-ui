@@ -12,7 +12,7 @@ import { NextApiHandler } from "next";
 import {
   HttpClient,
   PROGRAM_ID_METADATA,
-  decodeGroup,
+  decodeCollection,
   decodeMetadata,
   getBase64FromDatabytes,
   getMetadataExtendedPda,
@@ -79,17 +79,17 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     });
   }
   let group;
-  if (libreMetadataObj.group) {
+  if (libreMetadataObj.collection) {
     const groupAccount = await connection.getAccountInfo(
-      libreMetadataObj.group
+      libreMetadataObj.collection
     );
 
     console.log({ groupAccount });
 
     if (groupAccount) {
-      const item = decodeGroup(libreProgram)(
+      const item = decodeCollection(libreProgram)(
         groupAccount.data,
-        libreMetadataObj.group
+        libreMetadataObj.collection
       );
       group = item;
     }
@@ -103,7 +103,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     if (inscriptionAccount) {
       const item = decodeInscription(libreInscriptionsProgram)(
         inscriptionAccount.data,
-        libreMetadataObj.group
+        libreMetadataObj.collection
       );
       inscription = item;
       console.log({ dataType: libreMetadataObj.asset.inscription.dataType });

@@ -102,8 +102,6 @@ export const useMetadataById = (
   }, [metadataKey, program, q.data?.item, a]);
 
   return decoded;
-
-  // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
 };
 
 export const useMetadataByAuthority = (
