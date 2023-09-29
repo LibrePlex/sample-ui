@@ -158,6 +158,7 @@ export const AssetDisplayChainRenderer = ({
         style={{
           height: "100%",
           width: "100%",
+          borderRadius: 8,
         }}
         data={renderedResult?.image}
       />
