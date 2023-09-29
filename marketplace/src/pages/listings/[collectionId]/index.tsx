@@ -6,6 +6,7 @@ import {PublicKey} from '@solana/web3.js'
 import { Heading, VStack, Text, Skeleton, HStack } from '@chakra-ui/react'
 import { MintCard } from '@marketplace/components/mintcard/MintCard'
 import { ListingAction } from '@marketplace/components/gallery/listings/ListingAction'
+import Link from 'next/link'
 
 type Props = {}
 
@@ -63,7 +64,9 @@ function CollectionPage({}: Props) {
                     
                     <VStack align="start"  gap={0}>
                         <Text style={{fontSize: 12}} color="gray.400">Total: {data.length}</Text>
-                        <Text style={{fontSize: 12}} color="gray.400">Created by: {collection?.item.creator.toBase58().slice(0,4)}...{collection?.item.creator.toBase58().slice(collection?.item.creator.toBase58().length-4)}</Text>
+                        <Link href={`/user/${collection?.item.creator.toBase58()}`}>
+                            <Text style={{fontSize: 12}} color="gray.400">Created by: {collection?.item.creator.toBase58().slice(0,4)}...{collection?.item.creator.toBase58().slice(collection?.item.creator.toBase58().length-4)}</Text>
+                        </Link>
                     </VStack>
                 </VStack>
 

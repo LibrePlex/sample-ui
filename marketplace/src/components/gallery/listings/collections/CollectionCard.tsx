@@ -85,12 +85,15 @@ function CollectionCard({ collectionKey, totalListings }: Props) {
         <Text style={{ fontSize: 12 }} color="gray.400">
           Total: {totalListings}
         </Text>
-        <Text style={{ fontSize: 12 }} color="gray.400">
-          Created by: {collection?.item.creator.toBase58().slice(0, 4)}...
-          {collection?.item.creator
-            .toBase58()
-            .slice(collection?.item.creator.toBase58().length - 4)}
-        </Text>
+        <Link href={`/user/${collection?.item.creator.toBase58()}`}>
+          <Text style={{ fontSize: 12 }} color="gray.400">
+            Created by: {collection?.item.creator.toBase58().slice(0, 4)}...
+            {collection?.item.creator
+              .toBase58()
+              .slice(collection?.item.creator.toBase58().length - 4)}
+          </Text>
+        </Link>
+
       </VStack>
     </VStack>
   );
