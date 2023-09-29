@@ -26,15 +26,14 @@ function ListingsPage({}: Props) {
       }}>
         
 
-        <HStack justifyContent="center" alignItems="center" gap={4}>
+        <HStack justifyContent="center" alignItems="center" gap={4} flexWrap="wrap">
 
-          <Heading 
-          size={'4xl'}
+          <h1
           className="gradientText"
-          style={{opacity: 0.7}}
+          style={{opacity: 0.7, fontSize: '4.5rem', fontWeight: 'bold'}}
           >
             Listings
-          </Heading>
+          </h1>
 
           <IconButton
           size="sm"
