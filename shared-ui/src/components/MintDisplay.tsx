@@ -102,7 +102,7 @@ export const MintDisplay = ({
             <Tr>
               <Td>Royalty %</Td>
               <Td>
-                <span>{(group.item.royalties.bps/100).toFixed(2)}%</span>
+                <span>{(group?.item.royalties.bps/100).toFixed(2)}%</span>
               </Td>
             </Tr>
           </Tbody>
