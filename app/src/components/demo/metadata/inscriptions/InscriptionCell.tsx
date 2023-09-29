@@ -22,7 +22,7 @@ export const InscriptionCell = ({
   return (
     <>
       {inscription
-        ? `Ordinal [${updatedSize ?? inscription?.item.size.toLocaleString() ?? "-"} bytes]`
+        ? `Inscription [${updatedSize ?? inscription?.item.size.toLocaleString() ?? "-"} bytes]`
         : ""}
     </>
   );

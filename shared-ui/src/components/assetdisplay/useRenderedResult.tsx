@@ -58,36 +58,30 @@ export interface Erc721 {
 export const useRenderedResult = (
   mint: PublicKey,
   renderProgram: PublicKey,
+  metadataProgramId: PublicKey,
   connection: Connection,
   funder: PublicKey
-) => {
-  const { program } = useContext(MetadataProgramContext);
-  return useQuery([mint], async () => {
+) =>
+  useQuery([mint], async () => {
     const res = await render(
       connection,
       new PublicKey(renderProgram),
       new PublicKey(mint),
-      getMetadataPda(program.programId, mint)[0],
+      getMetadataPda(metadataProgramId, mint)[0],
       SystemProgram.programId,
       funder
     );
 
-    console.log({ res });
-
-    const json = JSON.parse(res) as Partial<Erc721>;
-    console.log({ json });
-
-    const dataString = dataUriToBuffer(json.image).toString();
-
-    console.log({ dataString });
-    // const dataJson = JSON.parse(dataString);
-    // console.log({dataJson});
-
-    json.image = json.image.split(",").slice(1).join(",");
+    const json = JSON.parse(res);
+    const prefix = json.image.split(",")[0];
+    const uriComponent = encodeURIComponent(
+      json.image.split(",").slice(1).join(",")
+    );
+    json.image = `${prefix},${uriComponent}`;
 
     return json;
   });
-};
+
 
 export async function render(
   connection: Connection,

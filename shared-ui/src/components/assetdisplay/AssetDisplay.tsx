@@ -40,7 +40,7 @@ export const AssetDisplay = ({
   }, [asset?.json]);
 
   return (
-    <Box width="100%" height="100%">
+    <>
       {asset?.image ? (
         <img
           src={asset.image.url}
@@ -61,6 +61,6 @@ export const AssetDisplay = ({
       ) : (
         <Skeleton style={{ aspectRatio: "1/1", width: "100%" }}></Skeleton>
       )}
-    </Box>
+    </>
   );
 };

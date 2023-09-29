@@ -53,9 +53,6 @@ export interface IExecuteTrade {
   amount: BigInt;
 }
 
-// start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
-
 export const executeTrade = async (
   { wallet, params }: IExecutorParams<IExecuteTrade>,
   connection: Connection

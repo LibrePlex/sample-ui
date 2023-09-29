@@ -8,13 +8,10 @@ import {
   Transaction,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { dataUriToBuffer } from "data-uri-to-buffer";
 import { sha256 } from "js-sha256";
-import React, { useContext, useEffect } from "react";
-import { useQuery } from "react-query";
+import React, { useContext } from "react";
 import { MetadataProgramContext } from "../../anchor";
-import { getMetadataPda } from "../../pdas";
-import { useFunder } from "./useRenderedResult";
+import { useFunder, useRenderedResult } from "./useRenderedResult";
 
 /*
     Dynamic Rendering: this AssetType renders a json output from a custom program that
@@ -44,39 +41,6 @@ import { useFunder } from "./useRenderedResult";
     wallet never actually needs to sign. 
     
 */
-
-const useRenderedResult = (
-  mint: PublicKey,
-  renderProgram: PublicKey,
-  metadataProgramId: PublicKey,
-  connection: Connection,
-  funder: PublicKey
-) =>
-  useQuery([mint], async () => {
-    const res = await render(
-      connection,
-      new PublicKey(renderProgram),
-      new PublicKey(mint),
-      getMetadataPda(metadataProgramId, mint)[0],
-      SystemProgram.programId,
-      funder
-    );
-
-    console.log({ res });
-
-    const json = JSON.parse(res);
-    console.log({ json });
-
-    const dataString = dataUriToBuffer(json.image).toString();
-
-    console.log({ dataString });
-    // const dataJson = JSON.parse(dataString);
-    // console.log({dataJson});
-
-    json.image = json.image.split(",").slice(1).join(",");
-
-    return json;
-  });
 
 export async function render(
   connection: Connection,
@@ -187,15 +151,16 @@ export const AssetDisplayChainRenderer = ({
     connection,
     funder
   );
+
   return (
-    <iframe
-      marginHeight={0}
-      marginWidth={0}
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
-      srcDoc={renderedResult?.image}
-    />
+    <>
+      <object
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
+        data={renderedResult?.image}
+      />
+    </>
   );
 };

@@ -39,9 +39,6 @@ export interface IExecuteTrade {
   listing: IRpcObject<Listing>;
 }
 
-// start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
-
 export const delist = async (
   { wallet, params }: IExecutorParams<IExecuteTrade>,
   connection: Connection

@@ -22,23 +22,9 @@ import { Inscription } from  "@libreplex/shared-ui";
 
 import { notify } from  "@libreplex/shared-ui";
 
-export enum AssetType {
-  Image,
-  Ordinal,
-}
-
-// export type Asset = {
-//   type: AssetType.Image,
-// } | {
-//   type: AssetType.Ordinal
-// }
-
 export interface IRemoveFromGroup {
   metadata: IRpcObject<Metadata>;
 }
-
-// start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
 
 export const MAX_CHANGE = 4096;
 
@@ -75,12 +61,12 @@ export const removeGroup = async (
   // });
 
   const instruction = await metadataProgram.methods
-    .groupRemove()
+    .removeMetadataFromCollection()
     .accounts({
       metadata: metadata.pubkey,
-      group: metadata.item.group,
+      collection: metadata.item.collection,
       delegatedGroupWidePermissions: null,
-      groupAuthority: wallet.publicKey,
+      collectionAuthority: wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
     .instruction();

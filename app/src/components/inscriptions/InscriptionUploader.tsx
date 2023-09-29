@@ -1,4 +1,4 @@
-import { ResizeInscriptionTransactionButton } from "@app/components/demo/metadata/ordinal/ResizeInscriptionTransactionButton";
+import { ResizeInscriptionTransactionButton } from "@app/components/demo/metadata/inscriptions/ResizeInscriptionTransactionButton";
 import { ImageSelector } from "@app/components/shadowdrive/ImageSelector";
 import { Alert, Box, BoxProps, Button, Text } from "@chakra-ui/react";
 import { useContext, useEffect, useMemo, useState } from "react";

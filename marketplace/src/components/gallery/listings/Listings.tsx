@@ -73,11 +73,7 @@ function ListingGallery({data}: Props){
           collectionKey={collectionKey.length > 0 ? new PublicKey(collectionKey): null}
           totalListings={listingsByGroup[collectionKey].length}
           />
-          // <GroupDisplay
-          //   groupKey={groupKey.length > 0 ? new PublicKey(groupKey): null}
-          //   listings={listingsByGroup[groupKey]}
-          //   key={idx}
-          // ></GroupDisplay>
+        
         ))}
       </HStack>
     </Box>

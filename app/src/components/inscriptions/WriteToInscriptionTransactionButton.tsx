@@ -24,16 +24,6 @@ import {
 } from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 
-export enum AssetType {
-  Image,
-  Ordinal,
-}
-
-// export type Asset = {
-//   type: AssetType.Image,
-// } | {
-//   type: AssetType.Ordinal
-// }
 
 export interface IWriteToInscription {
   inscription: IRpcObject<Inscription>;
@@ -45,7 +35,7 @@ export interface IWriteToInscription {
 export const BATCH_SIZE = 924;
 
 // start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
+export const INSCRIPTION_DEFAULT_LENGTH = 0;
 
 export const writeToInscription = async (
   { wallet, params }: IExecutorParams<IWriteToInscription>,
@@ -90,7 +80,7 @@ export const writeToInscription = async (
           metadata: metadata.pubkey,
           delegatedGroupWidePermissions: null,
           delegatedMetadataSpecificPermissions: null,
-          group: metadata.item.group,
+          collection: metadata.item.collection,
           systemProgram: SystemProgram.programId,
         })
         .instruction(),

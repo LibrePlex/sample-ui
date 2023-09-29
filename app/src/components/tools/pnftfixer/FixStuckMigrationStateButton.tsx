@@ -26,17 +26,6 @@ import {
 
 import { notify } from  "@libreplex/shared-ui";
 
-export enum AssetType {
-  Image,
-  Ordinal,
-}
-
-// export type Asset = {
-//   type: AssetType.Image,
-// } | {
-//   type: AssetType.Ordinal
-// }
-
 export interface IFixStuckMigration {
   tokenAccounts: IRpcObject<RawAccount>[];
 }

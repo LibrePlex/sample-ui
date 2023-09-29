@@ -63,7 +63,7 @@ export const MetadataBasics: FC = ({}) => {
             Creator verification (done independently from royalties)
           </ListItem>
           <ListItem>On-chain attributes</ListItem>
-          <ListItem>URL to allow base64 and ordinals</ListItem>
+          <ListItem>URL to allow base64 and inscriptions</ListItem>
         </OrderedList>
       </Box>
       <Heading fontSize="xl" style={{ paddingTop: "15px" }}>

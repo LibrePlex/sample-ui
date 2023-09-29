@@ -19,13 +19,13 @@ import { notify } from  "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,
-  Ordinal,
+  Inscription,
 }
 
 // export type Asset = {
 //   type: AssetType.Image,
 // } | {
-//   type: AssetType.Ordinal
+//   type: AssetType.Inscription
 // }
 
 export interface IResizeInscription {
@@ -34,7 +34,7 @@ export interface IResizeInscription {
 }
 
 // start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
+export const INSCRIPTION_DEFAULT_LENGTH = 0;
 
 export const MAX_CHANGE = 4096;
 

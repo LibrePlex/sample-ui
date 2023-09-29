@@ -43,12 +43,6 @@ export enum AssetType {
   Inscription,
 }
 
-// export type Asset = {
-//   type: AssetType.Image,
-// } | {
-//   type: AssetType.Ordinal
-// }
-
 export interface ICreateMetadata {
   name: string;
   symbol: string;
@@ -63,7 +57,7 @@ export interface ICreateMetadata {
 }
 
 // start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
+export const INSCRIPTION_DEFAULT_LENGTH = 0;
 
 export const createMetadata = async (
   { wallet, params }: IExecutorParams<ICreateMetadata>,
@@ -162,16 +156,16 @@ export const createMetadata = async (
   } else if (assetType === AssetType.Inscription) {
     const inscription = Keypair.generate();
 
-    const ordinalLamports = await connection.getMinimumBalanceForRentExemption(
-      8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH
+    const inscriptionLamports = await connection.getMinimumBalanceForRentExemption(
+      8 + 32 + 32 + 4 + 4 + INSCRIPTION_DEFAULT_LENGTH
     );
     signers.push(inscription);
     instructions.push(
       SystemProgram.createAccount({
         fromPubkey: wallet.publicKey,
         newAccountPubkey: inscription.publicKey,
-        space: 8 + 32 + 32 + 4 + 4 + ORDINAL_DEFAULT_LENGTH,
-        lamports: ordinalLamports,
+        space: 8 + 32 + 32 + 4 + 4 + INSCRIPTION_DEFAULT_LENGTH,
+        lamports: inscriptionLamports,
         programId: new PublicKey(PROGRAM_ID_INSCRIPTIONS),
       })
     );

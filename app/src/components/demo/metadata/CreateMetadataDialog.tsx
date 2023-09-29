@@ -160,8 +160,8 @@ export const CreateMetadataDialog = ({
                 <Heading>Select asset type</Heading>
                 <Text>
                   Select the asset type for this metadata. Currently all asset
-                  types are owned by the metadata program, EXCEPT ordinal asset
-                  type that is owned by the Ordinals program. Both programs
+                  types are owned by the metadata program, EXCEPT inscription asset
+                  type that is owned by libreplex_inscriptions program. Both programs
                   allow assets to be immutable.
                 </Text>
               </Box>

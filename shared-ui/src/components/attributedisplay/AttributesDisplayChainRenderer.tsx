@@ -1,8 +1,8 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { Collection } from "../../sdk";
 
-import { AttributeDisplayRow } from "./AttributeDisplayRow";
-import React from "react";
+
+import React, { useContext } from "react";
 import { IRpcObject } from "..";
 import {
   useFunder,
@@ -12,6 +12,7 @@ import { PublicKey } from "@solana/web3.js";
 import { Asset, AssetType } from "../../sdk/query/metadata/metadata";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { AttributeDisplayRowChainRenderer } from "./AttributeDisplayRowChainRenderer";
+import { MetadataProgramContext } from "../../anchor";
 
 export const AttributesDisplayChainRenderer = ({
   mint,
@@ -23,10 +24,12 @@ export const AttributesDisplayChainRenderer = ({
   const funder = useFunder();
 
   const { connection } = useConnection();
+  const { program } = useContext(MetadataProgramContext);
   
   const { data: renderedResult } = useRenderedResult(
     mint,
     asset.programId,
+    program.programId,
     connection,
     funder
   );
@@ -40,7 +43,7 @@ export const AttributesDisplayChainRenderer = ({
         </Tr>
       </Thead>
       <Tbody>
-        {[...renderedResult.attributes].map((item, idx) => (
+        {[...(renderedResult?.attributes ?? [])].map((item, idx) => (
           <AttributeDisplayRowChainRenderer
             key={idx}
             name={item.trait_type}

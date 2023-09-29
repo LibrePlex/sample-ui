@@ -24,7 +24,7 @@ import {
 
 import { AttributesDisplay } from "@app/components/metadata/AttributesDisplay";
 import { SignersDisplay } from "@app/components/metadata/SignersDisplay";
-import { InscriptionUploader } from "@app/components/onft/InscriptionUploader";
+import { InscriptionUploader } from "@app/components/inscriptions/InscriptionUploader";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { useConnection } from "@solana/wallet-adapter-react";
@@ -38,7 +38,7 @@ import {
 } from  "@libreplex/shared-ui";
 import { useStore } from "zustand";
 import { RoyaltiesDialog } from "../collections/metadatadialog/RoyaltiesDialog";
-import { InscriptionCell } from "./ordinal/InscriptionCell";
+import { InscriptionCell } from "./inscriptions/InscriptionCell";
 import { RemoveGroupTransactionButton } from "./RemoveGroupTransactionButton";
 import {LibreplexMetadata} from "@libreplex/idls/lib/types/libreplex_metadata"
 import React from "react";
@@ -127,7 +127,7 @@ export const MetadataRow = ({
                 metadata={item}
               />
             ) : item.item.asset.json ? (
-              <AssetDisplay asset={item.item.asset} />
+              <AssetDisplay asset={item.item.asset} mint={item.item.mint}/>
             ) : (
               <Text>Cannot upload this asset type</Text>
             )}

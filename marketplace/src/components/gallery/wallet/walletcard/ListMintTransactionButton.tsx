@@ -38,9 +38,6 @@ export interface IListMint {
   amount: BigInt;
 }
 
-// start at 0. We can extend as needed
-export const ORDINAL_DEFAULT_LENGTH = 0;
-
 export const listMint = async (
   { wallet, params }: IExecutorParams<IListMint>,
   connection: Connection
