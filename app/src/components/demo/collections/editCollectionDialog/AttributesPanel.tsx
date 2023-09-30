@@ -13,7 +13,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Group } from  "@libreplex/shared-ui";
+import { Collection } from  "@libreplex/shared-ui";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 // import { AttributeTypeRow } from "./AttributeTypeRow";
 import { AddIcon, CalendarIcon } from "@chakra-ui/icons";
@@ -25,9 +25,9 @@ export const AttributesPanel = ({
   attributeTypes,
   setAttributeTypes,
 }: {
-  attributeTypes: Group["attributeTypes"];
+  attributeTypes: Collection["attributeTypes"];
   setAttributeTypes: Dispatch<
-    SetStateAction<Group["attributeTypes"]>
+    SetStateAction<Collection["attributeTypes"]>
   >;
 }) => {
   const [name, setName] = useState<string>("");

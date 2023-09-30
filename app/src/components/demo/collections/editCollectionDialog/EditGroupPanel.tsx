@@ -17,7 +17,7 @@ import {
 
 import { Input } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { Group, MetadataProgramContext, RoyaltyShare } from  "@libreplex/shared-ui";
+import { Collection, MetadataProgramContext, RoyaltyShare } from  "@libreplex/shared-ui";
 import { AttributesPanel } from "./AttributesPanel";
 import { CreateCollectionTransactionButton } from "./CreateGroupButton";
 import { PermittedSignersPanel } from "./PermittedSignersPanel";
@@ -36,7 +36,7 @@ export const EditGroupPanel = ({ onSuccess }: { onSuccess: () => any }) => {
 
   const [validated, setValidated] = useState<boolean>(false);
 
-  const [attributeTypes, setAttributeTypes] = useState<Group["attributeTypes"]>(
+  const [attributeTypes, setAttributeTypes] = useState<Collection["attributeTypes"]>(
     []
   );
 

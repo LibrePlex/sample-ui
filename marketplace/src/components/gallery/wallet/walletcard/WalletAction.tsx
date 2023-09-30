@@ -1,19 +1,15 @@
 import {
   FormControl,
-  FormLabel,
   HStack,
   Input,
   InputGroup,
-  InputRightAddon
+  InputRightAddon,
 } from "@chakra-ui/react";
 
+import { IRpcObject, Price } from "@libreplex/shared-ui";
 import { RawAccount } from "@solana/spl-token";
 import BN from "bn.js";
 import { useEffect, useState } from "react";
-import {
-  IRpcObject,
-  Price
-} from  "@libreplex/shared-ui";
 import { ListMintTransactionButton } from "./ListMintTransactionButton";
 
 export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
@@ -57,18 +53,17 @@ export const WalletAction = ({ item }: { item: IRpcObject<RawAccount> }) => {
 
       {/* <PriceSelector price={price} setPrice={setPrice} /> */}
 
-      {
-        item &&
+      {item?.item && (
         <ListMintTransactionButton
-        params={{
-          mint: item.item!.mint,
-          tokenAccount: item.pubkey,
-          amount: BigInt(1),
-          price,
-        }}
-        formatting={{}}
-      />
-      }
+          params={{
+            mint: item.item.mint,
+            tokenAccount: item.pubkey,
+            amount: BigInt(1),
+            price,
+          }}
+          formatting={{}}
+        />
+      )}
     </HStack>
   );
 };

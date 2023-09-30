@@ -1,4 +1,5 @@
 
+
 export {
   ContextProvider,
   useAutoConnect,
@@ -81,7 +82,12 @@ export {
   GroupSelector,
   AssetDisplay,
   ScannerLink,
-  MintDisplay
+  MintDisplay,
+
+  SendMintButton,
+
+  /// icons
+  ShareIcon
 } from "./components";
 
 export {

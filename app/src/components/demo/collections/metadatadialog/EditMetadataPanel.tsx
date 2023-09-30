@@ -13,14 +13,14 @@ enum View {
   AddMint = "Add mint",
 }
 
-export type Group = IdlAccounts<LibreplexMetadata>["group"];
+export type Collection = IdlAccounts<LibreplexMetadata>["collection"];
 
 
 export const EditMetadataPanel = ({
   collection,
   onSuccess,
 }: {
-  collection: IRpcObject<Group>;
+  collection: IRpcObject<Collection>;
   onSuccess: () => any;
 }) => {
   const [showInfo, setShowInfo] = useState<boolean>(false);

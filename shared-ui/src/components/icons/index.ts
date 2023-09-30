@@ -1,0 +1,1 @@
+export {ShareIcon} from "./ShareIcon"
