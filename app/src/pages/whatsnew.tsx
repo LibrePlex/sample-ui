@@ -7,7 +7,7 @@ const Basics: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>What's new</title>
+        <title>New stuff in Libreplex</title>
         <meta name="What's new in LibrePlex" content="What's new" />
       </Head>
       <WhatsNewView />
