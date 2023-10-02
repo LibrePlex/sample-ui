@@ -71,7 +71,7 @@ export const AppBar = ({
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
-              label="Savings"
+              label="Costs"
               href={`/costs?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />

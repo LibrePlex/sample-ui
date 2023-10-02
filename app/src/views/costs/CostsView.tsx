@@ -22,10 +22,10 @@ export const CostsView: FC = ({}) => {
           className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8"
           style={{ paddingBottom: "10px" }}
         >
-          Cost Comparison
+          Costs
         </h1>
-        <Heading textAlign={"center"} mb={7} size="2xl">
-          Cost of 10k Mint
+        <Heading size='lg' textAlign={"center"} mb={7}>
+          Minting costs per protocol
         </Heading>
         <Box
           display="flex"
