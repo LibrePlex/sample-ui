@@ -17,10 +17,11 @@ import {
   Heading,
   Stack,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
-import { useUserSOLBalanceStore } from  "@libreplex/shared-ui";
+import { useUserSOLBalanceStore } from "@libreplex/shared-ui";
 import router from "next/router";
+import React from "react";
 
 const info = [
   {
@@ -154,8 +155,8 @@ export const HomeView: FC = ({}) => {
           <Heading size="2xl">The Mission.</Heading>
           <Box mt={2} sx={{ maxWidth: "700px" }}>
             <Text fontSize={"md"} color={"gray.100"}>
-              To provide a community-driven, open license protocol to the Solana
-              SPL Token and NFT community. The protocol must meet the following
+              To create a future-proof, decentralized and fully open source
+              Digital Asset Protocol for Solana. The standard must meet the following
               criteria:
             </Text>
           </Box>

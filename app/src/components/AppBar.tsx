@@ -66,8 +66,8 @@ export const AppBar = ({
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
-              label="Design"
-              href={`/design?${query}`}
+              label="What's new"
+              href={`/whatsnew?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement

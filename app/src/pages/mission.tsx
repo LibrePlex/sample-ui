@@ -15,6 +15,7 @@ function Feature({ title, desc, ...rest }) {
 }
 
 import { Box, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import React from "react";
 export const Mission = () => {
   return (
     <Box
@@ -41,7 +42,7 @@ export const Mission = () => {
             Mission
           </h1>
           <p className="text-slate-500 text-2x1 leading-relaxed">
-            The mission of LibrePlex is to provide a community-driven, open
+            To create a future-proof, decentralized and fully open source Digital Asset Standard for Solana. mission of LibrePlex is to provide a community-driven, open
             license protocol to the Solana SPL Token and NFT community. The
             protocol must meet the following criteria:
           </p>
