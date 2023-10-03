@@ -38,6 +38,9 @@ export const hydrateMetadataWithJson = (
   group: IRpcObject<Collection> | null,
   base64Image: string | null
 ) => {
+  const signers = new Set(libreMetadataObj?.extensions?.find(item=>item.signers)?.signers?.signers ??[]);
+
+  const royalties = libreMetadataObj?.extensions?.find(item=>item.royalties)?.royalties?.royalties;
   const retval: IMetadataJson = {
     name: libreMetadataObj.name,
     symbol: libreMetadataObj.symbol,
@@ -46,7 +49,7 @@ export const hydrateMetadataWithJson = (
       libreMetadataObj?.asset?.inscription?.description ??
       undefined,
     seller_fee_basis_points:
-      libreMetadataObj?.extension?.nft?.royalties?.bps ??
+      royalties?.bps ??
       (group?.item as any)?.royalties?.bps ??
       undefined,
     image: libreMetadataObj?.asset?.image?.url ?? base64Image ?? undefined,
@@ -78,9 +81,7 @@ export const hydrateMetadataWithJson = (
       (group?.item as any)?.royalties?.shares?.map((item) => ({
           address: item.recipient.toBase58(),
           share: item.share / 100,
-          verified: new Set(
-            libreMetadataObj?.extension?.nft?.signers ?? []
-          ).has(item.recipient),
+          verified: signers.has(item.recipient),
         })) ?? [],
     },
   };

@@ -44,6 +44,10 @@ export const MintDisplay = ({
 
   const group = useCollectionById(metadata?.item?.collection ?? null, connection);
 
+  const attributes = useMemo(()=>
+    metadata?.item.extensions?.find(item=>item.attributes)?.attributes.attributes
+  ,[metadata?.item])
+
   return metadata?.item ? (
     <VStack gap={8} alignItems="center" width={"100%"} maxWidth={"650px"}>
       <HStack alignItems="flex-start" width={"100%"} flexWrap="wrap" gap={4}>
@@ -175,7 +179,7 @@ export const MintDisplay = ({
                   <AttributesDisplayDefault
                     group={{ ...group, item: group.item! }}
                     attributes={[
-                      ...(metadata?.item.extension?.nft?.attributes ?? []),
+                      ...(attributes ?? []),
                     ]}
                   />
                 )}

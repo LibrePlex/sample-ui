@@ -1,19 +1,6 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@app/environmentvariables";
-// import {
-//   MINT_SIZE,
-//   TOKEN_2022_PROGRAM_ID,
-//   createAssociatedTokenAccountInstruction,
-//   createInitializeMint2Instruction,
-//   createMintToInstruction,
-//   getAssociatedTokenAddressSync,
-//   getMinimumBalanceForRentExemptMint,
-// } from "@solana/spl-token";
 
-
-// runtime error: TypeError: (0 , _libreplex_sdk__WEBPACK_IMPORTED_MODULE_9__.setupLibreplexReadyMint) is not a function
-// import { setupLibreplexReadyMint } from "@libreplex/sdk"
-
-import {setupLibreplexReadyMint} from "@libreplex/sdk";
+import { setupLibreplexReadyMint } from "@libreplex/sdk";
 
 import {
   Connection,
@@ -100,8 +87,7 @@ export const createMetadata = async (
 
   let instructions: TransactionInstruction[] = [];
 
-
-  const {transaction: txSetup} = await setupLibreplexReadyMint(
+  const { transaction: txSetup } = (await setupLibreplexReadyMint(
     connection,
     wallet.publicKey,
     wallet.publicKey,
@@ -109,56 +95,62 @@ export const createMetadata = async (
     wallet.publicKey,
     0,
     mint,
-    metadata,
+    metadata
     // no further parameters, this defaults to
     // 1) no transfer hook
     // 2) token program 2022
-  ) as {transaction: Transaction}
+  )) as { transaction: Transaction };
 
   const signers = [mint];
 
   if (assetType === AssetType.Image) {
     const url = `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mint.publicKey.toBase58()}.png`;
+    console.log('Creating metadata instruction');
+
+    const args = {
+      name,
+      symbol,
+      updateAuthority: wallet.publicKey,
+
+      asset: {
+        image: {
+          url,
+          description,
+        },
+      },
+      extensions: extension
+        ? [
+            {
+              attributes: {attributes: Buffer.from(extension.attributes)}
+            },
+          ]
+        : []
+    };
+
+    const accounts = {
+      payer: wallet.publicKey,
+      metadata,
+      authority: wallet.publicKey,
+      mint: mint.publicKey,
+      systemProgram: SystemProgram.programId,
+      invokedMigratorProgram: null,
+    };
+
+    console.log({args, accounts})
 
     const instruction = await librePlexProgram.methods
-      .createMetadata({
-        name,
-        symbol,
-        updateAuthority: wallet.publicKey,
-
-        asset: {
-          image: {
-            url,
-            description,
-          },
-        },
-        extension: extension
-          ? {
-              nft: {
-                attributes: Buffer.from(extension.attributes),
-                signers: [],
-                royalties: null,
-                license: null,
-              },
-            }
-          : {
-            none: {}
-          },
-      })
-      .accounts({
-        metadata,
-        mint: mint.publicKey,
-        systemProgram: SystemProgram.programId,
-        invokedMigratorProgram: null,
-      })
+      .createMetadata(args)
+      .accounts(accounts)
       .instruction();
+    console.log('Created');
     instructions.push(instruction);
   } else if (assetType === AssetType.Inscription) {
     const inscription = Keypair.generate();
 
-    const inscriptionLamports = await connection.getMinimumBalanceForRentExemption(
-      8 + 32 + 32 + 4 + 4 + INSCRIPTION_DEFAULT_LENGTH
-    );
+    const inscriptionLamports =
+      await connection.getMinimumBalanceForRentExemption(
+        8 + 32 + 32 + 4 + 4 + INSCRIPTION_DEFAULT_LENGTH
+      );
     signers.push(inscription);
     instructions.push(
       SystemProgram.createAccount({
@@ -171,27 +163,20 @@ export const createMetadata = async (
     );
 
     const instruction = await librePlexProgram.methods
-      .createInscriptionMetadata(
-        {
-          updateAuthority: wallet.publicKey,
-          name,
-          symbol,
-          description,
-          dataType: "",
-          extension: extension
-            ? {
-                nft: {
-                  attributes: Buffer.from(extension.attributes),
-                  signers: [],
-                  royalties: null,
-                  license: null,
-                },
-              }
-            : {
-              none: {}
+      .createInscriptionMetadata({
+        updateAuthority: wallet.publicKey,
+        name,
+        symbol,
+        description,
+        dataType: "",
+        extensions: extension
+        ? [
+            {
+              attributes: {attributes: Buffer.from(extension.attributes)}
             },
-        }
-      )
+          ]
+        : []
+      })
       .accounts({
         metadata,
         inscription: inscription.publicKey,
@@ -226,7 +211,7 @@ export const createMetadata = async (
   console.log("INSTRUCTION CREATED");
 
   data.push({
-    instructions: [...txSetup.instructions,...instructions],
+    instructions: [...txSetup.instructions, ...instructions],
     description: `Create metadata`,
     signers,
   });

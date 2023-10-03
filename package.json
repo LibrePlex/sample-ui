@@ -28,8 +28,8 @@
     "typescript": "5.0.4"
   },
   "resolutions": {
-    "@libreplex/idls": "0.4.2",
-    "@libreplex/sdk": "0.3.2",
+    "@libreplex/idls": "0.5.0",
+    "@libreplex/sdk": "0.3.4",
     "@solana/wallet-adapter-base": "^0.9.22",
     "@solana/wallet-adapter-react": "0.15.32",
     "@solana/wallet-adapter-react-ui": "0.9.31",

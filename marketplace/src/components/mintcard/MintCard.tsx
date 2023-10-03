@@ -43,7 +43,7 @@ export const MintCard = ({
       initial="default"
       whileHover="hover"
     >
-      <Link href={`/mint/${metadata?.item.mint}`}>
+      <Link href={`/mint/${metadata?.item?.mint}`}>
         <div style={{ pointerEvents: "none" }}>
           <AssetDisplay asset={metadata?.item?.asset} mint={mint} />
         </div>
@@ -54,7 +54,7 @@ export const MintCard = ({
         alignItems="flex-start"
         justifyContent="flex-start"
       >
-        <Link href={`/mint/${metadata?.item.mint}`}>
+        <Link href={`/mint/${metadata?.item?.mint}`}>
           <Heading
             title={metadata?.item?.name ?? "-"}
             as={motion.p}
