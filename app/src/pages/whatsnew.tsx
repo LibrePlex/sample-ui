@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { BasicsView } from "../views";
-import { WhatsNewView } from "@app/views/WhatsNewView";
+import { FeaturesView } from "@app/views/FeaturesView";
 
 const Basics: NextPage = (props) => {
   return (
@@ -10,7 +10,7 @@ const Basics: NextPage = (props) => {
         <title>New stuff in Libreplex</title>
         <meta name="What's new in LibrePlex" content="What's new" />
       </Head>
-      <WhatsNewView />
+      <FeaturesView />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import { PublicKey } from "@solana/web3.js";
 import { usePublicKeyOrNull } from "../../../../hooks/usePublicKeyOrNull";
 import { Dispatch, SetStateAction, useState } from "react";
 import { abbreviateKey } from  "@libreplex/shared-ui";
+import React from "react";
 
 export const PermittedSignersPanel = ({
   permittedSigners,
