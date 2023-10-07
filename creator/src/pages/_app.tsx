@@ -7,7 +7,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { FC, useState } from "react";
 import { AppBar } from "../components/AppBar";
-import { Footer } from "../components/Footer";
+
 import {
   InscriptionsProgramProvider,
   MetadataProgramProvider,

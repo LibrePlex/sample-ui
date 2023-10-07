@@ -3305,17 +3305,17 @@
     yargs "16.2.0"
     yargs-parser "20.2.4"
 
-"@libreplex/idls@0.2.0", "@libreplex/idls@0.4.1", "@libreplex/idls@0.5.0":
+"@libreplex/idls@0.2.0", "@libreplex/idls@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.5.0.tgz#c5fe266649e4327d8ccddf27081a6ab159a0c19b"
   integrity sha512-DYtwmM43G7kV7Tabp52TApArqD9yYzlHg2CGFq2djwT4tZrX1V+hmUKIYg0u70yhp0hwobzTgn9uEUKEqtauYw==
 
-"@libreplex/sdk@0.2.0", "@libreplex/sdk@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@libreplex/sdk/-/sdk-0.3.2.tgz#ac71efe4a7018b25e9fb327f6b2306f5afe60a38"
-  integrity sha512-4bP3SmLhk/y5ZTEOYAl1C/jGXUj9MMY0gptk0fltVnjpYJKzn98EUnOMCUyemuPH8+8m9VFXBCrRyb5BtPty+A==
+"@libreplex/sdk@0.2.0", "@libreplex/sdk@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@libreplex/sdk/-/sdk-0.3.4.tgz#1f5b88d331ccaa68276ddfcff1ed19d204ad9197"
+  integrity sha512-AzHzO2FZ1+uukT64YhGQmfSxSrrKIu2WdNgT+yxmSeBhPkn4OvGyE+e8Dqu3oQsUxnaxRj466MXsveL4NR2CcQ==
   dependencies:
-    "@libreplex/idls" "0.4.1"
+    "@libreplex/idls" "0.5.0"
     "@solana/spl-token" "0.3.8"
 
 "@metamask/rpc-errors@^5.1.1":

@@ -6,7 +6,8 @@
   "workspaces": [
     "app",
     "shared-ui",
-    "marketplace"
+    "marketplace",
+    "creator"
   ],
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",

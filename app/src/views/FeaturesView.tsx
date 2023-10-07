@@ -1,19 +1,16 @@
+import { CheckCircleIcon, InfoIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  Center,
   Flex,
+  Heading,
   ListItem,
   Popover,
   PopoverArrow,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  UnorderedList,
-  VStack,
-} from "@chakra-ui/react";
-import {
-  Box,
-  Center,
-  Heading,
   Table,
   Tbody,
   Td,
@@ -21,10 +18,9 @@ import {
   Th,
   Thead,
   Tr,
+  UnorderedList,
+  VStack,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, NotAllowedIcon, InfoIcon } from "@chakra-ui/icons";
-import Head from "next/head";
-import React from "react";
 import { MintTaxInfoDialog } from "./costs/MintTaxInfoDialog";
 
 export const FeaturesView = () => {
@@ -35,7 +31,7 @@ export const FeaturesView = () => {
           className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8"
           style={{ paddingBottom: "10px" }}
         >
-          Features
+          Feature comparison
         </h1>
 
         <Box
@@ -252,6 +248,52 @@ export const FeaturesView = () => {
                   </Tr>
 
                   <Tr>
+                    <Th color="white">On-chain Images / Media</Th>
+                    <Td>
+                      <Popover size="md">
+                        <PopoverTrigger>
+                          <Button colorScheme="white" variant="outline">
+                            <InfoIcon />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                          <PopoverArrow />
+                          <PopoverHeader>
+                            <Flex justify="space-between" align="center" p={2}>
+                              <Box>
+                                <Text as="b">
+                                  On-chain Media via Inscriptions
+                                </Text>
+                              </Box>
+                            </Flex>
+                          </PopoverHeader>
+                          <Box p={5}>
+                            <Center>
+                              <Text>
+                                Inscription data is stored directly on-chain, so
+                                there are no dependencies on web2 services such
+                                as arweave, S3 or shadowdrive. Your assets live
+                                as long as solana lives.
+                              </Text>
+                            </Center>
+                          </Box>
+                        </PopoverContent>
+                      </Popover>
+                    </Td>
+                    <Td>
+                      <Center columnGap={2}>
+                        <CheckCircleIcon color="lightgreen" />
+                      </Center>
+                    </Td>
+
+                    <Td>
+                      <Center>
+                        <NotAllowedIcon color="#f44" />
+                      </Center>
+                    </Td>
+                  </Tr>
+
+                  <Tr>
                     <Th color="white">Asset Licensing</Th>
                     <Td>
                       <Popover size="md">
@@ -290,12 +332,12 @@ export const FeaturesView = () => {
                                     </ListItem>
                                     <ListItem>
                                       The holder of this NFT is allowed to print
-                                      37 copies of psychotic terror monkey #8767 NFT on 
-                                      a t-shirt of their choice and sell them. 10% of
-                                      any generated profits must be donated to 
-                                      Gorilla Conservation at World Wildlife Fund.
+                                      37 copies of psychotic terror monkey #8767
+                                      NFT on a t-shirt of their choice and sell
+                                      them. 10% of any generated profits must be
+                                      donated to Gorilla Conservation at World
+                                      Wildlife Fund.
                                     </ListItem>
-                                    
                                   </UnorderedList>
                                 </Box>
                               </Text>
@@ -312,6 +354,34 @@ export const FeaturesView = () => {
                     <Td>
                       <Center>
                         <NotAllowedIcon color="#f44" />
+                      </Center>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color="white">Royalty enforcement</Th>
+                    <Td></Td>
+                    <Td>
+                      <Center columnGap={2}>
+                        <CheckCircleIcon color="lightgreen" />
+                      </Center>
+                    </Td>
+                    <Td>
+                      <Center columnGap={2}>
+                        <CheckCircleIcon color="lightgreen" />
+                      </Center>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Th color="white">Creator signing / validation</Th>
+                    <Td></Td>
+                    <Td>
+                      <Center columnGap={2}>
+                        <CheckCircleIcon color="lightgreen" />
+                      </Center>
+                    </Td>
+                    <Td>
+                      <Center columnGap={2}>
+                        <CheckCircleIcon color="lightgreen" />
                       </Center>
                     </Td>
                   </Tr>
