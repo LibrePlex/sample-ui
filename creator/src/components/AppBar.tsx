@@ -66,28 +66,8 @@ export const AppBar = ({
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-8 font-bold text-lg mt-2">
             <NavElement
-              label="Features"
-              href={`/features?${query}`}
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
-              label="Costs"
-              href={`/costs?${query}`}
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
-              label="Tools"
-              href={`/tools?${query}`}
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
-              label="Scanner"
-              href={`/scanner?${query}`}
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
-              label="Demo"
-              href={`/demo?${query}`}
+              label="Creators"
+              href={`/creators`}
               navigationStarts={() => setIsNavOpen(false)}
             />
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />

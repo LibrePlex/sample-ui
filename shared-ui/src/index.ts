@@ -1,3 +1,5 @@
+import { useCreatorsByAuthority } from './sdk/query/creator/creator';
+import { PROGRAM_ID_CREATOR } from './anchor/creator/getProgramInstanceCreator';
 
 
 export {
@@ -23,7 +25,10 @@ export {
   getProgramInstanceInscriptions,
   getProgramInstanceShop,
   LibreWallet,
-  
+
+  LibrePlexCreatorProgramContext,
+  LibrePlexCreatorProgramProvider,
+  PROGRAM_ID_CREATOR  
 } from "./anchor";
 export {
   decodeCollection,
@@ -47,7 +52,10 @@ export {
   useMetadataGroupedByCollection,
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
-  InscriptionStoreContext
+  InscriptionStoreContext,
+
+  /// creators
+  useCreatorsByAuthority
 } from "./sdk";
 export type {
   AttributeType,

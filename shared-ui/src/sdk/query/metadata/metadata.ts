@@ -10,7 +10,7 @@ import { RawAccount, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { MetadataProgramContext } from "../../../anchor/metadata/MetadataProgramContext";
-import { useContext, useMemo, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 import { sha256 } from "js-sha256";

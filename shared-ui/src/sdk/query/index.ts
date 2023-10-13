@@ -42,3 +42,7 @@ export {InscriptionStoreContext} from "./inscriptions/InscriptionStoreContext"
 export { useListingById, useListingsByLister, useListingsByGroup, useAllListings } from "./shop/listing";
 
 export type { Listing, Price} from "./shop/listing";
+
+export {useCreatorsByAuthority} from "./creator/creator"
+
+export type {Creator} from "./creator/creator"

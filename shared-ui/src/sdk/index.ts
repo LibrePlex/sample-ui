@@ -9,7 +9,10 @@ export type {
   AttributeValue,
   Asset,
   Listing,
-  Price
+  Price,
+  
+  /// creator
+  Creator
 } from "./query";
 export {
   useTokenAccountById,
@@ -33,5 +36,8 @@ export {
   decodeInscription,
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
-  InscriptionStoreContext
+  InscriptionStoreContext,
+
+  /// 
+  useCreatorsByAuthority
 } from "./query";

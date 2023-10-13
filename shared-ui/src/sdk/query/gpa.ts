@@ -1,4 +1,3 @@
-
 import { Idl } from "@coral-xyz/anchor";
 import {
   AccountInfo,
@@ -6,46 +5,46 @@ import {
   GetProgramAccountsFilter,
   KeyedAccountInfo,
   ProgramAccountChangeCallback,
-  PublicKey
+  PublicKey,
 } from "@solana/web3.js";
 import { IRpcObject } from "../../components/executor/IRpcObject";
 
 import { useEffect, useMemo } from "react";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
-import {Updater} from "react-query/types/core/utils"
+import { Updater } from "react-query/types/core/utils";
 
-
-
-const accountUpdater = (
-  queryClient: QueryClient, key: any) =>
-  (accountInfo: KeyedAccountInfo)=> {
+const accountUpdater =
+  (queryClient: QueryClient, key: any) => (accountInfo: KeyedAccountInfo) => {
     // console.log({ queryClient });
     // console.log("Account updated", accountInfo);
 
     const newOrUpdatedItem = {
       item: accountInfo.accountInfo.data,
-      pubkey: accountInfo.accountId
-    }
+      pubkey: accountInfo.accountId,
+    };
     // console.log({key})
 
-    const fn: Updater<IRpcObject<Buffer | undefined>[] | undefined,
-       IRpcObject<Buffer | undefined>[] > = (old: IRpcObject<Buffer | undefined>[] | undefined ) => {
+    const fn: Updater<
+      IRpcObject<Buffer | undefined>[] | undefined,
+      IRpcObject<Buffer | undefined>[]
+    > = (old: IRpcObject<Buffer | undefined>[] | undefined) => {
       const found = (old ?? []).find((item) =>
         item.pubkey.equals(accountInfo.accountId)
       );
       // console.log({ found, old });
-      if( found ) {
-        return old?.map((item) =>
+      if (found) {
+        return (
+          old?.map((item) =>
             item.pubkey.equals(accountInfo.accountId) ? newOrUpdatedItem : item
           ) ?? []
+        );
       } else {
-        return [...(old ?? []), newOrUpdatedItem] ?? []
+        return [...(old ?? []), newOrUpdatedItem] ?? [];
       }
     };
-    
-    queryClient.setQueryData(key, fn);
-  }
 
+    queryClient.setQueryData(key, fn);
+  };
 
 export const fetchGpa = <T extends unknown, P extends Idl>(
   filters: GetProgramAccountsFilter[] | undefined,
@@ -60,20 +59,22 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
       });
 
       // console.log({results, filters});
-;
-      for (const result of results?.values()??[]) {
+      for (const result of results?.values() ?? []) {
         // const obj = decode(result.account.data, result.pubkey);
 
         _items.push({
           item: result.account.data,
-          pubkey: result.pubkey
+          pubkey: result.pubkey,
         });
       }
     }
     return _items;
   },
   listener: {
-    add: (onAccountChange: ProgramAccountChangeCallback, programId: PublicKey) =>
+    add: (
+      onAccountChange: ProgramAccountChangeCallback,
+      programId: PublicKey
+    ) =>
       connection?.onProgramAccountChange(
         programId,
         onAccountChange,
@@ -90,8 +91,8 @@ export const useGpa = <T extends unknown, P extends Idl>(
   programId: PublicKey,
   filters: GetProgramAccountsFilter[] | undefined,
   connection: Connection,
-  // decode: DecodeType<T, P>,
-  key: any
+  key: any,
+  enabled: boolean = true
 ) => {
   const { fetcher, listener } = useMemo(
     () => fetchGpa(filters, connection, programId),
@@ -101,8 +102,7 @@ export const useGpa = <T extends unknown, P extends Idl>(
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
-
+  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher, { enabled });
 
   /// intercept account changes and refetch as needed
   useEffect(() => {
@@ -117,5 +117,5 @@ export const useGpa = <T extends unknown, P extends Idl>(
     };
   }, [listener, programId, queryClient, key]);
 
-  return q
+  return q;
 };
