@@ -12,7 +12,12 @@ export type {
   Price,
   
   /// creator
-  Creator
+  Creator,
+  AssetUrl,
+  LegacyMint,
+
+  /// legacy inscriptions
+  LegacyInscription
 } from "./query";
 export {
   useTokenAccountById,
@@ -37,7 +42,6 @@ export {
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
   InscriptionStoreContext,
-
-  /// 
+  useLegacyMintsByWallet,
   useCreatorsByAuthority
 } from "./query";

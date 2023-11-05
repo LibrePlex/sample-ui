@@ -25,6 +25,18 @@ export {
   useMetadataGroupedByCollection
 } from "./metadata/metadata";
 
+export type {
+  LegacyMint
+} from "./mints/useLegacyMintsByWallet"
+
+export {
+  useLegacyMintsByWallet
+} from "./mints/useLegacyMintsByWallet"
+
+export type {
+  LegacyInscription
+} from "./legacyInscriptions/legacyinscriptions"
+
 export { useTokenAccountsByOwner, useTokenAccountById} from "./tokenaccountsbyowner";
 
 export {
@@ -45,4 +57,4 @@ export type { Listing, Price} from "./shop/listing";
 
 export {useCreatorsByAuthority} from "./creator/creator"
 
-export type {Creator} from "./creator/creator"
+export type {Creator, AssetUrl} from "./creator/creator"

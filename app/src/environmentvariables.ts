@@ -12,3 +12,7 @@ export const DEVNET_URL = process.env.DEVNET_URL;
 export const MAINNET_URL = process.env.MAINNET_URL;
 export const JWT_SYSTEM_SIGNING_KEY = process.env.JWT_SYSTEM_SIGNING_KEY;
 export const COOKIE_KEY_AUTH = 'cookie-auth';
+
+export const LEGACY_SIGNER_PRIVATE_KEY = process.env.LEGACY_SIGNER_PRIVATE_KEY;
+
+export const NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID = process.env.NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID || "Leg1xVbrpq5gY6mprak3Ud4q4mBwcJi5C9ZruYjWv7n";

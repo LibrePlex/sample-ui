@@ -10,6 +10,7 @@ import { AppBar } from "../components/AppBar";
 import { Footer } from "../components/Footer";
 import {
   InscriptionsProgramProvider,
+  LibrePlexLegacyInscriptionsProgramProvider,
   MetadataProgramProvider,
   Notifications,
 } from "@libreplex/shared-ui";
@@ -37,17 +38,19 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <ContextProvider>
             <MetadataProgramProvider>
               <InscriptionsProgramProvider>
-                <div className="flex flex-col h-screen bg-[#121212]">
-                  <Notifications />
+                <LibrePlexLegacyInscriptionsProgramProvider>
+                  <div className="flex flex-col h-screen bg-[#121212]">
+                    <Notifications />
 
-                  <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-                  <ContentContainer>
-                    <PortalManager>
-                      <Component {...pageProps} />
-                      {/* <Footer /> */}
-                    </PortalManager>
-                  </ContentContainer>
-                </div>
+                    <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+                    <ContentContainer>
+                      <PortalManager>
+                        <Component {...pageProps} />
+                        {/* <Footer /> */}
+                      </PortalManager>
+                    </ContentContainer>
+                  </div>
+                </LibrePlexLegacyInscriptionsProgramProvider>
               </InscriptionsProgramProvider>
             </MetadataProgramProvider>
           </ContextProvider>

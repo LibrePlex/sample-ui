@@ -1,3 +1,4 @@
+import { LibreplexCreator } from '@libreplex/idls/lib/types/libreplex_creator';
 import * as anchor from "@coral-xyz/anchor";
 import { Connection } from "@solana/web3.js";
 
@@ -17,6 +18,6 @@ export function getProgramInstanceCreator(
     anchor.AnchorProvider.defaultOptions()
   );
   const programId = PROGRAM_ID_CREATOR;
-  const program = new anchor.Program(IDL, programId, provider);
+  const program = new anchor.Program<LibreplexCreator>(IDL, programId, provider);
   return program;
 }

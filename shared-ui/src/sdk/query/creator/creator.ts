@@ -11,6 +11,8 @@ import { LibrePlexCreatorProgramContext } from "../../../anchor";
 
 export type Creator = IdlAccounts<LibreplexCreator>["creator"];
 
+export type AssetUrl = IdlAccounts<LibreplexCreator>["assetUrl"];
+
 const coder = new BorshCoder(IDL);
 
 export const decodeCreator = (

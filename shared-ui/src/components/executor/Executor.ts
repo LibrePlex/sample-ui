@@ -10,7 +10,8 @@ import { ITransactionTemplate } from "./ITransactionTemplate";
 
 export type FetchSignature<P> = (
   p: P,
-  connection: Connection
+  connection: Connection,
+  cluster: string
 ) => Promise<{ data?: ITransactionTemplate[]; error?: any }>;
 
 export const DEFAULT_TIMEOUT = 32000;
@@ -52,11 +53,7 @@ export class Executor<P> {
   private readonly onSuccess: (msg?: string) => any;
   private readonly onError: (msg?: string) => any;
   private readonly afterSign: undefined | (() => any);
-  private readonly onInfo: (msg?: string) => any;
-  private readonly updateTransaction: (transactionToUpdate: {
-    txid: string;
-    status: TransactionStatus;
-  }) => any;
+  private readonly cluster: string;
 
   constructor(
     fetch: FetchSignature<P>,
@@ -64,15 +61,11 @@ export class Executor<P> {
     params: P,
     signAllTransactions: (txs: Transaction[]) => Promise<Transaction[]>,
     connection: Connection,
+    cluster: string,
     commitment: "processed" | "confirmed" | "finalized",
     walletPublicKey: PublicKey,
     onSuccess: (msg?: string) => any,
-    onInfo: (msg?: string) => any,
     onError: (msg?: string) => any,
-    updateTransaction: (transactionToUpdate: {
-      txid: string;
-      status: TransactionStatus;
-    }) => any,
     afterSign?: () => any
   ) {
     this.fetch = fetch;
@@ -85,22 +78,15 @@ export class Executor<P> {
     this.commitment = commitment;
     this.onSuccess = onSuccess;
     this.onError = onError;
-    this.onInfo = onInfo;
     this.walletPublicKey = walletPublicKey;
-    this.updateTransaction = updateTransaction;
     this.afterSign = afterSign;
+    this.cluster = cluster;
   }
 
   public getSignedTransactions = async (
     transactions: ITransactionTemplate[]
   ) => {
     const blockhash = await this.connection.getLatestBlockhash(this.commitment);
-
-    // console.log({ p: this.params });
-    // console.log("EXECUTING", { blockhash });
-
-    // const result = await this.fetch(this.params, this.connection);
-    // const { data: transactions, error } = result;
 
     if (!transactions) {
       this.onError("Could not generate transactions");
@@ -166,7 +152,7 @@ export class Executor<P> {
 
   public execute = async () => {
     // const signedTransactions = await this.getSignedTransactions();
-    const result = await this.fetch(this.params, this.connection)
+    const result = await this.fetch(this.params, this.connection, this.cluster)
       .catch((e) => {
         console.log(e);
         return { error: (e as Error).message, data: undefined };
@@ -174,7 +160,7 @@ export class Executor<P> {
       .then((result) => result);
     const { data: transactions, error } = result;
 
-    if (!transactions) {
+    if (!transactions || transactions.length === 0) {
       this.onError("Could not generate transactions");
       return;
     }

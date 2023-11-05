@@ -71,6 +71,11 @@ export const AppBar = ({
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
+              label="Inscriptions"
+              href={`/inscriptions?${query}`}
+              navigationStarts={() => setIsNavOpen(false)}
+            />
+            <NavElement
               label="Costs"
               href={`/costs?${query}`}
               navigationStarts={() => setIsNavOpen(false)}

@@ -8,6 +8,7 @@ import { ITransactionTemplate } from "./ITransactionTemplate";
 import { ButtonProps, Spinner } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import React from "react";
+import { useNetworkConfiguration } from "../../contexts/NetworkConfigurationProvider";
 
 export interface GenericTransactionButtonProps<P> {
   params: P;
@@ -16,7 +17,8 @@ export interface GenericTransactionButtonProps<P> {
   afterSign?: () => any;
   transactionGenerator: (
     { wallet, params }: IExecutorParams<P>,
-    connection: Connection
+    connection: Connection,
+    cluster: string
   ) => Promise<{
     data?: ITransactionTemplate[];
     error?: any;
@@ -24,6 +26,7 @@ export interface GenericTransactionButtonProps<P> {
   onSuccess?: (msg: string | undefined) => any;
   onError?: (msg: string | undefined) => any;
 }
+
 
 export const useGenericTransactionClick = <P extends unknown>({
   params,
@@ -34,6 +37,7 @@ export const useGenericTransactionClick = <P extends unknown>({
   afterSign
 }: Omit<GenericTransactionButtonProps<P>, "formatting" | "text">) => {
 
+  
   const { onClick, isExecuting: isExecuting } = useExecutor(
     transactionGenerator,
     

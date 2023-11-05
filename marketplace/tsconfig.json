@@ -18,7 +18,7 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../shared-ui/src/components/buttons/sendmint22/SendMintButton.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../shared-ui/src/components/buttons/sendmint22/SendMintButton.tsx", "../app/src/views/inscriptions/MintCardLegacy.tsx"],
   "exclude": ["node_modules", ".next",],
   "ts-node": {
     "require": ["tsconfig-paths/register"],

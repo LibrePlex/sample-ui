@@ -45,7 +45,7 @@ export const MintDisplay = ({
   const group = useCollectionById(metadata?.item?.collection ?? null, connection);
 
   const attributes = useMemo(()=>
-    metadata?.item.extensions?.find(item=>item.attributes)?.attributes.attributes
+    metadata?.item?.extensions?.find(item=>item.attributes)?.attributes.attributes
   ,[metadata?.item])
 
   return metadata?.item ? (

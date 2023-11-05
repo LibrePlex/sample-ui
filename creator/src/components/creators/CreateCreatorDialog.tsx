@@ -25,8 +25,12 @@ import {
   AssetType,
   CreateCreatorTransactionButton,
 } from "./CreateCreatorTransactionButton";
-import { CopyPublicKeyButton,IRpcObject, MetadataProgramContext } from  "@libreplex/shared-ui";
-import { GroupSelector } from  "@libreplex/shared-ui";
+import {
+  CopyPublicKeyButton,
+  IRpcObject,
+  MetadataProgramContext,
+} from "@libreplex/shared-ui";
+import { GroupSelector } from "@libreplex/shared-ui";
 import React from "react";
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
@@ -59,24 +63,6 @@ export const CreateMetadataDialog = ({
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const [isMutable, setIsMutable] = useState<boolean>(false);
 
-  const [selectedCollection, setSelectedCollection] = useState<IRpcObject<Collection|null>>(null);
-
-
-  const numberOfAttributes = useMemo(
-    () => selectedCollection?.item?.attributeTypes?.length ?? 0,
-    [selectedCollection]
-  );
-
-  const [attributes, setAttributes] = useState<number[]>([
-    ...Array(numberOfAttributes),
-  ]);
-
-  useEffect(() => {
-    setAttributes([...Array(numberOfAttributes)]);
-  }, [numberOfAttributes]);
-
-
-
   const [generatedMint, setGeneratedMint] = useState<Keypair>(
     Keypair.generate()
   );
@@ -91,7 +77,7 @@ export const CreateMetadataDialog = ({
     setStatus(Status.NotStarted);
   }, [generatedMint]);
 
-  const {program} = useContext(MetadataProgramContext)
+  const { program } = useContext(MetadataProgramContext);
 
   return (
     <Modal isOpen={open} onClose={onClose}>
@@ -158,9 +144,9 @@ export const CreateMetadataDialog = ({
                 <Heading>Select asset type</Heading>
                 <Text>
                   Select the asset type for this metadata. Currently all asset
-                  types are owned by the metadata program, EXCEPT inscription asset
-                  type that is owned by libreplex_inscriptions program. Both programs
-                  allow assets to be immutable.
+                  types are owned by the metadata program, EXCEPT inscription
+                  asset type that is owned by libreplex_inscriptions program.
+                  Both programs allow assets to be immutable.
                 </Text>
               </Box>
 
@@ -188,41 +174,8 @@ export const CreateMetadataDialog = ({
               </Box>
             </Box>
 
-            <Box
-              display="flex"
-              alignItems="center"
-              flexDirection="row"
-              sx={{ justifyContent: "space-between" }}
-              columnGap={2}
-            >
-              <Checkbox
-                checked={isMutable}
-                onChange={(e) => {
-                  setIsMutable(e.currentTarget.checked);
-                }}
-                colorScheme="red"
-              >
-                Mutable
-              </Checkbox>
-              <MutableInfoPanel />
-            </Box>
-            <GroupSelector
-              selectedGroup={selectedCollection}
-              setSelectedGroup={setSelectedCollection}
-            />
-             <AttributeSelectorPanel
-              attributes={attributes}
-              setAttributes={setAttributes}
-              collection={selectedCollection}
-            />
-
-            <KeyGenerator
-              generatedMint={generatedMint}
-              setGeneratedMint={setGeneratedMint}
-            />
-
             {status !== Status.Success && (
-              <CreateMetadataTransactionButton
+              <CreateCreatorTransactionButton
                 beforeClick={() => {
                   setStatus(Status.Processing);
                 }}
@@ -237,32 +190,13 @@ export const CreateMetadataDialog = ({
                   symbol,
                   assetType,
                   description,
-                  collection: selectedCollection?.pubkey ?? null,
-                  extension: {
-                      attributes
-                }}}
-                formatting={{
-                  // isDisabled: status !== Status.NotStarted,
                 }}
+                formatting={
+                  {
+                    // isDisabled: status !== Status.NotStarted,
+                  }
+                }
               />
-            )}
-
-            {status === Status.Success && selectedMint && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Text>Metadata added to mint:</Text>
-                <Box p={1}>
-                  <CopyPublicKeyButton
-                    publicKey={selectedMint.publicKey.toBase58()}
-                  />
-                </Box>
-                <Text>Please generate a new key to create another.</Text>
-              </Box>
             )}
           </Stack>
         </ModalBody>

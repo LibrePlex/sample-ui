@@ -59,7 +59,7 @@ export const Notification = ({ type, message, description, txid, onHide }: any) 
   useEffect(() => {
     const id = setTimeout(() => {
       onHide()
-    }, 80000);
+    }, 1500);
 
     return () => {
       clearInterval(id);
@@ -69,7 +69,7 @@ export const Notification = ({ type, message, description, txid, onHide }: any) 
   return (
     <div
       // className={`max-w-sm w-full bg-bkg-1 shadow-lg rounded-md mt-2 pointer-events-auto ring-1 ring-black ring-opacity-5 p-2 mx-4 mb-12 overflow-hidden`}
-      style={{zIndex: 10000, cursor: 'pointer', pointerEvents: "all"}}
+      style={{zIndex: 10000, cursor: 'pointer', pointerEvents: "all", background: 'black', marginBottom: '5px', borderRadius: "10px"}}
     >
       <div className={`p-4 rounded-md bg-gradient-to-r from-purple-900 from-10% via-purple-600 via-30% to-emerald-500 to-90%`} >
         <div className={`flex items-center`} >
@@ -108,8 +108,9 @@ export const Notification = ({ type, message, description, txid, onHide }: any) 
             <button
               onClick={() => onHide()}
               className={`bg-bkg-2 default-transition rounded-md inline-flex text-fgd-3 hover:text-fgd-4 focus:outline-none`}
+              style={{minWidth :"35px"}}
             >
-              <span className={`sr-only`}>Close</span>
+              {/* <span className={`sr-only`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> */}
               <XIcon className="h-5 w-5" />
             </button>
           </div>

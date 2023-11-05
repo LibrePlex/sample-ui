@@ -22,6 +22,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { MintTaxInfoDialog } from "./costs/MintTaxInfoDialog";
+import React from "react";
 
 export const FeaturesView = () => {
   return (

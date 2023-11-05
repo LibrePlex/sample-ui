@@ -17,6 +17,7 @@ export const decodeMetadata= (buffer: Buffer, pubkey: PublicKey) => {
       pubkey,
     };
   } catch (e) {
+    console.log({e});
     return {
       item: null,
       pubkey,

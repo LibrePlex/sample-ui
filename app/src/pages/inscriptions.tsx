@@ -1,17 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { BasicsView } from "../views";
-import { FeaturesView } from "@app/views/FeaturesView";
+import InscriptionsView from "../views/inscriptions/InscriptionsView";
 import React from "react";
 
 const Basics: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>New stuff in Libreplex</title>
+        <title>On-Chain Inscriptions</title>
         <meta name="What's new in LibrePlex" content="What's new" />
       </Head>
-      <FeaturesView />
+      <InscriptionsView />
     </div>
   );
 };

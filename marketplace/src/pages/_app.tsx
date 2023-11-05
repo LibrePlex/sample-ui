@@ -11,31 +11,35 @@ import {
   ContextProvider,
   InscriptionsProgramProvider,
   Notifications,
-} from  "@libreplex/shared-ui";
+} from "@libreplex/shared-ui";
 import {
-  LibrePlexShopProgramProvider, MetadataProgramProvider
+  LibrePlexLegacyInscriptionsProgramProvider,
+  LibrePlexShopProgramProvider,
+  MetadataProgramProvider,
 } from "shared-ui/src/anchor";
 import { AppBar } from "../components/AppBar";
 import { ContentContainer } from "../components/ContentContainer";
-import {
-  ShopOwnerProvider
-} from "../components/ShopOwnerContext";
+import { ShopOwnerProvider } from "../components/ShopOwnerContext";
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
 const manager = createLocalStorageManager("colormode-key");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
-  const queryClient = useMemo(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-        retry: false,
-        staleTime: 24 * 60 * 60 * 1000,
-      },
-    },
-  }), []);
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            retry: false,
+            staleTime: 24 * 60 * 60 * 1000,
+          },
+        },
+      }),
+    []
+  );
 
   return (
     <>
@@ -47,20 +51,22 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <QueryClientProvider client={queryClient}>
           <ContextProvider>
             <div className="flex flex-col h-screen bg-[#121212]">
-                <Notifications />
+              <Notifications />
 
-                <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
-                <MetadataProgramProvider>
-                  <InscriptionsProgramProvider>
-                    <LibrePlexShopProgramProvider>
+              <AppBar isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+              <MetadataProgramProvider>
+                <InscriptionsProgramProvider>
+                  <LibrePlexShopProgramProvider>
+                    <LibrePlexLegacyInscriptionsProgramProvider>
                       <ContentContainer>
                         <PortalManager>
                           <Component {...pageProps} />
                         </PortalManager>
                       </ContentContainer>
-                    </LibrePlexShopProgramProvider>
-                  </InscriptionsProgramProvider>
-                </MetadataProgramProvider>
+                    </LibrePlexLegacyInscriptionsProgramProvider>
+                  </LibrePlexShopProgramProvider>
+                </InscriptionsProgramProvider>
+              </MetadataProgramProvider>
             </div>
           </ContextProvider>
         </QueryClientProvider>
