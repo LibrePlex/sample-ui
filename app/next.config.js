@@ -18,6 +18,7 @@ const nextConfig = {
       fallback: {
         ...config.resolve.fallback,
         fs: false,
+        child_process: false
       },
       alias: {
         ...config.resolve.alias,

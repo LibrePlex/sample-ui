@@ -23,14 +23,16 @@ export class HttpClient {
   protected readonly instance: AxiosInstance;
   private readonly baseUrl: string;
 
-  public constructor(baseURL: string) {
+  public constructor(baseURL: string, config?: Partial<AxiosRequestConfig> ) {
     this.instance = axios.create({
       baseURL,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
+      ...config, // will override heads if present
     });
+   
     this.baseUrl = baseURL;
     
 
@@ -58,30 +60,6 @@ export class HttpClient {
       }
     );
   };
-
-  // private _handleResponse = ({ data, status }: AxiosResponse) => ({
-  //   data,
-  //   error: undefined,
-  //   status,
-  // });
-
-  // protected _handleError = ({ response, code, message }: AxiosError) => {
-  //   // console.log('Httpclient error', error)
-  //   // Promise.reject(error);
-  //   if (response) {
-  //     const { data, status } = response;
-  //     // console.log({response})
-  //     return { data: undefined, error: data, status };
-  //   } else {
-  //     return {
-  //       data: undefined,
-  //       message,
-  //       error: code,
-  //       status: 500,
-  //     };
-  //   }
-  // };
-
   public get<T>(
     url: string,
     options?: AxiosRequestConfig

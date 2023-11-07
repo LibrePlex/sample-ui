@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getBase64FromDatabytes, useInscriptionById } from "../../sdk/query/inscriptions/inscriptions";
 
 
-export const AssetDisplayInscription = ({inscriptionId, dataType}:{inscriptionId: PublicKey, dataType: string}) => {
+export const AssetDisplayInscription = ({inscriptionIdrootId, dataType}:{inscriptionId: PublicKey, dataType: string}) => {
   const { connection } = useConnection();
   const inscription = useInscriptionById(inscriptionId, connection);
 

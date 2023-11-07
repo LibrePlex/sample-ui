@@ -46,5 +46,6 @@ export {
   useCreatorsByAuthority,
   decodeInscriptionSummary,
   useFetchSingleAccount,
-  decodeInscriptionRankPage
+  decodeInscriptionRankPage,
+  decodeLegacyMetadata
 } from "./query";

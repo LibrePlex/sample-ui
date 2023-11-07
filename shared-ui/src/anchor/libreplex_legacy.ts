@@ -323,7 +323,85 @@ export type LibreplexLegacy = {
       ]
     },
     {
-      "name": "resizeLegacyInscription",
+      "name": "resizeLegacyInscriptionAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "legacy_inscription"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Mint",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": "ResizeLegacyInscriptionInput"
+          }
+        }
+      ]
+    },
+    {
+      "name": "resizeLegacyInscriptionAsHolder",
       "accounts": [
         {
           "name": "authority",
@@ -357,21 +435,6 @@ export type LibreplexLegacy = {
         },
         {
           "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
           "isMut": true,
           "isSigner": false
         },
@@ -1012,7 +1075,85 @@ export const IDL: LibreplexLegacy = {
       ]
     },
     {
-      "name": "resizeLegacyInscription",
+      "name": "resizeLegacyInscriptionAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "legacy_inscription"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Mint",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": "ResizeLegacyInscriptionInput"
+          }
+        }
+      ]
+    },
+    {
+      "name": "resizeLegacyInscriptionAsHolder",
       "accounts": [
         {
           "name": "authority",
@@ -1046,21 +1187,6 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
           "isMut": true,
           "isSigner": false
         },

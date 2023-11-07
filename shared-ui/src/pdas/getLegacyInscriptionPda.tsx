@@ -1,12 +1,12 @@
 import { toBufferLE } from "bigint-buffer";
 import { PublicKey } from "@solana/web3.js";
 
-import { LEGACY_INSCRIPTION } from "./constants";
+import { LEGACY_INSCRIPTION, PROGRAM_ID_LEGACY_INSCRIPTION } from "./constants";
 
 
-export const getLegacyInscriptionPda = (programId: PublicKey, mint: PublicKey) => {
+export const getLegacyInscriptionPda = (mint: PublicKey) => {
   return PublicKey.findProgramAddressSync(
     [Buffer.from(LEGACY_INSCRIPTION),mint.toBuffer()],
-    new PublicKey(programId)
+    new PublicKey(PROGRAM_ID_LEGACY_INSCRIPTION)
   );
 };

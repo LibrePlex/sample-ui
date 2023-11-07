@@ -59,7 +59,8 @@ export {
   useLegacyMintsByWallet,
   decodeInscriptionSummary,
   useFetchSingleAccount,
-  decodeInscriptionRankPage
+  decodeInscriptionRankPage,
+  decodeLegacyMetadata
 } from "./sdk";
 export type {
   AttributeType,

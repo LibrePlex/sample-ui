@@ -9,32 +9,47 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { WalletLegacyGallery } from "./WalletLegacyGallery";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { LegacyMint } from "@libreplex/shared-ui";
+import React, { useMemo, useState } from "react";
+import { WalletLegacyGallery } from "./legacyInscription/WalletLegacyGallery";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+  LegacyMint,
+  getInscriptionPda,
+  useFetchSingleAccount,
+} from "@libreplex/shared-ui";
 import { InscribeLegacyMetadataTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataTransactionButton";
 import { InscriptionsSummary } from "./InscriptionsSummary";
-import { InscriptionGallery } from "./InscriptionGallery";
+import { InscriptionGallery } from "./legacyInscription/InscriptionGallery";
+import { PublicKey } from "@solana/web3.js";
+import { EditLegacyInscription } from "./legacyInscription/EditLegacyInscription";
 
 enum View {
   Wallet,
   InscriptionGallery,
 }
 
-const InscriptionsView = () => {
-  const { publicKey } = useWallet();
+const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
+  const { connection } = useConnection();
+  const inscriptionId = useMemo(() => getInscriptionPda(legacyMint.mint)[0], [legacyMint.mint]);
+  const { data } = useFetchSingleAccount(inscriptionId, connection);
+  return data?.item?.buffer ? (
+    <EditLegacyInscription mint={legacyMint.mint} />
+  ) : (
+    <InscribeLegacyMetadataTransactionButton
+      params={{ legacyMint }}
+      formatting={{}}
+    />
+  );
+};
 
+const InscriptionsView = () => {
+  
   const actions = (item: LegacyMint) => {
-    return (
-      <InscribeLegacyMetadataTransactionButton
-        params={{ legacyMint: item }}
-        formatting={{}}
-      />
-    );
+    return <InscriptionAction legacyMint={item} />;
   };
 
-  const [view, setView] = useState<View>(View.InscriptionGallery);
+  const {publicKey} = useWallet();
+    const [view, setView] = useState<View>(View.InscriptionGallery);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -75,7 +90,7 @@ const InscriptionsView = () => {
                   immutable)
                 </ListItem>
               </UnorderedList>
-              <InscriptionsSummary mt={4} mb={4}/>
+              <InscriptionsSummary mt={4} mb={4} />
 
               <Box
                 display="flex"
@@ -126,9 +141,7 @@ const InscriptionsView = () => {
               {view === View.Wallet && (
                 <WalletLegacyGallery publicKey={publicKey} actions={actions} />
               )}
-              {view === View.InscriptionGallery && (
-                <InscriptionGallery/>
-              )}
+              {view === View.InscriptionGallery && <InscriptionGallery />}
             </Box>
           </Box>
         </Box>

@@ -1,20 +1,14 @@
-import { Box, BoxProps, HStack, Heading, VStack } from "@chakra-ui/react";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
-import { useRouter } from "next/router";
-import React, { ReactNode, useContext, useMemo } from "react";
+import { BoxProps, Text } from "@chakra-ui/react";
 import {
   LegacyMint,
-  decodeInscription,
-  getInscriptionPda,
+  decodeInscription
 } from "@libreplex/shared-ui";
-import { AssetDisplay } from "@libreplex/shared-ui";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { decodeMetadata } from "shared-ui/src/sdk/query/legacymetadata";
-import { useFetchOffchainMetadata } from "app/src/hooks/useOffChainMetadata";
-import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { ReactNode, useContext, useMemo } from "react";
 import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
+import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { EditLegacyInscription } from "./EditLegacyInscription";
 import { MintCardLegacy } from "./MintCardLegacy";
 
 const textMotion = {
@@ -31,7 +25,7 @@ export const InscriptionCardLegacy = ({
   children,
 }: {
   inscriptionId: PublicKey;
-
+  
   children?: ReactNode;
 } & BoxProps) => {
   const { connection } = useConnection();
@@ -49,5 +43,13 @@ export const InscriptionCardLegacy = ({
     [inscriptionId, inscriptionAccount?.data?.item?.buffer, program]
   );
 
-  return <MintCardLegacy mintId={inscription?.item.root} />;
+  return (
+    <MintCardLegacy mintId={inscription?.item.root}>
+        <EditLegacyInscription
+          mint={inscription?.item.root}
+      
+        />
+
+    </MintCardLegacy>
+  );
 };

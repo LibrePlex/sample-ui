@@ -19,10 +19,11 @@ import {
 import { AssetDisplay } from "@libreplex/shared-ui";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { decodeMetadata } from "shared-ui/src/sdk/query/legacymetadata";
+import { decodeLegacyMetadata } from "shared-ui/src/sdk/query/legacymetadata";
 import { useFetchOffchainMetadata } from "app/src/hooks/useOffChainMetadata";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
 import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
+import { useFormattedNumber } from "@app/utils/useFormattedNumber";
 
 const textMotion = {
   default: {
@@ -33,11 +34,21 @@ const textMotion = {
   },
 };
 
+export enum InscriptionFilter {
+  With,
+  Without,
+  Both,
+}
+
 export const MintCardLegacy = ({
   mintId,
   children,
+  filter,
   ...rest
 }: {
+  filter?: {
+    inscriptions: InscriptionFilter;
+  };
   mintId: PublicKey | undefined;
 
   children?: ReactNode;
@@ -54,7 +65,7 @@ export const MintCardLegacy = ({
     () =>
       metadataId &&
       metadataAccount?.data?.item?.buffer &&
-      decodeMetadata(metadataAccount?.data?.item?.buffer, metadataId),
+      decodeLegacyMetadata(metadataAccount?.data?.item?.buffer, metadataId),
     [metadataId, metadataAccount]
   );
 
@@ -83,6 +94,8 @@ export const MintCardLegacy = ({
     [inscriptionAccount, program]
   );
 
+  const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
+
   return (
     <Box
       {...rest}
@@ -91,10 +104,27 @@ export const MintCardLegacy = ({
       as={motion.div}
       initial="default"
       whileHover="hover"
-      sx={{position :"relative", ...rest.sx}}
+      sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <Badge sx={{position: "absolute", top: '5px', right :"5px", border: '1px solid #eee', background :"#333"}}>Rank {inscription.item.rank.toNumber().toLocaleString()}</Badge>
+        <VStack sx={{ position: "absolute", top: "5px", right: "5px" }}>
+          <Badge
+            sx={{
+              border: "1px solid #aaa",
+              background: "#333",
+            }}
+          >
+            Order: {inscription.item.order.toNumber().toLocaleString()}
+          </Badge>
+          <Badge
+            sx={{
+              border: "1px solid #aaa",
+              background: "#333",
+            }}
+          >
+            Size: {formattedSize}
+          </Badge>
+        </VStack>
       )}
       {mintId && (
         <>

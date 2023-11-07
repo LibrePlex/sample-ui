@@ -1,5 +1,5 @@
 export type LibreplexInscriptions = {
-  "version": "0.2.1",
+  "version": "0.2.2",
   "name": "libreplex_inscriptions",
   "instructions": [
     {
@@ -391,22 +391,6 @@ export type LibreplexInscriptions = {
       }
     },
     {
-      "name": "inscriptionRank",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "rank",
-            "type": "u64"
-          },
-          {
-            "name": "inscription",
-            "type": "publicKey"
-          }
-        ]
-      }
-    },
-    {
       "name": "inscriptionData",
       "type": {
         "kind": "struct",
@@ -443,7 +427,7 @@ export type LibreplexInscriptions = {
             "type": "publicKey"
           },
           {
-            "name": "rank",
+            "name": "order",
             "type": "u64"
           },
           {
@@ -723,7 +707,7 @@ export type LibreplexInscriptions = {
 };
 
 export const IDL: LibreplexInscriptions = {
-  "version": "0.2.1",
+  "version": "0.2.2",
   "name": "libreplex_inscriptions",
   "instructions": [
     {
@@ -1115,22 +1099,6 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
-      "name": "inscriptionRank",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "rank",
-            "type": "u64"
-          },
-          {
-            "name": "inscription",
-            "type": "publicKey"
-          }
-        ]
-      }
-    },
-    {
       "name": "inscriptionData",
       "type": {
         "kind": "struct",
@@ -1167,7 +1135,7 @@ export const IDL: LibreplexInscriptions = {
             "type": "publicKey"
           },
           {
-            "name": "rank",
+            "name": "order",
             "type": "u64"
           },
           {

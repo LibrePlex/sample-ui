@@ -9,7 +9,6 @@ export const decodeInscriptionRankPage = (
 ) => {
   let size: bigint = BigInt(0);
   const inscriptionKeys: PublicKey[] = [];
-  console.log({buffer, startRank, endRank});
   if (buffer && buffer.length > 12) {
     size = toBigIntLE(Buffer.from([...buffer].slice(8, 12)))
     let remainingBytes =
@@ -19,7 +18,6 @@ export const decodeInscriptionRankPage = (
 
     while (remainingBytes.length > 31) {
       let nextChunk = remainingBytes.splice(0, 32);
-      console.log({nextChunk});
       inscriptionKeys.push(new PublicKey(nextChunk));
     }
   }

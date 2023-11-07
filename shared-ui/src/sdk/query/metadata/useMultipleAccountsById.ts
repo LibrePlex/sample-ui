@@ -35,18 +35,6 @@ export const useMultipleAccountsById = (
     [ids]
   );
 
-  // const [hash, setHash] = useState<string>("");
-
-  const [status, setStatus] = useState<{
-    status: Status;
-    hash: string;
-    orderedIds: PublicKey[];
-  }>({
-    status: Status.Loaded,
-    hash: "",
-    orderedIds: [],
-  });
-
   const hash = useMemo(
     () => (connection.rpcEndpoint ? calculateHash(orderedIds) : ""),
     [orderedIds, connection]
@@ -69,10 +57,11 @@ export const useMultipleAccountsById = (
     console.log("Fetching");
     const bufferingConnection = BufferingConnection.getOrCreate(connection);
     const result = await bufferingConnection.getMultipleAccountsInfo(
-      status.orderedIds
+      orderedIds
     );
+    console.log({result});
     return [...result.values()]
-  }, [status]);
+  }, [orderedIds]);
 
   useEffect(() => {
     refreshData();
@@ -82,5 +71,5 @@ export const useMultipleAccountsById = (
     refetchOnMount: false,
   });
 
-  return { isFetching: status.status === Status.Loading, data: q?.data || [] };
+  return { isFetching: q.isFetching, data: q?.data || [] };
 };

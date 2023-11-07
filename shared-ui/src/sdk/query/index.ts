@@ -43,6 +43,7 @@ export { useTokenAccountsByOwner, useTokenAccountById} from "./tokenaccountsbyow
 export {
   useLegacyMetadataByMintId,
   useLegacyTokenRecordByTokenAccount,
+  decodeLegacyMetadata
 } from "./legacymetadata";
 
 // inscription stuff
