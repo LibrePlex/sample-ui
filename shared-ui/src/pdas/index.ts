@@ -1,3 +1,4 @@
+import { getLegacySignerPda } from './getLegacySignerPda';
 import { getLegacyMetadataPda } from './getLegacyMetadataPda';
 export {COLLECTION, PERMISSIONS, METADATA, METADATA_EXTENSION} from "./constants"
 export {getGroupPda} from "./getGroupPda"
@@ -9,6 +10,8 @@ export {getMetadataPda} from "./getMetadataPda"
 export {getPermissionsPda} from "./getPermissionsPda"
 
 export {getLegacyMetadataPda} from "./getLegacyMetadataPda"
+
+export {getLegacySignerPda} from "./getLegacySignerPda";
 
 export {getLegacyTokenRecordPda} from "./getLegacyTokenRecordPda"
 

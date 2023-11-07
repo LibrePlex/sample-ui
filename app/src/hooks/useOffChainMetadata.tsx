@@ -23,7 +23,7 @@ export const useFetchOffchainMetadata = (url: string) => {
 
   const key = useMemo(() => url ?? "dummy", [url]);
 
-  const q = useQuery< IOffchainJson| null>(key, fetcher);
+  const q = useQuery< IOffchainJson| null>(key, fetcher, {refetchOnMount: false});
 
   return q;
 };

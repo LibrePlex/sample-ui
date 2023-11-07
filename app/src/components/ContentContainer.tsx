@@ -45,9 +45,9 @@ export const ContentContainer: React.FC<Props> = ({
               Menu
             </Text>
           </li>
-          <li>
+          {/* <li>
             <NavElement label="Home" href={`/?${query}`} />
-          </li>
+          </li> */}
 
           <li>
             <NavElement label="Features" href={`/features?${query}`} />
@@ -58,15 +58,15 @@ export const ContentContainer: React.FC<Props> = ({
           <li>
             <NavElement label="Costs" href={`/costs?${query}`} />
           </li>
-          <li>
+          {/* <li>
             <NavElement label="Tools" href={`/tools?${query}`} />
-          </li>
+          </li> */}
           <li>
             <NavElement label="Scanner" href={`/scanner?${query}`} />
           </li>
-          <li>
+          {/* <li>
             <NavElement label="Demo" href={`/demo?${query}`}/>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

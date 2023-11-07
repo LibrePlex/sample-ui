@@ -102,7 +102,7 @@ export const useGpa = <T extends unknown, P extends Idl>(
 
   const queryClient = useQueryClient();
 
-  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher, { enabled });
+  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher, { enabled, refetchOnMount: false });
 
   /// intercept account changes and refetch as needed
   useEffect(() => {

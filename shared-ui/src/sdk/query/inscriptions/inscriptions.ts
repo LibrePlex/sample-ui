@@ -18,22 +18,15 @@ export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
 
 export const decodeInscription =
   (program: Program<LibreplexInscriptions>) =>
-  (buffer: Buffer, pubkey: PublicKey) => {
+  (buffer: Buffer | undefined, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
-    const inscriptionBase = coder.accounts.decode<Inscription>(
+    const inscription = buffer ? coder.accounts.decode<Inscription>(
       "inscription",
       buffer
-    );
-
-    const dataBytes = [...buffer.subarray(76)];
-
-    const inscription = {
-      ...inscriptionBase,
-      dataBytes,
-    };
+    ) :null;
 
     return {
-      item: inscription ?? null,
+      item: inscription,
       pubkey,
     };
   };

@@ -102,24 +102,23 @@ export const useTokenAccountsByOwner = (
     [connection, owner, programId]
   );
 
-  const queryClient = useQueryClient();
-
+  
   const key = useMemo(()=>`tokenaccountsbyowner-${owner?.toBase58()}-${connection.rpcEndpoint}`,[owner, connection])
 
-  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher);
+  const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher, {refetchOnMount: false});
 
   /// disable listeners for now
-  useEffect(() => {
-    let i: any;
-    if (programId) {
-      i = listener.add(accountUpdater(queryClient, key), programId);
-    }
-    return () => {
-      if (i !== undefined) {
-        listener.remove(i);
-      }
-    };
-  }, [listener, programId, queryClient, key]);
+  // useEffect(() => {
+  //   let i: any;
+  //   if (programId) {
+  //     i = listener.add(accountUpdater(queryClient, key), programId);
+  //   }
+  //   return () => {
+  //     if (i !== undefined) {
+  //       listener.remove(i);
+  //     }
+  //   };
+  // }, [listener, programId, queryClient, key]);
 
   const decoded = useMemo(
     () => ({

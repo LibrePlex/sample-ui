@@ -1,16 +1,26 @@
 import {
   Box,
   Button,
+  Collapse,
   Heading,
   ListItem,
   Text,
   UnorderedList,
+  useMediaQuery,
 } from "@chakra-ui/react";
-import React from "react";
+import { motion } from "framer-motion";
+import React, { useState } from "react";
 import { WalletLegacyGallery } from "./WalletLegacyGallery";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { LegacyMint } from "@libreplex/shared-ui";
 import { InscribeLegacyMetadataTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataTransactionButton";
+import { InscriptionsSummary } from "./InscriptionsSummary";
+import { InscriptionGallery } from "./InscriptionGallery";
+
+enum View {
+  Wallet,
+  InscriptionGallery,
+}
 
 const InscriptionsView = () => {
   const { publicKey } = useWallet();
@@ -24,13 +34,14 @@ const InscriptionsView = () => {
     );
   };
 
+  const [view, setView] = useState<View>(View.InscriptionGallery);
+
+  const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
+
   return (
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
-        <h1
-          className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8"
-          style={{ paddingBottom: "10px" }}
-        >
+        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
           Libreplex Inscriptions
         </h1>
 
@@ -51,7 +62,6 @@ const InscriptionsView = () => {
                 pb: 5,
               }}
             >
-              <Heading>Inscriptions Basics</Heading>
               <UnorderedList>
                 <ListItem>
                   You own your NFT art, not just a url to offchain storage
@@ -65,7 +75,38 @@ const InscriptionsView = () => {
                   immutable)
                 </ListItem>
               </UnorderedList>
-              <Heading>Holders</Heading>
+              <InscriptionsSummary mt={4} mb={4}/>
+
+              <Box
+                display="flex"
+                flexDirection={isSmallerThan800 ? "column" : "row"}
+                justifyContent={"center"}
+                columnGap={2}
+                w={[300, 300, 800]}
+              >
+                <Button
+                  colorScheme="orange"
+                  variant={
+                    view === View.InscriptionGallery ? "solid" : "outline"
+                  }
+                  onClick={() => {
+                    setView(View.InscriptionGallery);
+                  }}
+                >
+                  Inscriptions
+                </Button>
+                <Button
+                  colorScheme="orange"
+                  variant={view === View.Wallet ? "solid" : "outline"}
+                  onClick={() => {
+                    setView(View.Wallet);
+                  }}
+                >
+                  Your Wallet
+                </Button>
+              </Box>
+
+              {/* <Heading>Holders</Heading>
               <UnorderedList>
                 <ListItem>Can inscribe any NFTs in their wallet</ListItem>
                 <ListItem>
@@ -80,8 +121,14 @@ const InscriptionsView = () => {
                 <ListItem>
                   Can make inscriptions immutable to prevent rent recovery
                 </ListItem>
-              </UnorderedList>
-              <WalletLegacyGallery publicKey={publicKey} actions={actions} />
+              </UnorderedList> */}
+
+              {view === View.Wallet && (
+                <WalletLegacyGallery publicKey={publicKey} actions={actions} />
+              )}
+              {view === View.InscriptionGallery && (
+                <InscriptionGallery/>
+              )}
             </Box>
           </Box>
         </Box>

@@ -4,7 +4,7 @@ import {
   PublicKey,
   Transaction,
   TransactionStatus,
-  sendAndConfirmRawTransaction
+  sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
 import { ITransactionTemplate } from "./ITransactionTemplate";
 
@@ -16,7 +16,11 @@ export type FetchSignature<P> = (
 
 export const DEFAULT_TIMEOUT = 32000;
 
-export interface IExecutorWallet extends Omit<WalletContextState, 'publicKey'|'signTransaction'|'signAllTransactions'> {
+export interface IExecutorWallet
+  extends Omit<
+    WalletContextState,
+    "publicKey" | "signTransaction" | "signAllTransactions"
+  > {
   publicKey: NonNullable<WalletContextState["publicKey"]>;
   signTransaction: WalletContextState["signTransaction"];
   signAllTransactions: WalletContextState["signAllTransactions"];
@@ -86,16 +90,11 @@ export class Executor<P> {
   public getSignedTransactions = async (
     transactions: ITransactionTemplate[]
   ) => {
-    const blockhash = await this.connection.getLatestBlockhash(this.commitment);
-
-    if (!transactions) {
-      this.onError("Could not generate transactions");
-      return { signedTransactions: undefined, blockhash };
-    }
-
+    
+    
     const transactionsWithPositions = transactions.map((tx, txPosition) => {
       const transaction = new Transaction();
-      transaction.recentBlockhash = blockhash.blockhash;
+      transaction.recentBlockhash = tx.blockhash.blockhash;
       transaction.feePayer = this.walletPublicKey;
       for (const instruction of tx.instructions) {
         transaction.add(instruction);
@@ -115,7 +114,7 @@ export class Executor<P> {
       };
     });
 
-    const signedTransactions = await this.signAllTransactions(
+    const signedTransactions: Transaction[] = await this.signAllTransactions(
       transactionsWithPositions.map((item) => item.tx)
     ).catch((e) => {
       this.onError("Signing rejected");
@@ -127,26 +126,35 @@ export class Executor<P> {
     // hack and won't work with multiple transactions
 
     if (!signedTransactions) {
-      return { signedTransactions: undefined, blockhash };
+      return { signedTransactions: undefined };
     }
 
     for (const [idx, signedTransaction] of signedTransactions.entries()) {
       const signatures = transactions[idx].signatures;
-      if (signatures) {
-        for (const signature of signatures) {
-          signedTransaction.addSignature(
-            new PublicKey(signature.pubkey),
-            Buffer.from(signature.signature)
-          );
-        }
+      console.log({ signatures });
+      for (const signature of signatures) {
+        console.log({ pubkey: signature.pubkey, sig: signature.signature });
+        signedTransaction.addSignature(
+          new PublicKey(signature.pubkey),
+          Buffer.from(signature.signature)
+        );
       }
+      console.log({
+        finalSignatures: signedTransaction.signatures.map((item) => ({
+          pubkey: item.publicKey.toBase58(),
+          sig: item.signature,
+        })),
+      });
     }
+
     return {
-      blockhash,
-      signedTransactions: signedTransactions.map((item: Transaction, idx: number) => ({
-        transaction: item,
-        description: transactions[idx].description,
-      })),
+      signedTransactions: signedTransactions.map(
+        (item: Transaction, idx: number) => ({
+          transaction: item,
+          description: transactions[idx].description,
+          blockhash: transactions[idx].blockhash
+        })
+      ),
     };
   };
 
@@ -173,8 +181,8 @@ export class Executor<P> {
       try {
         batchId++;
         const thisBatch = remainingTransactions.splice(0, TX_BATCH_SIZE);
-        
-        const { signedTransactions, blockhash } =
+
+        const { signedTransactions } =
           await this.getSignedTransactions(thisBatch);
 
         if (signedTransactions) {
@@ -182,15 +190,12 @@ export class Executor<P> {
           while (signedTransactionsBatch.length > 0) {
             const thisBatchSigned = signedTransactionsBatch.splice(0, 10);
             const promises = Promise.all(
-              thisBatchSigned.map((item) =>
+              thisBatchSigned.map((item, idx) =>
                 this.connection
                   .sendRawTransaction(
-                    item.transaction
-                      .serialize
-                      //   {
-                      //   verifySignatures: false,
-                      // }
-                      (),
+                    item.transaction.serialize({
+                      verifySignatures: true,
+                    }),
                     {
                       skipPreflight: true,
                     }
@@ -199,18 +204,15 @@ export class Executor<P> {
                     if (awaitConfirmation) {
                       const result = await sendAndConfirmRawTransaction(
                         this.connection,
-                        item.transaction
-                          .serialize
-                          //   {
-                          //   verifySignatures: false,
-                          // }
-                          (),
+                        item.transaction.serialize({
+                          verifySignatures: false,
+                        }),
                         {
                           signature: txid,
-                          ...blockhash,
+                          ...thisBatchSigned[idx].blockhash
                         },
                         {
-                          skipPreflight: true,
+                          skipPreflight: false,
                           maxRetries: 5,
                         }
                       );

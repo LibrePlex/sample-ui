@@ -46,11 +46,7 @@ export const delist = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data: ITransactionTemplate[] = [];
 
   const librePlexProgram = getProgramInstanceShop(connection, wallet);
 
@@ -63,6 +59,8 @@ export const delist = async (
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
 
   let instructions: TransactionInstruction[] = [];
+
+  const blockhash = await connection.getLatestBlockhash();
 
   const escrowTokenAccount = getAssociatedTokenAddressSync(
     (listing.item as any).mint,
@@ -106,6 +104,7 @@ export const delist = async (
     instructions,
     description: `Delist`,
     signers: [],
+    blockhash
   });
 
   console.log({ data });

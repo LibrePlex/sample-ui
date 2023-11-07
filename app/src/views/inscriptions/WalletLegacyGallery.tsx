@@ -53,40 +53,16 @@ export const WalletLegacyGallery = ({
   const inscriptionIds = useMemo(
     () =>
       orderedData.map(
-        (item) => getInscriptionPda(inscriptionsProgram.programId, item.mint)[0]
+        (item) => getInscriptionPda(item.mint)[0]
       ),
-    [orderedData, inscriptionsProgram]
+    [orderedData]
   );
-
-  const { data: inscriptionAccounts } = useMultipleAccountsById(
-    inscriptionIds,
-    connection
-  );
-
-  const inscriptionsByRoot = useMemo(() => {
-    const _inscriptionsByRoot: { [mintId: string]: IRpcObject<Inscription> } =
-      {};
-
-    for (const inscriptionAccount of inscriptionAccounts) {
-      if (inscriptionAccount.data) {
-        const inscription = decodeInscription(inscriptionsProgram)(
-          Buffer.from(inscriptionAccount.data),
-          inscriptionAccount.accountId
-        );
-        if (inscription) {
-          _inscriptionsByRoot[inscription.item.root.toBase58()] = inscription;
-        }
-      }
-    }
-    return _inscriptionsByRoot;
-  }, [inscriptionAccounts, inscriptionsProgram]);
 
   return (
     <VStack
-      gap={16}
+      gap={4}
       alignItems="flex-start"
       justifyContent="center"
-      style={{ marginTop: 64 }}
       width={"100%"}
     >
       <Heading size={"md"}>Showing {orderedData.length} items</Heading>
@@ -98,7 +74,7 @@ export const WalletLegacyGallery = ({
       <HStack
         gap={8}
         alignItems="flex-start"
-        justifyContent="flex-start"
+        justifyContent="center"
         flexWrap="wrap"
       >
         {orderedData
@@ -107,7 +83,7 @@ export const WalletLegacyGallery = ({
             (currentPage + 1) * ITEMS_PER_PAGE
           )
           .map((item, idx) => (
-            <MintCardLegacy mint={item} key={idx}>
+            <MintCardLegacy mintId={item.mint} key={idx}>
               {actions ? actions(item) : <></>}
             </MintCardLegacy>
           ))}

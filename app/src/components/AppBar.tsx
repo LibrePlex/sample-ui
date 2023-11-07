@@ -47,9 +47,9 @@ export const AppBar = ({
             >
               <Box display={"flex"} h={"100%"} mt={7} mb={6}>
                 <img
-                  src="LibrePlexLongLogo.png"
-                  height={"35px"}
-                  style={{ maxHeight: "35px" }}
+                  src="LibreL.png"
+                  height={"55px"}
+                  style={{ maxHeight: "55px" }}
                 />
               </Box>
             </Link>
@@ -81,20 +81,15 @@ export const AppBar = ({
               navigationStarts={() => setIsNavOpen(false)}
             />
             <NavElement
-              label="Tools"
-              href={`/tools?${query}`}
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
               label="Scanner"
               href={`/scanner?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
             />
-            <NavElement
+            {/* <NavElement
               label="Demo"
               href={`/demo?${query}`}
               navigationStarts={() => setIsNavOpen(false)}
-            />
+            /> */}
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
           </div>
           <label

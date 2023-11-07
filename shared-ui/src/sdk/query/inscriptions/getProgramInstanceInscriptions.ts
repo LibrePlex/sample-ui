@@ -5,7 +5,7 @@ import { Connection } from "@solana/web3.js";
 export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
 
-import { IDL } from "@libreplex/idls/lib/cjs/libreplex_inscriptions";
+import { IDL } from "../../../anchor/libreplex_inscriptions";
 
 export function getProgramInstanceInscriptions(
   connection: Connection,

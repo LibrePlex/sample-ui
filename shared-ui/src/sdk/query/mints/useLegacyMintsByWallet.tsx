@@ -6,13 +6,8 @@ import { getLegacyMetadataPda } from "../../../pdas";
 import { useMultipleAccountsById } from "../metadata/useMultipleAccountsById";
 import { useTokenAccountsByOwner } from "../tokenaccountsbyowner";
 
-export type LegacyMint = {
+export type MintWithTokenAccount = {
   mint: PublicKey;
-  metadata: IRpcObject<{
-      accountId: PublicKey;
-      data: Buffer;
-      balance: bigint;
-  }>;
   tokenAccount: IRpcObject<RawAccount>;
 }
 
@@ -46,53 +41,29 @@ export const useLegacyMintsByWallet = (
     [ownedMints]
   );
 
-  const { data: metadata, isFetching: isFetchingMetadata } =
-    useMultipleAccountsById(
-      legacyMetadataIds.map((item) => item.metadata),
-      connection
-    );
+  // const { data: metadata, isFetching: isFetchingMetadata } =
+  //   useMultipleAccountsById(
+  //     legacyMetadataIds.map((item) => item.metadata),
+  //     connection
+  //   );
 
-  // link metadata to accounts and mints
-
-  const metadataDict = useMemo(() => {
-    const _metadataDict: {
-      [key: string]: {
-        accountId: PublicKey;
-        data: Buffer;
-        balance: bigint;
-      };
-    } = {};
-
-    for (const m of metadata) {
-      _metadataDict[m.accountId.toBase58()] = m;
-    }
-    return _metadataDict;
-  }, [metadata]);
-
-
+  // /
 
   const combined = useMemo(() => {
-    const _combined: LegacyMint[] = [];
+    const _combined: MintWithTokenAccount[] = [];
 
     for (const o of legacyMetadataIds) {
       _combined.push({
         mint: o.mint,
-        metadata: {
-          pubkey: o.metadata,
-          item: metadataDict[o.metadata.toBase58()],
-        },
         tokenAccount: tokenAccountByMint[o.mint.toBase58()],
       });
     }
     return _combined;
-  }, [tokenAccountByMint, metadataDict, legacyMetadataIds]);
+  }, [tokenAccountByMint, legacyMetadataIds]);
 
-  // useEffect(()=>{
-  //   console.log({metadataDict, metadata, legacyMetadataIds, ownedMints, combined} );
-  // },[metadataDict, metadata, legacyMetadataIds, ownedMints, combined])
 
   return {
     data: combined,
-    isFetching: isFetchingMints || isFetchingMetadata,
+    isFetching: isFetchingMints
   };
 };

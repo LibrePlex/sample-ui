@@ -11,6 +11,7 @@ import {
   PublicKey,
   TransactionInstruction,
   SystemProgram,
+  Transaction,
 } from "@solana/web3.js";
 import BN from "bn.js";
 import React, { useMemo } from "react";
@@ -25,11 +26,12 @@ import {
   getProgramInstanceShop,
   LegacyMint,
   HttpClient,
+  getLegacyMetadataPda,
 } from "@libreplex/shared-ui";
 
 import { Price, notify } from "@libreplex/shared-ui";
 import { IdlAccounts } from "@coral-xyz/anchor";
-import { LibreplexShop } from "@libreplex/idls/lib/types/libreplex_shop";
+import { LibreplexShop } from            "@libreplex/idls/lib/types/libreplex_shop";
 import { ITransaction } from "../../transactions/ITransaction";
 import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
@@ -46,53 +48,55 @@ export const inscribeLegacyMint = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data: ITransactionTemplate[] = [];
 
-  
   const legacyInscriptionsProgram = getProgramInstanceLegacyInscriptions(
     new PublicKey(NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID),
     connection,
     wallet
   );
 
-  
   if (!legacyInscriptionsProgram) {
     throw Error("IDL not ready");
   }
 
-  
   const { legacyMint } = params;
 
   const httpClient = new HttpClient("/api");
 
-  console.log({mint: legacyMint.mint.toBase58()})
+  console.log({ mint: legacyMint.mint.toBase58() });
 
-  const txData = await httpClient.post<ITransaction>(
-    `/tx/legacy_inscription/${legacyMint.mint.toBase58()}`,
+  const { data: txData } = await httpClient.post<ITransaction>(
+    `/tx/create_legacy_inscription_as_holder/${legacyMint.mint.toBase58()}`,
     {
-        payerId: wallet.publicKey.toBase58(),
-        legacyMetadataId: legacyMint.metadata.pubkey.toBase58(),
-        tokenAccountId: legacyMint.tokenAccount.pubkey.toBase58(),
-        ownerId: legacyMint.tokenAccount.item.owner.toBase58(),
-        cluster
+      payerId: wallet.publicKey.toBase58(),
+      legacyMetadataId: getLegacyMetadataPda(legacyMint.mint)[0].toBase58(),
+      tokenAccountId: legacyMint.tokenAccount.pubkey.toBase58(),
+      ownerId: legacyMint.tokenAccount.item.owner.toBase58(),
+      cluster,
     }
   );
 
-  
-  let instructions: TransactionInstruction[] = [];
+  for (const serializedTx of txData.partiallySignedTxs) {
+    let instructions: TransactionInstruction[] = [];
+    // const tx = Transaction.from(serializedTx.buffer);
+    // for (const signature of serializedTx.signatures) {
+    //   tx.addSignature(
+    //     new PublicKey(signature.pubkey),
+    //     Buffer.from(signature.signature)
+    //   );
+    // }
+    instructions.push(...Transaction.from(serializedTx.buffer).instructions);
+    data.push({
+      instructions,
+      signers: [],
+      signatures: serializedTx.signatures,
+      description: "Inscribe legacy metadata",
+      blockhash: serializedTx.blockhash
+    });
+  }
+  console.log({data});
 
-
-  //   data.push({
-  //     instructions,
-  //     description: `Execute trade`,
-  //     signers: [],
-  //   });
-
-  
   return {
     data,
   };
