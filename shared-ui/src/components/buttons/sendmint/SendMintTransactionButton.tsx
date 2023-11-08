@@ -43,13 +43,11 @@ export const sendMint = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data: ITransactionTemplate[] = [];
 
   const librePlexProgram = getProgramInstanceShop(connection, wallet);
+
+  const blockhash = await connection.getLatestBlockhash()
 
   if (!librePlexProgram) {
     throw Error("IDL not ready");
@@ -106,6 +104,7 @@ export const sendMint = async (
     instructions,
     description: `Send mint`,
     signers: [],
+    blockhash
   });
 
   console.log({ data });

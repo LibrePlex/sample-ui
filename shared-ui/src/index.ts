@@ -60,7 +60,9 @@ export {
   decodeInscriptionSummary,
   useFetchSingleAccount,
   decodeInscriptionRankPage,
-  decodeLegacyMetadata
+  decodeLegacyMetadata,
+  useInscriptionDataForMint,
+  useInscriptionForMint
 } from "./sdk";
 export type {
   AttributeType,
@@ -73,7 +75,6 @@ export type {
   CollectionInput,
   Asset,
   Price,
-  AssetUrl,
   LegacyMint,
   LegacyInscription
 } from "./sdk";

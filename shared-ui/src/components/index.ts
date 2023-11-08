@@ -20,7 +20,7 @@ export { NavElement } from "./navelement";
 
 export { GroupSelector } from "./GroupSelector";
 
-export { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
+export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
 export { AssetDisplay } from "./assetdisplay/AssetDisplay";
 
 export { ScannerLink } from "./ScannerLink";

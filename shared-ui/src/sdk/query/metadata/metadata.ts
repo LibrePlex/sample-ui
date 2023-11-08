@@ -1,3 +1,4 @@
+import { getInscriptionPda } from "@libreplex/shared-ui";
 import { IRpcObject } from "./../../../components/executor/IRpcObject";
 
 import { LibreplexMetadata } from "@libreplex/idls/lib/types/libreplex_metadata";
@@ -27,6 +28,7 @@ import {
   getBase64FromDatabytes,
 } from "../inscriptions/inscriptions";
 import { decode } from "bs58";
+import { useMultipleAccountsById } from "./useMultipleAccountsById";
 
 export enum AssetType {
   None,
@@ -256,6 +258,17 @@ export const useMetadataGroupedByCollection = (
     [metadata]
   );
 
+  const inscriptionDataIds = useMemo(
+    () =>
+      metadata
+        .filter((item) => item.item?.asset.inscription?.accountId)
+        .map((item) => getInscriptionPda(item.item!.mint)[0]),
+    [metadata]
+  );
+
+  const { data: inscriptionData, isFetching: isFetchingInscriptionData } =
+    useMultipleAccountsById(inscriptionDataIds, connection);
+
   const { data: inscriptions, isFetching: fetchingInscriptions } =
     useMultipleInscriptionsById(inscriptionIds, connection);
 
@@ -266,6 +279,20 @@ export const useMetadataGroupedByCollection = (
     }
     return _inscriptiondDict;
   }, [inscriptions]);
+
+
+  const inscriptionDataDict = useMemo(() => {
+    const _inscriptionDataDict: { [key: string]: {
+      accountId: PublicKey;
+      data: Buffer;
+      balance: bigint;
+  } } = {};
+    for (const dataItem of inscriptionData) {
+      _inscriptionDataDict[dataItem.accountId.toBase58()] = dataItem;
+    }
+    return _inscriptionDataDict;
+  }, [inscriptionData]);
+
 
   const groupIds = useMemo(
     () =>
@@ -317,7 +344,7 @@ export const useMetadataGroupedByCollection = (
 
         const base64 = inscription
           ? getBase64FromDatabytes(
-              Buffer.from(inscription.item.dataBytes),
+              inscriptionDataDict[inscription.item.root.toBase58()].data,
               m.item.asset.inscription?.dataType ?? ""
             )
           : null;
@@ -367,7 +394,7 @@ export const useMetadataGroupedByCollection = (
 
         const base64 = inscription
           ? getBase64FromDatabytes(
-              Buffer.from(inscription.item.dataBytes),
+            inscriptionDataDict[inscription.item.root.toBase58()].data,
               m.item?.asset.inscription?.dataType ?? ""
             )
           : null;
@@ -411,7 +438,7 @@ export const useMetadataGroupedByCollection = (
     }
 
     return _groupedMetadata;
-  }, [metadata, collectionDict]);
+  }, [metadata, collectionDict, inscriptionDataDict]);
 
   return {
     data: groupedMetadata,

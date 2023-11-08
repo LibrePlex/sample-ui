@@ -45,11 +45,9 @@ export const listMint = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data:ITransactionTemplate[] = [];
+
+  const blockhash = await connection.getLatestBlockhash();
 
   const librePlexProgram = getProgramInstanceShop(connection, wallet);
 
@@ -124,6 +122,7 @@ export const listMint = async (
     instructions,
     description: `List mint`,
     signers: [],
+    blockhash
   });
 
   console.log({ data });

@@ -41,7 +41,7 @@ export const AssetDisplay = ({
         />
       ) : asset?.inscription ? (
         <AssetDisplayInscription
-          inscriptionId={asset?.inscription.accountId}
+          rootId={mint}
           dataType={asset.inscription.dataType}
         />
       ) : (

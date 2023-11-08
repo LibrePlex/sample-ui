@@ -144,7 +144,6 @@ export const WriteToLegacyInscriptionAsHolderTransactionButton = (
           value={(writeStates / expectedCount) * 100}
         />
       </div>
-      {writeStates} / {expectedCount}
       {writeStates === expectedCount ? (
         <Text p={2}>Inscribed</Text>
       ) : (

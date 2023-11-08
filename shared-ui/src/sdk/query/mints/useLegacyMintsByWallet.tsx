@@ -1,6 +1,6 @@
 import { RawAccount, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { IRpcObject } from "components";
+import { IRpcObject } from "../../../components";
 import { useEffect, useMemo } from "react";
 import { getLegacyMetadataPda } from "../../../pdas";
 import { useMultipleAccountsById } from "../metadata/useMultipleAccountsById";

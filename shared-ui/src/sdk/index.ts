@@ -13,7 +13,6 @@ export type {
   
   /// creator
   Creator,
-  AssetUrl,
   LegacyMint,
 
   /// legacy inscriptions
@@ -47,5 +46,7 @@ export {
   decodeInscriptionSummary,
   useFetchSingleAccount,
   decodeInscriptionRankPage,
-  decodeLegacyMetadata
+  decodeLegacyMetadata,
+  useInscriptionDataForMint,
+  useInscriptionForMint
 } from "./query";
