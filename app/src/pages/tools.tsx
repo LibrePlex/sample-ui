@@ -7,10 +7,9 @@ import { useMemo } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const DemoPage = () => {
-  const queryClient = useMemo(() => new QueryClient({}), []);
+  
 
   return (
-    <QueryClientProvider client={queryClient}>
       <Box  
         w={"100vw"}
         h={"100vh"}
@@ -22,7 +21,7 @@ const DemoPage = () => {
       >
         <Tools />
       </Box>
-    </QueryClientProvider>
+    
   );
 };
 

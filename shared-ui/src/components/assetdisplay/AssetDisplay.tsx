@@ -1,18 +1,10 @@
-import { Box, Skeleton } from "@chakra-ui/react";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Asset } from "../../sdk/query/metadata/metadata";
-import { HttpClient } from "../../utils";
-import { AssetDisplayInscription } from "./AssetDisplayInscription";
-import { AssetDisplayChainRenderer } from "./AssetDisplayChainRenderer";
+import { Image, Skeleton } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { NetworkConfigurationContext } from "../../contexts/NetworkConfigurationProvider";
-import { useFunder } from "./useRenderedResult";
-
-export interface IOffchainJson {
-  // add more fields as needed
-  image: string;
-}
+import React from "react";
+import { Asset } from "../../sdk/query/metadata/metadata";
+import { AssetDisplayChainRenderer } from "./AssetDisplayChainRenderer";
+import { AssetDisplayInscription } from "./AssetDisplayInscription";
+import { useFetchOffchainMetadata } from "./useOffChainMetadata";
 
 export const AssetDisplay = ({
   asset,
@@ -21,29 +13,23 @@ export const AssetDisplay = ({
   asset: Asset | undefined;
   mint: PublicKey;
 }) => {
-  const [offchainJson, setOffchainJson] = useState<IOffchainJson>();
-
-  useEffect(() => {
-    let active = true;
-    (async () => {
-      if (asset?.json) {
-        const httpClient = new HttpClient("");
-        const { data } = await httpClient.get<IOffchainJson>(asset.json.url);
-        active && setOffchainJson(data);
-      } else {
-        active && setOffchainJson(undefined);
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [asset?.json]);
+  const { data: offchainJson, isFetching } = useFetchOffchainMetadata(
+    asset?.json?.url
+  );
 
   return (
     <>
       {asset?.image ? (
-        <img
+        <Image
           src={asset.image.url}
+          fallback={
+            <Skeleton isLoaded={!isFetching}>
+              <img
+                src="https://img.freepik.com/premium-vector/gallery-simple-icon-vector-image-picture-sign-neumorphism-style-mobile-app-web-ui-vector-eps-10_532800-801.jpg"
+                style={{ height: "100%", width: "100%", borderRadius: '20px' }}
+              />
+            </Skeleton>
+          }
           style={{ aspectRatio: "1/1", width: "100%", borderRadius: 8 }}
         />
       ) : asset?.json ? (
@@ -55,7 +41,7 @@ export const AssetDisplay = ({
         />
       ) : asset?.inscription ? (
         <AssetDisplayInscription
-          inscriptionId={asset?.inscription.accountId}
+          rootId={mint}
           dataType={asset.inscription.dataType}
         />
       ) : (

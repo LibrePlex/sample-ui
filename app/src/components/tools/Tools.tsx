@@ -11,6 +11,7 @@ import {
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { PNFTFixer } from "./PNFTFixer";
+import React from "react";
 
 enum View {
   PnftMigrationFixer,
@@ -50,13 +51,13 @@ export const Tools = () => {
               h={"fit-content"}
               p={3}
               as={"a"}
-              href="http://discord.gg/libreplex"
+              href="https://discord.gg/pbmXYJX9zw"
               target="_blank"
               rel="noopener noreferrer"
             >
               <VStack>
                 <Heading size={"md"}>Join us on Discord</Heading>
-                <Text color={"gray.400"}>http://discord.gg/libreplex</Text>
+                <Text color={"gray.400"}>https://discord.gg/pbmXYJX9zw</Text>
               </VStack>
             </Button>
             <Button

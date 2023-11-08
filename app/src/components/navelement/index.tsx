@@ -1,9 +1,10 @@
 /* tslint:disable:no-empty */
 import Link from 'next/link';
 import {Text} from "@chakra-ui/react";
-import { cn } from 'shared-ui';
+import { cn } from '@libreplex/shared-ui';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
+import React from 'react';
 
 type NavElementProps = {
     label: string;
@@ -46,8 +47,8 @@ label,
             passHref
             className={cn(
                 'group flex h-full flex-col items-center justify-between',
-                disabled &&
-                    'pointer-events-none cursor-not-allowed opacity-50',
+                disabled ?
+                    'pointer-events-none cursor-not-allowed opacity-50' :'',
             )}
             onClick={() => navigationStarts()}
         >

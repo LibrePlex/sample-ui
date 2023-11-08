@@ -14,7 +14,7 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { useQuery } from "react-query";
 import { MetadataProgramContext } from "../../anchor";
 import { getMetadataPda } from "../../pdas";
-import { NetworkConfigurationContext } from "../../contexts/NetworkConfigurationProvider";
+import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 
 export interface Erc721Attribute {
   trait_type: string;
@@ -175,7 +175,7 @@ export async function render(
 }
 
 export const useFunder = () => {
-  const { networkConfiguration } = useContext(NetworkConfigurationContext);
+  const { cluster: networkConfiguration } = useContext(ClusterContext);
 
   const mainnetWhaleWallet = new PublicKey(
     "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM"

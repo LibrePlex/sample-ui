@@ -1,21 +1,20 @@
-
 import {
   Connection,
   Keypair,
   SystemProgram,
-  TransactionInstruction
+  TransactionInstruction,
 } from "@solana/web3.js";
-import { getProgramInstanceInscriptions } from  "@libreplex/shared-ui";
-import { IExecutorParams } from  "@libreplex/shared-ui";
+import { getProgramInstanceInscriptions } from "@libreplex/shared-ui";
+import { IExecutorParams } from "@libreplex/shared-ui";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
-} from  "@libreplex/shared-ui";
-import { IRpcObject } from  "@libreplex/shared-ui";
-import { ITransactionTemplate } from  "@libreplex/shared-ui";
-import { Inscription } from  "@libreplex/shared-ui";
+} from "@libreplex/shared-ui";
+import { IRpcObject } from "@libreplex/shared-ui";
+import { ITransactionTemplate } from "@libreplex/shared-ui";
+import { Inscription } from "@libreplex/shared-ui";
 
-import { notify } from  "@libreplex/shared-ui";
+import { notify } from "@libreplex/shared-ui";
 
 export enum AssetType {
   Image,
@@ -45,15 +44,16 @@ export const resizeInscription = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
+
+  
   if (!wallet.publicKey) {
     throw Error("Wallet key missing");
   }
 
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data: ITransactionTemplate[] = [];
+
+
+  const blockhash = await connection.getLatestBlockhash();
 
   const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
     ...wallet,
@@ -75,16 +75,8 @@ export const resizeInscription = async (
       .resizeInscription({
         change:
           sizeRemaining > 0
-            ? {
-                increase: {
-                  amount: Math.min(sizeRemaining, MAX_CHANGE),
-                },
-              }
-            : {
-                reduce: {
-                  amount: -Math.max(sizeRemaining, -MAX_CHANGE),
-                },
-              },
+            ? Math.min(sizeRemaining, MAX_CHANGE)
+            : -Math.max(sizeRemaining, -MAX_CHANGE),
         expectedStartSize: Math.abs(sizeRemaining),
         targetSize: size,
       })
@@ -99,6 +91,7 @@ export const resizeInscription = async (
       instructions,
       description: `Resize inscription`,
       signers: [],
+      blockhash
     });
 
     sizeRemaining =

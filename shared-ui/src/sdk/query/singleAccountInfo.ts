@@ -112,12 +112,14 @@ export const useFetchSingleAccount = (
 
   const queryClient = useQueryClient();
 
-  const key = useMemo(()=>accountId?.toBase58()??'dummy', [accountId])
+  const key = useMemo(() => accountId?.toBase58() ?? "dummy", [accountId]);
 
   const q = useQuery<IRpcObject<{
     buffer: Buffer;
     balance: bigint;
-  } | null> | null>(key, fetcher);
+  } | null> | null>(key, fetcher, {
+    refetchOnMount: false,
+  });
 
   /// intercept account changes and refetch as needed
   useEffect(() => {

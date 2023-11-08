@@ -94,7 +94,7 @@ export const createInscriptionLiveEventStore = (
 
 
   program?.addEventListener("InscriptionResizeFinal", (event, slot, sig) => {
-    // state.setDummy();
+    console.log('Inscription resize final triggered', event);
     state.setUpdatedInscriptionSize(event.id.toBase58(), Number(event.size));
   });
 

@@ -9,7 +9,14 @@ export type {
   AttributeValue,
   Asset,
   Listing,
-  Price
+  Price,
+  
+  /// creator
+  Creator,
+  LegacyMint,
+
+  /// legacy inscriptions
+  LegacyInscription
 } from "./query";
 export {
   useTokenAccountById,
@@ -33,5 +40,13 @@ export {
   decodeInscription,
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
-  InscriptionStoreContext
+  InscriptionStoreContext,
+  useLegacyMintsByWallet,
+  useCreatorsByAuthority,
+  decodeInscriptionSummary,
+  useFetchSingleAccount,
+  decodeInscriptionRankPage,
+  decodeLegacyMetadata,
+  useInscriptionDataForMint,
+  useInscriptionForMint
 } from "./query";

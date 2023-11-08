@@ -43,7 +43,7 @@ const getRpcUrlFromNetwork = (network: WalletAdapterNetwork | "local") => {
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
-  const { networkConfiguration } = useNetworkConfiguration();
+  const { cluster: networkConfiguration } = useNetworkConfiguration();
   const network = networkConfiguration as WalletAdapterNetwork | "local";
   const endpoint = useMemo(() => getRpcUrlFromNetwork(network), [network]);
 

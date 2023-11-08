@@ -16,11 +16,7 @@ export function getProgramInstanceShop(
     wallet,
     anchor.AnchorProvider.defaultOptions()
   );
-  // Read the generated IDL.
-  const idl = IDL;
-  // Address of the deployed program.
   const programId = PROGRAM_ID_SHOP;
-  // Generate the program client from IDL.
-  const program = new anchor.Program(idl, programId, provider);
+  const program = new anchor.Program(IDL, programId, provider);
   return program;
 }

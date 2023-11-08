@@ -1,49 +1,33 @@
-import { BorshCoder, IdlAccounts, Program } from "@coral-xyz/anchor";
+import { IdlAccounts } from "@coral-xyz/anchor";
+import { BorshCoder, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
-import { LibreplexInscriptions } from "@libreplex/idls/lib/cjs/libreplex_inscriptions";
+import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { useFetchSingleAccount } from "../singleAccountInfo";
-import { IRpcObject } from "../../../components";
-import base64url from "base64url";
 import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
+import { InscriptionStoreContext } from "./InscriptionStoreContext";
+import { useStore } from "zustand";
 
-export type Inscription = {
-  authority: PublicKey;
-  root: PublicKey;
-  size: number;
-  dataBytes: number[];
-};
+export type Inscription = IdlAccounts<LibreplexInscriptions>["inscription"];
 
-
-export const getBase64FromDatabytes = (
-  dataBytes: Buffer,
-  dataType: string,
-) => {
-  console.log({dataBytes})
+export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
+  console.log({ dataBytes });
   const base = dataBytes.toString("base64");
-  return `data:${dataType};base64,${base}`
+  return `data:${dataType};base64,${base}`;
 };
 
 export const decodeInscription =
-  (program: Program<LibreplexInscriptions>) => (buffer: Buffer, pubkey: PublicKey) => {
+  (program: Program<LibreplexInscriptions>) =>
+  (buffer: Buffer | undefined, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
-    const inscriptionBase = coder.accounts.decode<Inscription>(
-      "inscription",
-      buffer
-    );
-
-    const dataBytes= [...buffer.subarray(76)];
-
-
-    const inscription = {
-      ...inscriptionBase,
-      dataBytes,
-    };
+    const inscription = buffer
+      ? coder.accounts.decode<Inscription>("inscription", buffer)
+      : null;
 
     return {
-      item: inscription ?? null,
+      item: inscription,
       pubkey,
     };
   };
@@ -53,8 +37,14 @@ export const useInscriptionById = (
   connection: Connection
 ) => {
   const program = useContext(InscriptionsProgramContext);
+  const store = useContext(InscriptionStoreContext);
 
   const q = useFetchSingleAccount(inscriptionId, connection, false);
+
+  const updatedInscriptionSizes = useStore(
+    store,
+    (s) => s.updatedInscriptionSizes
+  );
 
   const decoded = useMemo(() => {
     try {
@@ -67,5 +57,25 @@ export const useInscriptionById = (
     }
   }, [inscriptionId, program, q.data?.item?.buffer.length]);
 
-  return decoded;
+  // useEffect(()=>{
+  //   console.log({updatedInscriptionSizes})
+  // },[updatedInscriptionSizes])
+
+  const decodedAndUpdated = useMemo(
+    () =>
+      decoded
+        ? {
+            ...decoded,
+            item: {
+              ...decoded.item,
+              size:
+                updatedInscriptionSizes[inscriptionId?.toBase58()] ??
+                decoded.item.size,
+            },
+          }
+        : null,
+    [updatedInscriptionSizes, decoded, inscriptionId]
+  );
+
+  return decodedAndUpdated;
 };

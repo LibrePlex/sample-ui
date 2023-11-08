@@ -284,13 +284,13 @@ export const HomeView: FC = ({}) => {
                   p={3}
                   mb={1}
                   as={"a"}
-                  href="http://discord.gg/libreplex"
+                  href="https://discord.gg/pbmXYJX9zw"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <VStack>
                     <Heading size={"md"}>Join us on Discord</Heading>
-                    <Text color={"gray.400"}>http://discord.gg/libreplex</Text>
+                    <Text color={"gray.400"}>https://discord.gg/pbmXYJX9zw</Text>
                   </VStack>
                 </Button>
                 <Button

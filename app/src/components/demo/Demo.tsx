@@ -41,7 +41,6 @@ const TabPanel = ({
 
 export const Demo = () => {
 
-  //   const [isSmallerThan600] = useMediaQuery("(max-width: 600px)");
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
   const [view, setView] = useState<View>(View.BaseMetadata);

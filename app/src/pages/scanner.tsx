@@ -11,10 +11,9 @@ import { LibreScanner } from "../components/demo/Scanner";
 import React from "react";
 
 const DemoPage = () => {
-  const queryClient = useMemo(()=>new QueryClient({}),[]);
+  
 
   return (
-    <QueryClientProvider client={queryClient}>
       <Box
         w={"100vw"}
         h={"100%"}
@@ -28,7 +27,7 @@ const DemoPage = () => {
             <LibreScanner />
         </MetadataProgramProvider>
       </Box>
-    </QueryClientProvider>
+      
   );
 };
 

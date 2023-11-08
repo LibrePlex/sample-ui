@@ -1,3 +1,4 @@
+import { useQuery } from "react-query";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { IRpcObject } from "../../../components";
@@ -34,59 +35,41 @@ export const useMultipleAccountsById = (
     [ids]
   );
 
-  // const [hash, setHash] = useState<string>("");
-
-  const [status, setStatus] = useState<{
-    status: Status;
-    hash: string;
-    orderedIds: PublicKey[];
-  }>({
-    status: Status.Loaded,
-    hash: "",
-    orderedIds: [],
-  });
-
   const hash = useMemo(
     () => (connection.rpcEndpoint ? calculateHash(orderedIds) : ""),
     [orderedIds, connection]
   );
 
-  const resetStatus = useCallback(() => {
-    setStatus({ status: Status.Ready, hash, orderedIds });
-  }, [hash, orderedIds]);
+  // const resetStatus = useCallback(() => {
+  //   setStatus({ status: Status.Ready, hash, orderedIds });
+  // }, [hash, orderedIds]);
 
-  useEffect(() => {
-    resetStatus();
-  }, [hash]);
+  // useEffect(() => {
+  //   resetStatus();
+  // }, [hash]);
 
   // useEffect(() => {
   //   setStatus(old=>({ ...old, status: Status.Ready}));
   // }, [connection]);
 
   // const [isFetching, setIsFetching] = useState<boolean>(false);
-  const refreshData = useCallback(() => {
-    let active = true;
-    (async () => {
-      if (status.status === Status.Ready) {
-        active && setStatus((old) => ({ ...old, status: Status.Loading }));
-        console.log("Fetching");
-        const bufferingConnection = BufferingConnection.getOrCreate(connection);
-        const result = await bufferingConnection.getMultipleAccountsInfo(
-          status.orderedIds
-        );
-        setObjects([...result.values()]);
-
-        active && setStatus((old) => ({ ...old, status: Status.Loaded }));
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [status]);
+  const refreshData = useCallback(async () => {
+    console.log("Fetching");
+    const bufferingConnection = BufferingConnection.getOrCreate(connection);
+    const result = await bufferingConnection.getMultipleAccountsInfo(
+      orderedIds
+    );
+    console.log({result});
+    return [...result.values()]
+  }, [orderedIds]);
 
   useEffect(() => {
     refreshData();
   }, [status, connection]);
 
-  return { isFetching: status.status === Status.Loading, data: objects };
+  const q = useQuery<{ accountId: PublicKey; data: Buffer; balance: bigint; }[]>(hash, refreshData, {
+    refetchOnMount: false,
+  });
+
+  return { isFetching: q.isFetching, data: q?.data || [] };
 };

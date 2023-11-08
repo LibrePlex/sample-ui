@@ -42,10 +42,7 @@ export function getProgramInstanceMetadata(
     nodeWallet,
     anchor.AnchorProvider.defaultOptions()
   );
-  // Read the generated IDL.
   const idl = IDL;
-  // Address of the deployed program.
-  // Generate the program client from IDL.
   const program = new anchor.Program<LibreplexMetadata>(idl, programId, provider)!;
   return program;
 }

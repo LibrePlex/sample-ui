@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { BasicsView } from "../views";
 import { FeaturesView } from "@app/views/FeaturesView";
+import React from "react";
 
 const Basics: NextPage = (props) => {
   return (

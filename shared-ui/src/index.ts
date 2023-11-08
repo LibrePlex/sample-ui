@@ -1,5 +1,6 @@
 
 
+
 export {
   ContextProvider,
   useAutoConnect,
@@ -22,8 +23,14 @@ export {
   getProgramInstanceMetadata,
   getProgramInstanceInscriptions,
   getProgramInstanceShop,
+  getProgramInstanceLegacyInscriptions,
   LibreWallet,
-  
+
+  LibrePlexCreatorProgramContext,
+  LibrePlexCreatorProgramProvider,
+  PROGRAM_ID_CREATOR  ,
+  LibrePlexLegacyInscriptionsProgramContext,
+  LibrePlexLegacyInscriptionsProgramProvider
 } from "./anchor";
 export {
   decodeCollection,
@@ -47,7 +54,15 @@ export {
   useMetadataGroupedByCollection,
   getBase64FromDatabytes,
   InscriptionsProgramProvider,
-  InscriptionStoreContext
+  InscriptionStoreContext,
+  useCreatorsByAuthority,
+  useLegacyMintsByWallet,
+  decodeInscriptionSummary,
+  useFetchSingleAccount,
+  decodeInscriptionRankPage,
+  decodeLegacyMetadata,
+  useInscriptionDataForMint,
+  useInscriptionForMint
 } from "./sdk";
 export type {
   AttributeType,
@@ -59,7 +74,9 @@ export type {
   RoyaltyShare,
   CollectionInput,
   Asset,
-  Price
+  Price,
+  LegacyMint,
+  LegacyInscription
 } from "./sdk";
 
 export { HttpClient, abbreviateKey, cn, notify } from "./utils";
@@ -69,6 +86,7 @@ export type {
   IRpcObject,
   GenericTransactionButtonProps,
   ITransactionTemplate,
+  IOffchainJson
 } from "./components";
 
 export {
@@ -103,7 +121,12 @@ export {
   getLegacyTokenRecordPda,
   getListingPda,
   getListingGroupPda,
-  getListingFilterPda
+  getListingFilterPda,
+  getInscriptionPda,
+  getInscriptionDataPda,
+  getInscriptionSummaryPda ,
+  getInscriptionRankPda,
+  getLegacySignerPda
 } from "./pdas";
 
 export { usePublicKeyOrNull } from "./hooks/usePublicKeyOrNull";

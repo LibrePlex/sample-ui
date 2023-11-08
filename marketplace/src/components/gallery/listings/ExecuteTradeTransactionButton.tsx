@@ -60,11 +60,7 @@ export const executeTrade = async (
   data?: ITransactionTemplate[];
   error?: any;
 }> => {
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const data: ITransactionTemplate[] = [];
 
   const librePlexProgram = getProgramInstanceShop(connection, wallet);
 
@@ -78,6 +74,8 @@ export const executeTrade = async (
       "To buy a listing with SPL token, you must specify a token account"
     );
   }
+
+  const blockhash = await connection.getLatestBlockhash();
 
   /// for convenience we are hardcoding the urls to predictable shadow drive ones for now.
   /// anything could be passed in obviously. !WE ASSUME PNG FOR NOW!
@@ -147,6 +145,7 @@ export const executeTrade = async (
     instructions,
     description: `Execute trade`,
     signers: [],
+    blockhash
   });
 
   console.log({ data });

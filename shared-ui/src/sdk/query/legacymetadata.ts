@@ -9,7 +9,7 @@ import { useFetchSingleAccount } from "./singleAccountInfo";
 import { RawAccount } from "@solana/spl-token";
 
 
-export const decodeMetadata= (buffer: Buffer, pubkey: PublicKey) => {
+export const decodeLegacyMetadata= (buffer: Buffer, pubkey: PublicKey) => {
   try {
     const metadata = LegacyMetadata.deserialize(buffer);
     return {
@@ -17,6 +17,7 @@ export const decodeMetadata= (buffer: Buffer, pubkey: PublicKey) => {
       pubkey,
     };
   } catch (e) {
+    console.log({e});
     return {
       item: null,
       pubkey,
@@ -88,7 +89,7 @@ export const useLegacyMetadataByMintId = (
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeMetadata(q?.data?.item.buffer, metadataKey)
+        ? decodeLegacyMetadata(q?.data?.item.buffer, metadataKey)
         : null;
       return obj;
     } catch (e) {

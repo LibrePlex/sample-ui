@@ -4,7 +4,7 @@ import React from 'react';
 import { useNetworkConfiguration } from '../contexts';
 
 export const NetworkSwitcher: FC = () => {
-  const { networkConfiguration, setNetworkConfiguration } = useNetworkConfiguration();
+  const { cluster: networkConfiguration, setCluster: setNetworkConfiguration } = useNetworkConfiguration();
 
   return (
     <label className="cursor-pointer label">
