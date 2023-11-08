@@ -20,21 +20,30 @@ export const InscriptionGallery = () => {
   );
 
   const ITEMS_PER_PAGE = 25;
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   const { item, pubkey } = useMemo(
     () =>
       data
-        ? decodeInscriptionRankPage(data?.item?.buffer, data.pubkey, 0, 25)
+        ? decodeInscriptionRankPage(
+            data?.item?.buffer,
+            data.pubkey,
+            currentPage * ITEMS_PER_PAGE,
+            (currentPage + 1) * ITEMS_PER_PAGE
+          )
         : { item: null, pubkey: inscriptionPageId },
-    [data, inscriptionPageId]
+    [currentPage, data, inscriptionPageId]
   );
 
   const maxPages = useMemo(
-    () => Math.ceil((item?.inscriptionKeys.length ?? 0) / ITEMS_PER_PAGE),
-    [item?.inscriptionKeys.length]
+    () => {
+      console.log({l: data?.item?.buffer.length});
+      return Math.ceil((data?.item?.buffer.length - 12 ) / 32)
+    },
+    [data?.item?.buffer.length]
   );
 
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  
 
   return (
     <VStack>
@@ -53,15 +62,9 @@ export const InscriptionGallery = () => {
         justifyContent="center"
         flexWrap="wrap"
       >
-        
-        {item?.inscriptionKeys
-          ?.slice(
-            currentPage * ITEMS_PER_PAGE,
-            (currentPage + 1) * ITEMS_PER_PAGE
-          )
-          .map((item, idx) => (
-            <InscriptionCardLegacy inscriptionId={item} key={idx} />
-          ))}
+        {item?.inscriptionKeys.map((item, idx) => (
+          <InscriptionCardLegacy inscriptionId={item} key={idx} />
+        ))}
       </HStack>
     </VStack>
   );

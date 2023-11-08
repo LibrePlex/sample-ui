@@ -500,6 +500,42 @@ export type LibreplexInscriptions = {
       }
     },
     {
+      "name": "ResizeInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "change",
+            "type": "i32"
+          },
+          {
+            "name": "expectedStartSize",
+            "type": "u32"
+          },
+          {
+            "name": "targetSize",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WriteToInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "name": "startPos",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "InscriptionEventData",
       "type": {
         "kind": "struct",
@@ -541,42 +577,6 @@ export type LibreplexInscriptions = {
             "type": {
               "option": "string"
             }
-          }
-        ]
-      }
-    },
-    {
-      "name": "ResizeInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "change",
-            "type": "i32"
-          },
-          {
-            "name": "expectedStartSize",
-            "type": "u32"
-          },
-          {
-            "name": "targetSize",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "WriteToInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "name": "startPos",
-            "type": "u32"
           }
         ]
       }
@@ -1256,6 +1256,42 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
+      "name": "ResizeInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "change",
+            "type": "i32"
+          },
+          {
+            "name": "expectedStartSize",
+            "type": "u32"
+          },
+          {
+            "name": "targetSize",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WriteToInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "name": "startPos",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "InscriptionEventData",
       "type": {
         "kind": "struct",
@@ -1297,42 +1333,6 @@ export const IDL: LibreplexInscriptions = {
             "type": {
               "option": "string"
             }
-          }
-        ]
-      }
-    },
-    {
-      "name": "ResizeInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "change",
-            "type": "i32"
-          },
-          {
-            "name": "expectedStartSize",
-            "type": "u32"
-          },
-          {
-            "name": "targetSize",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "WriteToInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "name": "startPos",
-            "type": "u32"
           }
         ]
       }
@@ -1471,13 +1471,6 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "id",
           "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "eventType",
-          "type": {
-            "defined": "InscriptionEventType"
-          },
           "index": false
         }
       ]
