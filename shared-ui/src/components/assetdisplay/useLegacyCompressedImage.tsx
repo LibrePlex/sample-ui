@@ -1,9 +1,16 @@
 import { PublicKey } from "@solana/web3.js";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { HttpClient } from "@libreplex/shared-ui";
-import { IWebHashAndBuffer } from "@app/pages/api/image/[mintId]/webp";
-import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
+import { HttpClient } from "../..";
+
+import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 import { useQuery } from "react-query";
+
+
+export interface IWebHashAndBuffer {
+  buf: number[];
+  hash: string;
+}
+
 
 export const useLegacyCompressedImage = (mint: PublicKey, enabled: boolean = true) => {
   

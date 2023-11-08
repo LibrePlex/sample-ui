@@ -105,7 +105,9 @@ export {
   SendMintButton,
 
   /// icons
-  ShareIcon
+  ShareIcon,
+
+  useLegacyCompressedImage
 } from "./components";
 
 export {

@@ -77,5 +77,5 @@ export const useInscriptionById = (
     [updatedInscriptionSizes, decoded, inscriptionId]
   );
 
-  return decodedAndUpdated;
+  return {data: decodedAndUpdated, refetch: q.refetch, isFetching: q.isFetching};
 };

@@ -26,19 +26,17 @@ import {
 import { TbRefresh } from "react-icons/tb";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
-import { useInscriptionDataForMint } from "../useInscriptionDataForMint";
-import { useInscriptionForMint } from "../useInscriptionForMint";
-import { useLegacyCompressedImage } from "./useLegacyCompressedImage";
+
 import { useLegacyInscriptionForMint } from "./useLegacyInscriptionForMint";
 import { useValidationHash } from "../useValidationHash";
 import { HiCheckCircle, HiXCircle, HiSearch } from "react-icons/hi";
 import { compress } from "marketplace/next.config";
 import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
 import Link from "next/link";
-import { SolscanLink } from "shared-ui/src";
+import { SolscanLink, useInscriptionDataForMint, useInscriptionForMint, useLegacyCompressedImage } from "@libreplex/shared-ui";
 
 export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
-  const inscription = useInscriptionForMint(mint);
+  const { data: inscription } = useInscriptionForMint(mint);
   const legacyInscription = useLegacyInscriptionForMint(mint);
   const {
     data: inscriptionData,
@@ -153,6 +151,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                       <VStack>
                         {base64ImageOffChain ? (
                           <img
+                            alt="off chain image"
                             src={`data:image/webp;base64,${base64ImageOffChain}`}
                           />
                         ) : (
@@ -187,7 +186,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                     </Center>
                   </Td>
                 </Tr>
-                
+
                 <Tr>
                   <Th>
                     <VStack>
@@ -202,20 +201,10 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                         />
                       )}
                       {inscriptionData && (
-                        <SolscanLink address={inscriptionData.pubkey.toBase58()} cluster={cluster}/>
-                        // <IconButton
-                        // variant='outline'
-                        //   aria-label={"View on chain"}
-                        //   onClick={(e) => {
-                        //     e.stopPropagation();
-                        //     e.preventDefault();
-                        //     window.open(
-                        //       `https://explorer.solana.com/address/${inscriptionData.pubkey.toBase58()}?cluster=${cluster}`
-                        //     );
-                        //   }}
-                        // >
-                        //   <HiSearch color='#ddd'/>
-                        // </IconButton>
+                        <SolscanLink
+                          address={inscriptionData.pubkey.toBase58()}
+                          cluster={cluster}
+                        />
                       )}
                     </VStack>
                   </Th>

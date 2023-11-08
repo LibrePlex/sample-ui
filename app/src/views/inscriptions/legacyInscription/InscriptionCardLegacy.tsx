@@ -25,7 +25,7 @@ export const InscriptionCardLegacy = ({
 } & BoxProps) => {
   const { connection } = useConnection();
 
-  const inscription = useInscriptionById(inscriptionId, connection);
+  const {data: inscription} = useInscriptionById(inscriptionId, connection);
 
   return (
     <>
