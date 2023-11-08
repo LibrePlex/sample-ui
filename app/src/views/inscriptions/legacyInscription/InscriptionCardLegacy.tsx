@@ -5,6 +5,7 @@ import { PublicKey } from "@solana/web3.js";
 import { ReactNode } from "react";
 import { EditLegacyInscription } from "./EditLegacyInscription";
 import { MintCardLegacy } from "./MintCardLegacy";
+import { DisappearingBox } from "@app/components/DisappearingBox";
 
 const textMotion = {
   default: {
@@ -28,10 +29,10 @@ export const InscriptionCardLegacy = ({
   const {data: inscription} = useInscriptionById(inscriptionId, connection);
 
   return (
-    <>
+    <DisappearingBox>
       <MintCardLegacy mintId={inscription?.item.root}>
         <EditLegacyInscription mint={inscription?.item.root} />
       </MintCardLegacy>
-    </>
+    </DisappearingBox>
   );
 };

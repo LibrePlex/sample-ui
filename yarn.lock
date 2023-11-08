@@ -3305,12 +3305,12 @@
     yargs "16.2.0"
     yargs-parser "20.2.4"
 
-"@libreplex/idls@0.2.0", "@libreplex/idls@0.5.0":
+"@libreplex/idls@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@libreplex/idls/-/idls-0.5.0.tgz#c5fe266649e4327d8ccddf27081a6ab159a0c19b"
   integrity sha512-DYtwmM43G7kV7Tabp52TApArqD9yYzlHg2CGFq2djwT4tZrX1V+hmUKIYg0u70yhp0hwobzTgn9uEUKEqtauYw==
 
-"@libreplex/sdk@0.2.0", "@libreplex/sdk@0.3.4":
+"@libreplex/sdk@0.3.4":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@libreplex/sdk/-/sdk-0.3.4.tgz#1f5b88d331ccaa68276ddfcff1ed19d204ad9197"
   integrity sha512-AzHzO2FZ1+uukT64YhGQmfSxSrrKIu2WdNgT+yxmSeBhPkn4OvGyE+e8Dqu3oQsUxnaxRj466MXsveL4NR2CcQ==
@@ -13615,6 +13615,11 @@ react-icons@^4.9.0:
   version "4.10.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.10.1.tgz#3f3b5eec1f63c1796f6a26174a1091ca6437a500"
   integrity sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==
+
+react-intersection-observer@^9.5.2:
+  version "9.5.2"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.5.2.tgz#f68363a1ff292323c0808201b58134307a1626d0"
+  integrity sha512-EmoV66/yvksJcGa1rdW0nDNc4I1RifDWkT50gXSFnPLYQ4xUptuDD4V7k+Rj1OgVAlww628KLGcxPXFlOkkU/Q==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

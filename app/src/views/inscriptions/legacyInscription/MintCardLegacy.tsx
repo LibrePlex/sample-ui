@@ -6,25 +6,24 @@ import {
   Heading,
   IconButton,
   VStack,
+  Text,
 } from "@chakra-ui/react";
-import { TbRefresh } from "react-icons/tb";
 import {
   AssetDisplay,
-  CopyPublicKeyButton,
-  getInscriptionDataPda,
   getInscriptionPda,
   getLegacyMetadataPda,
+  useOffChainMetadataCache,
   useInscriptionForMint,
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { useFetchOffchainMetadata } from "app/src/hooks/useOffChainMetadata";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
+import { HiMagnifyingGlassCircle } from "react-icons/hi2";
+import { TbRefresh } from "react-icons/tb";
 import { decodeLegacyMetadata } from "shared-ui/src/sdk/query/legacymetadata";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
-
 const textMotion = {
   default: {
     color: "#ffffff",
@@ -69,9 +68,11 @@ export const MintCardLegacy = ({
     [metadataId, metadataAccount]
   );
 
-  const { data: offchainData } = useFetchOffchainMetadata(
-    metadata?.item.data.uri
-  );
+  const { data: offchainData } = useOffChainMetadataCache(mintId);
+
+  useEffect(() => {
+    console.log({ offchainData });
+  }, [offchainData]);
 
   const {
     data: inscription,
@@ -97,7 +98,7 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <VStack sx={{ position: "absolute", top: "5px", right: "5px" }}>
+        <VStack sx={{ position: "absolute", top: "5px", right: "5px", zIndex: 1 }}>
           <Badge
             sx={{
               border: "1px solid #aaa",
@@ -118,32 +119,31 @@ export const MintCardLegacy = ({
       )}
       {mintId && (
         <>
-          <Link href={`/scanner?mintId=${mintId.toBase58()}`}>
-            <div style={{ pointerEvents: "none" }}>
-              <AssetDisplay
-                asset={{ image: { url: offchainData?.image, description: "" } }}
-                mint={mintId}
-              />
-            </div>
-          </Link>
+        <Box sx={{height :"200px"}}>
+          <AssetDisplay
+            asset={{
+              image: { url: offchainData?.images.square, description: "" },
+            }}
+            mint={mintId}
+          />
+          </Box>
 
           <VStack
             style={{ paddingTop: 12 }}
             alignItems="flex-start"
             justifyContent="flex-start"
           >
-            <Link href={`/scanner?mintId=${mintId.toBase58()}`}>
-              <Heading
-                title={metadata?.item?.data.name ?? "-"}
-                as={motion.p}
-                size="md"
-                noOfLines={1}
-                variants={textMotion}
-              >
-                {/* {JSON.stringify(mint.metadata.item?.data)} */}
-                {metadata?.item?.data.name ?? "-"}{" "}
-              </Heading>
-            </Link>
+            <Heading
+              title={metadata?.item?.data.name ?? "-"}
+              // as={motion.p}
+              size="md"
+              noOfLines={1}
+              // variants={textMotion}
+            >
+              {/* {JSON.stringify(mint.metadata.item?.data)} */}
+              {metadata?.item?.data.name ?? "-"}{" "}
+            </Heading>
+
             <IconButton
               style={{ position: "absolute", top: "8px", left: "8px" }}
               size="xs"
@@ -151,6 +151,17 @@ export const MintCardLegacy = ({
               aria-label={"Refresh"}
             >
               <TbRefresh />
+            </IconButton>
+            <IconButton
+              style={{ position: "absolute", bottom: "2px", right: "8px" }}
+              size="xs"
+              p={0}
+              onClick={() =>
+                window.open(`/scanner?mintId=${mintId.toBase58()}`)
+              }
+              aria-label={"Scanner"}
+            >
+              <HiMagnifyingGlassCircle size={"lg"} />
             </IconButton>
 
             {children}

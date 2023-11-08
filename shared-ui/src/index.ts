@@ -107,7 +107,8 @@ export {
   /// icons
   ShareIcon,
 
-  useLegacyCompressedImage
+  useLegacyCompressedImage,
+  useOffChainMetadataCache
 } from "./components";
 
 export {

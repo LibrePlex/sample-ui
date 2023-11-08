@@ -37,8 +37,8 @@ export const InscriptionGallery = () => {
 
   const maxPages = useMemo(
     () => {
-      console.log({l: data?.item?.buffer.length});
-      return Math.ceil((data?.item?.buffer.length - 12 ) / 32)
+      // console.log({l: data?.item?.buffer.length, m: Math.ceil((data?.item?.buffer.length - 12 ) / 32 / ITEMS_PER_PAGE)});
+      return Math.ceil((data?.item?.buffer.length - 12 ) / 32 / ITEMS_PER_PAGE)
     },
     [data?.item?.buffer.length]
   );

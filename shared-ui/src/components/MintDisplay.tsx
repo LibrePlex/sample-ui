@@ -56,9 +56,6 @@ export const MintDisplay = ({
         .attributes,
     [metadata?.item]
   );
-
-  const { data } = useInscriptionForMint(mint);
-
   return (
     <VStack gap={8} alignItems="center" width={"100%"} maxWidth={"650px"}>
       <InscriptionDisplay mintId={mint} />

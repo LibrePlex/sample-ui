@@ -13,12 +13,13 @@ import { Paginator } from "@app/components/Paginator";
 import {
   LegacyMint,
   getInscriptionPda,
-  useLegacyMintsByWallet
+  useLegacyMintsByWallet,
 } from "@libreplex/shared-ui";
 import { ReactNode, useMemo, useState } from "react";
 
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
 import { InscriptionFilter, MintCardLegacy } from "./MintCardLegacy";
+import { DisappearingBox } from "@app/components/DisappearingBox";
 
 export const WalletLegacyGallery = ({
   publicKey,
@@ -86,15 +87,6 @@ export const WalletLegacyGallery = ({
     () => Math.ceil(filteredItems.length / ITEMS_PER_PAGE),
     [filteredItems.length]
   );
-
-  // useEffect(() => {
-  //   console.log({
-  //     filteredItems,
-  //     inscriptionsSet,
-  //     inscriptionIds,
-  //     inscriptions,
-  //   });
-  // }, [filteredItems, inscriptionsSet, inscriptionIds, inscriptions]);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -169,9 +161,11 @@ export const WalletLegacyGallery = ({
             (currentPage + 1) * ITEMS_PER_PAGE
           )
           .map((item, idx) => (
-            <MintCardLegacy mintId={item.mint} key={idx}>
-              {actions ? actions(item) : <></>}
-            </MintCardLegacy>
+            <DisappearingBox key={idx}>
+              <MintCardLegacy mintId={item.mint}>
+                {actions ? actions(item) : <></>}
+              </MintCardLegacy>
+            </DisappearingBox>
           ))}
       </HStack>
     </VStack>
