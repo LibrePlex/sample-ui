@@ -16,6 +16,7 @@ import {
   LegacyMint,
   getInscriptionPda,
   useFetchSingleAccount,
+  useInscriptionForMint,
 } from "@libreplex/shared-ui";
 import { InscribeLegacyMetadataTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataTransactionButton";
 import { InscriptionsSummary } from "./InscriptionsSummary";
@@ -30,12 +31,12 @@ enum View {
 
 const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
   const { connection } = useConnection();
-  const inscriptionId = useMemo(() => getInscriptionPda(legacyMint.mint)[0], [legacyMint.mint]);
-  const { data } = useFetchSingleAccount(inscriptionId, connection);
-  return data?.item?.buffer ? (
+  const {data} = useInscriptionForMint(legacyMint.mint);
+  
+  return data?.item ? (
     <EditLegacyInscription mint={legacyMint.mint} />
   ) : (
-    <InscribeLegacyMetadataTransactionButton
+  <InscribeLegacyMetadataTransactionButton
       params={{ legacyMint }}
       formatting={{}}
     />

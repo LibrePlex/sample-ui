@@ -41,41 +41,49 @@ export const useInscriptionById = (
 
   const q = useFetchSingleAccount(inscriptionId, connection, false);
 
-  const updatedInscriptionSizes = useStore(
-    store,
-    (s) => s.updatedInscriptionSizes
-  );
+  // const updatedInscriptionSizes = useStore(
+  //   store,
+  //   (s) => s.updatedInscriptionSizes
+  // );
+
+  const updatedInscription = useStore(store, (s) => s.updatedInscription);
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item
+      const obj = updatedInscription[inscriptionId.toBase58()]
+        ? {
+            pubkey: inscriptionId,
+            item: updatedInscription[inscriptionId.toBase58()],
+          }
+        : q?.data?.item
         ? decodeInscription(program)(q?.data?.item.buffer, inscriptionId)
         : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [inscriptionId, program, q.data?.item?.buffer.length]);
+  }, [inscriptionId, program, q.data?.item?.buffer.length, updatedInscription]);
 
   // useEffect(()=>{
   //   console.log({updatedInscriptionSizes})
   // },[updatedInscriptionSizes])
 
-  const decodedAndUpdated = useMemo(
-    () =>
-      decoded
-        ? {
-            ...decoded,
-            item: {
-              ...decoded.item,
-              size:
-                updatedInscriptionSizes[inscriptionId?.toBase58()] ??
-                decoded.item.size,
-            },
-          }
-        : null,
-    [updatedInscriptionSizes, decoded, inscriptionId]
-  );
+  // const decodedAndUpdated = useMemo(
+  //   () =>
+  //     decoded
+  //       ? {
+  //           ...decoded,
+  //           item: {
+  //             ...decoded.item,
+  //           },
+  //         }
+  //       : null,
+  //   [updatedInscriptionSizes, decoded, inscriptionId]
+  // );
 
-  return {data: decodedAndUpdated, refetch: q.refetch, isFetching: q.isFetching};
+  return {
+    data: decoded,
+    refetch: q.refetch,
+    isFetching: q.isFetching,
+  };
 };

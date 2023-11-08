@@ -5,13 +5,16 @@ import {
   BoxProps,
   Heading,
   IconButton,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { TbRefresh } from "react-icons/tb";
 import {
   AssetDisplay,
+  CopyPublicKeyButton,
+  getInscriptionDataPda,
+  getInscriptionPda,
   getLegacyMetadataPda,
-  useInscriptionForMint
+  useInscriptionForMint,
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
@@ -21,7 +24,6 @@ import Link from "next/link";
 import { ReactNode, useMemo } from "react";
 import { decodeLegacyMetadata } from "shared-ui/src/sdk/query/legacymetadata";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
-
 
 const textMotion = {
   default: {
@@ -71,7 +73,16 @@ export const MintCardLegacy = ({
     metadata?.item.data.uri
   );
 
-  const {data: inscription, refetch, isFetching} = useInscriptionForMint(mintId);
+  const {
+    data: inscription,
+    refetch,
+    isFetching,
+  } = useInscriptionForMint(mintId);
+
+  const inscriptionId = useMemo(
+    () => (mintId ? getInscriptionPda(mintId)[0] : undefined),
+    [mintId]
+  );
 
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
 
@@ -133,9 +144,22 @@ export const MintCardLegacy = ({
                 {metadata?.item?.data.name ?? "-"}{" "}
               </Heading>
             </Link>
-            <IconButton onClick={() => refetch()} aria-label={"Refresh"}>
-            <TbRefresh />
+            <IconButton
+              style={{ position: "absolute", top: "8px", left: "8px" }}
+              size="xs"
+              onClick={() => refetch()}
+              aria-label={"Refresh"}
+            >
+              <TbRefresh />
             </IconButton>
+            {/* <CopyPublicKeyButton
+              style={{ position: "absolute", top: "8px", left: "8px" }}
+              size="xs"
+              onClick={() => refetch()}
+              aria-label={"Copy inscription id"}
+              publicKey={inscriptionId?.toBase58()}
+            /> */}
+
             {children}
           </VStack>
         </>

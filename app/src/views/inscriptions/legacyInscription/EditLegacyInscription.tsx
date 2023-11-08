@@ -67,7 +67,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
     [hashOfInscription, compressedImage]
   );
   const sizeOk = useMemo(
-    () => compressedImage?.buf.length === inscription.item.size,
+    () => compressedImage?.buf.length === inscription?.item.size,
     [compressedImage, inscription]
   );
 
