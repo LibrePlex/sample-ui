@@ -22,6 +22,7 @@ export { GroupSelector } from "./GroupSelector";
 
 export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
 export { AssetDisplay } from "./assetdisplay/AssetDisplay";
+export { useLegacyCompressedImage } from "./assetdisplay/useLegacyCompressedImage";
 
 export { ScannerLink } from "./ScannerLink";
 

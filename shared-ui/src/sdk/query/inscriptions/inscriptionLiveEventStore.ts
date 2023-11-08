@@ -1,24 +1,31 @@
-import { Program } from "@coral-xyz/anchor";
+import { Program, IdlTypes } from "@coral-xyz/anchor";
 
-import { LibreplexInscriptions } from "@libreplex/idls/lib/cjs/libreplex_inscriptions";
+import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { createStore } from "zustand";
+import { PublicKey } from "@solana/web3.js";
+
+export type InscriptionEventData = IdlTypes<LibreplexInscriptions>["InscriptionEventData"];
 
 interface InscriptionWrites {
   writeStates: { [key: string]: number };
   updatedInscriptionData: { [key: string]: Buffer | undefined };
-  updatedInscriptionSizes: { [key: string]: number | undefined};
+  // updatedInscriptionSizes: { [key: string]: number | undefined};
+  updatedInscription: { [key: string]: InscriptionEventData};
 }
 
 export interface InscriptionLiveEventState extends InscriptionWrites {
   incrementWriteStatus: (inscriptionKey: string) => void;
   resetWriteStatus: (inscriptionKey: string) => void;
   setUpdatedInscriptionData: (inscriptionKey: string, buf: Buffer) => void;
-  setUpdatedInscriptionSize: (inscriptionKey: string, size: number) => void;
+  // setUpdatedInscriptionSize: (inscriptionKey: string, size: number) => void;
+  setUpdatedInscription: (inscriptionKey: string, data: InscriptionEventData) => void;
 }
 
 export type InscriptionWriteStore = ReturnType<
   typeof createInscriptionLiveEventStore
 >;
+
+
 
 export const createInscriptionLiveEventStore = (
   program: Program<LibreplexInscriptions>,
@@ -27,7 +34,8 @@ export const createInscriptionLiveEventStore = (
   const DEFAULT_PROPS: InscriptionWrites = {
     writeStates: {},
     updatedInscriptionData: {},
-    updatedInscriptionSizes: {},
+    // updatedInscriptionSizes: {},
+    updatedInscription: {}
   };
 
   const store = createStore<InscriptionLiveEventState>()((set) => ({
@@ -69,38 +77,71 @@ export const createInscriptionLiveEventStore = (
         };
       });
     },
-   
-    setUpdatedInscriptionSize: (
-      inscriptionKey: string,
-      size: number | undefined
-    ) => {
+    setUpdatedInscription: (inscriptionKey: string, data: InscriptionEventData) => {
       return set((state) => {
-
-        console.log({ state, size, inscriptionKey });
-        const newState = {
+        return {
           ...state,
-          dummy: 2,
-          updatedInscriptionSizes: {
-            ...state.updatedInscriptionSizes,
-            [inscriptionKey]: size,
+
+          updatedInscription: {
+            ...state.updatedInscription,
+            [inscriptionKey]: data,
           },
         };
-        console.log({newState})
-        return newState
       });
     },
+   
+   
+    // setUpdatedInscriptionSize: (
+    //   inscriptionKey: string,
+    //   size: number | undefined
+    // ) => {
+    //   return set((state) => {
+
+    //     console.log({ state, size, inscriptionKey });
+    //     const newState = {
+    //       ...state,
+    //       dummy: 2,
+    //       updatedInscriptionSizes: {
+    //         ...state.updatedInscriptionSizes,
+    //         [inscriptionKey]: size,
+    //       },
+    //     };
+    //     console.log({newState})
+    //     return newState
+    //   });
+    // },
   }));
   const state = store.getState();
 
 
-  program?.addEventListener("InscriptionResizeFinal", (event, slot, sig) => {
+  program?.addEventListener("InscriptionResizeFinal", (event: {
+    id: PublicKey,
+    data: InscriptionEventData
+  }, slot, sig) => {
     console.log('Inscription resize final triggered', event);
-    state.setUpdatedInscriptionSize(event.id.toBase58(), Number(event.size));
+    state.setUpdatedInscription(event.id.toBase58(), event.data);
   });
 
   program?.addEventListener("InscriptionWriteEvent", (event, slot, sig) => {
     state.incrementWriteStatus(event.id.toBase58());
   });
+
+  program?.addEventListener("InscriptionEventCreate", (event: {
+    id: PublicKey,
+    data: InscriptionEventData
+  }, slot, sig) => {
+    console.log({id: event.id.toBase58(), data: event.data});
+    state.setUpdatedInscription(event.id.toBase58(), event.data);
+  });
+
+  program?.addEventListener("InscriptionEventUpdate", (event: {
+    id: PublicKey,
+    data: InscriptionEventData
+  }, slot, sig) => {
+    console.log({event});
+    state.setUpdatedInscription(event.id.toBase58(), event.data);
+  });
+
 
   console.log('Adding resize event');
 
