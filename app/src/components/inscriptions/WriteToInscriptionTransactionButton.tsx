@@ -21,9 +21,8 @@ import {
   getProgramInstanceInscriptions,
   getProgramInstanceMetadata,
   notify,
-} from  "@libreplex/shared-ui";
+} from "@libreplex/shared-ui";
 import { useStore } from "zustand";
-
 
 export interface IWriteToInscription {
   inscription: IRpcObject<Inscription>;
@@ -32,7 +31,7 @@ export interface IWriteToInscription {
   dataBytes: number[];
 }
 
-export const BATCH_SIZE = 924;
+export const BATCH_SIZE = 800;
 
 // start at 0. We can extend as needed
 export const INSCRIPTION_DEFAULT_LENGTH = 0;
@@ -50,7 +49,7 @@ export const writeToInscription = async (
 
   const blockhash = await connection.getLatestBlockhash();
 
-  const data:ITransactionTemplate[] = [];
+  const data: ITransactionTemplate[] = [];
 
   const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
     ...wallet,
@@ -85,7 +84,7 @@ export const writeToInscription = async (
     ],
     description: "Update inscription datatype",
     signers: [],
-    blockhash
+    blockhash,
   });
 
   while (remainingBytes.length > 0) {
@@ -112,7 +111,7 @@ export const writeToInscription = async (
       instructions,
       description: `Write to inscription`,
       signers: [],
-      blockhash
+      blockhash,
     });
   }
   console.log({ data });
@@ -121,15 +120,13 @@ export const writeToInscription = async (
   };
 };
 
-export const WriteToInscriptionTransactionButton = (
-  props: Omit<
-    GenericTransactionButtonProps<IWriteToInscription>,
-    "transactionGenerator"
-  >
+export const useInscriptionWriteStatus = (
+  dataBytes: number[],
+  inscription: PublicKey
 ) => {
   const expectedCount = useMemo(
-    () => Math.ceil(props.params.dataBytes.length / BATCH_SIZE),
-    [props.params.dataBytes.length]
+    () => Math.ceil(dataBytes.length / BATCH_SIZE),
+    [dataBytes]
   );
   const store = useContext(InscriptionStoreContext);
 
@@ -140,15 +137,15 @@ export const WriteToInscriptionTransactionButton = (
   );
   const updatedInscriptionData = useStore(
     store,
-    (s) => s.updatedInscriptionData[props.params.inscription?.pubkey.toBase58()]
+    (s) => s.updatedInscriptionData[inscription?.toBase58()]
   );
   const writeStates = useStore(
     store,
-    (s) => s.writeStates[props.params.inscription?.pubkey.toBase58()]
+    (s) => s.writeStates[inscription?.toBase58()]
   );
   useEffect(() => {
-    resetWriteStatus(props.params.inscription.pubkey.toBase58());
-  }, [props.params.inscription.pubkey, resetWriteStatus]);
+    resetWriteStatus(inscription.toBase58());
+  }, [inscription, resetWriteStatus]);
 
   useEffect(() => {
     if (
@@ -156,20 +153,30 @@ export const WriteToInscriptionTransactionButton = (
       expectedCount === writeStates &&
       updatedInscriptionData === undefined
     ) {
-      setUpdatedInscriptionData(
-        props.params.inscription.pubkey.toBase58(),
-        Buffer.from(props.params.dataBytes)
-      );
+      setUpdatedInscriptionData(inscription.toBase58(), Buffer.from(dataBytes));
     }
   }, [
     expectedCount,
     writeStates,
     updatedInscriptionData,
     setUpdatedInscriptionData,
-    props.params.inscription.pubkey,
-    props.params.dataBytes,
+    inscription,
+    dataBytes,
   ]);
 
+  return { writeStates, expectedCount };
+};
+
+export const WriteToInscriptionTransactionButton = (
+  props: Omit<
+    GenericTransactionButtonProps<IWriteToInscription>,
+    "transactionGenerator"
+  >
+) => {
+  const {writeStates, expectedCount} = useInscriptionWriteStatus(
+    props.params.dataBytes,
+    props.params.inscription.pubkey
+  );
   return (
     <>
       <div style={{ width: "100%" }}>

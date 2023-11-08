@@ -2,35 +2,33 @@ import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
   IExecutorParams,
-  IRpcObject,
   ITransactionTemplate,
-  Inscription,
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
-  getInscriptionPda,
-  getLegacyMetadataPda,
+  getInscriptionPda
 } from "@libreplex/shared-ui";
 import {
   Connection,
   PublicKey,
   SystemProgram,
-  Transaction,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
 
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
+import { Progress, Text } from "@chakra-ui/react";
 import { notify } from "@libreplex/shared-ui";
 import { AccountLayout } from "@solana/spl-token";
+import { useMemo } from "react";
 import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
 import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
-import { ITransaction } from "../../transactions/ITransaction";
+import { BATCH_SIZE, useInscriptionWriteStatus } from "../inscriptions/WriteToInscriptionTransactionButton";
 
 export interface IWriteToLegacyInscriptionAsHolder {
   mint: PublicKey;
   dataBytes: number[];
 }
 
-export const BATCH_SIZE = 800;
+
 
 export const resizeLegacyInscription = async (
   { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsHolder>,
@@ -81,25 +79,6 @@ export const resizeLegacyInscription = async (
 
   owner = tokenAccountObj.owner;
 
-  
-
-  // TODO: Update inscription media type and encoding type
-  // instructions.push(
-  //   await legacyInscriptionsProgram.methods
-  //     .updateInscriptionDatatypeAsHolder({
-  //       dataType,
-  //     })
-  //     .accounts({
-  //       editor: wallet.publicKey,
-  //       metadata: metadata.pubkey,
-  //       delegatedGroupWidePermissions: null,
-  //       delegatedMetadataSpecificPermissions: null,
-  //       collection: metadata.item.collection,
-  //       systemProgram: SystemProgram.programId,
-  //     })
-  //     .instruction()
-  // );
-
   let startPos = 0;
   const blockhash = await connection.getLatestBlockhash();
   const remainingBytes = [...dataBytes];
@@ -147,12 +126,35 @@ export const WriteToLegacyInscriptionAsHolderTransactionButton = (
     "transactionGenerator"
   >
 ) => {
+  const inscription = useMemo(
+    () => getInscriptionPda(props.params.mint),
+    [props]
+  )[0];
+
+  const { writeStates, expectedCount } = useInscriptionWriteStatus(
+    props.params.dataBytes,
+    inscription
+  );
   return (
-    <GenericTransactionButton<IWriteToLegacyInscriptionAsHolder>
-      text={`Inscribe`}
-      transactionGenerator={resizeLegacyInscription}
-      onError={(msg) => notify({ message: msg ?? "Unknown error" })}
-      {...props}
-    />
+    <>
+      <div style={{ width: "100%" }}>
+        <Progress
+          size="xs"
+          colorScheme="pink"
+          value={(writeStates / expectedCount) * 100}
+        />
+      </div>
+      {writeStates} / {expectedCount}
+      {writeStates === expectedCount ? (
+        <Text p={2}>Inscribed</Text>
+      ) : (
+        <GenericTransactionButton<IWriteToLegacyInscriptionAsHolder>
+          text={`Inscribe`}
+          transactionGenerator={resizeLegacyInscription}
+          onError={(msg) => notify({ message: msg ?? "Unknown error" })}
+          {...props}
+        />
+      )}
+    </>
   );
 };

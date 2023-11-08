@@ -49,7 +49,14 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button colorScheme="teal" size="xs" onClick={()=>refetchOffchainData()}>
+        <Button
+          colorScheme="teal"
+          size="xs"
+          onClick={async () => {
+            await refetchOffchainData();
+            await refetchData();
+          }}
+        >
           Edit
         </Button>
       </PopoverTrigger>
@@ -67,6 +74,20 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                   </Th>
                   <Td>
                     <Text>{inscription?.item.size}</Text>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Th>
+                    <Text color="#aaa">Rent (SOL)</Text>
+                  </Th>
+                  <Td>
+                    <Text>
+                      {(
+                        (inscriptionData
+                          ? Number(inscriptionData.item.balance.toString())
+                          : 0) / Number(1_000_000_000)
+                      ).toLocaleString()}
+                    </Text>
                   </Td>
                 </Tr>
                 <Tr>
