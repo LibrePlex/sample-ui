@@ -1,6 +1,7 @@
+import { ResizeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsHolderTransactionButton";
+import { WriteToLegacyInscriptionAsHolderTransactionButton } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsHolderTransactionButton";
 import {
   Button,
-  ButtonProps,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -9,6 +10,8 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Portal,
+  Skeleton,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -17,31 +20,36 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { useInscriptionForMint } from "../useInscriptionForMint";
+import { useMemo } from "react";
 import { useInscriptionDataForMint } from "../useInscriptionDataForMint";
+import { useInscriptionForMint } from "../useInscriptionForMint";
+import { useLegacyCompressedImage } from "./useLegacyCompressedImage";
 import { useLegacyInscriptionForMint } from "./useLegacyInscriptionForMint";
-import { ResizeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsHolderTransactionButton";
-import { useLegacyMetadataByMintId } from "shared-ui/src";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useWebpAndHash } from "@app/utils/webp";
+import { useValidationHash } from "../useValidationHash";
 
-type AuthParams = {
-  owner: PublicKey,
-  tokenAccount: PublicKey
-}
-
-export const EditLegacyInscription = ({ mint}: { mint: PublicKey }) => {
+export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
   const inscription = useInscriptionForMint(mint);
   const legacyInscription = useLegacyInscriptionForMint(mint);
-  const inscriptionData = useInscriptionDataForMint(mint);
+  const { data: inscriptionData, refetch: refetchData } =
+    useInscriptionDataForMint(mint);
 
-  const { connection } = useConnection();
-  const metadata = useLegacyMetadataByMintId(mint, connection);
+  const hashOfInscription = useValidationHash(inscriptionData?.item.buffer);
+
+  const {
+    data: compressedImage,
+    refetch: refetchOffchainData,
+    isFetching,
+  } = useLegacyCompressedImage(mint, false);
+
+  const base64Image = useMemo(
+    () => Buffer.from(compressedImage?.buf ?? []).toString("base64"),
+    [compressedImage]
+  );
 
   return (
     <Popover>
       <PopoverTrigger>
-        <Button colorScheme="teal" size="xs">
+        <Button colorScheme="teal" size="xs" onClick={()=>refetchOffchainData()}>
           Edit
         </Button>
       </PopoverTrigger>
@@ -58,7 +66,7 @@ export const EditLegacyInscription = ({ mint}: { mint: PublicKey }) => {
                     <Text color="#aaa">Size (bytes)</Text>
                   </Th>
                   <Td>
-                    <Text>{inscriptionData?.item.buffer.length}</Text>
+                    <Text>{inscription?.item.size}</Text>
                   </Td>
                 </Tr>
                 <Tr>
@@ -74,18 +82,58 @@ export const EditLegacyInscription = ({ mint}: { mint: PublicKey }) => {
                   </Td>
                 </Tr>
                 <Tr>
-                  <Th>
-                    <Text color="#aaa">Validation hash</Text>
-                  </Th>
                   <Td>
-                    {/* <Text>{inscription?.item.validationHash}</Text> */}
-                    <ResizeLegacyMetadataAsHolderTransactionButton
-                      params={{
-                        mint,
-                        inscription,
-                      }}
-                      formatting={{}}
-                    />
+                    <Text color="#aaa">Offchain data</Text>
+                    {isFetching ? (
+                      <Spinner />
+                    ) : (
+                      <Button size="sm" onClick={() => refetchOffchainData()}>
+                        Fetch
+                      </Button>
+                    )}
+                    {hashOfInscription !== compressedImage?.hash
+                      ? "Hash mismatch"
+                      : "Hash OK"}
+                    <Button size="sm" onClick={() => refetchData()}>
+                      Refresh
+                    </Button>
+                  </Td>
+                  <Td>
+                    {base64Image ? (
+                      <img src={`data:image/webp;base64,${base64Image}`} />
+                    ) : (
+                      <Skeleton
+                        style={{
+                          minWidth: "135px",
+                          maxWidth: "135px",
+                          aspectRatio: "1/1",
+                          borderRadius: 8,
+                        }}
+                      />
+                    )}
+                    {compressedImage?.buf.length === inscription.item.size && (
+                      <Text variant="body2">Size OK</Text>
+                    )}
+                    {compressedImage?.buf &&
+                      compressedImage?.buf.length !== inscription.item.size && (
+                        <ResizeLegacyMetadataAsHolderTransactionButton
+                          params={{
+                            mint,
+                            targetSize: compressedImage?.buf.length,
+                            currentSize: inscription.item.size,
+                          }}
+                          formatting={{}}
+                        />
+                      )}
+                    {compressedImage?.buf && (
+                      <WriteToLegacyInscriptionAsHolderTransactionButton
+                        params={{
+                          mint,
+                          dataBytes: [...compressedImage?.buf],
+                        }}
+                        formatting={{}}
+                      />
+                    )}
                   </Td>
                 </Tr>
                 <Tr>

@@ -20,12 +20,12 @@ import { TokenAccountDisplay } from "./TokenAccountDisplay";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useRouter } from "next/router";
 import { PublicKey } from "@solana/web3.js";
-import { NetworkConfigurationContext } from "shared-ui/src/contexts/NetworkConfigurationProvider";
+import { ClusterContext } from "shared-ui/src/contexts/NetworkConfigurationProvider";
 
 export const PNFTFixer = () => {
   const { publicKey } = useWallet();
   const { connection } = useConnection();
-  const {networkConfiguration} = useContext(NetworkConfigurationContext)
+  const {cluster: networkConfiguration} = useContext(ClusterContext)
 
   const router = useRouter();
 

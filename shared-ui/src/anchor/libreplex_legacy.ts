@@ -230,10 +230,10 @@ export type LibreplexLegacy = {
       ]
     },
     {
-      "name": "writeToLegacyInscription",
+      "name": "writeToLegacyInscriptionAsHolder",
       "accounts": [
         {
-          "name": "authority",
+          "name": "owner",
           "isMut": true,
           "isSigner": true
         },
@@ -253,27 +253,7 @@ export type LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
           "isMut": false,
           "isSigner": false
         },
@@ -296,11 +276,6 @@ export type LibreplexLegacy = {
               }
             ]
           }
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -420,11 +395,6 @@ export type LibreplexLegacy = {
         },
         {
           "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
           "isMut": false,
           "isSigner": false
         },
@@ -982,10 +952,10 @@ export const IDL: LibreplexLegacy = {
       ]
     },
     {
-      "name": "writeToLegacyInscription",
+      "name": "writeToLegacyInscriptionAsHolder",
       "accounts": [
         {
-          "name": "authority",
+          "name": "owner",
           "isMut": true,
           "isSigner": true
         },
@@ -1005,27 +975,7 @@ export const IDL: LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
           "isMut": false,
           "isSigner": false
         },
@@ -1048,11 +998,6 @@ export const IDL: LibreplexLegacy = {
               }
             ]
           }
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -1172,11 +1117,6 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
           "isMut": false,
           "isSigner": false
         },

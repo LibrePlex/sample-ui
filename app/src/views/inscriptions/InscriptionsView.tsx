@@ -121,23 +121,6 @@ const InscriptionsView = () => {
                 </Button>
               </Box>
 
-              {/* <Heading>Holders</Heading>
-              <UnorderedList>
-                <ListItem>Can inscribe any NFTs in their wallet</ListItem>
-                <ListItem>
-                  If the NFT is transferred, the inscription travels with it
-                </ListItem>
-              </UnorderedList>
-              <Heading>Projects</Heading>
-              <UnorderedList>
-                <ListItem>
-                  Can inscribe any NFTs you have update auth on
-                </ListItem>
-                <ListItem>
-                  Can make inscriptions immutable to prevent rent recovery
-                </ListItem>
-              </UnorderedList> */}
-
               {view === View.Wallet && (
                 <WalletLegacyGallery publicKey={publicKey} actions={actions} />
               )}

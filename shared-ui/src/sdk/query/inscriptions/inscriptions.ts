@@ -2,11 +2,13 @@ import { IdlAccounts } from "@coral-xyz/anchor";
 import { BorshCoder, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
 import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
+import { InscriptionStoreContext } from "./InscriptionStoreContext";
+import { useStore } from "zustand";
 
 export type Inscription = IdlAccounts<LibreplexInscriptions>["inscription"];
 
@@ -20,10 +22,9 @@ export const decodeInscription =
   (program: Program<LibreplexInscriptions>) =>
   (buffer: Buffer | undefined, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
-    const inscription = buffer ? coder.accounts.decode<Inscription>(
-      "inscription",
-      buffer
-    ) :null;
+    const inscription = buffer
+      ? coder.accounts.decode<Inscription>("inscription", buffer)
+      : null;
 
     return {
       item: inscription,
@@ -36,8 +37,14 @@ export const useInscriptionById = (
   connection: Connection
 ) => {
   const program = useContext(InscriptionsProgramContext);
+  const store = useContext(InscriptionStoreContext);
 
   const q = useFetchSingleAccount(inscriptionId, connection, false);
+
+  const updatedInscriptionSizes = useStore(
+    store,
+    (s) => s.updatedInscriptionSizes
+  );
 
   const decoded = useMemo(() => {
     try {
@@ -50,5 +57,25 @@ export const useInscriptionById = (
     }
   }, [inscriptionId, program, q.data?.item?.buffer.length]);
 
-  return decoded;
+  // useEffect(()=>{
+  //   console.log({updatedInscriptionSizes})
+  // },[updatedInscriptionSizes])
+
+  const decodedAndUpdated = useMemo(
+    () =>
+      decoded
+        ? {
+            ...decoded,
+            item: {
+              ...decoded.item,
+              size:
+                updatedInscriptionSizes[inscriptionId?.toBase58()] ??
+                decoded.item.size,
+            },
+          }
+        : null,
+    [updatedInscriptionSizes, decoded, inscriptionId]
+  );
+
+  return decodedAndUpdated;
 };

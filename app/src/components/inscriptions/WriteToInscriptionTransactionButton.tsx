@@ -48,11 +48,9 @@ export const writeToInscription = async (
     throw Error("Wallet key missing");
   }
 
-  const data: {
-    instructions: TransactionInstruction[];
-    signers: Keypair[];
-    description: string;
-  }[] = [];
+  const blockhash = await connection.getLatestBlockhash();
+
+  const data:ITransactionTemplate[] = [];
 
   const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
     ...wallet,
@@ -87,6 +85,7 @@ export const writeToInscription = async (
     ],
     description: "Update inscription datatype",
     signers: [],
+    blockhash
   });
 
   while (remainingBytes.length > 0) {
@@ -101,7 +100,7 @@ export const writeToInscription = async (
           startPos,
         })
         .accounts({
-          signer: wallet.publicKey,
+          authority: wallet.publicKey,
           inscription: inscription.pubkey,
           systemProgram: SystemProgram.programId,
         })
@@ -113,6 +112,7 @@ export const writeToInscription = async (
       instructions,
       description: `Write to inscription`,
       signers: [],
+      blockhash
     });
   }
   console.log({ data });

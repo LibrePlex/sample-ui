@@ -1,10 +1,11 @@
 import axios from "axios";
-import crypto from "crypto";
+
 import webp from "imagemin-webp";
 import imagemin from "imagemin";
 import { HttpClient, IOffchainJson } from "@libreplex/shared-ui";
 import { Metadata } from "@metaplex-foundation/js";
 import { useEffect, useState } from "react";
+import { calculateHashFromBuffer } from "./calculateHashFromBuffer";
 
 export const useWebpAndHash = (offchainUrl: string) => {
   const [buf, setBuf] = useState<Buffer>();
@@ -28,12 +29,11 @@ export const useWebpAndHash = (offchainUrl: string) => {
   return { buf, hash };
 };
 
+
 export async function convertToWebpAndHash(offchainUrl: string) {
   const webpBuffer = await convertToWebp(offchainUrl);
 
-  const webpHashSum = crypto.createHash("sha256");
-  webpHashSum.update(webpBuffer);
-  const webpHash = webpHashSum.digest("hex");
+  const webpHash = calculateHashFromBuffer(webpBuffer);
   return { webpHash, webpBuffer };
 }
 

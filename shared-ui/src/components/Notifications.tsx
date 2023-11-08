@@ -49,7 +49,7 @@ export const Notifications = () => {
 
 export const Notification = ({ type, message, description, txid, onHide }: any) => {
   const { connection } = useConnection();
-  const { networkConfiguration } = useNetworkConfiguration();
+  const { cluster: networkConfiguration } = useNetworkConfiguration();
 
   // TODO: we dont have access to the network or endpoint here.. 
   // getExplorerUrl(connection., txid, 'tx')

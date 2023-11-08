@@ -6,6 +6,6 @@ import { getInscriptionDataPda, getInscriptionPda, useFetchSingleAccount } from 
 export const useInscriptionDataForMint = ( mint: PublicKey ) => {
   const { connection } = useConnection();
   const inscriptionDataId = useMemo(() => getInscriptionDataPda(mint)[0], [mint]);
-  const { data } = useFetchSingleAccount(inscriptionDataId, connection);
-  return data;
+  const q = useFetchSingleAccount(inscriptionDataId, connection, false);
+  return q;
 };

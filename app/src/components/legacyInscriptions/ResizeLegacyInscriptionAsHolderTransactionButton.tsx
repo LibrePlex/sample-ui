@@ -7,6 +7,7 @@ import {
   ITransactionTemplate,
   Inscription,
   PROGRAM_ID_INSCRIPTIONS,
+  getInscriptionDataPda,
   getInscriptionPda,
   getLegacyMetadataPda
 } from "@libreplex/shared-ui";
@@ -30,7 +31,8 @@ import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscription
 
 export interface IResizeLegacyInscription {
   mint: PublicKey;
-  inscription: IRpcObject<Inscription>;
+  targetSize: number;
+  currentSize: number;
 }
 
 export const MAX_CHANGE = 8192;
@@ -58,12 +60,9 @@ export const resizeLegacyInscription = async (
   }
 
   // have to check the owner here - unfortunate as it's expensive
-  const { mint, inscription} = params;
+  const { mint, targetSize, currentSize} = params;
 
   const tokenAccounts = await connection.getTokenLargestAccounts(mint);
-
-
-  const legacyMetadata = getLegacyMetadataPda(mint)[0]
 
   let owner: PublicKey;
   let tokenAccount: PublicKey;
@@ -80,22 +79,15 @@ export const resizeLegacyInscription = async (
 
   const tokenAccountData = await connection.getAccountInfo(tokenAccount);
 
-  
+  const inscription = getInscriptionPda(mint)[0]
+  const inscriptionData = getInscriptionDataPda(mint)[0]
   const legacyInscription = getLegacyInscriptionPda(mint)[0];
 
   const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
 
   owner = tokenAccountObj.owner;
 
-  const httpClient =new HttpClient("");
-
-  const {data: {buf, hash}} = await httpClient.post<IWebHashAndBuffer>(`/api/image/${mint.toBase58()}/webp`,
-  {
-    cluster
-  });
-  
-  const targetSize = buf.length;
-  let sizeRemaining = targetSize - inscription.item.size;
+  let sizeRemaining = targetSize - currentSize;
   const instructions: TransactionInstruction[] = [];
 
   
@@ -115,9 +107,8 @@ export const resizeLegacyInscription = async (
         payer: wallet.publicKey,
         owner,
         mint,
-        legacyMetadata,
-        inscription: inscription.pubkey,
-        inscriptionData: inscription.item.inscriptionData,
+        inscription,
+        inscriptionData,
         legacyInscription,
         tokenAccount,
         systemProgram: SystemProgram.programId,

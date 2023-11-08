@@ -1,29 +1,24 @@
+import { useFormattedNumber } from "@app/utils/useFormattedNumber";
 import {
   Badge,
   Box,
   BoxProps,
-  HStack,
   Heading,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
+import {
+  AssetDisplay,
+  getLegacyMetadataPda
+} from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { useRouter } from "next/router";
-import React, { ReactNode, useContext, useMemo } from "react";
-import {
-  LegacyMint,
-  decodeInscription,
-  getInscriptionPda,
-  getLegacyMetadataPda,
-} from "@libreplex/shared-ui";
-import { AssetDisplay } from "@libreplex/shared-ui";
+import { useFetchOffchainMetadata } from "app/src/hooks/useOffChainMetadata";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ReactNode, useMemo } from "react";
 import { decodeLegacyMetadata } from "shared-ui/src/sdk/query/legacymetadata";
-import { useFetchOffchainMetadata } from "app/src/hooks/useOffChainMetadata";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
-import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
-import { useFormattedNumber } from "@app/utils/useFormattedNumber";
+import { useInscriptionForMint } from "../useInscriptionForMint";
 
 const textMotion = {
   default: {
@@ -73,26 +68,7 @@ export const MintCardLegacy = ({
     metadata?.item.data.uri
   );
 
-  const inscriptionId = useMemo(
-    () => (mintId ? getInscriptionPda(mintId)[0] : undefined),
-    [mintId]
-  );
-
-  const { data: inscriptionAccount, refetch } = useFetchSingleAccount(
-    inscriptionId,
-    connection
-  );
-
-  const program = useContext(InscriptionsProgramContext);
-
-  const inscription = useMemo(
-    () =>
-      decodeInscription(program)(
-        inscriptionAccount?.item?.buffer,
-        inscriptionAccount?.pubkey
-      ),
-    [inscriptionAccount, program]
-  );
+  const inscription = useInscriptionForMint(mintId);
 
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
 

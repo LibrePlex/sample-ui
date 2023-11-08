@@ -2,28 +2,23 @@ import {
   Button,
   HStack,
   Heading,
+  Text,
   VStack,
   useMediaQuery,
-  Text,
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
 import { Paginator } from "@app/components/Paginator";
 import {
-  IRpcObject,
-  Inscription,
   LegacyMint,
-  LibrePlexLegacyInscriptionsProgramContext,
-  decodeInscription,
   getInscriptionPda,
-  useLegacyMintsByWallet,
+  useLegacyMintsByWallet
 } from "@libreplex/shared-ui";
-import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 
-import { InscriptionFilter, MintCardLegacy } from "./MintCardLegacy";
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
-import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
+import { InscriptionFilter, MintCardLegacy } from "./MintCardLegacy";
 
 export const WalletLegacyGallery = ({
   publicKey,
@@ -46,7 +41,6 @@ export const WalletLegacyGallery = ({
 
   const ITEMS_PER_PAGE = 25;
 
- 
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const [inscriptionFilter, setInscriptionFilter] = useState<InscriptionFilter>(
@@ -64,7 +58,12 @@ export const WalletLegacyGallery = ({
   );
 
   const inscriptionsSet = useMemo(
-    () => new Set(inscriptions.filter(item=>item.data).map((item) => item.accountId.toBase58())),
+    () =>
+      new Set(
+        inscriptions
+          .filter((item) => item.data)
+          .map((item) => item.accountId.toBase58())
+      ),
     [inscriptions]
   );
 
@@ -74,9 +73,11 @@ export const WalletLegacyGallery = ({
         const hasInscription = inscriptionsSet.has(
           getInscriptionPda(item.mint)[0].toBase58()
         );
-        return inscriptionFilter === InscriptionFilter.Both ||
+        return (
+          inscriptionFilter === InscriptionFilter.Both ||
           (inscriptionFilter === InscriptionFilter.With && hasInscription) ||
-          (inscriptionFilter == InscriptionFilter.Without && !hasInscription);
+          (inscriptionFilter == InscriptionFilter.Without && !hasInscription)
+        );
       }),
     [orderedData, inscriptionsSet, inscriptionFilter]
   );

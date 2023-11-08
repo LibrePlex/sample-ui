@@ -4,15 +4,15 @@ import { useLocalStorage } from '@solana/wallet-adapter-react';
 import { createContext, FC, ReactNode, useContext } from 'react';
 
 
-export interface NetworkConfigurationState {
-    networkConfiguration: string;
-    setNetworkConfiguration(networkConfiguration: string): void;
+export interface ClusterState {
+    cluster: string;
+    setCluster(cluster: string): void;
 }
 
-export const NetworkConfigurationContext = createContext<NetworkConfigurationState>({} as NetworkConfigurationState);
+export const ClusterContext = createContext<ClusterState>({} as ClusterState);
 
-export function useNetworkConfiguration(): NetworkConfigurationState {
-    return useContext(NetworkConfigurationContext);
+export function useNetworkConfiguration(): ClusterState {
+    return useContext(ClusterContext);
 }
 
 export const NetworkConfigurationProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -27,6 +27,6 @@ export const NetworkConfigurationProvider: FC<{ children: ReactNode }> = ({ chil
     },[router])
 
     return (
-        <NetworkConfigurationContext.Provider value={{ networkConfiguration, setNetworkConfiguration }}>{children}</NetworkConfigurationContext.Provider>
+        <ClusterContext.Provider value={{ cluster: networkConfiguration, setCluster: setNetworkConfiguration }}>{children}</ClusterContext.Provider>
     );
 };
