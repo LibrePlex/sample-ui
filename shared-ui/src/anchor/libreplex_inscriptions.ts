@@ -1472,6 +1472,13 @@ export const IDL: LibreplexInscriptions = {
           "name": "id",
           "type": "publicKey",
           "index": false
+        },
+        {
+          "name": "eventType",
+          "type": {
+            "defined": "InscriptionEventType"
+          },
+          "index": false
         }
       ]
     }

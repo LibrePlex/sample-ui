@@ -49,6 +49,7 @@ export const MintDisplay = ({
     connection
   );
 
+
   const attributes = useMemo(
     () =>
       metadata?.item?.extensions?.find((item) => item.attributes)?.attributes

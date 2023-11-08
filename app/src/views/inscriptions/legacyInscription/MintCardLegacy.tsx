@@ -152,13 +152,6 @@ export const MintCardLegacy = ({
             >
               <TbRefresh />
             </IconButton>
-            {/* <CopyPublicKeyButton
-              style={{ position: "absolute", top: "8px", left: "8px" }}
-              size="xs"
-              onClick={() => refetch()}
-              aria-label={"Copy inscription id"}
-              publicKey={inscriptionId?.toBase58()}
-            /> */}
 
             {children}
           </VStack>

@@ -17,6 +17,11 @@ import { throttler } from "@app/api/middleware/throttler";
 import { getRateLimitMiddlewares } from "@app/api/middleware/getRateLimitMiddlewares";
 import { applyMiddleware } from "@app/api/middleware/applyMiddleware";
 
+export interface IWebHashAndBuffer {
+  buf: number[];
+  hash: string;
+}
+
 const schema = joi.object({
   cluster: joi.string().required().valid("localnet", "devnet", "mainnet-beta"),
 });

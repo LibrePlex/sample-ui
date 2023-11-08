@@ -26,7 +26,6 @@ import {
 import { TbRefresh } from "react-icons/tb";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
-
 import { useLegacyInscriptionForMint } from "./useLegacyInscriptionForMint";
 import { useValidationHash } from "../useValidationHash";
 import { HiCheckCircle, HiXCircle, HiSearch } from "react-icons/hi";
@@ -186,7 +185,6 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                     </Center>
                   </Td>
                 </Tr>
-
                 <Tr>
                   <Th>
                     <VStack>
