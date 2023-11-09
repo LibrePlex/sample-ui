@@ -55,10 +55,9 @@ export const resizeInscription = async (
 
   const blockhash = await connection.getLatestBlockhash();
 
-  const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
-  });
+  const inscriptionsProgram = getProgramInstanceInscriptions(connection, 
+    wallet
+  );
 
   const { inscription, size } = params;
 

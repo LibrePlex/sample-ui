@@ -6,6 +6,7 @@ import { HttpClient, IOffchainJson } from "@libreplex/shared-ui";
 import { Metadata } from "@metaplex-foundation/js";
 import { useEffect, useState } from "react";
 import { calculateHashFromBuffer } from "./calculateHashFromBuffer";
+import { getImageAsBuffer } from "./getImageAsBuffer";
 
 export const useWebpAndHash = (offchainUrl: string) => {
   const [buf, setBuf] = useState<Buffer>();
@@ -29,7 +30,6 @@ export const useWebpAndHash = (offchainUrl: string) => {
   return { buf, hash };
 };
 
-
 export async function convertToWebpAndHash(offchainUrl: string) {
   const webpBuffer = await convertToWebp(offchainUrl);
 
@@ -42,31 +42,28 @@ export async function convertToWebp(offchainurl: string) {
   const url = offchainurl.replace(/\0/g, "").trim();
 
   const httpClient = new HttpClient("");
-
-  const httpClientBinary = new HttpClient("", { headers: {
-    responseType: 'arraybuffer'
-  } });
-
   const { data: offchainData } = await httpClient.get<IOffchainJson>(url);
 
-  const offChainImage = await axios.request({
-    responseType: 'arraybuffer',
-    url: offchainData.image,
-    method: 'get',
-  }).then(result=>result.data);
-    // console.log({offChainImage});
-//   console.log({bufferlenbefore: ([...offChainImage as any]).length});
-  const webpBuffer = (await imagemin.buffer(
-    offChainImage as any,
+  const webBuffer = await compressAndConvert(
+    await getImageAsBuffer(offchainData.image)
+  );
+  return webBuffer as Buffer;
+}
+
+
+
+export const compressAndConvert = async (offChainImage: ArrayBuffer) => {
+  const webpBuffer = await imagemin.buffer(
+    offChainImage,
     // Buffer.from([...(offChainImage as any)]),
     // "images",
     {
       plugins: [
         webp({
-          quality: 10
+          quality: 10,
         }),
       ],
     }
-  ));
-  return webpBuffer as Buffer;
-}
+  );
+  return webpBuffer;
+};

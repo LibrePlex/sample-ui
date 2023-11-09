@@ -9,9 +9,11 @@ import {
   Center,
   BoxProps,
   Tbody,
+  IconButton,
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useContext, useMemo } from "react";
+import { TbRefresh } from "react-icons/tb";
 import {
   CopyPublicKeyButton,
   decodeInscriptionSummary,
@@ -26,7 +28,10 @@ export const InscriptionsSummary = (rest: BoxProps) => {
   const program = useContext(InscriptionsProgramContext);
 
   const { connection } = useConnection();
-  const { data } = useFetchSingleAccount(inscriptionSummaryId, connection);
+  const { data, refetch } = useFetchSingleAccount(
+    inscriptionSummaryId,
+    connection
+  );
 
   const inscriptionSummary = useMemo(() => {
     console.log({ pubkey: data?.pubkey.toBase58() });
@@ -37,39 +42,49 @@ export const InscriptionsSummary = (rest: BoxProps) => {
 
   return (
     <Box {...rest}>
-      {inscriptionSummary?.item ? (
-        <VStack>
-          <Table style={{ border: "1px solid #aaa" }} m={3}>
-            <Tbody>
-              <Tr>
-                <Th>
-                  <Text color="#aaa">Last inscriber</Text>
-                </Th>
-                <Td>
-                  <CopyPublicKeyButton
-                    publicKey={inscriptionSummary?.item?.lastInscriber.toBase58()}
-                  />
-                </Td>
-              </Tr>
+      <Box sx={{ position: "relative" }}>
+        <IconButton
+          style={{ position: "absolute", bottom: "26px", right: "12px" }}
+          size="xs"
+          onClick={() => refetch()}
+          aria-label={"Refresh"}
+        >
+          <TbRefresh />
+        </IconButton>
+        {inscriptionSummary?.item ? (
+          <VStack>
+            <Table style={{ border: "1px solid #aaa" }} m={3}>
+              <Tbody>
+                <Tr>
+                  <Th>
+                    <Text color="#aaa">Last inscriber</Text>
+                  </Th>
+                  <Td>
+                    <CopyPublicKeyButton
+                      publicKey={inscriptionSummary?.item?.lastInscriber.toBase58()}
+                    />
+                  </Td>
+                </Tr>
 
-              <Tr>
-                <Th>
-                  <Text color="#aaa">Total inscriptions</Text>
-                </Th>
-                <Td>
-                  <Center>
-                    {inscriptionSummary?.item.inscriptionCountTotal
-                      .toNumber()
-                      .toLocaleString()}
-                  </Center>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </VStack>
-      ) : (
-        <></>
-      )}
+                <Tr>
+                  <Th>
+                    <Text color="#aaa">Total inscriptions</Text>
+                  </Th>
+                  <Td>
+                    <Center>
+                      {inscriptionSummary?.item.inscriptionCountTotal
+                        .toNumber()
+                        .toLocaleString()}
+                    </Center>
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </VStack>
+        ) : (
+          <></>
+        )}
+      </Box>
     </Box>
   );
 };

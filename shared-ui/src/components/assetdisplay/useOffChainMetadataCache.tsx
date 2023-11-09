@@ -8,7 +8,8 @@ export interface IOffchainJson {
   // add more fields as needed
   images: {
     "square": string
-  }
+  },
+  name: string
 }
 
 

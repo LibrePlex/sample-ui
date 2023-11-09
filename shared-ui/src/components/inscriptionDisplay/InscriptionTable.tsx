@@ -48,11 +48,11 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     refetch: refreshInscriptionData,
   } = useInscriptionDataForMint(mint);
 
-  const hashOfInscription = useValidationHash(inscriptionData?.item.buffer);
+  const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
 
   const base64ImageInscription = useMemo(
     () => Buffer.from(inscriptionData?.item.buffer ?? []).toString("base64"),
-    [inscriptionData?.item.buffer]
+    [inscriptionData?.item?.buffer]
   );
 
   const { cluster } = useContext(ClusterContext);
@@ -67,7 +67,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
           <Td>
             <Text>
               {(
-                (inscriptionData
+                (inscriptionData?.item
                   ? Number(inscriptionData.item.balance.toString())
                   : 0) / Number(1_000_000_000)
               ).toLocaleString()}
@@ -101,13 +101,19 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               <VStack>
                 {base64ImageInscription ? (
                   <img
+                    style={{
+                      minWidth: "240px",
+                      maxWidth: "240px",
+                      aspectRatio: "1/1",
+                      borderRadius: 8,
+                    }}
                     src={`data:image/webp;base64,${base64ImageInscription}`}
                   />
                 ) : (
                   <Skeleton
                     style={{
-                      minWidth: "135px",
-                      maxWidth: "135px",
+                      minWidth: "240px",
+                      maxWidth: "240px",
                       aspectRatio: "1/1",
                       borderRadius: 8,
                     }}
@@ -125,7 +131,6 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                       <TbRefresh />
                     </IconButton>
                   )}
-                  
                 </HStack>
               </VStack>
             </Center>

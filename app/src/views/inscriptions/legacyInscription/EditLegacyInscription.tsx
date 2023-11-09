@@ -43,7 +43,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
     isFetching: isFetchingInscriptionData,
   } = useInscriptionDataForMint(mint);
 
-  const hashOfInscription = useValidationHash(inscriptionData?.item.buffer);
+  const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
 
   const {
     data: compressedImage,
@@ -58,7 +58,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
 
   const base64ImageInscription = useMemo(
     () => Buffer.from(inscriptionData?.item.buffer ?? []).toString("base64"),
-    [inscriptionData?.item.buffer]
+    [inscriptionData?.item?.buffer]
   );
 
   const hashOk = useMemo(
@@ -102,7 +102,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                     <Text>
                       {(
                         (inscriptionData
-                          ? Number(inscriptionData.item.balance.toString())
+                          ? Number(inscriptionData?.item?.balance.toString())
                           : 0) / Number(1_000_000_000)
                       ).toLocaleString()}
                     </Text>
@@ -115,7 +115,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                   </Th>
                   <Td>
                     <HStack>
-                      <Text>{inscription?.item.size}</Text>
+                      <Text>{inscription?.item?.size}</Text>
                       {sizeOk ? (
                         <>
                           <HiCheckCircle color="lightgreen" />
@@ -128,12 +128,12 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                       )}
                       {compressedImage?.buf &&
                         compressedImage?.buf.length !==
-                          inscription.item.size && (
+                          inscription?.item.size && (
                           <ResizeLegacyMetadataAsHolderTransactionButton
                             params={{
                               mint,
                               targetSize: compressedImage?.buf.length,
-                              currentSize: inscription.item.size,
+                              currentSize: inscription?.item.size,
                             }}
                             formatting={{}}
                           />

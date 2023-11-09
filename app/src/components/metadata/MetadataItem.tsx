@@ -1,12 +1,14 @@
 import { Box, Center, Checkbox, Td, Text, Tr } from "@chakra-ui/react";
-import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { Group, IRpcObject, getMetadataExtendedPda } from  "@libreplex/shared-ui";
-import { Metadata, useMetadataById } from  "@libreplex/shared-ui";
-import { CopyPublicKeyButton } from  "@libreplex/shared-ui";
-import { NftMetadataDisplay } from "./ExtendedMetadataDisplay";
-import { PublicKey } from "@solana/web3.js";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import {
+  CopyPublicKeyButton,
+  Collection,
+  IRpcObject,
+  Metadata,
+  getMetadataExtendedPda,
+} from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { useMemo } from "react";
 
 export const MetadataItem = ({
   item,
@@ -15,21 +17,12 @@ export const MetadataItem = ({
   toggleSelectedMetadata,
 }: {
   item: IRpcObject<Metadata>;
-  collection: IRpcObject<Group>;
-  selectedMetadataKeys: Set<PublicKey>,
-  toggleSelectedMetadata: (pubkey: PublicKey, b: boolean)=> any;
+  collection: IRpcObject<Collection>;
+  selectedMetadataKeys: Set<PublicKey>;
+  toggleSelectedMetadata: (pubkey: PublicKey, b: boolean) => any;
 }) => {
-
-  
-  const {connection} = useConnection()
-
-  const metadataExtendedKey = useMemo(()=>getMetadataExtendedPda(item.pubkey)[0],[item])
-
-  // const metadataExtended = useMetadataExtendedById(
-  //   metadataExtendedKey,
-  //   connection
-  // );
-
+ 
+ 
   return (
     <Tr>
       <Td borderLeft={`10px solid ${false ? "teal" : "none"}`}>

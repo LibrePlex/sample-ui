@@ -6,10 +6,11 @@ export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
 
 import { IDL } from "../../../anchor/libreplex_inscriptions";
+import { WalletContextState } from "@solana/wallet-adapter-react";
 
 export function getProgramInstanceInscriptions(
   connection: Connection,
-  wallet: anchor.Wallet
+  wallet: Pick<WalletContextState, 'publicKey' |'signAllTransactions'|'signTransaction'>
 ) {
   if (!wallet.publicKey) return;
   const provider = new anchor.AnchorProvider(

@@ -1,40 +1,23 @@
 import {
-  getMinimumBalanceForRentExemptMint,
-  getAssociatedTokenAddressSync,
-  TOKEN_PROGRAM_ID,
-  TOKEN_2022_PROGRAM_ID,
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import {
-  Connection,
-  Keypair,
-  PublicKey,
-  TransactionInstruction,
-  SystemProgram,
-  Transaction,
-} from "@solana/web3.js";
-import BN from "bn.js";
-import React, { useMemo } from "react";
-import {
-  GenericTransactionButton,
-  GenericTransactionButtonProps,
-  Collection,
-  IExecutorParams,
-  IRpcObject,
-  ITransactionTemplate,
-  Metadata,
-  getProgramInstanceShop,
-  LegacyMint,
-  HttpClient,
-  getLegacyMetadataPda,
+    GenericTransactionButton,
+    GenericTransactionButtonProps,
+    HttpClient,
+    IExecutorParams,
+    ITransactionTemplate,
+    LegacyMint,
+    getLegacyMetadataPda
 } from "@libreplex/shared-ui";
+import {
+    Connection,
+    PublicKey,
+    Transaction,
+    TransactionInstruction
+} from "@solana/web3.js";
 
-import { Price, notify } from "@libreplex/shared-ui";
-import { IdlAccounts } from "@coral-xyz/anchor";
-import { LibreplexShop } from            "@libreplex/idls/lib/types/libreplex_shop";
-import { ITransaction } from "../../transactions/ITransaction";
-import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
+import { notify } from "@libreplex/shared-ui";
+import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
+import { ITransaction } from "../../transactions/ITransaction";
 
 export interface IInscribeLegacyMint {
   legacyMint: LegacyMint;
@@ -92,17 +75,17 @@ export const inscribeLegacyMint = async (
       signers: [],
       signatures: serializedTx.signatures,
       description: "Inscribe legacy metadata",
-      blockhash: serializedTx.blockhash
+      blockhash: serializedTx.blockhash,
     });
   }
-  console.log({data});
+  console.log({ data });
 
   return {
     data,
   };
 };
 
-export const InscribeLegacyMetadataTransactionButton = (
+export const InscribeLegacyMetadataAsHolderTransactionButton = (
   props: Omit<
     GenericTransactionButtonProps<IInscribeLegacyMint>,
     "transactionGenerator"

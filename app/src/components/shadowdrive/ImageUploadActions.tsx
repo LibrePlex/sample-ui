@@ -1,11 +1,11 @@
 import { NEXT_PUBLIC_SHDW_ACCOUNT } from "@app/environmentvariables";
-import { HttpClient } from  "@libreplex/shared-ui";
+import { HttpClient } from "@libreplex/shared-ui";
 import { IShadowDriveUpload } from "@app/api/shadowdrive/IShadowDriveUpload";
 import { uploadImageToShadowDrive } from "@app/api/shadowdrive/uploadToShadowDrive";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import Jimp from "jimp";
 import { Button } from "@chakra-ui/react";
-import { WalletAuthenticatingButton } from  "@libreplex/shared-ui";
+import { WalletAuthenticatingButton } from "@libreplex/shared-ui";
 
 export interface IUpdatableMetadata {
   name: string;
@@ -17,42 +17,34 @@ export interface IUpdatableMetadata {
   }[];
 }
 
-
-
-
 function arrayBufferToBuffer(ab: ArrayBuffer) {
   var buffer = Buffer.alloc(ab.byteLength);
   var view = new Uint8Array(ab);
   for (var i = 0; i < buffer.length; ++i) {
-      buffer[i] = view[i];
+    buffer[i] = view[i];
   }
   return buffer;
 }
-
-
 
 export const getShadowDriveUploadSignature = async (
   mintId: string,
   fileExtension: string
 ) => {
   const httpClient = new HttpClient("");
-  
+
   // TODO: Replace "DUMMYUPLOADTYPE" with metadata / collection etc
   // as validation will probably need to be performed serverside
   // as to who can upload what.
-  // given this is a reference implementation, we haven't spent 
-  // too much time on that, but if you're implementing this in 
+  // given this is a reference implementation, we haven't spent
+  // too much time on that, but if you're implementing this in
   // production, you will want to check these things if you're
-  // using shadowdrive / S3 or anything else where the keys are 
+  // using shadowdrive / S3 or anything else where the keys are
   // generated serverside.
-  
+
   return await httpClient.get<IShadowDriveUpload>(
     `/api/shadowdrive/upload/DUMMYUPLOADTYPE/${mintId}/${fileExtension}`
   );
 };
-
-
-
 
 export const uploadToShadowDrive = async (
   mintId: string,
@@ -60,16 +52,15 @@ export const uploadToShadowDrive = async (
   imageFile: File
 ) => {
   const fileElems = fileId.split(".");
-  const retval = await getShadowDriveUploadSignature(
-    mintId,
-    fileElems.length > 1 ? fileElems[fileElems.length - 1] : "png"
-  );
-  console.log({imageFile});
+  let extension =
+    fileElems.length > 1 ? fileElems[fileElems.length - 1] : "png";
+  const retval = await getShadowDriveUploadSignature(mintId, extension);
+  console.log({ imageFile });
 
   const { data, error } = retval;
   // console.log({ data, error });
   if (!data || !imageFile) {
-    return retval;
+    return { error, data: undefined };
   }
 
   const buf = arrayBufferToBuffer(await imageFile.arrayBuffer());
@@ -80,11 +71,9 @@ export const uploadToShadowDrive = async (
   // delete any old files
 
   // console.log({imageBuffer, mintId, data});
-  await uploadImageToShadowDrive(
-    NEXT_PUBLIC_SHDW_ACCOUNT,
-    [...buf],
-    data
-  );
+  await uploadImageToShadowDrive(NEXT_PUBLIC_SHDW_ACCOUNT, [...buf], data);
+
+  return { data: `https://shdw-drive.genesysgo.net/${NEXT_PUBLIC_SHDW_ACCOUNT}/${mintId}.${extension}`, error: undefined };
 };
 
 export const ImageUploadActions = ({
@@ -112,12 +101,14 @@ export const ImageUploadActions = ({
     try {
       setProcessing(true);
       const retval = await uploadToShadowDrive(linkedAccountId, fileId, image);
-      afterUpdate()
+      console.log({ retval });
+      if (retval.data) {
+        afterUpdate(retval.data);
+      }
       return retval;
     } catch (e) {
       console.log(e);
       notify({ message: "Could not upload to shadow drive", type: "error" });
-      
     } finally {
       setProcessing(false);
     }

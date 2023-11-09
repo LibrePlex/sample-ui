@@ -12,7 +12,7 @@ export type LibreplexLegacy = {
         },
         {
           "name": "legacySigner",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "pda": {
             "seeds": [
@@ -24,11 +24,6 @@ export type LibreplexLegacy = {
               }
             ]
           }
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
         },
         {
           "name": "mint",
@@ -734,7 +729,7 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "legacySigner",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "pda": {
             "seeds": [
@@ -746,11 +741,6 @@ export const IDL: LibreplexLegacy = {
               }
             ]
           }
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
         },
         {
           "name": "mint",

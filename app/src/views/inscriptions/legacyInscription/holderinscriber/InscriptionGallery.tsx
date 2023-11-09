@@ -4,7 +4,7 @@ import { getInscriptionRankPda } from "@libreplex/shared-ui";
 import { decodeInscriptionRankPage } from "@libreplex/shared-ui";
 import { useFetchSingleAccount } from "@libreplex/shared-ui";
 import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
-import { InscriptionCardLegacy } from "./InscriptionCardLegacy";
+import { InscriptionCardLegacy } from "../InscriptionCardLegacy";
 import { Paginator } from "@app/components/Paginator";
 
 export const InscriptionGallery = () => {

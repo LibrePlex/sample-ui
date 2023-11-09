@@ -1,20 +1,14 @@
-import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
   BoxProps,
-  Button,
-  Collapse,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
+  Text
 } from "@chakra-ui/react";
-import { ImageSelector } from "./ImageSelector";
-import { notify } from  "@libreplex/shared-ui";
-import { ImageUploadActions } from "./ImageUploadActions";
 import { useTheme } from "@emotion/react";
+import { notify } from "@libreplex/shared-ui";
+import { useEffect, useState } from "react";
+import { ImageSelector } from "./ImageSelector";
+import { ImageUploadActions } from "./ImageUploadActions";
 
 enum Status {
   NotStarted,
@@ -35,7 +29,7 @@ export const ImageUploader = ({
   linkedAccountId: string;
   fileId: string;
   onImageUpload?: () => any;
-  afterUpdate: () => any;
+  afterUpdate?: (url: string) => any;
 } & BoxProps) => {
   const [selectedImage, setSelectedImage] = useState<File>();
 
@@ -59,19 +53,26 @@ export const ImageUploader = ({
 
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
-  
   return (
     <Box {...rest} sx={{ position: "relative", ...rest.sx }}>
       {!selectedImage && (
         <img
-          onLoadStart={()=>{
-            setImageLoaded(false)
+          onLoadStart={() => {
+            setImageLoaded(false);
           }}
-          onLoad={()=>{
-            setImageLoaded(true)
-
+          onLoad={() => {
+            setImageLoaded(true);
           }}
-          style={{ position: "absolute", top: 0, left: 0, zIndex: 1, opacity: imageLoaded? 1: 0 }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            opacity: imageLoaded ? 1 : 0,
+            maxHeight: 150,
+            maxWidth :150,
+            overflow: "hidden"
+          }}
           height={"150px"}
           width={"150px"}
           src={currentImage}
@@ -115,7 +116,7 @@ export const ImageUploader = ({
               image={selectedImage}
               fileId={fileId}
               afterUpdate={(url) => {
-                // afterUpdate();
+                afterUpdate && afterUpdate(url);
                 setStatus(Status.Success);
               }}
               notify={notify}

@@ -9,7 +9,7 @@ import {
 import { LibreWallet, decodeLegacyMetadata } from "@libreplex/shared-ui";
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { NextApiHandler } from "next";
-import { getLegacyMetadataPda } from "./../../../../../../shared-ui/src/pdas/getLegacyMetadataPda";
+import { getLegacyMetadataPda } from "@libreplex/shared-ui/src/pdas/getLegacyMetadataPda";
 
 import { convertToWebpAndHash } from "@app/utils/webp";
 import joi from "joi";

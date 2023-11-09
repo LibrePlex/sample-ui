@@ -11,13 +11,8 @@ export interface IWebHashAndBuffer {
   hash: string;
 }
 
-
-export const useLegacyCompressedImage = (mint: PublicKey, enabled: boolean = true) => {
-  
-  const { cluster } = useContext(ClusterContext);
-
-  const fetcher = useCallback(async () => {
-    const httpClient = new HttpClient("");
+export const getLegacyCompressedImage = async (mint: PublicKey, cluster: string) => {
+  const httpClient = new HttpClient("");
 
     const { data } = await httpClient.post<IWebHashAndBuffer>(
       `/api/image/${mint.toBase58()}/webp`,
@@ -26,6 +21,15 @@ export const useLegacyCompressedImage = (mint: PublicKey, enabled: boolean = tru
       }
     );
     return data;
+}
+
+
+export const useLegacyCompressedImage = (mint: PublicKey, enabled: boolean = true) => {
+  
+  const { cluster } = useContext(ClusterContext);
+
+  const fetcher = useCallback(async () => {
+    return getLegacyCompressedImage(mint, cluster)
   }, [mint, cluster]);
 
   const key = useMemo(() => `compressed-image-${mint?.toBase58()}`, [mint]);

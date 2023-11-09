@@ -51,10 +51,7 @@ export const writeToInscription = async (
 
   const data: ITransactionTemplate[] = [];
 
-  const inscriptionsProgram = getProgramInstanceInscriptions(connection, {
-    ...wallet,
-    payer: Keypair.generate(),
-  });
+  const inscriptionsProgram = getProgramInstanceInscriptions(connection, wallet);
 
   const metadataProgram = getProgramInstanceMetadata(
     new PublicKey(PROGRAM_ID_METADATA),

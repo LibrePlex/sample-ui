@@ -12,6 +12,7 @@ import {
   Skeleton,
   Spinner,
   useTheme,
+  Text
 } from "@chakra-ui/react";
 
 import { MdCancel } from "react-icons/md";
@@ -134,13 +135,10 @@ export const ImageSelector = ({
                 />
                 {/* <input type='file' accept={acceptedFileTypes} name={name} ref={inputRef} {...inputProps} inputRef={ref} style={{ display: 'none' }}></input> */}
                 <Button
-                  placeholder={""}
-                  variant={'ghost'}
-                  sx={{ cursor: "pointer" }}
+                  variant={"outline"}
                   onClick={() => inputRef?.current && inputRef.current.click()}
-                  value={""}
                 >
-                  <Icon as={FiFile} /> Upload
+                  <Icon color="#aaa" as={FiFile} /> <Text color="#aaa">Choose</Text>
                 </Button>
               </InputGroup>
             </FormControl>

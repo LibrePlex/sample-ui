@@ -1,42 +1,37 @@
+
 import {
   Box,
   Button,
-  Collapse,
   Heading,
   ListItem,
   Text,
   UnorderedList,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import React, { useMemo, useState } from "react";
-import { WalletLegacyGallery } from "./legacyInscription/WalletLegacyGallery";
+import { LegacyMint, useInscriptionForMint } from "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import {
-  LegacyMint,
-  getInscriptionPda,
-  useFetchSingleAccount,
-  useInscriptionForMint,
-} from "@libreplex/shared-ui";
-import { InscribeLegacyMetadataTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataTransactionButton";
+import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
-import { InscriptionGallery } from "./legacyInscription/InscriptionGallery";
-import { PublicKey } from "@solana/web3.js";
 import { EditLegacyInscription } from "./legacyInscription/EditLegacyInscription";
+import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
+import { WalletLegacyGallery } from "./legacyInscription/WalletLegacyGallery";
+import { LegacyCollectionInscriber } from "./legacyInscription/collectioninscriber/LegacyCollectionInscriber";
+import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
 
 enum View {
   Wallet,
   InscriptionGallery,
+  Collection,
 }
 
 const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
   const { connection } = useConnection();
-  const {data} = useInscriptionForMint(legacyMint.mint);
-  
+  const { data } = useInscriptionForMint(legacyMint.mint);
+
   return data?.item ? (
     <EditLegacyInscription mint={legacyMint.mint} />
   ) : (
-  <InscribeLegacyMetadataTransactionButton
+    <InscribeLegacyMetadataAsHolderTransactionButton
       params={{ legacyMint }}
       formatting={{}}
     />
@@ -44,13 +39,12 @@ const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
 };
 
 const InscriptionsView = () => {
-  
   const actions = (item: LegacyMint) => {
     return <InscriptionAction legacyMint={item} />;
   };
 
-  const {publicKey} = useWallet();
-    const [view, setView] = useState<View>(View.InscriptionGallery);
+  const { publicKey } = useWallet();
+  const [view, setView] = useState<View>(View.InscriptionGallery);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -120,12 +114,22 @@ const InscriptionsView = () => {
                 >
                   Your Wallet
                 </Button>
+                <Button
+                  colorScheme="orange"
+                  variant={view === View.Collection ? "solid" : "outline"}
+                  onClick={() => {
+                    setView(View.Collection);
+                  }}
+                >
+                  Your Collections
+                </Button>
               </Box>
 
               {view === View.Wallet && (
                 <WalletLegacyGallery publicKey={publicKey} actions={actions} />
               )}
               {view === View.InscriptionGallery && <InscriptionGallery />}
+              {view === View.Collection && <LegacyCollectionInscriber />}
             </Box>
           </Box>
         </Box>
