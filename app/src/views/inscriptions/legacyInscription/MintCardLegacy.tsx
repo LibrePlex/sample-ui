@@ -70,9 +70,9 @@ export const MintCardLegacy = ({
 
   const { data: offchainData } = useOffChainMetadataCache(mintId);
 
-  useEffect(() => {
-    console.log({ offchainData });
-  }, [offchainData]);
+  // useEffect(() => {
+  //   console.log({ offchainData });
+  // }, [offchainData]);
 
   const {
     data: inscription,
