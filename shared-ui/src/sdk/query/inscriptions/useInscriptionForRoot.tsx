@@ -5,9 +5,9 @@ import { getInscriptionPda } from "../../../pdas/getInscriptionPda";
 import { useMemo } from "react";
 import { useInscriptionById } from "./inscriptions";
 
-export const useInscriptionForMint = (mint: PublicKey) => {
+export const useInscriptionForRoot = (root: PublicKey) => {
   const { connection } = useConnection();
-  const inscriptionId = useMemo(() => mint ? getInscriptionPda(mint)[0] : undefined, [mint]);
+  const inscriptionId = useMemo(() => root ? getInscriptionPda(root)[0] : undefined, [root]);
 
   return useInscriptionById(inscriptionId, connection);
 };

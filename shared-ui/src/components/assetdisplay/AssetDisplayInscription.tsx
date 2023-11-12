@@ -1,7 +1,7 @@
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import React, { useEffect, useState } from "react";
-import { useInscriptionDataForMint, useInscriptionForMint } from "../../sdk";
+import { useInscriptionDataForRoot, useInscriptionForRoot } from "../../sdk";
 import {
   getBase64FromDatabytes
 } from "../../sdk/query/inscriptions/inscriptions";
@@ -14,8 +14,8 @@ export const AssetDisplayInscription = ({
   dataType: string;
 }) => {
   const { connection } = useConnection();
-  const inscription = useInscriptionForMint(rootId);
-  const { data: inscriptionData } = useInscriptionDataForMint(rootId);
+  const inscription = useInscriptionForRoot(rootId);
+  const { data: inscriptionData } = useInscriptionDataForRoot(rootId);
 
   const [currentBase64Image, setCurrentBase64Image] = useState<string>();
   useEffect(() => {

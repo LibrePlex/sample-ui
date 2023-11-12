@@ -31,7 +31,7 @@ export interface IWriteToInscription {
   dataBytes: number[];
 }
 
-export const BATCH_SIZE = 800;
+export const BATCH_SIZE = 750;
 
 // start at 0. We can extend as needed
 export const INSCRIPTION_DEFAULT_LENGTH = 0;
@@ -51,7 +51,10 @@ export const writeToInscription = async (
 
   const data: ITransactionTemplate[] = [];
 
-  const inscriptionsProgram = getProgramInstanceInscriptions(connection, wallet);
+  const inscriptionsProgram = getProgramInstanceInscriptions(
+    connection,
+    wallet
+  );
 
   const metadataProgram = getProgramInstanceMetadata(
     new PublicKey(PROGRAM_ID_METADATA),
@@ -94,6 +97,12 @@ export const writeToInscription = async (
         .writeToInscription({
           data: Buffer.from(byteBatch),
           startPos,
+          mediaType: {
+            none: {},
+          },
+          encodingType: {
+            none: {},
+          },
         })
         .accounts({
           authority: wallet.publicKey,
@@ -170,7 +179,7 @@ export const WriteToInscriptionTransactionButton = (
     "transactionGenerator"
   >
 ) => {
-  const {writeStates, expectedCount} = useInscriptionWriteStatus(
+  const { writeStates, expectedCount } = useInscriptionWriteStatus(
     props.params.dataBytes,
     props.params.inscription.pubkey
   );

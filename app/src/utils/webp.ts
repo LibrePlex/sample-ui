@@ -2,11 +2,11 @@ import axios from "axios";
 
 import webp from "imagemin-webp";
 import imagemin from "imagemin";
-import { HttpClient, IOffchainJson } from "@libreplex/shared-ui";
+import { HttpClient, IOffchainJson, getImageAsBuffer } from "@libreplex/shared-ui";
 import { Metadata } from "@metaplex-foundation/js";
 import { useEffect, useState } from "react";
 import { calculateHashFromBuffer } from "./calculateHashFromBuffer";
-import { getImageAsBuffer } from "./getImageAsBuffer";
+
 
 export const useWebpAndHash = (offchainUrl: string) => {
   const [buf, setBuf] = useState<Buffer>();

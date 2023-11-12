@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 export interface IWebHashAndBuffer {
   buf: number[];
   hash: string;
+  filename: string;
 }
 
 export const getLegacyCompressedImage = async (mint: PublicKey, cluster: string) => {

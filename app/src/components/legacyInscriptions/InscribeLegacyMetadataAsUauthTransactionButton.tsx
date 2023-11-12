@@ -26,7 +26,7 @@ import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legac
 import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
 
 import { IWebHashAndBuffer, getLegacyCompressedImage } from "shared-ui/src/components/assetdisplay/useLegacyCompressedImage";
-import { getImageAsBuffer } from "@app/utils/getImageAsBuffer";
+import { getImageAsBuffer } from "@libreplex/shared-ui";
 import { calculateHashFromBuffer } from "@app/utils/calculateHashFromBuffer";
 
 export interface IInscribeLegacyMint {
@@ -143,7 +143,7 @@ export const InscribeLegacyMetadataAsUauthTransactionButton = (
 ) => {
   return (
     <GenericTransactionButton<IInscribeLegacyMint>
-      text={`Inscribe`}
+      text={`Create inscription`}
       transactionGenerator={inscribeLegacyMint}
       onError={(msg) => notify({ message: msg ?? "Unknown error" })}
       {...props}

@@ -1,12 +1,7 @@
-import {
-  Alert,
-  Box,
-  BoxProps,
-  Text
-} from "@chakra-ui/react";
+import { Alert, Box, BoxProps, Skeleton, Text } from "@chakra-ui/react";
 import { useTheme } from "@emotion/react";
 import { notify } from "@libreplex/shared-ui";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ImageSelector } from "./ImageSelector";
 import { ImageUploadActions } from "./ImageUploadActions";
 
@@ -27,7 +22,7 @@ export const ImageUploader = ({
 }: {
   currentImage: string;
   linkedAccountId: string;
-  fileId: string;
+  fileId?: string;
   onImageUpload?: () => any;
   afterUpdate?: (url: string) => any;
 } & BoxProps) => {
@@ -39,49 +34,47 @@ export const ImageUploader = ({
 
   useEffect(() => {
     setStatus(Status.NotStarted);
+    console.log({selectedImage});
   }, [selectedImage]);
 
   const [status, setStatus] = useState<Status>(Status.NotStarted);
 
-  useEffect(() => {
-    if (status === Status.Success) {
-      setSelectedImage(undefined);
-    }
-  }, [status]);
 
-  const theme = useTheme();
+  const extension = useMemo(()=>selectedImage?.name.split(".").slice(-1).join(""),[selectedImage])
+
 
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   return (
     <Box {...rest} sx={{ position: "relative", ...rest.sx }}>
-      {!selectedImage && (
-        <img
-          onLoadStart={() => {
-            setImageLoaded(false);
-          }}
-          onLoad={() => {
-            setImageLoaded(true);
-          }}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            opacity: imageLoaded ? 1 : 0,
-            maxHeight: 150,
-            maxWidth :150,
-            overflow: "hidden"
-          }}
-          height={"150px"}
-          width={"150px"}
-          src={currentImage}
-        />
-      )}
+      {!selectedImage &&
+        (
+          <img
+            onLoadStart={() => {
+              setImageLoaded(false);
+            }}
+            onLoad={() => {
+              setImageLoaded(true);
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 1,
+              opacity: imageLoaded ? 1 : 0,
+              maxHeight: 200,
+              maxWidth: 200,
+              overflow: "hidden",
+            }}
+            height={"200px"}
+            width={"200px"}
+            src={currentImage}
+          />
+        ) }
 
       <ImageSelector
-        height={"150px"}
-        width={"150px"}
+        height={"200px"}
+        width={"200px"}
         currentImageUrl={""}
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
@@ -114,7 +107,7 @@ export const ImageUploader = ({
             <ImageUploadActions
               linkedAccountId={linkedAccountId}
               image={selectedImage}
-              fileId={fileId}
+              fileId={fileId??`.${extension}`}
               afterUpdate={(url) => {
                 afterUpdate && afterUpdate(url);
                 setStatus(Status.Success);

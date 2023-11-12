@@ -13,23 +13,7 @@ export type LibreplexInscriptions = {
         {
           "name": "page",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_rank"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateInscriptionRankInput"
-                },
-                "path": "input.page_index"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -62,16 +46,7 @@ export type LibreplexInscriptions = {
         {
           "name": "inscriptionSummary",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_summary"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscription",
@@ -107,37 +82,12 @@ export type LibreplexInscriptions = {
         {
           "name": "inscriptionSummary",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_summary"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscriptionRanksCurrentPage",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_rank"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateInscriptionInput"
-                },
-                "path": "inscription_input.current_rank_page"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscriptionRanksNextPage",
@@ -147,40 +97,12 @@ export type LibreplexInscriptions = {
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_data"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -244,22 +166,7 @@ export type LibreplexInscriptions = {
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_data"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Inscription",
-                "path": "inscription.root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -277,10 +184,46 @@ export type LibreplexInscriptions = {
       ]
     },
     {
+      "name": "claimExcessRent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "writeToInscription",
       "accounts": [
         {
           "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
           "isMut": true,
           "isSigner": true
         },
@@ -345,60 +288,7 @@ export type LibreplexInscriptions = {
   ],
   "accounts": [
     {
-      "name": "inscriptionRankPage",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "size",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "inscriptionSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "inscriptionCountTotal",
-            "type": "u64"
-          },
-          {
-            "name": "inscriptionCountImmutables",
-            "type": "u64"
-          },
-          {
-            "name": "lastInscription",
-            "type": "publicKey"
-          },
-          {
-            "name": "lastInscriber",
-            "type": "publicKey"
-          },
-          {
-            "name": "lastInscriptionCreateTime",
-            "type": "i64"
-          },
-          {
-            "name": "extension",
-            "type": {
-              "defined": "SummaryExtension"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "inscriptionData",
-      "type": {
-        "kind": "struct",
-        "fields": []
-      }
-    },
-    {
-      "name": "inscription",
+      "name": "Inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -442,21 +332,62 @@ export type LibreplexInscriptions = {
           }
         ]
       }
-    }
-  ],
-  "types": [
+    },
     {
-      "name": "CreateInscriptionRankInput",
+      "name": "InscriptionData",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    },
+    {
+      "name": "InscriptionRankPage",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "pageIndex",
+            "name": "size",
             "type": "u32"
           }
         ]
       }
     },
+    {
+      "name": "InscriptionSummary",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "inscriptionCountTotal",
+            "type": "u64"
+          },
+          {
+            "name": "inscriptionCountImmutables",
+            "type": "u64"
+          },
+          {
+            "name": "lastInscription",
+            "type": "publicKey"
+          },
+          {
+            "name": "lastInscriber",
+            "type": "publicKey"
+          },
+          {
+            "name": "lastInscriptionCreateTime",
+            "type": "i64"
+          },
+          {
+            "name": "extension",
+            "type": {
+              "defined": "SummaryExtension"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
     {
       "name": "CreateInscriptionInput",
       "type": {
@@ -500,6 +431,32 @@ export type LibreplexInscriptions = {
       }
     },
     {
+      "name": "SignerType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Root"
+          },
+          {
+            "name": "LegacyMetadataSigner"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateInscriptionRankInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pageIndex",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "ResizeInscriptionInput",
       "type": {
         "kind": "struct",
@@ -531,6 +488,36 @@ export type LibreplexInscriptions = {
           {
             "name": "startPos",
             "type": "u32"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "option": {
+                "defined": "MediaType"
+              }
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "option": {
+                "defined": "EncodingType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncodingType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Base64"
           }
         ]
       }
@@ -582,15 +569,69 @@ export type LibreplexInscriptions = {
       }
     },
     {
-      "name": "SignerType",
+      "name": "MediaType",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Root"
+            "name": "None"
           },
           {
-            "name": "LegacyMetadataSigner"
+            "name": "Audio",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Application",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Image",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Video",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Text",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "mediaType",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Erc721"
           }
         ]
       }
@@ -602,48 +643,6 @@ export type LibreplexInscriptions = {
         "variants": [
           {
             "name": "None"
-          }
-        ]
-      }
-    },
-    {
-      "name": "MediaType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Image"
-          },
-          {
-            "name": "Erc721"
-          }
-        ]
-      }
-    },
-    {
-      "name": "EncodingType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Base64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "InscriptionEventType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Create"
-          },
-          {
-            "name": "Update"
-          },
-          {
-            "name": "Resize"
           }
         ]
       }
@@ -769,23 +768,7 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "page",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_rank"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateInscriptionRankInput"
-                },
-                "path": "input.page_index"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -818,16 +801,7 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "inscriptionSummary",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_summary"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscription",
@@ -863,37 +837,12 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "inscriptionSummary",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_summary"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscriptionRanksCurrentPage",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_rank"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "CreateInscriptionInput"
-                },
-                "path": "inscription_input.current_rank_page"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscriptionRanksNextPage",
@@ -903,40 +852,12 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_data"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "inscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "path": "root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -1000,22 +921,7 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "inscription_data"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Inscription",
-                "path": "inscription.root"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -1033,10 +939,46 @@ export const IDL: LibreplexInscriptions = {
       ]
     },
     {
+      "name": "claimExcessRent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "writeToInscription",
       "accounts": [
         {
           "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
           "isMut": true,
           "isSigner": true
         },
@@ -1101,60 +1043,7 @@ export const IDL: LibreplexInscriptions = {
   ],
   "accounts": [
     {
-      "name": "inscriptionRankPage",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "size",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "inscriptionSummary",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "inscriptionCountTotal",
-            "type": "u64"
-          },
-          {
-            "name": "inscriptionCountImmutables",
-            "type": "u64"
-          },
-          {
-            "name": "lastInscription",
-            "type": "publicKey"
-          },
-          {
-            "name": "lastInscriber",
-            "type": "publicKey"
-          },
-          {
-            "name": "lastInscriptionCreateTime",
-            "type": "i64"
-          },
-          {
-            "name": "extension",
-            "type": {
-              "defined": "SummaryExtension"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "inscriptionData",
-      "type": {
-        "kind": "struct",
-        "fields": []
-      }
-    },
-    {
-      "name": "inscription",
+      "name": "Inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1198,21 +1087,62 @@ export const IDL: LibreplexInscriptions = {
           }
         ]
       }
-    }
-  ],
-  "types": [
+    },
     {
-      "name": "CreateInscriptionRankInput",
+      "name": "InscriptionData",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    },
+    {
+      "name": "InscriptionRankPage",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "pageIndex",
+            "name": "size",
             "type": "u32"
           }
         ]
       }
     },
+    {
+      "name": "InscriptionSummary",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "inscriptionCountTotal",
+            "type": "u64"
+          },
+          {
+            "name": "inscriptionCountImmutables",
+            "type": "u64"
+          },
+          {
+            "name": "lastInscription",
+            "type": "publicKey"
+          },
+          {
+            "name": "lastInscriber",
+            "type": "publicKey"
+          },
+          {
+            "name": "lastInscriptionCreateTime",
+            "type": "i64"
+          },
+          {
+            "name": "extension",
+            "type": {
+              "defined": "SummaryExtension"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
     {
       "name": "CreateInscriptionInput",
       "type": {
@@ -1256,6 +1186,32 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
+      "name": "SignerType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Root"
+          },
+          {
+            "name": "LegacyMetadataSigner"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateInscriptionRankInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pageIndex",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
       "name": "ResizeInscriptionInput",
       "type": {
         "kind": "struct",
@@ -1287,6 +1243,36 @@ export const IDL: LibreplexInscriptions = {
           {
             "name": "startPos",
             "type": "u32"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "option": {
+                "defined": "MediaType"
+              }
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "option": {
+                "defined": "EncodingType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncodingType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Base64"
           }
         ]
       }
@@ -1338,15 +1324,69 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
-      "name": "SignerType",
+      "name": "MediaType",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "Root"
+            "name": "None"
           },
           {
-            "name": "LegacyMetadataSigner"
+            "name": "Audio",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Application",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Image",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Video",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Text",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "mediaType",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Erc721"
           }
         ]
       }
@@ -1358,48 +1398,6 @@ export const IDL: LibreplexInscriptions = {
         "variants": [
           {
             "name": "None"
-          }
-        ]
-      }
-    },
-    {
-      "name": "MediaType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Image"
-          },
-          {
-            "name": "Erc721"
-          }
-        ]
-      }
-    },
-    {
-      "name": "EncodingType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Base64"
-          }
-        ]
-      }
-    },
-    {
-      "name": "InscriptionEventType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Create"
-          },
-          {
-            "name": "Update"
-          },
-          {
-            "name": "Resize"
           }
         ]
       }

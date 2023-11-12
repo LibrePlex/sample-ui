@@ -20,7 +20,7 @@ import { BaseMetadataPanel } from "./metadata/MetadataPanel";
 import ReactJson from "react-json-view";
 import {
   useMetadataById,
-  useNetworkConfiguration,
+  useCluster,
   usePublicKeyOrNull,
 } from  "@libreplex/shared-ui";
 

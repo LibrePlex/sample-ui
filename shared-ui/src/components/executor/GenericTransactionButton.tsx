@@ -8,7 +8,7 @@ import { ITransactionTemplate } from "./ITransactionTemplate";
 import { ButtonProps, Spinner } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import React from "react";
-import { useNetworkConfiguration } from "../../contexts/NetworkConfigurationProvider";
+import { useCluster } from "../../contexts/NetworkConfigurationProvider";
 
 export interface GenericTransactionButtonProps<P> {
   params: P;

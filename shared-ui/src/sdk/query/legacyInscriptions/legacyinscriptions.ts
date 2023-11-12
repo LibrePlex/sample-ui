@@ -5,14 +5,14 @@ import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 import { LibreplexLegacy } from "../../../anchor/libreplex_legacy";
 
 
-export type LegacyInscription = IdlAccounts<LibreplexLegacy>["legacyInscription"];
+export type LegacyInscription = IdlAccounts<LibreplexLegacy>["LegacyInscription"];
 
 export const decodeLegacyInscription =
   (program: Program<LibreplexLegacy>) =>
   (buffer: Buffer, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     const inscriptionBase = coder.accounts.decode<LegacyInscription>(
-      "legacyInscription",
+      "LegacyInscription",
       buffer
     );
 

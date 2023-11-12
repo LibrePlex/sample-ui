@@ -9,6 +9,7 @@ import {
   Tr,
   VStack,
   Text,
+  Center,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useCallback, useState } from "react";
@@ -54,8 +55,13 @@ export const LegacyCollectionInscriber = () => {
   return (
     <VStack rowGap={2} mt={2}>
       <Box>
-        <Button onClick={() => processInput()}>Process</Button>
+        {mintIds.length === 0 ? (
+          <Button onClick={() => processInput()}>Process</Button>
+        ) : (
+          <Button onClick={() => setMintIds([])}>Re-enter mints</Button>
+        )}
       </Box>
+
       {mintIds.length === 0 && (
         <Textarea
           size="md"
@@ -72,14 +78,19 @@ export const LegacyCollectionInscriber = () => {
         <Table>
           <Tbody>
             <Tr>
-              <Th colSpan={1}>
-                <Text color="#aaa">Mint count</Text>
+              <Th>
+                <Text color="#aaa">Mint count: {mintIds.length}</Text>
               </Th>
-              <Td>{mintIds.length}</Td>
-              <Td colSpan={2}></Td>
+              <Th color="#aaa">Name</Th>
+              <Th color="#aaa">
+                <Center>Off-chain image</Center>
+              </Th>
+              <Th color="#aaa">
+                <Center>Inscription</Center>
+              </Th>
             </Tr>
             {mintIds.map((m, i) => (
-              <MintMigratorRow mint={m} key={i}/>
+              <MintMigratorRow mint={m} key={i} />
             ))}
             {errors.map((e, idx) => (
               <Tr key={idx}>

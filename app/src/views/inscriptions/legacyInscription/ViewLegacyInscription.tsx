@@ -2,6 +2,9 @@ import { ResizeLegacyMetadataAsHolderTransactionButton } from "@app/components/l
 import { WriteToLegacyInscriptionAsHolderTransactionButton } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsHolderTransactionButton";
 import {
   Button,
+  Center,
+  HStack,
+  IconButton,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -18,30 +21,33 @@ import {
   Text,
   Th,
   Tr,
-  IconButton,
-  Center,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
-import { TbRefresh } from "react-icons/tb";
+import {
+  SolscanLink,
+  useInscriptionDataForRoot,
+  useInscriptionForRoot,
+  useLegacyCompressedImage,
+} from "@libreplex/shared-ui";
+
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
-import { useLegacyInscriptionForMint } from "./useLegacyInscriptionForMint";
+import { HiCheckCircle, HiXCircle } from "react-icons/hi";
 import { useValidationHash } from "../useValidationHash";
-import { HiCheckCircle, HiXCircle, HiSearch } from "react-icons/hi";
-import { compress } from "marketplace/next.config";
-import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
-import Link from "next/link";
-import { SolscanLink, useInscriptionDataForMint, useInscriptionForMint, useLegacyCompressedImage } from "@libreplex/shared-ui";
+import { useLegacyInscriptionForMint } from "./useLegacyInscriptionForMint";
+import { useCluster } from "@libreplex/shared-ui";
+import { TbRefresh } from "react-icons/tb";
+import { useMediaType } from "@libreplex/shared-ui";
+import { useUrlPrefixForInscription } from "@libreplex/shared-ui";
 
-export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
-  const { data: inscription } = useInscriptionForMint(mint);
+export const ViewLegacyInscription = ({ mint }: { mint: PublicKey }) => {
+  const { data: inscription } = useInscriptionForRoot(mint);
   const legacyInscription = useLegacyInscriptionForMint(mint);
   const {
     data: inscriptionData,
     refetch: refreshInscriptionData,
     isFetching: isFetchingInscriptionData,
-  } = useInscriptionDataForMint(mint);
+  } = useInscriptionDataForRoot(mint);
 
   const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
 
@@ -70,7 +76,11 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
     [compressedImage, inscription]
   );
 
-  const { cluster } = useContext(ClusterContext);
+  const { cluster } = useCluster();
+
+  const mediaType = useMediaType(compressedImage?.filename);
+
+  const urlPrefix = useUrlPrefixForInscription(inscription);
 
   return (
     <Popover>
@@ -83,7 +93,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
             await refreshInscriptionData();
           }}
         >
-          Edit
+          View Inscription
         </Button>
       </PopoverTrigger>
       <Portal>
@@ -96,53 +106,6 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
               <Tbody>
                 <Tr>
                   <Th>
-                    <Text color="#aaa">Rent (SOL)</Text>
-                  </Th>
-                  <Td>
-                    <Text>
-                      {(
-                        (inscriptionData
-                          ? Number(inscriptionData?.item?.balance.toString())
-                          : 0) / Number(1_000_000_000)
-                      ).toLocaleString()}
-                    </Text>
-                  </Td>
-                </Tr>
-
-                <Tr>
-                  <Th>
-                    <Text color="#aaa">Size (bytes)</Text>
-                  </Th>
-                  <Td>
-                    <HStack>
-                      <Text>{inscription?.item?.size}</Text>
-                      {sizeOk ? (
-                        <>
-                          <HiCheckCircle color="lightgreen" />
-                        </>
-                      ) : (
-                        <>
-                          {/* <Text>{inscription?.item.size} {"<"} {compressedImage?.buf.length}</Text> */}
-                          <HiXCircle color="#f66" />
-                        </>
-                      )}
-                      {compressedImage?.buf &&
-                        compressedImage?.buf.length !==
-                          inscription?.item.size && (
-                          <ResizeLegacyMetadataAsHolderTransactionButton
-                            params={{
-                              mint,
-                              targetSize: compressedImage?.buf.length,
-                              currentSize: inscription?.item.size,
-                            }}
-                            formatting={{}}
-                          />
-                        )}
-                    </HStack>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Th>
                     <Text color="#aaa">Offchain image</Text>
                   </Th>
                   <Td>
@@ -151,7 +114,7 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                         {base64ImageOffChain ? (
                           <img
                             alt="off chain image"
-                            src={`data:image/webp;base64,${base64ImageOffChain}`}
+                            src={`data:${mediaType};base64,${base64ImageOffChain}`}
                           />
                         ) : (
                           <Skeleton
@@ -187,6 +150,52 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                 </Tr>
                 <Tr>
                   <Th>
+                    <Text color="#aaa">Size (bytes)</Text>
+                  </Th>
+                  <Td>
+                    <HStack>
+                      <Text>{inscription?.item?.size}</Text>
+                      {sizeOk ? (
+                        <>
+                          <HiCheckCircle color="lightgreen" />
+                        </>
+                      ) : (
+                        <>
+                          {/* <Text>{inscription?.item.size} {"<"} {compressedImage?.buf.length}</Text> */}
+                          <HiXCircle color="#f66" />
+                        </>
+                      )}
+                      {compressedImage?.buf &&
+                        compressedImage?.buf.length !==
+                          inscription?.item.size && (
+                          <ResizeLegacyMetadataAsHolderTransactionButton
+                            params={{
+                              mint,
+                              targetSize: compressedImage?.buf.length,
+                              currentSize: inscription?.item.size,
+                            }}
+                            formatting={{}}
+                          />
+                        )}
+                    </HStack>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Th>
+                    <Text color="#aaa">Rent (SOL)</Text>
+                  </Th>
+                  <Td>
+                    <Text>
+                      {(
+                        (inscriptionData
+                          ? Number(inscriptionData?.item?.balance.toString())
+                          : 0) / Number(1_000_000_000)
+                      ).toLocaleString()}
+                    </Text>
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Th>
                     <VStack>
                       <Text color="#aaa">Inscribed image</Text>
                       {compressedImage?.buf && sizeOk && !hashOk && (
@@ -194,6 +203,10 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                           params={{
                             mint,
                             dataBytes: [...compressedImage?.buf],
+                            encodingType: {
+                              base64: {},
+                            },
+                            mediaType,
                           }}
                           formatting={{}}
                         />
@@ -211,7 +224,13 @@ export const EditLegacyInscription = ({ mint }: { mint: PublicKey }) => {
                       <VStack>
                         {base64ImageInscription ? (
                           <img
-                            src={`data:image/webp;base64,${base64ImageInscription}`}
+                            style={{
+                              minWidth: "135px",
+                              maxWidth: "135px",
+                              aspectRatio: "1/1",
+                              borderRadius: 8,
+                            }}
+                            src={`data:${urlPrefix};base64,${base64ImageInscription}`}
                           />
                         ) : (
                           <Skeleton

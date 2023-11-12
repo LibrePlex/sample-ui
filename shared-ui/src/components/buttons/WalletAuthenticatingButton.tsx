@@ -1,7 +1,8 @@
 import { Box, Button, ButtonProps, Spinner, Text } from "@chakra-ui/react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import React, { ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { HttpClient } from "../../utils/HttpClient";
+import dynamic from "next/dynamic";
 
 export type RequestGet<T extends unknown> = () => Promise<
   | { data: T; error: undefined }
@@ -10,6 +11,12 @@ export type RequestGet<T extends unknown> = () => Promise<
       data: undefined;
     }
 >;
+
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+);
 
 export const WalletAuthenticatingButton = <T extends unknown>({
   disabled,
@@ -59,16 +66,20 @@ export const WalletAuthenticatingButton = <T extends unknown>({
     }
   }, [onClick, publicKey, signMessage]);
 
+  const [clicking, setClicking] = useState<boolean>(false);
+
   return connected ? (
     <>
       <Button
+        sx={{ color: "#aaa" }}
         {...rest}
         disabled={disabled || publicKey === null}
-        variant="contained"
         onClick={async (e) => {
+          setClicking(true);
           beforeClick && beforeClick();
           await wrappedOnClick();
           afterClick && afterClick(e);
+          setClicking(false);
         }}
       >
         {isLoading ? (
@@ -82,12 +93,14 @@ export const WalletAuthenticatingButton = <T extends unknown>({
           >
             <Spinner />
           </Box>
+        ) : clicking ? (
+          "Signing in wallet..."
         ) : (
           children
         )}
       </Button>
     </>
   ) : (
-    <Text>Wallet not connected</Text>
+    <WalletMultiButtonDynamic/>
   );
 };

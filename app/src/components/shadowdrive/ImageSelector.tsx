@@ -12,7 +12,7 @@ import {
   Skeleton,
   Spinner,
   useTheme,
-  Text
+  Text,
 } from "@chakra-ui/react";
 
 import { MdCancel } from "react-icons/md";
@@ -57,7 +57,7 @@ export const ImageSelector = ({
           position: "relative",
         }}
       >
-        <Skeleton
+        {/* <Skeleton
           animation={0}
           sx={{
             opacity: visible ? 0 : 1,
@@ -71,33 +71,40 @@ export const ImageSelector = ({
           variant="rectangular"
         >
           <Spinner />
-        </Skeleton>
-        {finalImage ? (
-          <img
-            onLoad={() => {
-              setVisible(true);
-            }}
-            onLoadStart={() => {
-              setVisible(false);
-            }}
-            style={{
-              imageRendering: "pixelated",
-              padding: 0,
-              opacity: visible ? 1 : 0,
-              height,
-              width,
-              minWidth: width,
-              minHeight: height,
-              maxWidth: width,
-              maxHeight: height,
-              position: "absolute",
-              aspectRatio: "1/1",
-            }}
-            src={finalImage}
-          />
-        ) : (
-          <></>
-        )}
+        </Skeleton> */}
+        <Box mb={3} sx={{ borderRadius: "25px", overflow: "hidden" }}>
+          {finalImage ? (
+            <img
+              onLoad={() => {
+                setVisible(true);
+              }}
+              onLoadStart={() => {
+                setVisible(false);
+              }}
+              style={{
+                imageRendering: "pixelated",
+                padding: 0,
+                opacity: visible ? 1 : 0,
+                height,
+                width,
+                minWidth: width,
+                minHeight: height,
+                maxWidth: width,
+                maxHeight: height,
+                aspectRatio: "1/1",
+              }}
+              src={finalImage}
+            />
+          ) : (
+            <Skeleton
+              startColor="#aaa"
+              endColor="#aaa"
+              speed={undefined}
+              height={"200px"}
+              width={"200px"}
+            ></Skeleton>
+          )}
+        </Box>
         <Box display="flex">
           {selectedImage ? (
             <Box
@@ -106,17 +113,14 @@ export const ImageSelector = ({
                 top: 1,
                 right: 1,
                 borderRadius: "1000px",
-                background: '#999',
-                cursor: 'pointer'
+                background: "#999",
+                cursor: "pointer",
               }}
               onClick={() => {
                 setSelectedImage(undefined);
               }}
             >
-              <MdCancel
-                size={"32px"}
-                style={{ color: '#fff'}}
-              />
+              <MdCancel size={"32px"} style={{ color: "#fff" }} />
             </Box>
           ) : (
             <FormControl isRequired>
@@ -138,7 +142,8 @@ export const ImageSelector = ({
                   variant={"outline"}
                   onClick={() => inputRef?.current && inputRef.current.click()}
                 >
-                  <Icon color="#aaa" as={FiFile} /> <Text color="#aaa">Choose</Text>
+                  <Icon color="#aaa" as={FiFile} />{" "}
+                  <Text color="#aaa">Choose</Text>
                 </Button>
               </InputGroup>
             </FormControl>

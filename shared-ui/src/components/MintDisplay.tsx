@@ -16,7 +16,6 @@ import React, { ReactNode, useMemo, useState } from "react";
 import { AssetDisplay, CopyPublicKeyButton } from ".";
 import {
   useCollectionById,
-  useInscriptionForMint,
   useMetadataByMintId,
 } from "../sdk";
 import { AttributesDisplayChainRenderer } from "./attributedisplay/AttributesDisplayChainRenderer";

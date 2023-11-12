@@ -5,7 +5,7 @@ import {
   FormLabel,
   HStack,
   Input,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useContext, useEffect, useState } from "react";
@@ -15,13 +15,15 @@ import {
   MetadataProgramContext,
   MintDisplay,
   PROGRAM_ID_METADATA,
+  SolscanLink,
   useMetadataByMintId,
-  usePublicKeyOrNull
-} from  "@libreplex/shared-ui";
+  usePublicKeyOrNull,
+} from "@libreplex/shared-ui";
 
 import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/router";
 import React from "react";
+import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
 
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");
@@ -36,25 +38,29 @@ export const LibreScanner = () => {
 
   const programIdOverridePubkey = usePublicKeyOrNull(programIdOverride);
 
-  
   const router = useRouter();
 
   useEffect(() => {
     if (router.query.mintId && mintId !== router.query.mintId) {
-     
       setMintId((router.query.mintId ?? "") as string);
     }
   }, [router?.query]);
 
-  useEffect(()=>{
-    if( mintPublicKey && router.query.mintId !== mintPublicKey?.toBase58()) {
-      router.query.mintId = mintPublicKey.toBase58()
-      router.push({
-        pathname: '/demo',
-        query: {...router.query, mintId: mintPublicKey.toBase58()},
-      }, undefined, {})
+  useEffect(() => {
+    if (mintPublicKey && router.query.mintId !== mintPublicKey?.toBase58()) {
+      router.query.mintId = mintPublicKey.toBase58();
+      router.push(
+        {
+          pathname: "/demo",
+          query: { ...router.query, mintId: mintPublicKey.toBase58() },
+        },
+        undefined,
+        {}
+      );
     }
-  },[router, mintPublicKey])
+  }, [router, mintPublicKey]);
+
+  const { cluster } = useContext(ClusterContext);
 
   return (
     <Box
@@ -70,15 +76,20 @@ export const LibreScanner = () => {
       <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-10 pb-5">
         LibreScan - View Metadata
       </h1>
+
       <FormControl>
         <FormLabel>Mint ID</FormLabel>
 
-        <Input
-          placeholder="Mint ID"
-          value={mintId}
-          onChange={(e) => setMintId(e.currentTarget.value)}
-        />
+        <HStack>
+          <Input
+            placeholder="Mint ID"
+            value={mintId}
+            onChange={(e) => setMintId(e.currentTarget.value)}
+          />
+          <SolscanLink address={mintId} cluster={cluster} />
+        </HStack>
       </FormControl>
+
       <HStack>
         <Text>Program ID</Text>{" "}
         <CopyPublicKeyButton publicKey={program.programId.toBase58()} />

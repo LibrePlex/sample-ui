@@ -7,7 +7,8 @@ import {
   MediaType,
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
-  getInscriptionPda
+  getInscriptionPda,
+  getLegacyMetadataPda
 } from "@libreplex/shared-ui";
 import {
   Connection,
@@ -25,7 +26,7 @@ import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legac
 import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
 import { BATCH_SIZE, useInscriptionWriteStatus } from "../inscriptions/WriteToInscriptionTransactionButton";
 
-export interface IWriteToLegacyInscriptionAsHolder {
+export interface IWriteToLegacyInscriptionAsUAuth {
   mint: PublicKey;
   dataBytes: number[];
   mediaType: MediaType,
@@ -35,7 +36,7 @@ export interface IWriteToLegacyInscriptionAsHolder {
 
 
 export const resizeLegacyInscription = async (
-  { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsHolder>,
+  { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsUAuth>,
   connection: Connection,
   cluster: string
 ): Promise<{
@@ -55,7 +56,7 @@ export const resizeLegacyInscription = async (
   }
 
   // have to check the owner here - unfortunate as it's expensive
-  const { mint, dataBytes, encodingType, mediaType } = params;
+  const { mint, dataBytes, mediaType, encodingType } = params;
 
   const tokenAccounts = await connection.getTokenLargestAccounts(mint);
 
@@ -78,6 +79,7 @@ export const resizeLegacyInscription = async (
 
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint)[0];
+  const legacyMetadata = getLegacyMetadataPda(mint)[0];
 
   const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
 
@@ -86,26 +88,31 @@ export const resizeLegacyInscription = async (
   let startPos = 0;
   const blockhash = await connection.getLatestBlockhash();
   const remainingBytes = [...dataBytes];
+  // one empty instruction that sets the mediatype and the encoding type
+ 
+  let isFirst = true;
   while (remainingBytes.length > 0) {
     const instructions: TransactionInstruction[] = [];
 
+    // reduce the first batch size a bit since we're passing media type and 
+    // encoding type
     const byteBatch = remainingBytes.splice(0, BATCH_SIZE);
 
     instructions.push(
       await legacyInscriptionsProgram.methods
-        .writeToLegacyInscriptionAsHolder({
+        .writeToLegacyInscriptionAsUauth({
           data: Buffer.from(byteBatch),
           startPos,
-          encodingType,
-          mediaType
+          mediaType: isFirst ? mediaType : null, // not setting these as it's been already set above
+          encodingType: isFirst ? encodingType: null // not setting this as it's been already set above
         })
         .accounts({
-          owner: wallet.publicKey,
+          authority: wallet.publicKey,
           mint,
           inscription,
           inscriptionData,
-          tokenAccount,
           legacyInscription,
+          legacyMetadata,
           systemProgram: SystemProgram.programId,
           inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
         })
@@ -119,16 +126,18 @@ export const resizeLegacyInscription = async (
       description: "Resize legacy inscription",
       blockhash,
     });
+    isFirst = false;
   }
+
 
   return {
     data,
   };
 };
 
-export const WriteToLegacyInscriptionAsHolderTransactionButton = (
+export const WriteToLegacyInscriptionAsUAuthTransactionButton = (
   props: Omit<
-    GenericTransactionButtonProps<IWriteToLegacyInscriptionAsHolder>,
+    GenericTransactionButtonProps<IWriteToLegacyInscriptionAsUAuth>,
     "transactionGenerator"
   >
 ) => {
@@ -153,7 +162,7 @@ export const WriteToLegacyInscriptionAsHolderTransactionButton = (
       {writeStates === expectedCount ? (
         <Text p={2}>Inscribed</Text>
       ) : (
-        <GenericTransactionButton<IWriteToLegacyInscriptionAsHolder>
+        <GenericTransactionButton<IWriteToLegacyInscriptionAsUAuth>
           text={`Write`}
           transactionGenerator={resizeLegacyInscription}
           onError={(msg) => notify({ message: msg ?? "Unknown error" })}

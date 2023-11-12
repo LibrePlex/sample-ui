@@ -1,17 +1,17 @@
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { useNetworkConfiguration } from '../contexts';
+import { useCluster } from '../contexts';
 
 export const NetworkSwitcher: FC = () => {
-  const { cluster: networkConfiguration, setCluster: setNetworkConfiguration } = useNetworkConfiguration();
+  const { cluster, setCluster } = useCluster();
 
   return (
     <label className="cursor-pointer label">
       <a>Network</a>
       <select             
-        value={networkConfiguration}
-        onChange={(e) => setNetworkConfiguration(e.target.value)} 
+        value={cluster}
+        onChange={(e) => setCluster(e.target.value)} 
         className="select max-w-xs"
       >
         <option value="mainnet-beta">main</option>

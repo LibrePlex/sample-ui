@@ -11,7 +11,7 @@ export interface ClusterState {
 
 export const ClusterContext = createContext<ClusterState>({} as ClusterState);
 
-export function useNetworkConfiguration(): ClusterState {
+export function useCluster(): ClusterState {
     return useContext(ClusterContext);
 }
 

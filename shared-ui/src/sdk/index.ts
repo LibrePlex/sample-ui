@@ -16,7 +16,10 @@ export type {
   LegacyMint,
 
   /// legacy inscriptions
-  LegacyInscription
+  LegacyInscription,
+
+  MediaType,
+  EncodingType
 } from "./query";
 export {
   useTokenAccountById,
@@ -47,6 +50,6 @@ export {
   useFetchSingleAccount,
   decodeInscriptionRankPage,
   decodeLegacyMetadata,
-  useInscriptionDataForMint,
-  useInscriptionForMint
+  useInscriptionDataForRoot,
+  useInscriptionForRoot
 } from "./query";

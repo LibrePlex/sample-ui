@@ -1,4 +1,4 @@
-import { IdlAccounts } from "@coral-xyz/anchor";
+import { IdlAccounts, IdlTypes } from "@coral-xyz/anchor";
 import { BorshCoder, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
@@ -10,7 +10,11 @@ import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
 import { InscriptionStoreContext } from "./InscriptionStoreContext";
 import { useStore } from "zustand";
 
-export type Inscription = IdlAccounts<LibreplexInscriptions>["inscription"];
+export type Inscription = IdlAccounts<LibreplexInscriptions>["Inscription"];
+
+export type MediaType = IdlTypes<LibreplexInscriptions>["MediaType"];
+
+export type EncodingType = IdlTypes<LibreplexInscriptions>["EncodingType"];
 
 export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
   console.log({ dataBytes });
@@ -23,7 +27,7 @@ export const decodeInscription =
   (buffer: Buffer | undefined, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     const inscription = buffer
-      ? coder.accounts.decode<Inscription>("inscription", buffer)
+      ? coder.accounts.decode<Inscription>("Inscription", buffer)
       : null;
 
     return {

@@ -11,7 +11,7 @@ import {
   IExecutorWallet,
 } from "./Executor";
 import { notify } from "../../utils/notifications";
-import { useNetworkConfiguration } from "../../contexts";
+import { useCluster } from "../../contexts";
 
 export enum NotifyType {
   Success,
@@ -34,7 +34,7 @@ export const useExecutor = <P extends unknown>(
   const wallet = useWallet();
 
   const { connection } = useContext(ConnectionContext);
-  const { cluster } = useNetworkConfiguration();
+  const { cluster } = useCluster();
   const [isExecuting, setIsExecuting] = useState<boolean>(false);
   const onClick = useCallback(async () => {
     if (wallet.publicKey && wallet.signAllTransactions) {

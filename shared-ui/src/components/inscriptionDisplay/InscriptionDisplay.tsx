@@ -1,12 +1,12 @@
 import { PublicKey } from "@solana/web3.js";
-import { useInscriptionDataForMint, useInscriptionForMint } from "../../sdk";
+import { useInscriptionDataForRoot, useInscriptionForRoot } from "../../sdk";
 import { useLegacyCompressedImage } from "../assetdisplay/useLegacyCompressedImage";
 import React from "react";
 import { InscriptionTable } from "./InscriptionTable";
 
 export const InscriptionDisplay = ({ mintId }: { mintId: PublicKey }) => {
-  const inscription = useInscriptionForMint(mintId);
-  const inscriptionData = useInscriptionDataForMint(mintId);
+  const inscription = useInscriptionForRoot(mintId);
+  const inscriptionData = useInscriptionDataForRoot(mintId);
 
   // const {
   //   data: compressedImage,

@@ -1,7 +1,63 @@
-export type LibreplexLegacy = {
+export type LibreplexLegacy =  {
   "version": "0.0.0",
   "name": "libreplex_legacy",
   "instructions": [
+    {
+      "name": "claimExcessRentAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
     {
       "name": "inscribeLegacyMetadataAsUauth",
       "accounts": [
@@ -13,17 +69,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacySigner",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "mint",
@@ -58,22 +104,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "legacyMetadata",
@@ -124,17 +155,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacySigner",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "owner",
@@ -174,22 +195,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenAccount",
@@ -221,6 +227,22 @@ export type LibreplexLegacy = {
         {
           "name": "validationHash",
           "type": "string"
+        },
+        {
+          "name": "mediaType",
+          "type": {
+            "option": {
+              "defined": "MediaType"
+            }
+          }
+        },
+        {
+          "name": "encodingType",
+          "type": {
+            "option": {
+              "defined": "EncodingType"
+            }
+          }
         }
       ]
     },
@@ -255,22 +277,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -287,7 +294,60 @@ export type LibreplexLegacy = {
         {
           "name": "input",
           "type": {
-            "defined": "WriteToLegacyInscriptionInput"
+            "defined": "WriteToInscriptionInput"
+          }
+        }
+      ]
+    },
+    {
+      "name": "writeToLegacyInscriptionAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": "WriteToInscriptionInput"
           }
         }
       ]
@@ -328,22 +388,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -411,22 +456,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -489,22 +519,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -555,22 +570,7 @@ export type LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -595,7 +595,53 @@ export type LibreplexLegacy = {
   ],
   "accounts": [
     {
-      "name": "legacyInscription",
+      "name": "Inscription",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "defined": "MediaType"
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "defined": "EncodingType"
+            }
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LegacyInscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -625,6 +671,134 @@ export type LibreplexLegacy = {
   ],
   "types": [
     {
+      "name": "WriteToInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "name": "startPos",
+            "type": "u32"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "option": {
+                "defined": "MediaType"
+              }
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "option": {
+                "defined": "EncodingType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncodingType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Base64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MediaType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Audio",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Application",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Image",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Video",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Text",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "mediaType",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Erc721"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuthorityType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Holder"
+          },
+          {
+            "name": "UpdateAuthority"
+          }
+        ]
+      }
+    },
+    {
       "name": "ResizeLegacyInscriptionInput",
       "type": {
         "kind": "struct",
@@ -640,36 +814,6 @@ export type LibreplexLegacy = {
           {
             "name": "targetSize",
             "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "WriteToLegacyInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "name": "startPos",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "AuthorityType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Holder"
-          },
-          {
-            "name": "UpdateAuthority"
           }
         ]
       }
@@ -715,10 +859,66 @@ export type LibreplexLegacy = {
   ]
 };
 
-export const IDL: LibreplexLegacy = {
+export const IDL: LibreplexLegacy =  {
   "version": "0.0.0",
   "name": "libreplex_legacy",
   "instructions": [
+    {
+      "name": "claimExcessRentAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
     {
       "name": "inscribeLegacyMetadataAsUauth",
       "accounts": [
@@ -730,17 +930,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacySigner",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "mint",
@@ -775,22 +965,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "legacyMetadata",
@@ -841,17 +1016,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacySigner",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "owner",
@@ -891,22 +1056,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenAccount",
@@ -938,6 +1088,22 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "validationHash",
           "type": "string"
+        },
+        {
+          "name": "mediaType",
+          "type": {
+            "option": {
+              "defined": "MediaType"
+            }
+          }
+        },
+        {
+          "name": "encodingType",
+          "type": {
+            "option": {
+              "defined": "EncodingType"
+            }
+          }
         }
       ]
     },
@@ -972,22 +1138,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -1004,7 +1155,60 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "input",
           "type": {
-            "defined": "WriteToLegacyInscriptionInput"
+            "defined": "WriteToInscriptionInput"
+          }
+        }
+      ]
+    },
+    {
+      "name": "writeToLegacyInscriptionAsUauth",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionData",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": "WriteToInscriptionInput"
           }
         }
       ]
@@ -1045,22 +1249,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -1128,22 +1317,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -1206,22 +1380,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "tokenProgram",
@@ -1272,22 +1431,7 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "legacy_inscription"
-              },
-              {
-                "kind": "account",
-                "type": "publicKey",
-                "account": "Mint",
-                "path": "mint"
-              }
-            ]
-          }
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -1312,7 +1456,53 @@ export const IDL: LibreplexLegacy = {
   ],
   "accounts": [
     {
-      "name": "legacyInscription",
+      "name": "Inscription",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "defined": "MediaType"
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "defined": "EncodingType"
+            }
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LegacyInscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1342,6 +1532,134 @@ export const IDL: LibreplexLegacy = {
   ],
   "types": [
     {
+      "name": "WriteToInscriptionInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "name": "startPos",
+            "type": "u32"
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "option": {
+                "defined": "MediaType"
+              }
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "option": {
+                "defined": "EncodingType"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EncodingType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Base64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MediaType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "None"
+          },
+          {
+            "name": "Audio",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Application",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Image",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Video",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Text",
+            "fields": [
+              {
+                "name": "subtype",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Custom",
+            "fields": [
+              {
+                "name": "mediaType",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Erc721"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuthorityType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Holder"
+          },
+          {
+            "name": "UpdateAuthority"
+          }
+        ]
+      }
+    },
+    {
       "name": "ResizeLegacyInscriptionInput",
       "type": {
         "kind": "struct",
@@ -1357,36 +1675,6 @@ export const IDL: LibreplexLegacy = {
           {
             "name": "targetSize",
             "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "WriteToLegacyInscriptionInput",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "name": "startPos",
-            "type": "u32"
-          }
-        ]
-      }
-    },
-    {
-      "name": "AuthorityType",
-      "type": {
-        "kind": "enum",
-        "variants": [
-          {
-            "name": "Holder"
-          },
-          {
-            "name": "UpdateAuthority"
           }
         ]
       }

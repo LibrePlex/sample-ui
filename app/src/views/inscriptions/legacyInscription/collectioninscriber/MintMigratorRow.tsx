@@ -1,18 +1,19 @@
 import { InscribeLegacyMetadataAsUauthTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsUauthTransactionButton";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { Td, Tr } from "@chakra-ui/react";
+import { Heading, Td, Tr } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
-  useInscriptionForMint,
+  useInscriptionForRoot,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { useState } from "react";
-import { EditLegacyInscription } from "../EditLegacyInscription";
+import { ViewLegacyInscription } from "../ViewLegacyInscription";
+import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
 
 export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
   const { data } = useOffChainMetadataCache(mint);
-  const {data: inscription} = useInscriptionForMint(mint);
+  const { data: inscription } = useInscriptionForRoot(mint);
 
   const [imageOverride, setImageOverride] = useState<string>();
   return (
@@ -22,32 +23,12 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
       </Td>
       <Td>{data?.name}</Td>
       <Td>
-        <ImageUploader
-          currentImage={imageOverride ?? data?.images.square}
-          linkedAccountId={mint?.toBase58()}
-          fileId={""}
-          afterUpdate={(url) => {
-            console.log({ url });
-            setImageOverride(url);
-          }}
-        />
-        {/* <HStack>
-         */}
-        {/* <Button size="xs">custom image</Button>
-        </HStack> */}
+        <img src={data?.images.square ?? ""} />
       </Td>
       <Td>
-        {inscription ? (
-          <EditLegacyInscription mint={mint} />
-        ) : (
-          <InscribeLegacyMetadataAsUauthTransactionButton
-            params={{
-              mint,
-              imageOverride,
-            }}
-            formatting={{}}
-          />
-        )}
+       
+          <CreateNewLegacyInscriptionModal mint={mint} />
+          
       </Td>
     </Tr>
   );

@@ -4,7 +4,7 @@
 export {
   ContextProvider,
   useAutoConnect,
-  useNetworkConfiguration,
+  useCluster,
 } from "./contexts";
 export { useUserSolBalanceStore } from "./useUserSolBalanceStore";
 
@@ -61,8 +61,8 @@ export {
   useFetchSingleAccount,
   decodeInscriptionRankPage,
   decodeLegacyMetadata,
-  useInscriptionDataForMint,
-  useInscriptionForMint
+  useInscriptionDataForRoot,
+  useInscriptionForRoot
 } from "./sdk";
 export type {
   AttributeType,
@@ -76,10 +76,13 @@ export type {
   Asset,
   Price,
   LegacyMint,
-  LegacyInscription
+  LegacyInscription,
+  MediaType,
+  EncodingType
 } from "./sdk";
 
 export { HttpClient, abbreviateKey, cn, notify } from "./utils";
+export {getImageAsBuffer} from "./utils/getImageAsBuffer"
 
 export type {
   IExecutorParams,
@@ -108,7 +111,9 @@ export {
   ShareIcon,
 
   useLegacyCompressedImage,
-  useOffChainMetadataCache
+  useOffChainMetadataCache,
+  useMediaType,
+  useUrlPrefixForInscription
 } from "./components";
 
 export {

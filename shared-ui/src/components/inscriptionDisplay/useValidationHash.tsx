@@ -14,3 +14,4 @@ export const calculateHashFromBuffer = (buf: Buffer) => {
 export const useValidationHash = (buf: Buffer | undefined) => {
   return useMemo(() => (buf ? calculateHashFromBuffer(buf) : undefined), [buf]);
 };
+

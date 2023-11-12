@@ -8,11 +8,11 @@ import {
   UnorderedList,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { LegacyMint, useInscriptionForMint } from "@libreplex/shared-ui";
+import { LegacyMint, useInscriptionForRoot } from "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
-import { EditLegacyInscription } from "./legacyInscription/EditLegacyInscription";
+import { ViewLegacyInscription } from "./legacyInscription/ViewLegacyInscription";
 import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
 import { WalletLegacyGallery } from "./legacyInscription/WalletLegacyGallery";
 import { LegacyCollectionInscriber } from "./legacyInscription/collectioninscriber/LegacyCollectionInscriber";
@@ -26,10 +26,10 @@ enum View {
 
 const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
   const { connection } = useConnection();
-  const { data } = useInscriptionForMint(legacyMint.mint);
+  const { data } = useInscriptionForRoot(legacyMint.mint);
 
   return data?.item ? (
-    <EditLegacyInscription mint={legacyMint.mint} />
+    <ViewLegacyInscription mint={legacyMint.mint} />
   ) : (
     <InscribeLegacyMetadataAsHolderTransactionButton
       params={{ legacyMint }}

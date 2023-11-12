@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { TbRefresh } from "react-icons/tb";
 import {
   CopyPublicKeyButton,
@@ -40,47 +40,53 @@ export const InscriptionsSummary = (rest: BoxProps) => {
       : undefined;
   }, [program, data]);
 
+  useEffect(() => {
+    console.log({ inscriptionSummary });
+  }, [inscriptionSummary]);
+
   return (
     <Box {...rest}>
       <Box sx={{ position: "relative" }}>
-        <IconButton
-          style={{ position: "absolute", bottom: "26px", right: "12px" }}
-          size="xs"
-          onClick={() => refetch()}
-          aria-label={"Refresh"}
-        >
-          <TbRefresh />
-        </IconButton>
         {inscriptionSummary?.item ? (
-          <VStack>
-            <Table style={{ border: "1px solid #aaa" }} m={3}>
-              <Tbody>
-                <Tr>
-                  <Th>
-                    <Text color="#aaa">Last inscriber</Text>
-                  </Th>
-                  <Td>
-                    <CopyPublicKeyButton
-                      publicKey={inscriptionSummary?.item?.lastInscriber.toBase58()}
-                    />
-                  </Td>
-                </Tr>
+          <>
+            <IconButton
+              style={{ position: "absolute", bottom: "26px", right: "12px" }}
+              size="xs"
+              onClick={() => refetch()}
+              aria-label={"Refresh"}
+            >
+              <TbRefresh />
+            </IconButton>
+            <VStack>
+              <Table style={{ border: "1px solid #aaa" }} m={3}>
+                <Tbody>
+                  <Tr>
+                    <Th>
+                      <Text color="#aaa">Last inscriber</Text>
+                    </Th>
+                    <Td>
+                      <CopyPublicKeyButton
+                        publicKey={inscriptionSummary?.item?.lastInscriber.toBase58()}
+                      />
+                    </Td>
+                  </Tr>
 
-                <Tr>
-                  <Th>
-                    <Text color="#aaa">Total inscriptions</Text>
-                  </Th>
-                  <Td>
-                    <Center>
-                      {inscriptionSummary?.item.inscriptionCountTotal
-                        .toNumber()
-                        .toLocaleString()}
-                    </Center>
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </VStack>
+                  <Tr>
+                    <Th>
+                      <Text color="#aaa">Total inscriptions</Text>
+                    </Th>
+                    <Td>
+                      <Center>
+                        {inscriptionSummary?.item.inscriptionCountTotal
+                          .toNumber()
+                          .toLocaleString()}
+                      </Center>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </VStack>
+          </>
         ) : (
           <></>
         )}

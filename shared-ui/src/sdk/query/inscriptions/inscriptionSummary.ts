@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 
 export type InscriptionSummary =
-  IdlAccounts<LibreplexInscriptions>["inscriptionSummary"];
+  IdlAccounts<LibreplexInscriptions>["InscriptionSummary"];
 
 export const decodeInscriptionSummary =
   (program: Program<LibreplexInscriptions>) =>
@@ -12,7 +12,7 @@ export const decodeInscriptionSummary =
     const coder = new BorshCoder(program.idl);
     try {
       const inscription = coder.accounts.decode<InscriptionSummary>(
-        "inscriptionSummary",
+        "InscriptionSummary",
         buffer
       );
 

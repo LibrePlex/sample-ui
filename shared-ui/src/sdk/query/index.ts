@@ -62,6 +62,8 @@ export {useCreatorsByAuthority} from "./creator/creator"
 export type {Creator} from "./creator/creator"
 
 export {decodeInscriptionSummary, decodeInscriptionRankPage,
-useInscriptionDataForMint,useInscriptionForMint} from "./inscriptions"
+useInscriptionDataForRoot,useInscriptionForRoot} from "./inscriptions"
 
 export {useFetchSingleAccount} from "./singleAccountInfo"
+
+export type {MediaType, EncodingType} from "./inscriptions"

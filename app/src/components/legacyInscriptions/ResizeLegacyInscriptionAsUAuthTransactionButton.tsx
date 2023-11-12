@@ -5,7 +5,8 @@ import {
   ITransactionTemplate,
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
-  getInscriptionPda
+  getInscriptionPda,
+  getLegacyMetadataPda
 } from "@libreplex/shared-ui";
 import {
   Connection,
@@ -74,7 +75,7 @@ export const resizeLegacyInscription = async (
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint)[0];
-
+  const legacyMetadata= getLegacyMetadataPda(mint)[0];
   const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
 
   owner = tokenAccountObj.owner;
@@ -83,8 +84,14 @@ export const resizeLegacyInscription = async (
   const instructions: TransactionInstruction[] = [];
 
   while (Math.abs(sizeRemaining) > 0) {
+    console.log({ change:
+      sizeRemaining > 0
+        ? Math.min(sizeRemaining, MAX_CHANGE)
+        : -Math.max(sizeRemaining, -MAX_CHANGE),
+    expectedStartSize: Math.abs(sizeRemaining),
+    targetSize});
     const instruction = await legacyInscriptionsProgram.methods
-      .resizeLegacyInscriptionAsHolder({
+      .resizeLegacyInscriptionAsUauth({
         change:
           sizeRemaining > 0
             ? Math.min(sizeRemaining, MAX_CHANGE)
@@ -93,13 +100,13 @@ export const resizeLegacyInscription = async (
         targetSize,
       })
       .accounts({
-        authority: wallet.publicKey,
-        owner,
+        authority: wallet.publicKey, // this needs to be either the holder or update auth
+        payer: wallet.publicKey,
         mint,
         inscription,
         inscriptionData,
         legacyInscription,
-        tokenAccount,
+        legacyMetadata,
         systemProgram: SystemProgram.programId,
         inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
       })
@@ -160,7 +167,7 @@ export const resizeLegacyInscription = async (
   };
 };
 
-export const ResizeLegacyMetadataAsHolderTransactionButton = (
+export const ResizeLegacyMetadataAsUAuthTransactionButton = (
   props: Omit<
     GenericTransactionButtonProps<IResizeLegacyInscription>,
     "transactionGenerator"

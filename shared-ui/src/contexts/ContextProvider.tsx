@@ -17,7 +17,7 @@ import { FC, ReactNode, useCallback, useMemo } from "react";
 import { AutoConnectProvider, useAutoConnect } from "./AutoConnectProvider";
 import {
   NetworkConfigurationProvider,
-  useNetworkConfiguration,
+  useCluster,
 } from "./NetworkConfigurationProvider";
 import theme from "../theme/LIbrePlexTheme";
 import React from "react";
@@ -43,7 +43,7 @@ const getRpcUrlFromNetwork = (network: WalletAdapterNetwork | "local") => {
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
-  const { cluster: networkConfiguration } = useNetworkConfiguration();
+  const { cluster: networkConfiguration } = useCluster();
   const network = networkConfiguration as WalletAdapterNetwork | "local";
   const endpoint = useMemo(() => getRpcUrlFromNetwork(network), [network]);
 

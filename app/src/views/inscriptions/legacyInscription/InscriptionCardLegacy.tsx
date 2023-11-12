@@ -3,7 +3,7 @@ import { useInscriptionById } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { ReactNode } from "react";
-import { EditLegacyInscription } from "./EditLegacyInscription";
+import { ViewLegacyInscription } from "./ViewLegacyInscription";
 import { MintCardLegacy } from "./MintCardLegacy";
 import { DisappearingBox } from "@app/components/DisappearingBox";
 
@@ -31,7 +31,7 @@ export const InscriptionCardLegacy = ({
   return (
     <DisappearingBox>
       <MintCardLegacy mintId={inscription?.item.root}>
-        <EditLegacyInscription mint={inscription?.item.root} />
+        <ViewLegacyInscription mint={inscription?.item.root} />
       </MintCardLegacy>
     </DisappearingBox>
   );

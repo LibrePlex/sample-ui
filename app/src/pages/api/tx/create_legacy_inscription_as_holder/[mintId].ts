@@ -112,7 +112,7 @@ const LegacyInscription: NextApiHandler = async (req, res) => {
     )[0];
 
     const ix = await legacyInscriptionsProgram.methods
-      .inscribeLegacyMetadataAsHolder(webpHash)
+      .inscribeLegacyMetadataAsHolder(webpHash, null, null)
       .accounts({
         payer,
         secondSignature: legacySignerKeypair.publicKey,
@@ -135,9 +135,7 @@ const LegacyInscription: NextApiHandler = async (req, res) => {
       })
       .instruction();
 
-    console.log("get blockhash");
     const blockhash = await connection.getLatestBlockhash();
-    console.log("Got blockhash");
     const transaction = new Transaction();
     transaction.feePayer = new PublicKey(payer);
     transaction.recentBlockhash = blockhash.blockhash;

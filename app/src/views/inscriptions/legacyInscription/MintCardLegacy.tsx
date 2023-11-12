@@ -13,7 +13,7 @@ import {
   getInscriptionPda,
   getLegacyMetadataPda,
   useOffChainMetadataCache,
-  useInscriptionForMint,
+  useInscriptionForRoot,
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
@@ -78,7 +78,7 @@ export const MintCardLegacy = ({
     data: inscription,
     refetch,
     isFetching,
-  } = useInscriptionForMint(mintId);
+  } = useInscriptionForRoot(mintId);
 
   const inscriptionId = useMemo(
     () => (mintId ? getInscriptionPda(mintId)[0] : undefined),

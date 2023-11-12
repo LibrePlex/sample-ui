@@ -51,7 +51,9 @@ export const uploadToShadowDrive = async (
   fileId: string,
   imageFile: File
 ) => {
+  console.log({mintId, fileId, imageFile});
   const fileElems = fileId.split(".");
+  console.log(fileId);
   let extension =
     fileElems.length > 1 ? fileElems[fileElems.length - 1] : "png";
   const retval = await getShadowDriveUploadSignature(mintId, extension);
@@ -119,8 +121,9 @@ export const ImageUploadActions = ({
       disabled={processing}
       onClick={onClick}
       isLoading={false}
+      variant='outline'
     >
-      Update
+      {children}
     </WalletAuthenticatingButton>
   );
 };

@@ -8,7 +8,7 @@ import { XIcon } from '@heroicons/react/solid'
 import { useConnection } from '@solana/wallet-adapter-react';
 import { useNotificationStore } from '../stores';
 import React from 'react';
-import { useNetworkConfiguration } from '../contexts';
+import { useCluster } from '../contexts';
 
 export const Notifications = () => {
   const { notifications, set: setNotificationStore } = useNotificationStore(
@@ -49,7 +49,7 @@ export const Notifications = () => {
 
 export const Notification = ({ type, message, description, txid, onHide }: any) => {
   const { connection } = useConnection();
-  const { cluster: networkConfiguration } = useNetworkConfiguration();
+  const { cluster: networkConfiguration } = useCluster();
 
   // TODO: we dont have access to the network or endpoint here.. 
   // getExplorerUrl(connection., txid, 'tx')
