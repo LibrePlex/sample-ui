@@ -6,7 +6,7 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import {
   GenericTransactionButton,
   GenericTransactionButtonProps,
@@ -149,9 +149,15 @@ export const useInscriptionWriteStatus = (
     store,
     (s) => s.writeStates[inscription?.toBase58()]
   );
+
+  const reset = useCallback(
+    () => resetWriteStatus(inscription.toBase58()),
+    [resetWriteStatus, inscription]
+  );
+
   useEffect(() => {
-    resetWriteStatus(inscription.toBase58());
-  }, [inscription, resetWriteStatus]);
+    reset();
+  }, []);
 
   useEffect(() => {
     if (

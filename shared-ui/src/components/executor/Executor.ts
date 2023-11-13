@@ -131,7 +131,6 @@ export class Executor<P> {
 
     for (const [idx, signedTransaction] of signedTransactions.entries()) {
       const signatures = transactions[idx].signatures;
-      console.log({ signatures });
       for (const signature of signatures) {
         console.log({ pubkey: signature.pubkey, sig: signature.signature });
         signedTransaction.addSignature(
@@ -139,12 +138,12 @@ export class Executor<P> {
           Buffer.from(signature.signature)
         );
       }
-      console.log({
-        finalSignatures: signedTransaction.signatures.map((item) => ({
-          pubkey: item.publicKey.toBase58(),
-          sig: item.signature,
-        })),
-      });
+      // console.log({
+      //   finalSignatures: signedTransaction.signatures.map((item) => ({
+      //     pubkey: item.publicKey.toBase58(),
+      //     sig: item.signature,
+      //   })),
+      // });
     }
 
     return {

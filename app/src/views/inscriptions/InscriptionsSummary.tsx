@@ -34,15 +34,15 @@ export const InscriptionsSummary = (rest: BoxProps) => {
   );
 
   const inscriptionSummary = useMemo(() => {
-    console.log({ pubkey: data?.pubkey.toBase58() });
+    // console.log({ pubkey: data?.pubkey.toBase58() });
     return data?.item
       ? decodeInscriptionSummary(program)(data.item.buffer, data.pubkey)
       : undefined;
   }, [program, data]);
 
-  useEffect(() => {
-    console.log({ inscriptionSummary });
-  }, [inscriptionSummary]);
+  // useEffect(() => {
+  //   console.log({ inscriptionSummary });
+  // }, [inscriptionSummary]);
 
   return (
     <Box {...rest}>
