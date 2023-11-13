@@ -129,7 +129,6 @@ export const resizeLegacyInscription = async (
       blockhash,
     });
     isFirst = false;
-    break;
   }
 
 
