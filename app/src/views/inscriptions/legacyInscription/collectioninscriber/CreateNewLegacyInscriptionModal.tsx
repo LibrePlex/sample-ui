@@ -41,7 +41,7 @@ export const CreateNewLegacyInscriptionModal = ({
 
   const [name, setName] = useState<string>("");
 
-  const { data: inscription } = useInscriptionForRoot(mint);
+  const {inscription: { data: inscription }} = useInscriptionForRoot(mint);
 
   return (
     <>

@@ -41,7 +41,7 @@ import { useMediaType } from "@libreplex/shared-ui";
 import { useUrlPrefixForInscription } from "@libreplex/shared-ui";
 
 export const ViewLegacyInscription = ({ mint }: { mint: PublicKey }) => {
-  const { data: inscription } = useInscriptionForRoot(mint);
+  const {inscription: { data: inscription }} = useInscriptionForRoot(mint);
   const legacyInscription = useLegacyInscriptionForMint(mint);
   const {
     data: inscriptionData,

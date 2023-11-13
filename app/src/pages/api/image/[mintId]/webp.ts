@@ -28,9 +28,9 @@ const schema = joi.object({
 
 // this can kill CPU usage so apply throttling. max 2 calls / 10s
 const middlewares = getRateLimitMiddlewares({
-  limit: 2,
+  limit: 1,
   delayAfter: 500,
-  windowMs: 10000,
+  windowMs: 1000,
   delayMs: 500,
 }).map(applyMiddleware);
 

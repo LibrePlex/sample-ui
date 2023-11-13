@@ -21,7 +21,7 @@ export { NavElement } from "./navelement";
 
 export { GroupSelector } from "./GroupSelector";
 
-export {useMediaType} from "./inscriptionDisplay/useMediaType"
+export {useMediaType, mediaTypeToString} from "./inscriptionDisplay/useMediaType"
 export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
 export { AssetDisplay } from "./assetdisplay/AssetDisplay";
 export {useOffChainMetadataCache} from "./assetdisplay/useOffChainMetadataCache"

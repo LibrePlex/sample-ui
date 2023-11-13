@@ -57,7 +57,7 @@ export const MintDisplay = ({
   );
   return (
     <VStack gap={8} alignItems="center" width={"100%"} maxWidth={"650px"}>
-      <InscriptionDisplay mintId={mint} />
+      <InscriptionDisplay mintId={mint} />asdfasdf
       {metadata?.item ? (
         <VStack>
           <HStack

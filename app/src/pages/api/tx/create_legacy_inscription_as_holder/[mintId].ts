@@ -7,14 +7,14 @@ import {
   MAINNET_URL,
   NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID,
 } from "@app/environmentvariables";
-import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
 import {
   LibreWallet,
   getInscriptionPda,
   getInscriptionRankPda,
   getLegacySignerPda,
-  getProgramInstanceInscriptions
+  getProgramInstanceInscriptions,
 } from "@libreplex/shared-ui";
+import { Metadata } from "@metaplex-foundation/mpl-token-metadata";
 import {
   Connection,
   Keypair,
@@ -24,15 +24,16 @@ import {
 } from "@solana/web3.js";
 import { NextApiHandler } from "next";
 
+import { convertToWebpAndHash } from "@app/utils/webp";
 import {
   getInscriptionDataPda,
-  getInscriptionSummaryPda, getProgramInstanceLegacyInscriptions
+  getInscriptionSummaryPda,
+  getProgramInstanceLegacyInscriptions,
 } from "@libreplex/shared-ui";
 import { getLegacyInscriptionPda } from "@libreplex/shared-ui/src/pdas/getLegacyInscriptionPda";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import joi from "joi";
 import { ITransaction } from "../../../../transactions/ITransaction";
-import { convertToWebpAndHash } from "@app/utils/webp";
 
 const schema = joi.object({
   legacyMetadataId: joi.string().required(),
@@ -79,14 +80,14 @@ const LegacyInscription: NextApiHandler = async (req, res) => {
     const owner = new PublicKey(ownerId);
     const tokenAccount = new PublicKey(tokenAccountId);
     const legacyMetadata = new PublicKey(legacyMetadataId);
-    const authority = legacySignerKeypair.publicKey;
-
 
     const metadata = await connection.getAccountInfo(legacyMetadata);
 
     const metadataObj = Metadata.deserialize(metadata.data)[0];
 
-    const { webpHash, webpBuffer } = await convertToWebpAndHash(metadataObj.data.uri);
+    const { webpHash, webpBuffer } = await convertToWebpAndHash(
+      metadataObj.data.uri
+    );
 
     const inscription = getInscriptionPda(mint)[0];
 

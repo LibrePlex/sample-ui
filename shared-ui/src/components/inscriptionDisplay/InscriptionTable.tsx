@@ -1,23 +1,23 @@
 import {
-    Center,
-    HStack,
-    Skeleton,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Tr,
-    VStack
+  Center,
+  HStack,
+  Skeleton,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Tr,
+  VStack,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
 
-
 import React from "react";
 import {
-    useInscriptionDataForRoot,
-    useInscriptionForRoot,
-    useOffChainMetadataCache
+  CopyPublicKeyButton,
+  useInscriptionDataForRoot,
+  useInscriptionForRoot,
+  useOffChainMetadataCache,
 } from "../..";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 import { InscriptionImage } from "./InscriptionImage";
@@ -26,9 +26,12 @@ import { useValidationHash } from "./useValidationHash";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
-    data: inscription,
-    isFetching: isFetchingInscription,
-    refetch: refreshInscription,
+    inscriptionId,
+    inscription: {
+      data: inscription,
+      isFetching: isFetchingInscription,
+      refetch: refreshInscription,
+    },
   } = useInscriptionForRoot(mint);
   const {
     data: inscriptionData,
@@ -129,7 +132,12 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                         />
                       </>
                     )}
-                    <Text>Inscription</Text>
+                    <HStack>
+                      <Text>Inscription</Text>
+                      <CopyPublicKeyButton
+                        publicKey={inscriptionId?.toBase58()}
+                      />
+                    </HStack>
                   </VStack>
                 </HStack>
               </VStack>

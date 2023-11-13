@@ -13,7 +13,7 @@ import { NextApiHandler } from "next";
 import {
   HttpClient,
   PROGRAM_ID_METADATA,
-  decodeGroup,
+  decodeCollection,
   decodeMetadata,
   getBase64FromDatabytes,
   getMetadataExtendedPda,
@@ -80,17 +80,17 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     });
   }
   let group;
-  if (libreMetadataObj.group) {
+  if (libreMetadataObj.collection) {
     const groupAccount = await connection.getAccountInfo(
-      libreMetadataObj.group
+      libreMetadataObj.collection
     );
 
     console.log({ groupAccount });
 
     if (groupAccount) {
-      const item = decodeGroup(libreProgram)(
+      const item = decodeCollection(libreProgram)(
         groupAccount.data,
-        libreMetadataObj.group
+        libreMetadataObj.collection
       );
       group = item;
     }
@@ -104,7 +104,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     if (inscriptionAccount) {
       const item = decodeInscription(libreInscriptionsProgram)(
         inscriptionAccount.data,
-        libreMetadataObj.group
+        libreMetadataObj.collection
       );
       inscription = item;
       console.log({ dataType: libreMetadataObj.asset.inscription.dataType });
@@ -137,7 +137,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
     jsondata = data;
   }
 
-  const signerSet = new Set(libreMetadataObj?.extension?.nft?.signers ?? []);
+  const signerSet = new Set(libreMetadataObj?.extensions?.find(item=>item.signers).signers.signers ?? []);
   const imageUrl =
     base64Image ?? jsondata?.image ?? libreMetadataObj?.asset?.image?.url;
   const retval: IMetadataJson = {
@@ -149,7 +149,7 @@ const OffchainMetadata: NextApiHandler = async (req, res) => {
       libreMetadataObj?.asset?.inscription?.description ??
       jsondata.description,
     seller_fee_basis_points:
-      libreMetadataObj?.extension?.nft?.royalties?.bps ??
+      libreMetadataObj?.extensions?.find(item=>item.royalties)?.royalties?.royalties.bps ??
       group?.item.royalties?.bps ??
       jsondata?.seller_fee_basis_points,
     image: imageUrl,

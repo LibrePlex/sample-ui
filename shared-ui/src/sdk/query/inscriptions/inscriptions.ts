@@ -10,7 +10,7 @@ import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
 import { InscriptionStoreContext } from "./InscriptionStoreContext";
 import { useStore } from "zustand";
 
-export type Inscription = IdlAccounts<LibreplexInscriptions>["Inscription"];
+export type Inscription = IdlAccounts<LibreplexInscriptions>["inscription"];
 
 export type MediaType = IdlTypes<LibreplexInscriptions>["MediaType"];
 
@@ -27,7 +27,7 @@ export const decodeInscription =
   (buffer: Buffer | undefined, pubkey: PublicKey) => {
     const coder = new BorshCoder(program.idl);
     const inscription = buffer
-      ? coder.accounts.decode<Inscription>("Inscription", buffer)
+      ? coder.accounts.decode<Inscription>("inscription", buffer)
       : null;
 
     return {

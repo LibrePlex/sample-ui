@@ -75,7 +75,7 @@ export type {
   CollectionInput,
   Asset,
   Price,
-  LegacyMint,
+  MintWithTokenAccount,
   LegacyInscription,
   MediaType,
   EncodingType
@@ -113,7 +113,8 @@ export {
   useLegacyCompressedImage,
   useOffChainMetadataCache,
   useMediaType,
-  useUrlPrefixForInscription
+  useUrlPrefixForInscription,
+  mediaTypeToString
 } from "./components";
 
 export {

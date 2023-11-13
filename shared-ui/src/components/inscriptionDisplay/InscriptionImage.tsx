@@ -5,15 +5,20 @@ import { useContext, useMemo } from "react";
 import React from "react";
 import { SolscanLink } from "../../components/SolscanLink";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
-import { Text, Box, VStack } from "@chakra-ui/react";
+import { Text, Box, VStack, BoxProps } from "@chakra-ui/react";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useEncodingForInscription } from "./useEncodingForInscription";
-export const InscriptionImage = ({ root }: { root: PublicKey }) => {
+export const InscriptionImage = ({
+  root,
+  ...rest
+}: { root: PublicKey } & BoxProps) => {
   const { cluster } = useContext(ClusterContext);
   const {
-    data: inscription,
-    isFetching: isFetchingInscription,
-    refetch: refreshInscription,
+    inscription: {
+      data: inscription,
+      isFetching: isFetchingInscription,
+      refetch: refreshInscription,
+    },
   } = useInscriptionForRoot(root);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
@@ -32,7 +37,7 @@ export const InscriptionImage = ({ root }: { root: PublicKey }) => {
   );
 
   return base64ImageInscription ? (
-    <Box sx={{ position: "relative" }}>
+    <Box {...rest} sx={{ position: "relative", ...rest.sx }}>
       <SolscanLink
         address={inscriptionData.pubkey.toBase58()}
         cluster={cluster}
@@ -44,16 +49,25 @@ export const InscriptionImage = ({ root }: { root: PublicKey }) => {
       />
       <img
         style={{
-          minWidth: "240px",
-          maxWidth: "240px",
+          minWidth: "100%",
+          maxWidth: "100%",
+          minHeight: "100%",
+          maxHeight: "100%",
           aspectRatio: "1/1",
           borderRadius: 8,
         }}
         src={`data:${urlPrefix};${encoding},${base64ImageInscription}`}
       />
-      <VStack sx={{ position: "absolute", bottom: "8px", left: "50%", transform: 'translate(-50%)' }}>
-        <Text>{encoding}</Text>
-        <Text>{urlPrefix}</Text>
+      <VStack
+        sx={{
+          position: "absolute",
+          bottom: "8px",
+          left: "50%",
+          transform: "translate(-50%)",
+        }}
+      >
+        {/* <Text>{encoding}</Text>
+        <Text>{urlPrefix}</Text> */}
       </VStack>
     </Box>
   ) : (

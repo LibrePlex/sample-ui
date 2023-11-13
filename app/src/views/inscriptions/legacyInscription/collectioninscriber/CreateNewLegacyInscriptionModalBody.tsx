@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { RawAccount } from "@solana/spl-token";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Collection,
   GroupSelector,
@@ -25,6 +25,8 @@ import { PublicKey } from "@solana/web3.js";
 import { connect } from "http2";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { InscribeAsUauthPanel } from "./InscribeAsUauthPanel";
+import { InscribeAsHolderPanel } from "./InscribeAsHolderPanel";
+import { useOwnerOfMint } from "app/src/hooks/useOwnerOfMint";
 
 enum InscribeAs {
   Uauth,
@@ -37,19 +39,37 @@ export const CreateNewLegacyInscriptionModalBody = ({
   mint: PublicKey;
 }) => {
   const { connection } = useConnection();
-  
+  const { publicKey } = useWallet();
+  const metadata = useLegacyMetadataByMintId(mint, connection);
+
+  const isUauth = useMemo(
+    () => publicKey && metadata?.item ? metadata?.item?.updateAuthority?.equals(publicKey) : false,
+    [metadata, publicKey]
+  );
+
+  const { data: ownerTokenAccount } = useOwnerOfMint(mint);
+
+  const isHolder = useMemo(
+    () => ownerTokenAccount && publicKey ? ownerTokenAccount?.tokenAccount.item.owner.equals(publicKey) : false,
+    [ownerTokenAccount, publicKey]
+  );
+
   return (
     <ModalBody>
       <Box p={2}>
         <Text>
           Legacy Metaplex mints can be inscribed using LibrePlex inscriptions.
-          If you inscribe a mint that you hold but do not have update authority
-          on, you can only inscribe the current off-chain image. If you inscribe
-          a mint that you have update authority on, you can also override the
-          off-chain image to anything you want, such as custom pixel art.
         </Text>
       </Box>
-      <InscribeAsUauthPanel mint={mint}/>
+      {isUauth && <InscribeAsUauthPanel mint={mint} />}
+      {isHolder && !isUauth && (
+        <InscribeAsHolderPanel mint={ownerTokenAccount} />
+      )}
+      {!isHolder && !isUauth && (
+        <Text>
+          You must be the holder or the update authority to inscribe a mint
+        </Text>
+      )}
     </ModalBody>
   );
 };

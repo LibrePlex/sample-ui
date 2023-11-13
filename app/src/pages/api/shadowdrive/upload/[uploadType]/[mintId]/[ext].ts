@@ -64,7 +64,7 @@ export const createMintUrlUploadMessage = async (
       signer: keyPair.publicKey.toBase58(),
     } as IShadowDriveUpload;
 
-    console.log("Response ");
+    console.log("Response ", resp);
     return res.status(200).json(resp);
   } catch (e) {
     console.log(e);

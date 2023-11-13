@@ -74,11 +74,11 @@ export const MintCardLegacy = ({
   //   console.log({ offchainData });
   // }, [offchainData]);
 
-  const {
+  const {inscription: {
     data: inscription,
     refetch,
     isFetching,
-  } = useInscriptionForRoot(mintId);
+  }} = useInscriptionForRoot(mintId);
 
   const inscriptionId = useMemo(
     () => (mintId ? getInscriptionPda(mintId)[0] : undefined),

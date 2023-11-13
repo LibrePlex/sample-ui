@@ -13,7 +13,7 @@ export type {
   
   /// creator
   Creator,
-  LegacyMint,
+  MintWithTokenAccount,
 
   /// legacy inscriptions
   LegacyInscription,

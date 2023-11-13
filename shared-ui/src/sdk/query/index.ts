@@ -27,7 +27,7 @@ export {
 } from "./metadata/metadata";
 
 export type {
-  MintWithTokenAccount as LegacyMint
+  MintWithTokenAccount as MintWithTokenAccount
 } from "./mints/useLegacyMintsByWallet"
 
 export {

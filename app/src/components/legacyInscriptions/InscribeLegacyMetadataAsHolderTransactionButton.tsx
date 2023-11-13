@@ -4,7 +4,7 @@ import {
     HttpClient,
     IExecutorParams,
     ITransactionTemplate,
-    LegacyMint,
+    MintWithTokenAccount,
     getLegacyMetadataPda
 } from "@libreplex/shared-ui";
 import {
@@ -20,7 +20,7 @@ import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legac
 import { ITransaction } from "../../transactions/ITransaction";
 
 export interface IInscribeLegacyMint {
-  legacyMint: LegacyMint;
+  mint: MintWithTokenAccount;
 }
 
 export const inscribeLegacyMint = async (
@@ -43,7 +43,7 @@ export const inscribeLegacyMint = async (
     throw Error("IDL not ready");
   }
 
-  const { legacyMint } = params;
+  const { mint: legacyMint } = params;
 
   const httpClient = new HttpClient("/api");
 

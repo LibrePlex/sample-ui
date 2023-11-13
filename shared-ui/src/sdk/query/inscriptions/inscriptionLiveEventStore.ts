@@ -130,7 +130,7 @@ export const createInscriptionLiveEventStore = (
     id: PublicKey,
     data: InscriptionEventData
   }, slot, sig) => {
-    console.log({id: event.id.toBase58(), data: event.data});
+    // console.log({id: event.id.toBase58(), data: event.data});
     state.setUpdatedInscription(event.id.toBase58(), event.data);
   });
 
@@ -138,7 +138,7 @@ export const createInscriptionLiveEventStore = (
     id: PublicKey,
     data: InscriptionEventData
   }, slot, sig) => {
-    console.log({event});
+    // console.log({event});
     state.setUpdatedInscription(event.id.toBase58(), event.data);
   });
 

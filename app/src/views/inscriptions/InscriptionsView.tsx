@@ -8,7 +8,7 @@ import {
   UnorderedList,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { LegacyMint, useInscriptionForRoot } from "@libreplex/shared-ui";
+import { MintWithTokenAccount, useInscriptionForRoot } from "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
@@ -24,27 +24,26 @@ enum View {
   Collection,
 }
 
-const InscriptionAction = ({ legacyMint }: { legacyMint: LegacyMint }) => {
-  const { connection } = useConnection();
-  const { data } = useInscriptionForRoot(legacyMint.mint);
+const InscriptionAction = ({ legacyMint }: { legacyMint: MintWithTokenAccount }) => {
+  const {inscription: { data }} = useInscriptionForRoot(legacyMint.mint);
 
   return data?.item ? (
     <ViewLegacyInscription mint={legacyMint.mint} />
   ) : (
     <InscribeLegacyMetadataAsHolderTransactionButton
-      params={{ legacyMint }}
+      params={{ mint: legacyMint }}
       formatting={{}}
     />
   );
 };
 
 const InscriptionsView = () => {
-  const actions = (item: LegacyMint) => {
+  const actions = (item: MintWithTokenAccount) => {
     return <InscriptionAction legacyMint={item} />;
   };
 
   const { publicKey } = useWallet();
-  const [view, setView] = useState<View>(View.InscriptionGallery);
+  const [view, setView] = useState<View>(View.Collection);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -86,45 +85,6 @@ const InscriptionsView = () => {
                 </ListItem>
               </UnorderedList>
               <InscriptionsSummary mt={4} mb={4} />
-
-              <Box
-                display="flex"
-                flexDirection={isSmallerThan800 ? "column" : "row"}
-                justifyContent={"center"}
-                columnGap={2}
-                w={[300, 300, 800]}
-              >
-                <Button
-                  colorScheme="orange"
-                  variant={
-                    view === View.InscriptionGallery ? "solid" : "outline"
-                  }
-                  onClick={() => {
-                    setView(View.InscriptionGallery);
-                  }}
-                >
-                  Inscriptions
-                </Button>
-                <Button
-                  colorScheme="orange"
-                  variant={view === View.Wallet ? "solid" : "outline"}
-                  onClick={() => {
-                    setView(View.Wallet);
-                  }}
-                >
-                  Your Wallet
-                </Button>
-                <Button
-                  colorScheme="orange"
-                  variant={view === View.Collection ? "solid" : "outline"}
-                  onClick={() => {
-                    setView(View.Collection);
-                  }}
-                >
-                  Your Collections
-                </Button>
-              </Box>
-
               {view === View.Wallet && (
                 <WalletLegacyGallery publicKey={publicKey} actions={actions} />
               )}

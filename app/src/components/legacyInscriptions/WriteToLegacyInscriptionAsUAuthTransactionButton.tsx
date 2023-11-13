@@ -75,15 +75,17 @@ export const resizeLegacyInscription = async (
 
   const tokenAccountData = await connection.getAccountInfo(tokenAccount);
 
+  const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
+
+  owner = tokenAccountObj.owner;
+
   const inscription = getInscriptionPda(mint)[0];
 
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint)[0];
   const legacyMetadata = getLegacyMetadataPda(mint)[0];
 
-  const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
-
-  owner = tokenAccountObj.owner;
+  
 
   let startPos = 0;
   const blockhash = await connection.getLatestBlockhash();
@@ -127,6 +129,7 @@ export const resizeLegacyInscription = async (
       blockhash,
     });
     isFirst = false;
+    break;
   }
 
 

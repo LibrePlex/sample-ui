@@ -1,4 +1,4 @@
-export type LibreplexLegacy =  {
+export type LibreplexLegacy = {
   "version": "0.0.0",
   "name": "libreplex_legacy",
   "instructions": [
@@ -227,22 +227,6 @@ export type LibreplexLegacy =  {
         {
           "name": "validationHash",
           "type": "string"
-        },
-        {
-          "name": "mediaType",
-          "type": {
-            "option": {
-              "defined": "MediaType"
-            }
-          }
-        },
-        {
-          "name": "encodingType",
-          "type": {
-            "option": {
-              "defined": "EncodingType"
-            }
-          }
         }
       ]
     },
@@ -595,7 +579,7 @@ export type LibreplexLegacy =  {
   ],
   "accounts": [
     {
-      "name": "Inscription",
+      "name": "inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -641,7 +625,7 @@ export type LibreplexLegacy =  {
       }
     },
     {
-      "name": "LegacyInscription",
+      "name": "legacyInscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -859,7 +843,7 @@ export type LibreplexLegacy =  {
   ]
 };
 
-export const IDL: LibreplexLegacy =  {
+export const IDL: LibreplexLegacy = {
   "version": "0.0.0",
   "name": "libreplex_legacy",
   "instructions": [
@@ -1088,22 +1072,6 @@ export const IDL: LibreplexLegacy =  {
         {
           "name": "validationHash",
           "type": "string"
-        },
-        {
-          "name": "mediaType",
-          "type": {
-            "option": {
-              "defined": "MediaType"
-            }
-          }
-        },
-        {
-          "name": "encodingType",
-          "type": {
-            "option": {
-              "defined": "EncodingType"
-            }
-          }
         }
       ]
     },
@@ -1456,7 +1424,7 @@ export const IDL: LibreplexLegacy =  {
   ],
   "accounts": [
     {
-      "name": "Inscription",
+      "name": "inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1502,7 +1470,7 @@ export const IDL: LibreplexLegacy =  {
       }
     },
     {
-      "name": "LegacyInscription",
+      "name": "legacyInscription",
       "type": {
         "kind": "struct",
         "fields": [

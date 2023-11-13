@@ -11,7 +11,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import { Paginator } from "@app/components/Paginator";
 import {
-  LegacyMint,
+  MintWithTokenAccount,
   getInscriptionPda,
   useLegacyMintsByWallet,
 } from "@libreplex/shared-ui";
@@ -26,7 +26,7 @@ export const WalletLegacyGallery = ({
   actions,
 }: {
   publicKey: PublicKey;
-  actions: (item: LegacyMint) => ReactNode;
+  actions: (item: MintWithTokenAccount) => ReactNode;
 }) => {
   const { connection } = useConnection();
 

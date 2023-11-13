@@ -288,7 +288,7 @@ export type LibreplexInscriptions = {
   ],
   "accounts": [
     {
-      "name": "Inscription",
+      "name": "inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -334,14 +334,14 @@ export type LibreplexInscriptions = {
       }
     },
     {
-      "name": "InscriptionData",
+      "name": "inscriptionData",
       "type": {
         "kind": "struct",
         "fields": []
       }
     },
     {
-      "name": "InscriptionRankPage",
+      "name": "inscriptionRankPage",
       "type": {
         "kind": "struct",
         "fields": [
@@ -353,7 +353,7 @@ export type LibreplexInscriptions = {
       }
     },
     {
-      "name": "InscriptionSummary",
+      "name": "inscriptionSummary",
       "type": {
         "kind": "struct",
         "fields": [
@@ -407,18 +407,6 @@ export type LibreplexInscriptions = {
             "name": "signerType",
             "type": {
               "defined": "SignerType"
-            }
-          },
-          {
-            "name": "mediaType",
-            "type": {
-              "defined": "MediaType"
-            }
-          },
-          {
-            "name": "encodingType",
-            "type": {
-              "defined": "EncodingType"
             }
           },
           {
@@ -1043,7 +1031,7 @@ export const IDL: LibreplexInscriptions = {
   ],
   "accounts": [
     {
-      "name": "Inscription",
+      "name": "inscription",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1089,14 +1077,14 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
-      "name": "InscriptionData",
+      "name": "inscriptionData",
       "type": {
         "kind": "struct",
         "fields": []
       }
     },
     {
-      "name": "InscriptionRankPage",
+      "name": "inscriptionRankPage",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1108,7 +1096,7 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
-      "name": "InscriptionSummary",
+      "name": "inscriptionSummary",
       "type": {
         "kind": "struct",
         "fields": [
@@ -1162,18 +1150,6 @@ export const IDL: LibreplexInscriptions = {
             "name": "signerType",
             "type": {
               "defined": "SignerType"
-            }
-          },
-          {
-            "name": "mediaType",
-            "type": {
-              "defined": "MediaType"
-            }
-          },
-          {
-            "name": "encodingType",
-            "type": {
-              "defined": "EncodingType"
             }
           },
           {
