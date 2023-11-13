@@ -59,7 +59,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
           <Td>
             <Center columnGap={2}>
               <VStack>
-                <HStack alignItems={"start"}>
+                <HStack alignItems={"start"} sx={{height :"100%",}}>
                   <VStack>
                     {offchainData?.images.square ? (
                       <img
@@ -85,7 +85,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                     )}
                     <Text>Off-chain Image</Text>
                   </VStack>
-                  <VStack sx={{ position: "relative" }}>
+                  <VStack sx={{ position: "relative",  height :"240px" }}>
                     {base64ImageInscription ? (
                       <InscriptionImage root={mint} />
                     ) : (
