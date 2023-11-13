@@ -89,26 +89,6 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                     {base64ImageInscription ? (
                       <InscriptionImage root={mint} />
                     ) : (
-                      //   <>
-                      //     <SolscanLink
-                      //       address={inscriptionData.pubkey.toBase58()}
-                      //       cluster={cluster}
-                      //       sx={{
-                      //         position: "absolute",
-                      //         top: "8px",
-                      //         right: "8px",
-                      //       }}
-                      //     />
-                      //     <img
-                      //       style={{
-                      //         minWidth: "240px",
-                      //         maxWidth: "240px",
-                      //         aspectRatio: "1/1",
-                      //         borderRadius: 8,
-                      //       }}
-                      //       src={`data:${urlPrefix};base64,${base64ImageInscription}`}
-                      //     />
-                      //   </>
                       <>
                         <Text
                           sx={{

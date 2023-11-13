@@ -8,13 +8,13 @@ import {
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
   getInscriptionPda,
-  getLegacyMetadataPda
+  getLegacyMetadataPda,
 } from "@libreplex/shared-ui";
 import {
   Connection,
   PublicKey,
   SystemProgram,
-  TransactionInstruction
+  TransactionInstruction,
 } from "@solana/web3.js";
 
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
@@ -24,16 +24,17 @@ import { AccountLayout } from "@solana/spl-token";
 import { useMemo } from "react";
 import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
 import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
-import { BATCH_SIZE, useInscriptionWriteStatus } from "../inscriptions/WriteToInscriptionTransactionButton";
+import {
+  BATCH_SIZE,
+  useInscriptionWriteStatus,
+} from "../inscriptions/WriteToInscriptionTransactionButton";
 
 export interface IWriteToLegacyInscriptionAsUAuth {
   mint: PublicKey;
   dataBytes: number[];
-  mediaType: MediaType,
-  encodingType: EncodingType
+  mediaType: MediaType;
+  encodingType: EncodingType;
 }
-
-
 
 export const resizeLegacyInscription = async (
   { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsUAuth>,
@@ -85,18 +86,16 @@ export const resizeLegacyInscription = async (
   const legacyInscription = getLegacyInscriptionPda(mint)[0];
   const legacyMetadata = getLegacyMetadataPda(mint)[0];
 
-  
-
   let startPos = 0;
   const blockhash = await connection.getLatestBlockhash();
   const remainingBytes = [...dataBytes];
   // one empty instruction that sets the mediatype and the encoding type
- 
+  console.log({ mediaType, encodingType });
   let isFirst = true;
   while (remainingBytes.length > 0) {
     const instructions: TransactionInstruction[] = [];
 
-    // reduce the first batch size a bit since we're passing media type and 
+    // reduce the first batch size a bit since we're passing media type and
     // encoding type
     const byteBatch = remainingBytes.splice(0, BATCH_SIZE);
 
@@ -106,7 +105,7 @@ export const resizeLegacyInscription = async (
           data: Buffer.from(byteBatch),
           startPos,
           mediaType: isFirst ? mediaType : null, // not setting these as it's been already set above
-          encodingType: isFirst ? encodingType: null // not setting this as it's been already set above
+          encodingType: isFirst ? encodingType : null, // not setting this as it's been already set above
         })
         .accounts({
           authority: wallet.publicKey,
@@ -130,7 +129,6 @@ export const resizeLegacyInscription = async (
     });
     isFirst = false;
   }
-
 
   return {
     data,
