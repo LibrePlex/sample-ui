@@ -1,4 +1,3 @@
-
 import {
   Box,
   Button,
@@ -8,7 +7,10 @@ import {
   UnorderedList,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { MintWithTokenAccount, useInscriptionForRoot } from "@libreplex/shared-ui";
+import {
+  MintWithTokenAccount,
+  useInscriptionForRoot,
+} from "@libreplex/shared-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
@@ -19,13 +21,18 @@ import { LegacyCollectionInscriber } from "./legacyInscription/collectioninscrib
 import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
 
 enum View {
-  Wallet,
   InscriptionGallery,
-  Collection,
+  Inscriber,
 }
 
-const InscriptionAction = ({ legacyMint }: { legacyMint: MintWithTokenAccount }) => {
-  const {inscription: { data }} = useInscriptionForRoot(legacyMint.mint);
+const InscriptionAction = ({
+  legacyMint,
+}: {
+  legacyMint: MintWithTokenAccount;
+}) => {
+  const {
+    inscription: { data },
+  } = useInscriptionForRoot(legacyMint.mint);
 
   return data?.item ? (
     <ViewLegacyInscription mint={legacyMint.mint} />
@@ -43,7 +50,7 @@ const InscriptionsView = () => {
   };
 
   const { publicKey } = useWallet();
-  const [view, setView] = useState<View>(View.Collection);
+  const [view, setView] = useState<View>(View.Inscriber);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -84,12 +91,38 @@ const InscriptionsView = () => {
                   immutable)
                 </ListItem>
               </UnorderedList>
+              <Box
+               mt={6}
+                sx={{
+                  display: "flex",
+                }}
+                gap={1}
+              >
+                <Button
+                  colorScheme="teal"
+                  variant={view === View.Inscriber ? "solid" : "outline"}
+                  onClick={() => {
+                    setView(View.Inscriber);
+                  }}
+                >
+                  Inscribe Yours
+                </Button>
+                <Button
+                  colorScheme="teal"
+                  variant={
+                    view === View.InscriptionGallery ? "solid" : "outline"
+                  }
+                  onClick={() => {
+                    setView(View.InscriptionGallery);
+                  }}
+                >
+                  Browse Inscriptions
+                </Button>
+                {/* <Button>Mint new</Button> */}
+              </Box>
               <InscriptionsSummary mt={4} mb={4} />
-              {view === View.Wallet && (
-                <WalletLegacyGallery publicKey={publicKey} actions={actions} />
-              )}
               {view === View.InscriptionGallery && <InscriptionGallery />}
-              {view === View.Collection && <LegacyCollectionInscriber />}
+              {view === View.Inscriber && <LegacyCollectionInscriber />}
             </Box>
           </Box>
         </Box>

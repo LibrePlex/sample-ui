@@ -7,6 +7,7 @@ import {
   IconButton,
   VStack,
   Text,
+  Center
 } from "@chakra-ui/react";
 import {
   AssetDisplay,
@@ -74,11 +75,9 @@ export const MintCardLegacy = ({
   //   console.log({ offchainData });
   // }, [offchainData]);
 
-  const {inscription: {
-    data: inscription,
-    refetch,
-    isFetching,
-  }} = useInscriptionForRoot(mintId);
+  const {
+    inscription: { data: inscription, refetch, isFetching },
+  } = useInscriptionForRoot(mintId);
 
   const inscriptionId = useMemo(
     () => (mintId ? getInscriptionPda(mintId)[0] : undefined),
@@ -98,7 +97,9 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <VStack sx={{ position: "absolute", top: "5px", right: "5px", zIndex: 1 }}>
+        <VStack
+          sx={{ position: "absolute", top: "5px", right: "5px", zIndex: 1 }}
+        >
           <Badge
             sx={{
               border: "1px solid #aaa",
@@ -119,50 +120,51 @@ export const MintCardLegacy = ({
       )}
       {mintId && (
         <>
-        <Box sx={{height :"200px"}}>
-          <AssetDisplay
-            asset={{
-              image: { url: offchainData?.images.square, description: "" },
-            }}
-            mint={mintId}
-          />
+          <Box sx={{ height: "200px" }}>
+            <AssetDisplay
+              asset={{
+                image: { url: offchainData?.images.square, description: "" },
+              }}
+              mint={mintId}
+            />
           </Box>
+          <IconButton
+            style={{ position: "absolute", top: "8px", left: "8px" }}
+            size="xs"
+            onClick={() => refetch()}
+            aria-label={"Refresh"}
+          >
+            <TbRefresh />
+          </IconButton>
 
           <VStack
+            display={"flex"}
+            flexDir={"row"}
             style={{ paddingTop: 12 }}
-            alignItems="flex-start"
-            justifyContent="flex-start"
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
           >
             <Heading
               title={metadata?.item?.data.name ?? "-"}
               // as={motion.p}
               size="md"
               noOfLines={1}
-              // variants={textMotion}
             >
-              {/* {JSON.stringify(mint.metadata.item?.data)} */}
-              {metadata?.item?.data.name ?? "-"}{" "}
+              <Center>{metadata?.item?.data.name ?? "-"} </Center>
             </Heading>
-
-            <IconButton
-              style={{ position: "absolute", top: "8px", left: "8px" }}
-              size="xs"
-              onClick={() => refetch()}
-              aria-label={"Refresh"}
-            >
-              <TbRefresh />
-            </IconButton>
-            <IconButton
-              style={{ position: "absolute", bottom: "2px", right: "8px" }}
-              size="xs"
-              p={0}
-              onClick={() =>
-                window.open(`/scanner?mintId=${mintId.toBase58()}`)
-              }
-              aria-label={"Scanner"}
-            >
-              <HiMagnifyingGlassCircle size={"lg"} />
-            </IconButton>
+            <Box>
+              <IconButton
+                size="xs"
+                p={0}
+                onClick={() =>
+                  window.open(`/scanner?mintId=${mintId.toBase58()}`)
+                }
+                aria-label={"Scanner"}
+              >
+                <HiMagnifyingGlassCircle size={"lg"} />
+              </IconButton>
+            </Box>
 
             {children}
           </VStack>

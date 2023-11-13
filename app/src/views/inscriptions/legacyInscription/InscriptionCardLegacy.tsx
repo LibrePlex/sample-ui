@@ -31,7 +31,7 @@ export const InscriptionCardLegacy = ({
   return (
     <DisappearingBox>
       <MintCardLegacy mintId={inscription?.item.root}>
-        <ViewLegacyInscription mint={inscription?.item.root} />
+        {/* <ViewLegacyInscription mint={inscription?.item.root} /> */}
       </MintCardLegacy>
     </DisappearingBox>
   );

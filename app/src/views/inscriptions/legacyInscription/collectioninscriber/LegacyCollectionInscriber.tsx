@@ -1,22 +1,22 @@
 import { Paginator, usePaginator } from "@app/components/Paginator";
 import {
-    Button,
-    Center,
-    HStack,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Textarea,
-    Th,
-    Tr,
-    VStack
+  Button,
+  Center,
+  HStack,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Textarea,
+  Th,
+  Tr,
+  VStack,
 } from "@chakra-ui/react";
 import {
-    CopyPublicKeyButton,
-    getInscriptionPda,
-    notify,
-    useTokenAccountsByOwner,
+  CopyPublicKeyButton,
+  getInscriptionPda,
+  notify,
+  useTokenAccountsByOwner,
 } from "@libreplex/shared-ui";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -24,6 +24,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useCallback, useMemo, useState } from "react";
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
 import { MintMigratorRow } from "./MintMigratorRow";
+import { CreateRankPageTransactionButton } from "@app/components/legacyInscriptions/CreateRankPageTransactionButton";
 
 export const LegacyCollectionInscriber = () => {
   const [mintIds, setMintIds] = useState<PublicKey[]>([]);
@@ -139,6 +140,9 @@ export const LegacyCollectionInscriber = () => {
 
   return (
     <VStack rowGap={2} mt={2}>
+      {/* <CreateRankPageTransactionButton params={{
+        pageIndex: 1
+      }} formatting={{}} /> */}
       {mintIds.length === 0 && (
         <>
           <Text>Your wallet: {data?.length} mints</Text>
