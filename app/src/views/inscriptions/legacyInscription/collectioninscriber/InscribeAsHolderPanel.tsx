@@ -21,14 +21,9 @@ export const InscribeAsHolderPanel = ({
 }: {
   mint: MintWithTokenAccount;
 }) => {
-  const [customImage, setCustomImage] = useState<boolean>(false);
-
   const { data } = useOffChainMetadataCache(mint?.mint);
 
   const [imageOverride, setImageOverride] = useState<string>();
-
-  const { data: imageBuffer, refetch } =
-    useOffchainImageAsBuffer(imageOverride);
 
   const {
     data: compressedImage,
@@ -125,14 +120,17 @@ export const InscribeAsHolderPanel = ({
               </VStack>
             </>
           ) : (
-            <InscribeLegacyMetadataAsHolderTransactionButton
-              params={{
-                mint,
-              }}
-              formatting={{}}
-            />
+            <></>
           )}
         </VStack>
+      )}
+      {!inscription && (
+        <InscribeLegacyMetadataAsHolderTransactionButton
+          params={{
+            mint,
+          }}
+          formatting={{}}
+        />
       )}
     </VStack>
   );
