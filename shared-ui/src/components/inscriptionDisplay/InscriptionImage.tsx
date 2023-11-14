@@ -45,8 +45,6 @@ export const InscriptionImage = ({
       />
       <img
         style={{
-          minWidth: "100%",
-          maxWidth: "100%",
           minHeight: "100%",
           maxHeight: "100%",
           aspectRatio: "1/1",
@@ -54,17 +52,7 @@ export const InscriptionImage = ({
         }}
         src={`data:${urlPrefix};${encoding},${base64ImageInscription}`}
       />
-      <VStack
-        sx={{
-          position: "absolute",
-          bottom: "8px",
-          left: "50%",
-          transform: "translate(-50%)",
-        }}
-      >
-        {/* <Text>{encoding}</Text>
-        <Text>{urlPrefix}</Text> */}
-      </VStack>
+   
     </Box>
   ) : (
     <></>

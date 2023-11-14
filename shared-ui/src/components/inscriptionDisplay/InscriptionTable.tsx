@@ -8,6 +8,7 @@ import {
   Text,
   Tr,
   VStack,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
@@ -58,20 +59,45 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         <Tr>
           <Td>
             <Center columnGap={2}>
-              <VStack>
-                <HStack alignItems={"start"} sx={{height :"100%",}}>
-                  <VStack>
-                    {offchainData?.images.square ? (
-                      <img
-                        style={{
-                          minWidth: "240px",
-                          maxWidth: "240px",
-                          aspectRatio: "1/1",
-                          borderRadius: 8,
+              <SimpleGrid columns={2} spacing={10}>
+                <VStack sx={{ position: "relative" }}>
+                  {offchainData?.images.square ? (
+                    <img
+                      style={{
+                        aspectRatio: "1/1",
+                        borderRadius: 8,
+                      }}
+                      src={offchainData?.images.square}
+                    />
+                  ) : (
+                    <Skeleton
+                      startColor="#aaa"
+                      endColor="#aaa"
+                      style={{
+                        minHeight: "100%",
+                        maxHeight: "100%",
+                        aspectRatio: "1/1",
+                        borderRadius: 8,
+                      }}
+                    />
+                  )}
+                  <Text>Off-chain Image</Text>
+                </VStack>
+                <VStack sx={{ position: "relative"}}>
+                  {base64ImageInscription ? (
+                    <InscriptionImage root={mint} />
+                  ) : (
+                    <>
+                      <Text
+                        sx={{
+                          position: "absolute",
+                          left: "50%",
+                          top: "45%",
+                          transform: "translate(-50%,-50%)",
                         }}
-                        src={offchainData?.images.square}
-                      />
-                    ) : (
+                      >
+                        Not inscribed
+                      </Text>
                       <Skeleton
                         startColor="#aaa"
                         endColor="#aaa"
@@ -82,45 +108,16 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                           borderRadius: 8,
                         }}
                       />
-                    )}
-                    <Text>Off-chain Image</Text>
-                  </VStack>
-                  <VStack sx={{ position: "relative",  height :"240px" }}>
-                    {base64ImageInscription ? (
-                      <InscriptionImage root={mint} />
-                    ) : (
-                      <>
-                        <Text
-                          sx={{
-                            position: "absolute",
-                            left: "50%",
-                            top: "45%",
-                            transform: "translate(-50%,-50%)",
-                          }}
-                        >
-                          Not inscribed
-                        </Text>
-                        <Skeleton
-                          startColor="#aaa"
-                          endColor="#aaa"
-                          style={{
-                            minWidth: "240px",
-                            maxWidth: "240px",
-                            aspectRatio: "1/1",
-                            borderRadius: 8,
-                          }}
-                        />
-                      </>
-                    )}
-                    <HStack>
-                      <Text>Inscription</Text>
-                      <CopyPublicKeyButton
-                        publicKey={inscriptionId?.toBase58()}
-                      />
-                    </HStack>
-                  </VStack>
-                </HStack>
-              </VStack>
+                    </>
+                  )}
+                  <HStack>
+                    <Text>Inscription</Text>
+                    <CopyPublicKeyButton
+                      publicKey={inscriptionId?.toBase58()}
+                    />
+                  </HStack>
+                </VStack>
+              </SimpleGrid>
             </Center>
           </Td>
         </Tr>

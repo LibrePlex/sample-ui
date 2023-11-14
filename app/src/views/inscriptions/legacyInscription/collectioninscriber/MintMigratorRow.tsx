@@ -34,8 +34,8 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
       </Td>
 
       <Td>
-        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24">
-          <InscriptionImage root={mint} className="h-24" />
+        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 h-full">
+          <InscriptionImage root={mint}/>
         </div>
       </Td>
       <Td>
