@@ -1,4 +1,4 @@
-import { Td, Tr, VStack } from "@chakra-ui/react";
+import { Box, Td, Tr, VStack } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
   ScannerLink,
@@ -19,25 +19,27 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
       </Td>
       <Td>{data?.name}</Td>
       <Td>
-        <div className="bg-indigo-300 rounded-md overflow-hidden max-h-24 max-w-24 w-24">
+        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 relative">
           {/* <div className="object-cover"> */}
           <img
             src={data?.images.square ?? ""}
             className="object-cover max-w-full max-h-full h-full h-24 w-24"
             // style={{height: '100px'}}
           />
+          <Box className="absolute top-1 right-1">
+            <SolscanLink address={mint.toBase58()} />
+          </Box>
           {/* </div> */}
         </div>
       </Td>
 
       <Td>
-        <div className="bg-indigo-300 rounded-md overflow-hidden max-h-24 max-w-24">
+        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24">
           <InscriptionImage root={mint} className="h-24" />
         </div>
       </Td>
       <Td>
         <VStack>
-          <SolscanLink address={mint.toBase58()} />
           <ScannerLink mintId={mint} />
         </VStack>
       </Td>

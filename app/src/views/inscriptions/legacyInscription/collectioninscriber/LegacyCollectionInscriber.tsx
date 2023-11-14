@@ -1,5 +1,6 @@
 import { Paginator, usePaginator } from "@app/components/Paginator";
 import {
+  Box,
   Button,
   Center,
   HStack,
@@ -143,6 +144,12 @@ export const LegacyCollectionInscriber = () => {
       {/* <CreateRankPageTransactionButton params={{
         pageIndex: 1
       }} formatting={{}} /> */}
+      <Box className="border-2 rounded-xl border-inherit" m={1} p={4} maxW={"300px"}>
+        <Text fontSize="2xl">
+          Hit the button below to check your wallet or else paste your
+          hashlist into the text box.
+        </Text>
+      </Box>
       {mintIds.length === 0 && (
         <>
           <Text>Your wallet: {data?.length} mints</Text>
@@ -151,7 +158,7 @@ export const LegacyCollectionInscriber = () => {
               fetchMintsFromWallet();
             }}
           >
-            Set wallet contents
+            Use wallet contents
           </Button>
         </>
       )}
