@@ -163,11 +163,12 @@ export const WriteToLegacyInscriptionAsUAuthTransactionButton = (
         </VStack>
       ) : (
         <GenericTransactionButton<IWriteToLegacyInscriptionAsUAuth>
-          text={`Write inscription!`}
+          text={`INSCRIBE NOW!`}
           transactionGenerator={resizeLegacyInscription}
           onError={(msg) => notify({ message: msg ?? "Unknown error" })}
           size="lg"
           {...props}
+          formatting={{ colorScheme: "red" }}
         />
       )}
       {writeStates !== expectedCount && (

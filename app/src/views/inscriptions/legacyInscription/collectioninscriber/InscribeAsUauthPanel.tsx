@@ -94,7 +94,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
         m={1}
         gap={5}
       >
-        <Heading size="md">Initialise your inscription</Heading>
+        <Heading size="md">Step 1/3: Initialise your inscription</Heading>
         {!inscription?.item ? (
           <InscribeLegacyMetadataAsUauthTransactionButton
             params={{
@@ -119,28 +119,8 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           gap={5}
         >
           <Heading pt={2} size="md">
-            Choose inscription source
+            Step 2/3: Choose source & resize
           </Heading>
-          {/* <HStack>
-            <Button
-              onClick={() => {
-                setCustomImage(false);
-              }}
-              colorScheme="teal"
-              variant={!customImage ? "solid" : "outline"}
-            >
-              Replicate off-chain
-            </Button>
-            <Button
-              onClick={() => {
-                setCustomImage(true);
-              }}
-              colorScheme="teal"
-              variant={customImage ? "solid" : "outline"}
-            >
-              Override
-            </Button>
-          </HStack> */}
 
           {customImage && (
             <VStack>
@@ -158,37 +138,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
                 <>
                   {" "}
                   <VStack>
-                    {sizeOk ? (
-                      <VStack>
-                        <HStack>
-                          <HiCheckCircle color="lightgreen" size="35px" /> (
-                          <Heading size="sm">
-                            SIZE CHECK:{" "}
-                            {inscription?.item?.size} bytes
-                          </Heading>
-                        </HStack>
-                        {dataBytes && (
-                          <WriteToLegacyInscriptionAsUAuthTransactionButton
-                            params={{
-                              mint,
-                              dataBytes,
-                              encodingType: { base64: {} },
-                              mediaType,
-                            }}
-                            formatting={{}}
-                          />
-                        )}
-                        {mediaTypeToString(mediaType)}
-                      </VStack>
-                    ) : (
-                      <HStack>
-                        <HiXCircle color="#f66" size={"50px"} />
-                        <Text>
-                          Image sizes do not match. Current inscription size:{" "}
-                          {inscription?.item.size}, need: {imageBuffer?.length}
-                        </Text>
-                      </HStack>
-                    )}
                     {imageBuffer &&
                       imageBuffer.length !== inscription?.item.size && (
                         <ResizeLegacyMetadataAsUAuthTransactionButton
@@ -203,55 +152,51 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
                   </VStack>
                 </>
               )}
-            </VStack>
-          )}
-          {/* {!legacyInscription?.item ? (
-            <>{!customImage ? <></> : <></>}</>
-          ) : customImage ? (
-            <></>
-          ) : (
-            <>
-              {sizeOkCompressed ? (
-                <>
-                  Size CHECK:
-                  <HiCheckCircle color="lightgreen" /> (
-                  {inscription?.item?.size} bytes)
-                  {compressedImage && (
-                    <WriteToLegacyInscriptionAsUAuthTransactionButton
-                      params={{
-                        mint: mint,
-                        dataBytes: [...compressedImage.buf],
-                        encodingType: { base64: {} },
-                        mediaType,
-                      }}
-                      formatting={{}}
-                    />
-                  )}
-                  {mediaTypeToString(mediaType)}
-                </>
+              {sizeOk ? (
+                <HStack>
+                  <HiCheckCircle color="lightgreen" size="35px" />
+                  <Heading size="sm">
+                    SIZE CHECK: {inscription?.item?.size} bytes
+                  </Heading>
+                </HStack>
               ) : (
-                <>
+                <HStack>
+                  <HiXCircle color="#f66" size={"50px"} />
                   <Text>
                     Image sizes do not match. Current inscription size:{" "}
-                    {inscription?.item.size}, need:{" "}
-                    {compressedImage?.buf.length}
+                    {inscription?.item.size}, need: {imageBuffer?.length}
                   </Text>
-                  <HiXCircle color="#f66" />
-                </>
+                </HStack>
               )}
-              {compressedImage?.buf && !sizeOkCompressed && (
-                <ResizeLegacyMetadataAsUAuthTransactionButton
-                  params={{
-                    mint: mint,
-                    targetSize: compressedImage?.buf.length,
-                    currentSize: inscription?.item.size,
-                  }}
-                  formatting={{}}
-                />
-              )}
-            </>
-          )} */}
+            </VStack>
+          )}
         </VStack>
+      )}
+      {sizeOk ? (
+        <VStack
+          className="border-2 rounded-md border-inherit w-full"
+          p={5}
+          m={1}
+          gap={5}
+        >
+          <Heading pt={2} size="md">
+            Step 3/3: Inscribe
+          </Heading>
+          {dataBytes && (
+            <WriteToLegacyInscriptionAsUAuthTransactionButton
+              params={{
+                mint,
+                dataBytes,
+                encodingType: { base64: {} },
+                mediaType,
+              }}
+              formatting={{}}
+            />
+          )}
+          {mediaTypeToString(mediaType)}
+        </VStack>
+      ) : (
+        <></>
       )}
     </VStack>
   );
