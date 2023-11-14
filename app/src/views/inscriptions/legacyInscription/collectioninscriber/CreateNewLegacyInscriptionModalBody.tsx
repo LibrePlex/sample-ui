@@ -60,11 +60,6 @@ export const CreateNewLegacyInscriptionModalBody = ({
 
   return (
     <ModalBody>
-      <Box pb={2}>
-        <Text>
-          Legacy Metaplex mints can be inscribed using LibrePlex inscriptions.
-        </Text>
-      </Box>
       {isUauth && <InscribeAsUauthPanel mint={mint} />}
       {isHolder && !isUauth && (
         <InscribeAsHolderPanel mint={ownerTokenAccount} />

@@ -75,11 +75,7 @@ export const MintCardLegacy = ({
     inscription: { data: inscription, refetch, isFetching },
   } = useInscriptionForRoot(mintId);
 
-  const inscriptionId = useMemo(
-    () => (mintId ? getInscriptionPda(mintId)[0] : undefined),
-    [mintId]
-  );
-
+  
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
 
   return (

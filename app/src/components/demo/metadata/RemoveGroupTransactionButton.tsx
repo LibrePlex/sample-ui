@@ -76,6 +76,7 @@ export const removeGroup = async (
     instructions,
     description: `Remove metadata from group`,
     signers: [],
+    blockhash
   });
 
   console.log({ data });

@@ -61,9 +61,9 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
   return (
     <VStack>
-      <Heading pt={2} size="md">
+      {/* <Heading pt={2} size="md">
         Inscribing as Update Authority
-      </Heading>
+      </Heading> */}
 
       {legacyInscription?.item.authorityType.updateAuthority && (
         <Text>
@@ -80,18 +80,18 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           LibrePlex team. Pop over to the discord to find out more.
         </Text>
       )}
-      <VStack p={5} m={1} gap={5}>
+      <VStack p={5} gap={5}>
         <img
-          style={{ borderRadius: "15px", aspectRatio: "1/1", height: "200px" }}
+          style={{ borderRadius: "15px", aspectRatio: "1/1", height: "100px" }}
           src={data?.images.square ?? ""}
         />
       </VStack>
       <VStack
         className="border-2 rounded-md border-inherit w-full"
-        p={5}
+        p={3}
         gap={5}
       >
-        <Heading size="md">Step 1/3: Initialise your inscription</Heading>
+        <Heading size="sms">Step 1/3: Initialise your inscription</Heading>
         {!inscription?.item ? (
           <InscribeLegacyMetadataAsUauthTransactionButton
             params={{
@@ -111,11 +111,11 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       {inscription && (
         <VStack
           className="border-2 rounded-md border-inherit w-full"
-          p={5}
+          p={3}
           m={1}
           gap={5}
         >
-          <Heading pt={2} size="md">
+          <Heading pt={2} size="sm">
             Step 2/3: Choose source & resize
           </Heading>
 
@@ -149,7 +149,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
                   </VStack>
                 </>
               )}
-              {sizeOk ? (
+              {sizeOk && imageBuffer ? (
                 <HStack>
                   <HiCheckCircle color="lightgreen" size="35px" />
                   <Heading size="sm">
@@ -172,11 +172,11 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       {inscription && sizeOk ? (
         <VStack
           className="border-2 rounded-md border-inherit w-full"
-          p={5}
+          p={3}
           m={1}
           gap={5}
         >
-          <Heading pt={2} size="md">
+          <Heading pt={2} size="sm">
             Step 3/3: Inscribe
           </Heading>
           {dataBytes && (
