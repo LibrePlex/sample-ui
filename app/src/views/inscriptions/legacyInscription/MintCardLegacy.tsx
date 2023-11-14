@@ -7,7 +7,7 @@ import {
   IconButton,
   VStack,
   Text,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import {
   AssetDisplay,
@@ -71,10 +71,6 @@ export const MintCardLegacy = ({
 
   const { data: offchainData } = useOffChainMetadataCache(mintId);
 
-  // useEffect(() => {
-  //   console.log({ offchainData });
-  // }, [offchainData]);
-
   const {
     inscription: { data: inscription, refetch, isFetching },
   } = useInscriptionForRoot(mintId);
@@ -97,8 +93,8 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <VStack
-          sx={{ position: "absolute", top: "5px", right: "5px", zIndex: 1 }}
+        <div
+          className="flex flex-col items-end absolute top-2 right-2 z-10"
         >
           <Badge
             sx={{
@@ -106,7 +102,7 @@ export const MintCardLegacy = ({
               background: "#333",
             }}
           >
-            Order: {inscription.item.order.toNumber().toLocaleString()}
+            #{inscription.item.order.toNumber().toLocaleString()}
           </Badge>
           <Badge
             sx={{
@@ -114,9 +110,17 @@ export const MintCardLegacy = ({
               background: "#333",
             }}
           >
-            Size: {formattedSize}
+            Size: {formattedSize}B
           </Badge>
-        </VStack>
+          <Badge
+            sx={{
+              border: "1px solid #aaa",
+              background: "#333",
+            }}
+          >
+             Rent: {(Math.round((0.00089088 + 0.00000696 * inscription?.item?.size)*100)/100).toFixed(2)} SOL
+          </Badge>
+        </div>
       )}
       {mintId && (
         <>

@@ -13,13 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { RawAccount } from "@solana/spl-token";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Collection,
   GroupSelector,
   IRpcObject,
   Metadata,
   useLegacyMetadataByMintId,
+  useMultiSigById
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { connect } from "http2";
@@ -27,6 +28,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { InscribeAsUauthPanel } from "./InscribeAsUauthPanel";
 import { InscribeAsHolderPanel } from "./InscribeAsHolderPanel";
 import { useOwnerOfMint } from "app/src/hooks/useOwnerOfMint";
+import { useSquadsByUauth } from "./useSquadsByUauth";
 
 enum InscribeAs {
   Uauth,
@@ -46,6 +48,8 @@ export const CreateNewLegacyInscriptionModalBody = ({
     () => publicKey && metadata?.item ? metadata?.item?.updateAuthority?.equals(publicKey) : false,
     [metadata, publicKey]
   );
+
+  
 
   const { data: ownerTokenAccount } = useOwnerOfMint(mint);
 

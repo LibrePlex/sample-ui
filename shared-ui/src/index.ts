@@ -1,10 +1,9 @@
 
-
-
 export {
   ContextProvider,
   useAutoConnect,
   useCluster,
+  ClusterContext
 } from "./contexts";
 export { useUserSolBalanceStore } from "./useUserSolBalanceStore";
 
@@ -63,7 +62,10 @@ export {
   decodeLegacyMetadata,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
-  InscriptionsProgramContext
+  InscriptionsProgramContext,
+  SquadsProgramContext,
+  SquadsProgramProvider,
+  useMultiSigById
 } from "./sdk";
 export type {
   AttributeType,

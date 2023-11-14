@@ -52,5 +52,8 @@ export {
   decodeLegacyMetadata,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
-  InscriptionsProgramContext
+  InscriptionsProgramContext,
+  SquadsProgramContext,
+  SquadsProgramProvider,
+  useMultiSigById
 } from "./query";

@@ -1,3 +1,4 @@
+import { useMultiSigById } from './squads/squad';
 
 // metadata stuff
 export type {
@@ -68,3 +69,7 @@ useInscriptionDataForRoot,useInscriptionForRoot} from "./inscriptions"
 export {useFetchSingleAccount} from "./singleAccountInfo"
 
 export type {MediaType, EncodingType} from "./inscriptions"
+
+export {SquadsProgramContext, SquadsProgramProvider} from "./squads/SquadsProgramContext"
+
+export {useMultiSigById} from "./squads/squad"

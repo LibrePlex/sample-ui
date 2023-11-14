@@ -1,27 +1,21 @@
-
-
 import * as anchor from "@coral-xyz/anchor";
-import { PublicKey, Connection, Keypair } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
-export const PROGRAM_ID_METADATA =
-  "LibrQsXf9V1DmTtJLkEghoaF1kjJcAzWiEGoJn8mz7p";
-export const PROGRAM_ID_INSCRIPTIONS =
-  "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
-  
+export const PROGRAM_ID_SQUADS = "SMPLecH534NA9acpos4G6x7uf3LWbCAwZQE9e8ZekMu";
 
-import { IDL} from "./libreplex_legacy";
-import {LibreplexLegacy} from "./libreplex_legacy";
-import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
+import { WalletContextState } from "@solana/wallet-adapter-react";
+import { IDL, SquadsMpl } from "./squads";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
-export function getProgramInstanceLegacyInscriptions(
-  programId: PublicKey,
+export function getProgramInstanceSquads(
   connection: Connection,
-  wallet: Pick<WalletContextState, 'publicKey' |'signAllTransactions'|'signTransaction'>
+  wallet: Pick<
+    WalletContextState,
+    "publicKey" | "signAllTransactions" | "signTransaction"
+  >
 ) {
-
   if (
     !wallet.publicKey ||
     !wallet.signAllTransactions ||
@@ -29,7 +23,6 @@ export function getProgramInstanceLegacyInscriptions(
   ) {
     throw Error("Wallet not ready");
   }
-  
 
   const nodeWallet = {
     signTransaction: wallet.signTransaction!,
@@ -37,13 +30,12 @@ export function getProgramInstanceLegacyInscriptions(
     publicKey: wallet.publicKey!,
   };
 
-
   const provider = new anchor.AnchorProvider(
     connection,
     nodeWallet,
     anchor.AnchorProvider.defaultOptions()
   );
   const idl = IDL;
-  const program = new anchor.Program<LibreplexLegacy>(idl, programId, provider)!;
+  const program = new anchor.Program<SquadsMpl>(idl, new PublicKey(PROGRAM_ID_SQUADS), provider)!;
   return program;
 }

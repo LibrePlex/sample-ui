@@ -12,7 +12,7 @@ import React from "react";
 import { PublicKey } from "@solana/web3.js";
 
 
-import { LibreplexLegacy } from "../libreplex_legacy";
+import { LibreplexLegacy } from "./libreplex_legacy";
 
 export const LibrePlexLegacyInscriptionsProgramContext = createContext<{
   program: Program<LibreplexLegacy>;
