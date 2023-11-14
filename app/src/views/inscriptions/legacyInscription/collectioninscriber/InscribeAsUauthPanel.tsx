@@ -81,8 +81,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
         </Text>
       )}
       <VStack p={5} m={1} gap={5}>
-        <Heading size="md">Off-chain image</Heading>
-
         <img
           style={{ borderRadius: "15px", aspectRatio: "1/1", height: "200px" }}
           src={data?.images.square ?? ""}
@@ -91,7 +89,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       <VStack
         className="border-2 rounded-md border-inherit w-full"
         p={5}
-        m={1}
         gap={5}
       >
         <Heading size="md">Step 1/3: Initialise your inscription</Heading>
@@ -172,7 +169,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           )}
         </VStack>
       )}
-      {sizeOk ? (
+      {inscription && sizeOk ? (
         <VStack
           className="border-2 rounded-md border-inherit w-full"
           p={5}
