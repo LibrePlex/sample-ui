@@ -112,9 +112,10 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                   )}
                   <HStack>
                     <Text>Inscription Data</Text>
-                    <CopyPublicKeyButton
+                    {inscriptionData && <CopyPublicKeyButton
                       publicKey={inscriptionData.pubkey?.toBase58()}
-                    />
+                    />}
+                    
                   </HStack>
                 </VStack>
               </SimpleGrid>
