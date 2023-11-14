@@ -111,9 +111,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                     </>
                   )}
                   <HStack>
-                    <Text>Inscription</Text>
+                    <Text>Inscription Data</Text>
                     <CopyPublicKeyButton
-                      publicKey={inscriptionId?.toBase58()}
+                      publicKey={inscriptionData.pubkey?.toBase58()}
                     />
                   </HStack>
                 </VStack>
