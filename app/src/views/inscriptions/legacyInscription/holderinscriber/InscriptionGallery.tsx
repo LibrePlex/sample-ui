@@ -26,15 +26,21 @@ export const InscriptionGallery = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const { item, pubkey } = useMemo(
-    () =>
-      data && inscriptionSummary
+    () =>{
+
+    
+      const start = Math.max(Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage +1) * ITEMS_PER_PAGE,0);
+      const end = Math.max(Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage ) * ITEMS_PER_PAGE,0);
+      
+      return data && inscriptionSummary
         ? decodeInscriptionRankPage(
             data?.item?.buffer,
             data.pubkey,
-            Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage +1) * ITEMS_PER_PAGE,
-            Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage ) * ITEMS_PER_PAGE
+            start,
+            end
           )
-        : { item: null, pubkey: inscriptionPageId },
+        : { item: null, pubkey: inscriptionPageId }
+    },
     [currentPage, data, inscriptionPageId, inscriptionSummary]
   );
 
