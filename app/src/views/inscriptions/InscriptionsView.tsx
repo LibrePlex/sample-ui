@@ -50,7 +50,7 @@ const InscriptionsView = () => {
   };
 
   const { publicKey } = useWallet();
-  const [view, setView] = useState<View>(View.Inscriber);
+  const [view, setView] = useState<View>(View.InscriptionGallery);
 
   const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
@@ -91,15 +91,17 @@ const InscriptionsView = () => {
                   immutable)
                 </ListItem>
               </UnorderedList>
+
+              <InscriptionsSummary mt={4} mb={4} />
               <Box
-               mt={6}
+                mt={6}
                 sx={{
                   display: "flex",
                 }}
                 gap={1}
               >
                 <Button
-                  colorScheme="teal"
+                  colorScheme={view === View.Inscriber ? "teal" : "white"}
                   variant={view === View.Inscriber ? "solid" : "outline"}
                   onClick={() => {
                     setView(View.Inscriber);
@@ -108,7 +110,7 @@ const InscriptionsView = () => {
                   Inscribe Yours
                 </Button>
                 <Button
-                  colorScheme="teal"
+                  colorScheme={view === View.InscriptionGallery ? "teal" : "white"}
                   variant={
                     view === View.InscriptionGallery ? "solid" : "outline"
                   }
@@ -120,7 +122,6 @@ const InscriptionsView = () => {
                 </Button>
                 {/* <Button>Mint new</Button> */}
               </Box>
-              <InscriptionsSummary mt={4} mb={4} />
               {view === View.InscriptionGallery && <InscriptionGallery />}
               {view === View.Inscriber && <LegacyCollectionInscriber />}
             </Box>
