@@ -20,40 +20,44 @@ export const InscriptionGallery = () => {
     connection
   );
 
-  const {data: inscriptionSummary} = useInscriptionSummary()
+  const { data: inscriptionSummary } = useInscriptionSummary();
 
   const ITEMS_PER_PAGE = 50;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-  const { item, pubkey } = useMemo(
-    () =>{
+  const { item, pubkey } = useMemo(() => {
+    if (inscriptionSummary && data) {
+      const start = Math.max(
+        Number(inscriptionSummary.item.inscriptionCountTotal) -
+          (currentPage + 1) * ITEMS_PER_PAGE,
+        0
+      );
+      const end = Math.max(
+        Number(inscriptionSummary.item.inscriptionCountTotal) -
+          currentPage * ITEMS_PER_PAGE,
+        0
+      );
 
-    
-      const start = Math.max(Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage +1) * ITEMS_PER_PAGE,0);
-      const end = Math.max(Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage ) * ITEMS_PER_PAGE,0);
-      
-      return data && inscriptionSummary
-        ? decodeInscriptionRankPage(
-            data?.item?.buffer,
-            data.pubkey,
-            start,
-            end
-          )
-        : { item: null, pubkey: inscriptionPageId }
-    },
-    [currentPage, data, inscriptionPageId, inscriptionSummary]
+      return decodeInscriptionRankPage(
+        data?.item?.buffer,
+        data.pubkey,
+        start,
+        end
+      );
+    } else {
+      return { item: null, pubkey: inscriptionPageId };
+    }
+  }, [currentPage, data, inscriptionPageId, inscriptionSummary]);
+
+  const maxPages = useMemo(() => {
+    // console.log({l: data?.item?.buffer.length, m: Math.ceil((data?.item?.buffer.length - 12 ) / 32 / ITEMS_PER_PAGE)});
+    return Math.ceil((data?.item?.buffer.length - 12) / 32 / ITEMS_PER_PAGE);
+  }, [data?.item?.buffer.length]);
+
+  const inscriptionKeysReversed = useMemo(
+    () => item?.inscriptionKeys.reverse(),
+    [item?.inscriptionKeys]
   );
-
-  const maxPages = useMemo(
-    () => {
-      // console.log({l: data?.item?.buffer.length, m: Math.ceil((data?.item?.buffer.length - 12 ) / 32 / ITEMS_PER_PAGE)});
-      return Math.ceil((data?.item?.buffer.length - 12 ) / 32 / ITEMS_PER_PAGE)
-    },
-    [data?.item?.buffer.length]
-  );
-
-  const inscriptionKeysReversed = useMemo(()=>item?.inscriptionKeys.reverse(),[item?.inscriptionKeys])
-  
 
   return (
     <VStack className="w-full">
@@ -70,7 +74,6 @@ export const InscriptionGallery = () => {
         alignItems="flex-start"
         justifyContent="center"
         flexWrap="wrap"
-       
       >
         {inscriptionKeysReversed?.map((item, idx) => (
           <InscriptionCardLegacy inscriptionId={item} key={idx} />
