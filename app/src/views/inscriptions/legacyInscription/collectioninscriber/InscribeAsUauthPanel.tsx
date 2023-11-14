@@ -16,9 +16,10 @@ import { mediaTypeToString } from "shared-ui/src/components/inscriptionDisplay/u
 import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
 import { useValidationHash } from "../../useValidationHash";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
+import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
-  const [customImage, setCustomImage] = useState<boolean>(false);
+  const [customImage, setCustomImage] = useState<boolean>(true);
 
   const { data } = useOffChainMetadataCache(mint);
 
@@ -52,6 +53,12 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
   const legacyInscription = useLegacyInscriptionForMint(mint);
 
+  const dataBytes = useMemo(
+    () => (imageBuffer ? [...imageBuffer] : undefined),
+    [imageBuffer]
+  );
+  const { reset } = useInscriptionWriteStatus(dataBytes, inscription?.pubkey);
+
   return (
     <VStack>
       <Heading pt={2} size="md">
@@ -73,73 +80,114 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           LibrePlex team. Pop over to the discord to find out more.
         </Text>
       )}
+      <VStack p={5} m={1} gap={5}>
+        <Heading size="md">Off-chain image</Heading>
 
-      <Heading pt={2} size="sm">
-        Choose inscription source
-      </Heading>
-      <HStack>
-        <Button
-          onClick={() => {
-            setCustomImage(false);
-          }}
-          colorScheme="teal"
-          variant={!customImage ? "solid" : "outline"}
-        >
-          Replicate off-chain
-        </Button>
-        <Button
-          onClick={() => {
-            setCustomImage(true);
-          }}
-          colorScheme="teal"
-          variant={customImage ? "solid" : "outline"}
-        >
-          Override
-        </Button>
-      </HStack>
-      <img style={{ borderRadius: "15px" }} src={data?.images.square ?? ""} />
-
-      {customImage && (
-        <VStack>
-          <ImageUploader
-            currentImage={imageOverride}
-            linkedAccountId={mint?.toBase58()}
-            afterUpdate={(url) => {
-              console.log({ url });
-              setImageOverride(url);
+        <img
+          style={{ borderRadius: "15px", aspectRatio: "1/1", height: "200px" }}
+          src={data?.images.square ?? ""}
+        />
+      </VStack>
+      <VStack
+        className="border-2 rounded-md border-inherit w-full"
+        p={5}
+        m={1}
+        gap={5}
+      >
+        <Heading size="md">Initialise your inscription</Heading>
+        {!inscription?.item ? (
+          <InscribeLegacyMetadataAsUauthTransactionButton
+            params={{
+              mint,
+              imageOverride: undefined,
             }}
+            formatting={{}}
           />
+        ) : (
+          <HStack>
+            <HiCheckCircle color="lightgreen" size={"35px"} />
+            <Heading size="sm">Initialised</Heading>
+          </HStack>
+        )}
+      </VStack>
 
-          {imageOverride && (
-            <>
-              {inscription ? (
+      {inscription && (
+        <VStack
+          className="border-2 rounded-md border-inherit w-full"
+          p={5}
+          m={1}
+          gap={5}
+        >
+          <Heading pt={2} size="md">
+            Choose inscription source
+          </Heading>
+          {/* <HStack>
+            <Button
+              onClick={() => {
+                setCustomImage(false);
+              }}
+              colorScheme="teal"
+              variant={!customImage ? "solid" : "outline"}
+            >
+              Replicate off-chain
+            </Button>
+            <Button
+              onClick={() => {
+                setCustomImage(true);
+              }}
+              colorScheme="teal"
+              variant={customImage ? "solid" : "outline"}
+            >
+              Override
+            </Button>
+          </HStack> */}
+
+          {customImage && (
+            <VStack>
+              <ImageUploader
+                currentImage={imageOverride}
+                linkedAccountId={mint?.toBase58()}
+                afterUpdate={(url) => {
+                  console.log({ url });
+                  setImageOverride(url);
+                  reset();
+                }}
+              />
+
+              {imageOverride && (
                 <>
                   {" "}
                   <VStack>
                     {sizeOk ? (
-                      <>
-                        Size CHECK:
-                        <HiCheckCircle color="lightgreen" /> (
-                        {inscription?.item?.size} bytes)
-                        <WriteToLegacyInscriptionAsUAuthTransactionButton
-                          params={{
-                            mint,
-                            dataBytes: [...imageBuffer],
-                            encodingType: { base64: {} },
-                            mediaType,
-                          }}
-                          formatting={{}}
-                        />
+                      <VStack>
+                        <HStack>
+                          <HiCheckCircle color="lightgreen" size="35px" /> (
+                          <Heading size="sm">
+                            SIZE CHECK:{" "}
+                            {inscription?.item?.size} bytes
+                          </Heading>
+                        </HStack>
+                        {dataBytes && (
+                          <WriteToLegacyInscriptionAsUAuthTransactionButton
+                            params={{
+                              mint,
+                              dataBytes,
+                              encodingType: { base64: {} },
+                              mediaType,
+                            }}
+                            formatting={{}}
+                          />
+                        )}
                         {mediaTypeToString(mediaType)}
-                      </>
+                      </VStack>
                     ) : (
-                      <>
+                      <HStack>
+                        <HiXCircle color="#f66" size={"50px"} />
                         <Text>
                           Image sizes do not match. Current inscription size:{" "}
                           {inscription?.item.size}, need: {imageBuffer?.length}
                         </Text>
-                        <HiXCircle color="#f66" />
-                      </>
+                      </HStack>
                     )}
                     {imageBuffer &&
                       imageBuffer.length !== inscription?.item.size && (
@@ -154,77 +202,56 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
                       )}
                   </VStack>
                 </>
-              ) : (
-                <InscribeLegacyMetadataAsUauthTransactionButton
-                  params={{
-                    mint,
-                    imageOverride,
-                  }}
-                  formatting={{}}
-                />
               )}
-            </>
-          )}
-        </VStack>
-      )}
-      {!legacyInscription?.item ? (
-        <>
-          {!customImage ? (
-            <VStack>
-              <InscribeLegacyMetadataAsUauthTransactionButton
-                params={{
-                  mint,
-                  imageOverride: undefined,
-                }}
-                formatting={{}}
-              />
             </VStack>
-          ) : (
-            <></>
           )}
-        </>
-      ) : customImage ? (
-        <></>
-      ) : (
-        <>
-          {sizeOkCompressed ? (
+          {/* {!legacyInscription?.item ? (
+            <>{!customImage ? <></> : <></>}</>
+          ) : customImage ? (
+            <></>
+          ) : (
             <>
-              Size CHECK:
-              <HiCheckCircle color="lightgreen" /> ({inscription?.item?.size}{" "}
-              bytes)
-              {compressedImage && (
-                <WriteToLegacyInscriptionAsUAuthTransactionButton
+              {sizeOkCompressed ? (
+                <>
+                  Size CHECK:
+                  <HiCheckCircle color="lightgreen" /> (
+                  {inscription?.item?.size} bytes)
+                  {compressedImage && (
+                    <WriteToLegacyInscriptionAsUAuthTransactionButton
+                      params={{
+                        mint: mint,
+                        dataBytes: [...compressedImage.buf],
+                        encodingType: { base64: {} },
+                        mediaType,
+                      }}
+                      formatting={{}}
+                    />
+                  )}
+                  {mediaTypeToString(mediaType)}
+                </>
+              ) : (
+                <>
+                  <Text>
+                    Image sizes do not match. Current inscription size:{" "}
+                    {inscription?.item.size}, need:{" "}
+                    {compressedImage?.buf.length}
+                  </Text>
+                  <HiXCircle color="#f66" />
+                </>
+              )}
+              {compressedImage?.buf && !sizeOkCompressed && (
+                <ResizeLegacyMetadataAsUAuthTransactionButton
                   params={{
                     mint: mint,
-                    dataBytes: [...compressedImage.buf],
-                    encodingType: { base64: {} },
-                    mediaType,
+                    targetSize: compressedImage?.buf.length,
+                    currentSize: inscription?.item.size,
                   }}
                   formatting={{}}
                 />
               )}
-              {mediaTypeToString(mediaType)}
             </>
-          ) : (
-            <>
-              <Text>
-                Image sizes do not match. Current inscription size:{" "}
-                {inscription?.item.size}, need: {compressedImage?.buf.length}
-              </Text>
-              <HiXCircle color="#f66" />
-            </>
-          )}
-          {compressedImage?.buf && !sizeOkCompressed && (
-            <ResizeLegacyMetadataAsUAuthTransactionButton
-              params={{
-                mint: mint,
-                targetSize: compressedImage?.buf.length,
-                currentSize: inscription?.item.size,
-              }}
-              formatting={{}}
-            />
-          )}
-        </>
+          )} */}
+        </VStack>
       )}
     </VStack>
   );

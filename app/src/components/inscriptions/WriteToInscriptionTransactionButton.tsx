@@ -131,7 +131,7 @@ export const useInscriptionWriteStatus = (
   inscription: PublicKey
 ) => {
   const expectedCount = useMemo(
-    () => Math.ceil(dataBytes.length / BATCH_SIZE),
+    () => dataBytes ? Math.ceil(dataBytes.length / BATCH_SIZE) : 0,
     [dataBytes]
   );
   const store = useContext(InscriptionStoreContext);
@@ -151,7 +151,7 @@ export const useInscriptionWriteStatus = (
   );
 
   const reset = useCallback(
-    () => resetWriteStatus(inscription.toBase58()),
+    () => inscription && resetWriteStatus(inscription.toBase58()),
     [resetWriteStatus, inscription]
   );
 
@@ -176,7 +176,7 @@ export const useInscriptionWriteStatus = (
     dataBytes,
   ]);
 
-  return { writeStates, expectedCount };
+  return { writeStates, expectedCount, reset };
 };
 
 export const WriteToInscriptionTransactionButton = (

@@ -19,7 +19,7 @@ export const NetworkConfigurationProvider: FC<{ children: ReactNode }> = ({ chil
 
     const router = useRouter()
     
-    const networkConfiguration = useMemo(()=>router.query.env as string ?? 'devnet',[router.query])
+    const networkConfiguration = useMemo(()=>router.query.env as string ?? 'mainnet-beta',[router.query])
 
     const setNetworkConfiguration = useCallback((s: string) => {
         router.query.env = s

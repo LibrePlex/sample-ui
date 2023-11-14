@@ -30,7 +30,7 @@ export const LegacyCollectionInscriber = () => {
   const [mintIds, setMintIds] = useState<PublicKey[]>([]);
   const [errors, setErrors] = useState<{ i: string; e: string }[]>([]);
   const [inputTxt, setInputTxt] = useState<string>(
-    '["6LWDWUAMVXD1r66SvaEibpR1dq1bhRM1v724qmGeoAiD"]'
+    '["hegbXW571Dr2CdA7ntLFaVckEutVM2Lgf4gDhV3Urk7",    "E7hd2ExvjyPuyMKFw2sxoqC1uXtxgPe5PqEiRN1HgMop",    "8YXubLwjSoJGArQqBySCGRoJcnfeW7owfWjmFjDi4JS1",    "CY6MnUhZvWhLBbAfWREp3V7GnMyQdFkDgGfZt2fAa8ZM",    "DExrrFVeEKr1k366XCiqZP5tSPK6GTwNgYjWpVMMTMgV",    "5Qca5GeMbXVttwWJ96dVr7tbmqg7GuEXFegyQjPdg8ny",    "7rcYbci4ESHqTMrPoJFCcQjn2pUZcV9dShWPmrw856jK",    "J9drnQrcT9FAd2Rvd4QLHvTyM1gCvt1bA1XUfsCpWuny",    "4aYRqRG7b8shturV8MNh1QFNUMkBJpce3YHQdovz5WRg",    "DtbKfuMG8kXkGiYZH9jgHPfzpucUmGjYpsvAEWJ7sHrp"    ]'
   );
 
   const { publicKey } = useWallet();
@@ -172,7 +172,7 @@ export const LegacyCollectionInscriber = () => {
           </>
         )}
       </VStack>
-      {mintIds.length > 0 && (
+      {/* {mintIds.length > 0 && (
         <HStack
           sx={{
             display: "flex",
@@ -207,7 +207,7 @@ export const LegacyCollectionInscriber = () => {
             Without Inscriptions
           </Button>
         </HStack>
-      )}
+      )} */}
 
       {mintIds.length === 0 && (
         <Textarea

@@ -6,33 +6,35 @@ import {
   ITransactionTemplate,
   MediaType,
   PROGRAM_ID_INSCRIPTIONS,
+  ScannerLink,
   getInscriptionDataPda,
-  getInscriptionPda
+  getInscriptionPda,
 } from "@libreplex/shared-ui";
 import {
   Connection,
   PublicKey,
   SystemProgram,
-  TransactionInstruction
+  TransactionInstruction,
 } from "@solana/web3.js";
 
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
-import { Progress, Text } from "@chakra-ui/react";
+import { HStack, Progress, Text } from "@chakra-ui/react";
 import { notify } from "@libreplex/shared-ui";
 import { AccountLayout } from "@solana/spl-token";
 import { useMemo } from "react";
 import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
 import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
-import { BATCH_SIZE, useInscriptionWriteStatus } from "../inscriptions/WriteToInscriptionTransactionButton";
+import {
+  BATCH_SIZE,
+  useInscriptionWriteStatus,
+} from "../inscriptions/WriteToInscriptionTransactionButton";
 
 export interface IWriteToLegacyInscriptionAsHolder {
   mint: PublicKey;
   dataBytes: number[];
-  mediaType: MediaType,
-  encodingType: EncodingType
+  mediaType: MediaType;
+  encodingType: EncodingType;
 }
-
-
 
 export const resizeLegacyInscription = async (
   { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsHolder>,
@@ -97,7 +99,7 @@ export const resizeLegacyInscription = async (
           data: Buffer.from(byteBatch),
           startPos,
           encodingType,
-          mediaType
+          mediaType,
         })
         .accounts({
           owner: wallet.publicKey,
@@ -151,7 +153,10 @@ export const WriteToLegacyInscriptionAsHolderTransactionButton = (
         />
       </div>
       {writeStates === expectedCount ? (
-        <Text p={2}>Inscribed</Text>
+        <HStack>
+          <Text p={2}>Inscribed</Text>
+          <ScannerLink mintId={props.params.mint} />
+        </HStack>
       ) : (
         <GenericTransactionButton<IWriteToLegacyInscriptionAsHolder>
           text={`Write`}

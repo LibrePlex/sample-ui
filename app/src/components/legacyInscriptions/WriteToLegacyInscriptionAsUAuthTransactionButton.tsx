@@ -6,6 +6,7 @@ import {
   ITransactionTemplate,
   MediaType,
   PROGRAM_ID_INSCRIPTIONS,
+  ScannerLink,
   getInscriptionDataPda,
   getInscriptionPda,
   getLegacyMetadataPda,
@@ -18,7 +19,7 @@ import {
 } from "@solana/web3.js";
 
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
-import { Progress, Text } from "@chakra-ui/react";
+import { HStack, Heading, Progress, Text, VStack } from "@chakra-ui/react";
 import { notify } from "@libreplex/shared-ui";
 import { AccountLayout } from "@solana/spl-token";
 import { useMemo } from "react";
@@ -151,24 +152,33 @@ export const WriteToLegacyInscriptionAsUAuthTransactionButton = (
     inscription
   );
   return (
-    <>
-      <div style={{ width: "100%" }}>
-        <Progress
-          size="xs"
-          colorScheme="pink"
-          value={(writeStates / expectedCount) * 100}
-        />
-      </div>
+    <VStack gap={2}>
       {writeStates === expectedCount ? (
-        <Text p={2}>Inscribed</Text>
+        <VStack>
+          <Heading size="lg">Inscribed</Heading>
+          <HStack>
+            <Text>View on LibreScanner</Text>
+            <ScannerLink mintId={props.params.mint} />
+          </HStack>
+        </VStack>
       ) : (
         <GenericTransactionButton<IWriteToLegacyInscriptionAsUAuth>
-          text={`Write`}
+          text={`Write inscription!`}
           transactionGenerator={resizeLegacyInscription}
           onError={(msg) => notify({ message: msg ?? "Unknown error" })}
+          size="lg"
           {...props}
         />
       )}
-    </>
+      {writeStates !== expectedCount && (
+        <div style={{ width: "100%" }}>
+          <Progress
+            size="xs"
+            colorScheme="pink"
+            value={(writeStates / expectedCount) * 100}
+          />
+        </div>
+      )}
+    </VStack>
   );
 };

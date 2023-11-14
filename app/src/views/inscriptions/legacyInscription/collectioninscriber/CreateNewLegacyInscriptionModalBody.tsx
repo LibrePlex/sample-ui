@@ -56,7 +56,7 @@ export const CreateNewLegacyInscriptionModalBody = ({
 
   return (
     <ModalBody>
-      <Box p={2}>
+      <Box pb={2}>
         <Text>
           Legacy Metaplex mints can be inscribed using LibrePlex inscriptions.
         </Text>

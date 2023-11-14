@@ -66,7 +66,7 @@ export const InscribeAsHolderPanel = ({
           Please contact them to update the inscription
         </Text>
       )}
-
+{/* 
       {legacyInscription?.item.authorityType.holder && (
         <VStack>
           <img
@@ -131,7 +131,7 @@ export const InscribeAsHolderPanel = ({
           }}
           formatting={{}}
         />
-      )}
+      )} */}
     </VStack>
   );
 };

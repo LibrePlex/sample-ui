@@ -143,7 +143,7 @@ export const InscribeLegacyMetadataAsUauthTransactionButton = (
 ) => {
   return (
     <GenericTransactionButton<IInscribeLegacyMint>
-      text={`Create inscription`}
+      text={`Initialise`}
       transactionGenerator={inscribeLegacyMint}
       onError={(msg) => notify({ message: msg ?? "Unknown error" })}
       {...props}
