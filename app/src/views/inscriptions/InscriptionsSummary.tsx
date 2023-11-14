@@ -1,31 +1,44 @@
 import {
   Box,
-  VStack,
-  Text,
-  Table,
-  Tr,
-  Th,
-  Td,
-  Center,
   BoxProps,
-  Tbody,
+  Center,
   IconButton,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Tr,
+  VStack,
 } from "@chakra-ui/react";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { useContext, useEffect, useMemo } from "react";
-import { TbRefresh } from "react-icons/tb";
 import {
   CopyPublicKeyButton,
-  decodeInscriptionSummary,
-  getInscriptionSummaryPda,
-} from "shared-ui/src";
-import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
+  getInscriptionRankPda
+} from "@libreplex/shared-ui";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { useCallback, useMemo } from "react";
+import { TbRefresh } from "react-icons/tb";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
 import { useInscriptionSummary } from "./useInscriptionsSummary";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
- 
-  const {data: inscriptionSummary, refetch} = useInscriptionSummary();
+  const { data: inscriptionSummary, refetch: refetchSummary } =
+    useInscriptionSummary();
+  const inscriptionPageId = useMemo(
+    () => getInscriptionRankPda(BigInt(0))[0],
+    []
+  ); // for now consider the first inscription page only
+
+  const { connection } = useConnection();
+  const { data, refetch: refetchInscriptionPage } = useFetchSingleAccount(
+    inscriptionPageId,
+    connection
+  );
+
+  const refetch = useCallback(() => {
+    refetchSummary();
+    refetchInscriptionPage();
+  }, [refetchSummary, refetchInscriptionPage]);
   return (
     <Box {...rest}>
       <Box sx={{ position: "relative" }}>

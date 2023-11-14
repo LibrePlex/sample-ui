@@ -11,9 +11,6 @@ export const useInscriptionForRoot = (root: PublicKey) => {
     [root]
   );
 
-  useEffect(()=>{
-    console.log({inscriptionId, root})
-  },[inscriptionId, root])
   return {
     inscriptionId,
     inscription: useInscriptionById(inscriptionId, connection),
