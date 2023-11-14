@@ -51,5 +51,6 @@ export {
   decodeInscriptionRankPage,
   decodeLegacyMetadata,
   useInscriptionDataForRoot,
-  useInscriptionForRoot
+  useInscriptionForRoot,
+  InscriptionsProgramContext
 } from "./query";

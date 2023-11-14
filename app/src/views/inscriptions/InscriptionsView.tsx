@@ -1,24 +1,21 @@
+import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
 import {
   Box,
   Button,
   Heading,
   ListItem,
   Text,
-  UnorderedList,
-  useMediaQuery,
+  UnorderedList
 } from "@chakra-ui/react";
 import {
   MintWithTokenAccount,
   useInscriptionForRoot,
 } from "@libreplex/shared-ui";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
 import { ViewLegacyInscription } from "./legacyInscription/ViewLegacyInscription";
-import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
-import { WalletLegacyGallery } from "./legacyInscription/WalletLegacyGallery";
 import { LegacyCollectionInscriber } from "./legacyInscription/collectioninscriber/LegacyCollectionInscriber";
-import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
+import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
 
 enum View {
   InscriptionGallery,
@@ -49,10 +46,7 @@ const InscriptionsView = () => {
     return <InscriptionAction legacyMint={item} />;
   };
 
-  const { publicKey } = useWallet();
   const [view, setView] = useState<View>(View.InscriptionGallery);
-
-  const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
   return (
     <div className="md:hero mx-auto p-4">
@@ -64,8 +58,8 @@ const InscriptionsView = () => {
         <Box
           display="flex"
           columnGap={"20px"}
-          sx={{ mt: "10px", maxWidth: "800px" }}
           flexDirection="column"
+          className="w-full"
         >
           <Box display="flex" flexDirection={"column"}>
             <Box
@@ -110,7 +104,9 @@ const InscriptionsView = () => {
                   Inscribe Yours
                 </Button>
                 <Button
-                  colorScheme={view === View.InscriptionGallery ? "teal" : "white"}
+                  colorScheme={
+                    view === View.InscriptionGallery ? "teal" : "white"
+                  }
                   variant={
                     view === View.InscriptionGallery ? "solid" : "outline"
                   }

@@ -62,7 +62,8 @@ export {
   decodeInscriptionRankPage,
   decodeLegacyMetadata,
   useInscriptionDataForRoot,
-  useInscriptionForRoot
+  useInscriptionForRoot,
+  InscriptionsProgramContext
 } from "./sdk";
 export type {
   AttributeType,

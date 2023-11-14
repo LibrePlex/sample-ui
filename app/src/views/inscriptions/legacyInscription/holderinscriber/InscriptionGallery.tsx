@@ -6,6 +6,7 @@ import { useFetchSingleAccount } from "@libreplex/shared-ui";
 import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
 import { InscriptionCardLegacy } from "../InscriptionCardLegacy";
 import { Paginator } from "@app/components/Paginator";
+import { useInscriptionSummary } from "../../useInscriptionsSummary";
 
 export const InscriptionGallery = () => {
   const inscriptionPageId = useMemo(
@@ -19,20 +20,22 @@ export const InscriptionGallery = () => {
     connection
   );
 
-  const ITEMS_PER_PAGE = 25;
+  const {data: inscriptionSummary} = useInscriptionSummary()
+
+  const ITEMS_PER_PAGE = 50;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const { item, pubkey } = useMemo(
     () =>
-      data
+      data && inscriptionSummary
         ? decodeInscriptionRankPage(
             data?.item?.buffer,
             data.pubkey,
-            currentPage * ITEMS_PER_PAGE,
-            (currentPage + 1) * ITEMS_PER_PAGE
+            Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage +1) * ITEMS_PER_PAGE,
+            Number(inscriptionSummary.item.inscriptionCountTotal) - (currentPage ) * ITEMS_PER_PAGE
           )
         : { item: null, pubkey: inscriptionPageId },
-    [currentPage, data, inscriptionPageId]
+    [currentPage, data, inscriptionPageId, inscriptionSummary]
   );
 
   const maxPages = useMemo(
@@ -43,10 +46,11 @@ export const InscriptionGallery = () => {
     [data?.item?.buffer.length]
   );
 
+  const inscriptionKeysReversed = useMemo(()=>item?.inscriptionKeys.reverse(),[item?.inscriptionKeys])
   
 
   return (
-    <VStack>
+    <VStack className="w-full">
       <Heading pt={3} size={"md"}>
         Showing {item?.inscriptionKeys.length} items
       </Heading>
@@ -55,14 +59,14 @@ export const InscriptionGallery = () => {
         pageCount={maxPages}
         currentPage={currentPage}
       />
-      <Button onClick={() => refetch()}>Refresh</Button>
       <HStack
         gap={8}
         alignItems="flex-start"
         justifyContent="center"
         flexWrap="wrap"
+       
       >
-        {item?.inscriptionKeys.map((item, idx) => (
+        {inscriptionKeysReversed?.map((item, idx) => (
           <InscriptionCardLegacy inscriptionId={item} key={idx} />
         ))}
       </HStack>

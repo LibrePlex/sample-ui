@@ -21,29 +21,11 @@ import {
 } from "shared-ui/src";
 import { InscriptionsProgramContext } from "shared-ui/src/sdk/query/inscriptions/InscriptionsProgramContext";
 import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { useInscriptionSummary } from "./useInscriptionsSummary";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
-  const inscriptionSummaryId = useMemo(() => getInscriptionSummaryPda()[0], []);
-
-  const program = useContext(InscriptionsProgramContext);
-
-  const { connection } = useConnection();
-  const { data, refetch } = useFetchSingleAccount(
-    inscriptionSummaryId,
-    connection
-  );
-
-  const inscriptionSummary = useMemo(() => {
-    // console.log({ pubkey: data?.pubkey.toBase58() });
-    return data?.item
-      ? decodeInscriptionSummary(program)(data.item.buffer, data.pubkey)
-      : undefined;
-  }, [program, data]);
-
-  // useEffect(() => {
-  //   console.log({ inscriptionSummary });
-  // }, [inscriptionSummary]);
-
+ 
+  const {data: inscriptionSummary, refetch} = useInscriptionSummary();
   return (
     <Box {...rest}>
       <Box sx={{ position: "relative" }}>
