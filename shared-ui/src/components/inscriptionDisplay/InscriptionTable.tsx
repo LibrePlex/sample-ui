@@ -83,9 +83,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                   )}
                   <Text>Off-chain Image</Text>
                 </VStack>
-                <VStack sx={{ position: "relative"}}>
+                <VStack sx={{ position: "relative", height :"100%"}}>
                   {base64ImageInscription ? (
-                    <InscriptionImage root={mint} />
+                    <InscriptionImage root={mint} sx={{ height :"100%"}}/>
                   ) : (
                     <>
                       <Text
