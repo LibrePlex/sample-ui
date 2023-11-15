@@ -13,7 +13,7 @@ export type {
   ITransactionTemplate,
 } from "./executor";
 export { SolscanLink } from "./SolscanLink";
-export { GenericTransactionButton } from "./executor";
+export { GenericTransactionButton,useGenericTransactionClick } from "./executor";
 
 export { Notifications } from "./Notifications";
 export { NetworkSwitcherDynamic } from "./NetworkSwitcher";

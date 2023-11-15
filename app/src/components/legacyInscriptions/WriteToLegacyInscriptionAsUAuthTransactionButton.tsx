@@ -37,7 +37,7 @@ export interface IWriteToLegacyInscriptionAsUAuth {
   encodingType: EncodingType;
 }
 
-export const resizeLegacyInscription = async (
+export const writeToLegacyInscriptionAsUauth = async (
   { wallet, params }: IExecutorParams<IWriteToLegacyInscriptionAsUAuth>,
   connection: Connection,
   cluster: string
@@ -164,7 +164,7 @@ export const WriteToLegacyInscriptionAsUAuthTransactionButton = (
       ) : (
         <GenericTransactionButton<IWriteToLegacyInscriptionAsUAuth>
           text={`INSCRIBE NOW!`}
-          transactionGenerator={resizeLegacyInscription}
+          transactionGenerator={writeToLegacyInscriptionAsUauth}
           onError={(msg) => notify({ message: msg ?? "Unknown error" })}
           size="lg"
           {...props}

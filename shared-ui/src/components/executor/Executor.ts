@@ -167,8 +167,12 @@ export class Executor<P> {
       .then((result) => result);
     const { data: transactions, error } = result;
 
-    if (!transactions || transactions.length === 0) {
+    if (!transactions) {
       this.onError("Could not generate transactions");
+      return;
+    }
+    if( transactions.length === 0 ) {
+      this.onSuccess();
       return;
     }
 

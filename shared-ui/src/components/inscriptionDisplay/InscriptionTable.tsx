@@ -9,6 +9,7 @@ import {
   Tr,
   VStack,
   SimpleGrid,
+  Image
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
@@ -62,12 +63,20 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               <SimpleGrid columns={2} spacing={10}>
                 <VStack sx={{ position: "relative" }}>
                   {offchainData?.images.square ? (
-                    <img
+                    <Image
                       style={{
                         aspectRatio: "1/1",
                         borderRadius: 8,
                       }}
                       src={offchainData?.images.square}
+                      fallback={
+                        <Skeleton isLoaded={true}>
+                          <img
+                            src="https://img.freepik.com/premium-vector/gallery-simple-icon-vector-image-picture-sign-neumorphism-style-mobile-app-web-ui-vector-eps-10_532800-801.jpg"
+                            style={{ height: "100%", width: "100%", borderRadius: '20px' }}
+                          />
+                        </Skeleton>
+                      }
                     />
                   ) : (
                     <Skeleton

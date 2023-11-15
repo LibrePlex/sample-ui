@@ -99,6 +99,7 @@ export {
   CopyPublicKeyButton,
   WalletAuthenticatingButton,
   GenericTransactionButton,
+  useGenericTransactionClick,
   SolscanLink,
   Notifications,
   NetworkSwitcherDynamic,

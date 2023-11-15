@@ -1,22 +1,41 @@
 import { InscribeLegacyMetadataAsUauthTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsUauthTransactionButton";
-import { ResizeLegacyMetadataAsUAuthTransactionButton } from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsUAuthTransactionButton";
-import { WriteToLegacyInscriptionAsUAuthTransactionButton } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
-import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { Button, HStack, Heading, Text, VStack } from "@chakra-ui/react";
 import {
+  ResizeLegacyMetadataAsUAuthTransactionButton,
+  resizeLegacyInscription,
+} from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsUAuthTransactionButton";
+import { WriteToLegacyInscriptionAsUAuthTransactionButton, writeToLegacyInscriptionAsUauth } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
+import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
+import { Button, HStack, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
+import {
+  notify,
   useInscriptionForRoot,
   useLegacyCompressedImage,
   useMediaType,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
 import { mediaTypeToString } from "shared-ui/src/components/inscriptionDisplay/useMediaType";
 import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
 import { useValidationHash } from "../../useValidationHash";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
 import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
+import { useGenericTransactionClick } from "@libreplex/shared-ui";
+
+enum Stage {
+  NotStarted,
+  UpdateTemplate,
+  Resize,
+  Write,
+}
+
+enum StageProgress {
+  NotStarted,
+  Progress,
+  Success,
+  Fail,
+}
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
@@ -59,6 +78,105 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   );
   const { reset } = useInscriptionWriteStatus(dataBytes, inscription?.pubkey);
 
+  const [updateStatus, setUpdateStatus] = useState<{
+    stage: Stage;
+    result: StageProgress;
+  }>({ stage: Stage.NotStarted, result: StageProgress.NotStarted });
+
+  const { onClick: resizeClick, isExecuting: isExecutingResize } =
+    useGenericTransactionClick({
+      params: {
+        mint,
+        targetSize: imageBuffer?.length,
+        currentSize: inscription?.item.size,
+      },
+      beforeClick: undefined,
+      transactionGenerator: resizeLegacyInscription,
+      onSuccess: () => {
+        setUpdateStatus({
+          stage: Stage.Resize,
+          result: StageProgress.Success,
+        });
+      },
+      onError: (e) => {
+        // console.log({ e });
+        notify({ type: "error", message: "Resizing inscription failed" });
+        setUpdateStatus({
+          stage: Stage.Resize,
+          result: StageProgress.Fail,
+        });
+      },
+      afterSign: () => {
+        setUpdateStatus({
+          stage: Stage.Resize,
+          result: StageProgress.Progress,
+        });
+      },
+    });
+
+
+  const { onClick: writeClick, isExecuting: isExecutingWrite } =
+  useGenericTransactionClick({
+    params: {
+      mint,
+      dataBytes,
+      encodingType: { base64: {} },
+      mediaType,
+    },
+    beforeClick: undefined,
+    transactionGenerator: writeToLegacyInscriptionAsUauth,
+    onSuccess: () => {
+      setUpdateStatus({
+        stage: Stage.Write,
+        result: StageProgress.Success,
+      });
+    },
+    onError: (e) => {
+      // console.log({ e });
+      notify({ type: "error", message: "Write inscription failed" });
+      setUpdateStatus({
+        stage: Stage.Write,
+        result: StageProgress.Fail,
+      });
+    },
+    afterSign: () => {
+      setUpdateStatus({
+        stage: Stage.Write,
+        result: StageProgress.Progress,
+      });
+    },
+  });
+
+  // stage transitions
+
+  // when updatestatus === UpdateSuccess *and* we have an imageOverride, move to Resizing state and simulate resize click
+  useEffect(() => {
+    // console.log({updateStatus, imageOverride, sizeOk, dataBytes});
+    if (
+      updateStatus.stage === Stage.UpdateTemplate &&
+      updateStatus.result === StageProgress.Success &&
+      imageOverride && !sizeOk
+    ) {
+      setUpdateStatus({
+        stage: Stage.Resize,
+        result: StageProgress.Progress,
+      });
+      resizeClick();
+    } else if(
+      updateStatus.result === StageProgress.Success &&
+      updateStatus.stage !== Stage.Write &&
+      sizeOk && 
+      dataBytes
+    ) {
+      setUpdateStatus({
+        stage: Stage.Write,
+        result: StageProgress.Progress,
+      });
+      writeClick();
+    }
+  }, [updateStatus, imageOverride, sizeOk, dataBytes]);
+
+
   return (
     <VStack>
       {/* <Heading pt={2} size="md">
@@ -80,33 +198,40 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           LibrePlex team. Pop over to the discord to find out more.
         </Text>
       )}
-      <VStack p={5} gap={5}>
-        <img
-          style={{ borderRadius: "15px", aspectRatio: "1/1", height: "100px" }}
-          src={data?.images.square ?? ""}
-        />
-      </VStack>
-      <VStack
+
+      <HStack
         className="border-2 rounded-md border-inherit w-full"
         p={3}
         gap={5}
       >
-        <Heading size="sms">Step 1/3: Initialise your inscription</Heading>
-        {!inscription?.item ? (
-          <InscribeLegacyMetadataAsUauthTransactionButton
-            params={{
-              mint,
-              imageOverride: undefined,
+        <HStack>
+          <img
+            style={{
+              borderRadius: "15px",
+              aspectRatio: "1/1",
+              height: "100px",
             }}
-            formatting={{}}
+            src={data?.images.square ?? ""}
           />
-        ) : (
-          <HStack>
-            <HiCheckCircle color="lightgreen" size={"35px"} />
-            <Heading size="sm">Initialised</Heading>
-          </HStack>
-        )}
-      </VStack>
+        </HStack>
+        <VStack className="flex-col content-start">
+          <Heading size="sms">Step 1/3: Initialise your inscription</Heading>
+          {!inscription?.item && updateStatus.result !== StageProgress.Progress ? (
+            <InscribeLegacyMetadataAsUauthTransactionButton
+              params={{
+                mint,
+                imageOverride: undefined,
+              }}
+              formatting={{}}
+            />
+          ) : (
+            <HStack className="content-start">
+              <HiCheckCircle color="lightgreen" size={"35px"} />
+              <Heading size="sm">Initialised</Heading>
+            </HStack>
+          )}
+        </VStack>
+      </HStack>
 
       {inscription && (
         <VStack
@@ -119,15 +244,20 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
             Step 2/3: Choose source & resize
           </Heading>
 
+          {updateStatus.stage === Stage.Resize && updateStatus.result === StageProgress.Progress && <Spinner/>}
           {customImage && (
             <VStack>
               <ImageUploader
                 currentImage={imageOverride}
                 linkedAccountId={mint?.toBase58()}
                 afterUpdate={(url) => {
-                  console.log({ url });
+                  // console.log({ url });
                   setImageOverride(url);
                   reset();
+                  setUpdateStatus({
+                    stage: Stage.UpdateTemplate,
+                    result: StageProgress.Success,
+                  });
                 }}
               />
 
@@ -177,8 +307,9 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           gap={5}
         >
           <Heading pt={2} size="sm">
-            Step 3/3: Inscribe
+            Step 3/3: Inscribe 
           </Heading>
+          {updateStatus.stage === Stage.Write && updateStatus.result === StageProgress.Progress && <Spinner/>}
           {dataBytes && (
             <WriteToLegacyInscriptionAsUAuthTransactionButton
               params={{
