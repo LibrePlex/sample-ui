@@ -31,7 +31,7 @@ export interface IWriteToInscription {
   dataBytes: number[];
 }
 
-export const BATCH_SIZE = 750;
+export const BATCH_SIZE = 700;
 
 // start at 0. We can extend as needed
 export const INSCRIPTION_DEFAULT_LENGTH = 0;
