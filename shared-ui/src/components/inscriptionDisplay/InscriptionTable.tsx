@@ -60,14 +60,12 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         <Tr>
           <Td>
             <Center columnGap={2}>
-              <SimpleGrid columns={2} spacing={10}>
-                <VStack sx={{ position: "relative" }}>
+              <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
+                <VStack>
                   {offchainData?.images.square ? (
                     <Image
-                      style={{
-                        aspectRatio: "1/1",
-                        borderRadius: 8,
-                      }}
+                      className="aspect-square rounded-md"
+                      style={{minHeight: '200px'}}
                       src={offchainData?.images.square}
                       fallback={
                         <Skeleton isLoaded={true}>
@@ -83,7 +81,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                       startColor="#aaa"
                       endColor="#aaa"
                       style={{
-                        minHeight: "100%",
+                        minHeight: '200px',
                         maxHeight: "100%",
                         aspectRatio: "1/1",
                         borderRadius: 8,
@@ -92,9 +90,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                   )}
                   <Text>Off-chain Image</Text>
                 </VStack>
-                <VStack sx={{ position: "relative", height :"100%"}}>
+                <VStack>
                   {base64ImageInscription ? (
-                    <InscriptionImage root={mint} sx={{ height :"100%"}}/>
+                    <InscriptionImage root={mint} sx={{ minHeight: '200px'}}/>
                   ) : (
                     <>
                       <Text
@@ -111,8 +109,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                         startColor="#aaa"
                         endColor="#aaa"
                         style={{
-                          minWidth: "240px",
-                          maxWidth: "240px",
+                          minHeight: '200px',
                           aspectRatio: "1/1",
                           borderRadius: 8,
                         }}

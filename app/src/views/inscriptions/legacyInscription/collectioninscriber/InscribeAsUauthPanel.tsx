@@ -3,9 +3,20 @@ import {
   ResizeLegacyMetadataAsUAuthTransactionButton,
   resizeLegacyInscription,
 } from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsUAuthTransactionButton";
-import { WriteToLegacyInscriptionAsUAuthTransactionButton, writeToLegacyInscriptionAsUauth } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
+import {
+  WriteToLegacyInscriptionAsUAuthTransactionButton,
+  writeToLegacyInscriptionAsUauth,
+} from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { Button, HStack, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Heading,
+  Link,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import {
   notify,
   useInscriptionForRoot,
@@ -22,39 +33,29 @@ import { useValidationHash } from "../../useValidationHash";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
 import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
 import { useGenericTransactionClick } from "@libreplex/shared-ui";
-
-enum Stage {
-  NotStarted,
-  UpdateTemplate,
-  Resize,
-  Write,
-}
-
-enum StageProgress {
-  NotStarted,
-  Progress,
-  Success,
-  Fail,
-}
+import {
+  ImageSourceSelector,
+  useImageSourceState,
+  useSourceSelectorState,
+} from "./ImageSourceSelector";
+import {
+  CustomImageUploader,
+  useImageUploaderState,
+} from "./CustomImageUploader";
+import {
+  Stage,
+  StageProgress,
+  useImageUploadProgressState,
+} from "./useImageUploadProgressState";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
 
-  const { data } = useOffChainMetadataCache(mint);
-
-  const [imageOverride, setImageOverride] = useState<string>();
-
-  const { data: imageBuffer, refetch } =
-    useOffchainImageAsBuffer(imageOverride);
+  
 
   const {
     inscription: { data: inscription },
   } = useInscriptionForRoot(mint);
-
-  const sizeOk = useMemo(
-    () => imageBuffer?.length === inscription?.item.size,
-    [imageBuffer, inscription]
-  );
 
   const {
     data: compressedImage,
@@ -67,21 +68,22 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
     [compressedImage, inscription]
   );
 
-  // for now use the extension to figure out the subtype
-  const mediaType = useMediaType(imageOverride ?? data?.images?.square);
-
   const legacyInscription = useLegacyInscriptionForMint(mint);
 
-  const dataBytes = useMemo(
-    () => (imageBuffer ? [...imageBuffer] : undefined),
-    [imageBuffer]
-  );
-  const { reset } = useInscriptionWriteStatus(dataBytes, inscription?.pubkey);
+  const uploaderState =
+    useImageUploaderState();
 
-  const [updateStatus, setUpdateStatus] = useState<{
-    stage: Stage;
-    result: StageProgress;
-  }>({ stage: Stage.NotStarted, result: StageProgress.NotStarted });
+    const { imageBuffer, imageOverride, dataBytes } = uploaderState
+
+  const sizeOk = useMemo(
+    () => imageBuffer?.length === inscription?.item.size,
+    [imageBuffer, inscription]
+  );
+
+  // for now use the extension to figure out the subtype
+  const mediaType = useMediaType(imageOverride);
+
+  const { updateStatus, setUpdateStatus } = useImageUploadProgressState();
 
   const { onClick: resizeClick, isExecuting: isExecutingResize } =
     useGenericTransactionClick({
@@ -114,38 +116,37 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       },
     });
 
-
   const { onClick: writeClick, isExecuting: isExecutingWrite } =
-  useGenericTransactionClick({
-    params: {
-      mint,
-      dataBytes,
-      encodingType: { base64: {} },
-      mediaType,
-    },
-    beforeClick: undefined,
-    transactionGenerator: writeToLegacyInscriptionAsUauth,
-    onSuccess: () => {
-      setUpdateStatus({
-        stage: Stage.Write,
-        result: StageProgress.Success,
-      });
-    },
-    onError: (e) => {
-      // console.log({ e });
-      notify({ type: "error", message: "Write inscription failed" });
-      setUpdateStatus({
-        stage: Stage.Write,
-        result: StageProgress.Fail,
-      });
-    },
-    afterSign: () => {
-      setUpdateStatus({
-        stage: Stage.Write,
-        result: StageProgress.Progress,
-      });
-    },
-  });
+    useGenericTransactionClick({
+      params: {
+        mint,
+        dataBytes,
+        encodingType: { base64: {} },
+        mediaType,
+      },
+      beforeClick: undefined,
+      transactionGenerator: writeToLegacyInscriptionAsUauth,
+      onSuccess: () => {
+        setUpdateStatus({
+          stage: Stage.Write,
+          result: StageProgress.Success,
+        });
+      },
+      onError: (e) => {
+        // console.log({ e });
+        notify({ type: "error", message: "Write inscription failed" });
+        setUpdateStatus({
+          stage: Stage.Write,
+          result: StageProgress.Fail,
+        });
+      },
+      afterSign: () => {
+        setUpdateStatus({
+          stage: Stage.Write,
+          result: StageProgress.Progress,
+        });
+      },
+    });
 
   // stage transitions
 
@@ -155,17 +156,18 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
     if (
       updateStatus.stage === Stage.UpdateTemplate &&
       updateStatus.result === StageProgress.Success &&
-      imageOverride && !sizeOk
+      imageOverride &&
+      !sizeOk
     ) {
       setUpdateStatus({
         stage: Stage.Resize,
         result: StageProgress.Progress,
       });
       resizeClick();
-    } else if(
+    } else if (
       updateStatus.result === StageProgress.Success &&
       updateStatus.stage !== Stage.Write &&
-      sizeOk && 
+      sizeOk &&
       dataBytes
     ) {
       setUpdateStatus({
@@ -176,6 +178,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
     }
   }, [updateStatus, imageOverride, sizeOk, dataBytes]);
 
+  const progressState = useImageUploadProgressState();
 
   return (
     <VStack>
@@ -204,19 +207,10 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
         p={3}
         gap={5}
       >
-        <HStack>
-          <img
-            style={{
-              borderRadius: "15px",
-              aspectRatio: "1/1",
-              height: "100px",
-            }}
-            src={data?.images.square ?? ""}
-          />
-        </HStack>
         <VStack className="flex-col content-start">
           <Heading size="sms">Step 1/3: Initialise your inscription</Heading>
-          {!inscription?.item && updateStatus.result !== StageProgress.Progress ? (
+          {!inscription?.item &&
+          updateStatus.result !== StageProgress.Progress ? (
             <InscribeLegacyMetadataAsUauthTransactionButton
               params={{
                 mint,
@@ -243,61 +237,47 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           <Heading pt={2} size="sm">
             Step 2/3: Choose source & resize
           </Heading>
+          <ImageSourceSelector
+            mint={mint}
+            allowCustom={true}
+            state={uploaderState}
+            progressState={progressState}
+          />
 
-          {updateStatus.stage === Stage.Resize && updateStatus.result === StageProgress.Progress && <Spinner/>}
-          {customImage && (
-            <VStack>
-              <ImageUploader
-                currentImage={imageOverride}
-                linkedAccountId={mint?.toBase58()}
-                afterUpdate={(url) => {
-                  // console.log({ url });
-                  setImageOverride(url);
-                  reset();
-                  setUpdateStatus({
-                    stage: Stage.UpdateTemplate,
-                    result: StageProgress.Success,
-                  });
-                }}
-              />
-
-              {imageOverride && (
-                <>
-                  {" "}
-                  <VStack>
-                    {imageBuffer &&
-                      imageBuffer.length !== inscription?.item.size && (
-                        <ResizeLegacyMetadataAsUAuthTransactionButton
-                          params={{
-                            mint,
-                            targetSize: imageBuffer.length,
-                            currentSize: inscription?.item.size,
-                          }}
-                          formatting={{}}
-                        />
-                      )}
-                  </VStack>
-                </>
-              )}
-              {sizeOk && imageBuffer ? (
-                <HStack>
-                  <HiCheckCircle color="lightgreen" size="35px" />
-                  <Heading size="sm">
-                    SIZE CHECK: {inscription?.item?.size} bytes
-                  </Heading>
-                </HStack>
-              ) : (
-                <HStack>
-                  <HiXCircle color="#f66" size={"50px"} />
-                  <Text>
-                    Image sizes do not match. Current inscription size:{" "}
-                    {inscription?.item.size}, need: {imageBuffer?.length}
-                  </Text>
-                </HStack>
-              )}
-            </VStack>
-          )}
+          {updateStatus.stage === Stage.Resize &&
+            updateStatus.result === StageProgress.Progress && <Spinner />}
         </VStack>
+      )}
+
+      <VStack>
+        <Text>Buffer length: {imageBuffer?.length}</Text>
+        <Link href={imageOverride} target="_blank" >View original</Link>
+        {imageBuffer && !sizeOk && (
+          <ResizeLegacyMetadataAsUAuthTransactionButton
+            params={{
+              mint,
+              targetSize: imageBuffer.length,
+              currentSize: inscription?.item.size,
+            }}
+            formatting={{}}
+          />
+        )}
+      </VStack>
+      {sizeOk && imageBuffer ? (
+        <HStack>
+          <HiCheckCircle color="lightgreen" size="35px" />
+          <Heading size="sm">
+            SIZE CHECK: {inscription?.item?.size} bytes
+          </Heading>
+        </HStack>
+      ) : (
+        <HStack>
+          <HiXCircle color="#f66" size={"50px"} />
+          <Text>
+            Image sizes do not match. Current inscription size:{" "}
+            {inscription?.item.size}, need: {imageBuffer?.length}
+          </Text>
+        </HStack>
       )}
       {inscription && sizeOk ? (
         <VStack
@@ -307,9 +287,10 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           gap={5}
         >
           <Heading pt={2} size="sm">
-            Step 3/3: Inscribe 
+            Step 3/3: Inscribe
           </Heading>
-          {updateStatus.stage === Stage.Write && updateStatus.result === StageProgress.Progress && <Spinner/>}
+          {updateStatus.stage === Stage.Write &&
+            updateStatus.result === StageProgress.Progress && <Spinner />}
           {dataBytes && (
             <WriteToLegacyInscriptionAsUAuthTransactionButton
               params={{

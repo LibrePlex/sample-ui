@@ -62,7 +62,7 @@ export const InscriptionGallery = () => {
   return (
     <VStack className="w-full">
       <Heading pt={3} size={"md"}>
-        Showing {item?.inscriptionKeys.length} items
+        Showing latest {item?.inscriptionKeys.length} inscriptions
       </Heading>
       <Paginator
         onPageChange={setCurrentPage}
