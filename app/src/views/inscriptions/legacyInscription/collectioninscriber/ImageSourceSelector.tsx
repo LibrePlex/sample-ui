@@ -47,7 +47,7 @@ export const SourceSelector = (props: ISourceSelectorProps) => {
         }}
         variant={props.sourceType === SourceType.OffChain ? "solid" : "outline"}
       >
-        Off-chain
+        Original
       </Button>
       <Button
         colorScheme="teal"
