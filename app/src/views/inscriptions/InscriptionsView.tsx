@@ -138,6 +138,7 @@ const InscriptionsView = () => {
                 >
                   Inscribe Yours
                 </Button>
+                
                 <Button
                   colorScheme={
                     view === View.InscriptionGallery ? "teal" : "white"
