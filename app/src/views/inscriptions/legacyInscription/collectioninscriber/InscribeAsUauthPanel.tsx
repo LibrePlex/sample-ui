@@ -7,41 +7,32 @@ import {
   WriteToLegacyInscriptionAsUAuthTransactionButton,
   writeToLegacyInscriptionAsUauth,
 } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
-import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
 import {
-  Button,
   HStack,
   Heading,
   Link,
   Spinner,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import {
   notify,
+  useGenericTransactionClick,
   useInscriptionForRoot,
   useLegacyCompressedImage,
-  useMediaType,
-  useOffChainMetadataCache,
+  useMediaType
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useMemo, useState } from "react";
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
 import { mediaTypeToString } from "shared-ui/src/components/inscriptionDisplay/useMediaType";
-import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
-import { useValidationHash } from "../../useValidationHash";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
-import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
-import { useGenericTransactionClick } from "@libreplex/shared-ui";
 import {
-  ImageSourceSelector,
-  useImageSourceState,
-  useSourceSelectorState,
-} from "./ImageSourceSelector";
-import {
-  CustomImageUploader,
-  useImageUploaderState,
+  useImageUploaderState
 } from "./CustomImageUploader";
+import {
+  ImageSourceSelector
+} from "./ImageSourceSelector";
 import {
   Stage,
   StageProgress,
@@ -50,8 +41,6 @@ import {
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
-
-  
 
   const {
     inscription: { data: inscription },
@@ -70,10 +59,9 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
   const legacyInscription = useLegacyInscriptionForMint(mint);
 
-  const uploaderState =
-    useImageUploaderState();
+  const uploaderState = useImageUploaderState();
 
-    const { imageBuffer, imageOverride, dataBytes } = uploaderState
+  const { imageBuffer, imageOverride, dataBytes } = uploaderState;
 
   const sizeOk = useMemo(
     () => imageBuffer?.length === inscription?.item.size,
@@ -251,7 +239,9 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
       <VStack>
         <Text>Buffer length: {imageBuffer?.length}</Text>
-        <Link href={imageOverride} target="_blank" >View original</Link>
+        <Link href={imageOverride} target="_blank">
+          View original
+        </Link>
         {imageBuffer && !sizeOk && (
           <ResizeLegacyMetadataAsUAuthTransactionButton
             params={{

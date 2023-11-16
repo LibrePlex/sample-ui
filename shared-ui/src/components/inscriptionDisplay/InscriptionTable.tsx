@@ -45,12 +45,13 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
   const { data: offchainData } = useOffChainMetadataCache(mint);
 
+  const urlPrefix = useUrlPrefixForInscription(inscription);
   const base64ImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer]
+    () => urlPrefix === 'application/text' ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii") : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
+    [inscriptionData?.item?.buffer, urlPrefix]
   );
 
-  const urlPrefix = useUrlPrefixForInscription(inscription);
+  
 
   const { cluster } = useContext(ClusterContext);
 
@@ -92,7 +93,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                 </VStack>
                 <VStack>
                   {base64ImageInscription ? (
-                    <InscriptionImage root={mint} sx={{ minHeight: '200px'}}/>
+                    urlPrefix === 'application/text' ? <Center sx={{height :"100%", minHeight: '200px',}}><Text color='white'>{base64ImageInscription}</Text></Center>: <InscriptionImage root={mint} sx={{ minHeight: '200px'}}/>
                   ) : (
                     <>
                       <Text
@@ -123,6 +124,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                     />}
                     
                   </HStack>
+                  <Text color="white">{urlPrefix}</Text>
                 </VStack>
               </SimpleGrid>
             </Center>
