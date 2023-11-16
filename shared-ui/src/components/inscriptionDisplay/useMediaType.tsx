@@ -15,7 +15,15 @@ const extensionToMediaType = (ext: string): MediaType => {
         subtype: "png",
       },
     };
-  } else if (ext === "jpg" || ext === "jpeg") {
+  } else if (ext === "txt") {
+    return {
+      text: {
+        subtype: "*",
+      },
+    };
+  }
+  
+  else if (ext === "jpg" || ext === "jpeg") {
     return {
       image: {
         subtype: "jpeg",
