@@ -31,8 +31,8 @@ export const OffchainUploader = ({
   const { data } = useOffChainMetadataCache(mint);
 
   useEffect(() => {
-    state.setImageOverride(data.images.square);
-    if( data.images.square) {
+    state.setImageOverride(data.images.url);
+    if( data.images.url) {
       progressState.setUpdateStatus({
         stage: Stage.UpdateTemplate,
         result: StageProgress.Success,

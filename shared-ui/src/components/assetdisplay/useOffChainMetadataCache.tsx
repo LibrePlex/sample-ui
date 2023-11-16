@@ -7,7 +7,8 @@ import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 export interface IOffchainJson {
   // add more fields as needed
   images: {
-    "square": string
+    square: string,
+    url: string
   },
   name: string
 }
