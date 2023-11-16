@@ -79,7 +79,7 @@ const InscriptionsView = () => {
               <UnorderedList>
                 <ListItem>
                   <Text fontSize={"2xl"}>
-                    FOC Fact #1: You own your NFT art, not just a url to
+                    FOC Fact #1: You own your inscription art, not just a url to
                     offchain storage
                   </Text>
                 </ListItem>
