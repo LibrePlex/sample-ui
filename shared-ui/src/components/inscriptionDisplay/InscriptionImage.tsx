@@ -8,6 +8,7 @@ import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 import { Text, Box, VStack, BoxProps } from "@chakra-ui/react";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useEncodingForInscription } from "./useEncodingForInscription";
+import { InscriptionStats } from "./InscriptionStats";
 export const InscriptionImage = ({
   root,
   ...rest
@@ -43,6 +44,7 @@ export const InscriptionImage = ({
         cluster={cluster}
         className="absolute top-1 right-1"
       />
+      <InscriptionStats root={root}/>
       <img
         style={{
           minHeight: "100%",

@@ -87,6 +87,8 @@ export type {
 export { HttpClient, abbreviateKey, cn, notify } from "./utils";
 export {getImageAsBuffer} from "./utils/getImageAsBuffer"
 
+export {nFormatter, useFormattedNumber} from "./utils/useFormattedNumber"
+
 export type {
   IExecutorParams,
   IRpcObject,
@@ -118,7 +120,8 @@ export {
   useOffChainMetadataCache,
   useMediaType,
   useUrlPrefixForInscription,
-  mediaTypeToString
+  mediaTypeToString,
+  InscriptionStats
 } from "./components";
 
 export {

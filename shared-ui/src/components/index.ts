@@ -20,6 +20,7 @@ export { NetworkSwitcherDynamic } from "./NetworkSwitcher";
 export { NavElement } from "./navelement";
 
 export { GroupSelector } from "./GroupSelector";
+export {InscriptionStats} from "./inscriptionDisplay/InscriptionStats"
 
 export {useMediaType, mediaTypeToString} from "./inscriptionDisplay/useMediaType"
 export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
