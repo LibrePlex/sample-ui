@@ -79,30 +79,44 @@ const InscriptionsView = () => {
               <UnorderedList>
                 <ListItem>
                   <Text fontSize={"2xl"}>
-                    FOC Fact #1: You own your inscription art, not just a url to
-                    offchain storage
+                    FOC FACT #1: The inscription number is forever linked to the
+                    mint of the inscription.
                   </Text>
                 </ListItem>
                 <ListItem>
                   <Text fontSize={"2xl"}>
-                    FOC Fact #2: As long as Solana lives, your inscription
+                    FOC FACT #2: The inscription content CAN CHANGE until it is
+                    made immutable. There are NO immutable inscriptions YET.
+                  </Text>
+                </ListItem>
+                <ListItem>
+                  <Text fontSize={"2xl"}>
+                    FOC FACT #3: The update authority can withdraw rent unless
+                    the inscription is immutable. DO NOT IGNORE THIS.
+                  </Text>
+                </ListItem>
+
+                {/* <ListItem>
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #3: As long as Solana lives, your inscription
                     lives.
                   </Text>
                 </ListItem>
                 <ListItem>
                   <Text fontSize={"2xl"}>
-                    FOC Fact #3: Inscriptions are ranked 1,2,3....
+                    FOC Fact #5: Inscriptions are ranked 1,2,3....
                   </Text>
-                </ListItem>
-                <ListItem>
+                </ListItem> */}
+                {/* <ListItem>
                   <Text fontSize={"2xl"}>
                     FOC Fact #4: At 2:29am on 16 November 2023, there were 2,497
                     FOC inscriptions.
                   </Text>
-                </ListItem>
+                </ListItem> */}
                 <ListItem>
                   <Text fontSize={"2xl"}>
-                    FOC Fact #5: You can make your inscriptions less blurry by using PNG / SVG instead of JPEG. 
+                    FOC Fact #5: You can make your inscriptions less blurry by
+                    using PNG / SVG instead of JPEG.
                   </Text>
                 </ListItem>
               </UnorderedList>
