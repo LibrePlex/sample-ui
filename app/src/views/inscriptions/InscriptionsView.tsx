@@ -5,7 +5,7 @@ import {
   Heading,
   ListItem,
   Text,
-  UnorderedList
+  UnorderedList,
 } from "@chakra-ui/react";
 import {
   MintWithTokenAccount,
@@ -51,8 +51,12 @@ const InscriptionsView = () => {
   return (
     <div className="md:hero mx-auto p-4">
       <div className="md:hero-content flex flex-col">
-        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
+        <h1 className="text-center text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
           Libreplex Inscriptions
+        </h1>
+
+        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
+          Are you FOC?
         </h1>
 
         <Box
@@ -74,15 +78,32 @@ const InscriptionsView = () => {
             >
               <UnorderedList>
                 <ListItem>
-                  You own your NFT art, not just a url to offchain storage
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #1: You own your NFT art, not just a url to
+                    offchain storage
+                  </Text>
                 </ListItem>
-                <ListItem>Inscriptions live as long as Solana lives</ListItem>
                 <ListItem>
-                  Inscriptions are ranked 1,2,3,4 ... (like Ordinals)
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #2: As long as Solana lives, your inscription
+                    lives.
+                  </Text>
                 </ListItem>
                 <ListItem>
-                  Inscription rent is recoverable (until the inscription is made
-                  immutable)
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #3: Inscriptions are ranked 1,2,3....
+                  </Text>
+                </ListItem>
+                <ListItem>
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #4: At 2:29am on 16 November 2023, there were 2,497
+                    FOC inscriptions.
+                  </Text>
+                </ListItem>
+                <ListItem>
+                  <Text fontSize={"2xl"}>
+                    FOC Fact #5: You can make your inscriptions less blurry by using PNG / SVG instead of JPEG. 
+                  </Text>
                 </ListItem>
               </UnorderedList>
 
