@@ -46,9 +46,9 @@ export const MutabilityDisplay = ({
     [inscription?.item.root]
   );
 
-//   useEffect(() => {
-//     console.log({ legacySigner, publicKey, metadata });
-//   }, [legacySigner, publicKey, metadata]);
+  //   useEffect(() => {
+  //     console.log({ legacySigner, publicKey, metadata });
+  //   }, [legacySigner, publicKey, metadata]);
 
   const amIUpdateAuth = useMemo(
     () => metadata?.item.updateAuthority.toBase58() === publicKey?.toBase58(),
@@ -72,7 +72,7 @@ export const MutabilityDisplay = ({
       </HStack>
 
       {open && (
-        <VStack p={1} alignItems={'start'}>
+        <VStack p={1} alignItems={"start"}>
           {isMutable ? (
             <>
               <Text style={{ maxWidth: "400px" }}>
@@ -90,11 +90,12 @@ export const MutabilityDisplay = ({
           ) : (
             <>
               <Text style={{ maxWidth: "400px" }}>
-                This inscription is IMMUTABLE. That means it cannot be changed by anybody, 
-                not even the person who created it.
+                This inscription is IMMUTABLE. That means it cannot be changed
+                by anybody, not even the person who created it.
               </Text>
               <Text style={{ maxWidth: "400px" }}>
-                You can safely trade IMMUTABLE inscriptions on marketplaces / OTC.
+                You can safely trade IMMUTABLE inscriptions on marketplaces /
+                OTC.
               </Text>
               <Text style={{ maxWidth: "400px" }}>
                 Always Check This Scanner for immutability status.
@@ -104,13 +105,20 @@ export const MutabilityDisplay = ({
         </VStack>
       )}
       {amIUpdateAuth && isMutable && (
-        <MakeLegacyInscriptionImmutableTransactionButton
-          params={{
-            inscription,
-            metadata,
-          }}
-          formatting={{}}
-        />
+        <VStack>
+          <Text style={{ maxWidth: "400px" }} textAlign='center' color='#f66'>
+            After making the inscription immutable, you WILL NOT be able to reclaim any rent.
+            Choose wisely!
+          </Text>
+
+          <MakeLegacyInscriptionImmutableTransactionButton
+            params={{
+              inscription,
+              metadata,
+            }}
+            formatting={{}}
+          />
+        </VStack>
       )}
     </VStack>
   );
