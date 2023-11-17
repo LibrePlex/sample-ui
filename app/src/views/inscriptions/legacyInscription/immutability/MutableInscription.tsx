@@ -22,8 +22,9 @@ export const MutableInscription = ({
         NEVER buy a mutable inscription on a marketplace / OTC.
       </Text>
       <Text>The current holder is not necessarily the creator.</Text>
+      <Text>You must be the creator of an item to make it immutable.</Text>
       <Text>Immutability deploys on 17 Nov 2023.</Text>
-      <ScannerLink mintId={inscription?.item?.root} />
+      {/* <ScannerLink mintId={inscription?.item?.root} /> */}
     </VStack>
   );
 };
