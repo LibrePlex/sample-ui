@@ -101,7 +101,6 @@ export const makeLegacyInscriptionImmutable = async (
       inscription: inscription.pubkey,
       inscriptionSummary,
       legacyMetadata: metadata.pubkey,
-      legacySigner,
       legacyInscription,
       systemProgram: SystemProgram.programId,
       inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,

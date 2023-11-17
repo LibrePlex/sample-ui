@@ -496,11 +496,6 @@ export type LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "legacySigner",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
           "name": "legacyInscription",
           "isMut": true,
           "isSigner": false
@@ -1343,11 +1338,6 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "legacyMetadata",
           "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacySigner",
-          "isMut": true,
           "isSigner": false
         },
         {
