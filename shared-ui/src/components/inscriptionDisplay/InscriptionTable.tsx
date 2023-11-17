@@ -9,7 +9,9 @@ import {
   Tr,
   VStack,
   SimpleGrid,
-  Image
+  Image,
+  Link,
+  Heading,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useMemo } from "react";
@@ -17,8 +19,11 @@ import { useContext, useMemo } from "react";
 import React from "react";
 import {
   CopyPublicKeyButton,
+  SolscanLink,
+  mediaTypeToString,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
+  useMediaType,
   useOffChainMetadataCache,
 } from "../..";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
@@ -43,17 +48,24 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
   const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
 
-  const {data: offchainData} = useOffChainMetadataCache(mint);
+  const { data: offchainData } = useOffChainMetadataCache(mint);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
   const base64ImageInscription = useMemo(
-    () => urlPrefix === 'application/text' ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii") : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
+    () =>
+      urlPrefix === "application/text"
+        ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii")
+        : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
     [inscriptionData?.item?.buffer, urlPrefix]
   );
 
-  
-
-  const { cluster } = useContext(ClusterContext);
+  const mediaType = useMemo(
+    () =>
+      inscription?.item.mediaType
+        ? mediaTypeToString(inscription?.item.mediaType)
+        : undefined,
+    [inscription]
+  );
 
   return (
     <Table>
@@ -62,17 +74,27 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
           <Td>
             <Center columnGap={2}>
               <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
+                <Center>
+                  <Heading size="md">Off-chain Image</Heading>
+                </Center>
+                <Center>
+                  <Heading size="md">FOC Inscription</Heading>
+                </Center>
                 <VStack>
                   {offchainData?.images.square ? (
                     <Image
                       className="aspect-square rounded-md"
-                      style={{minHeight: '200px'}}
+                      style={{ minHeight: "200px" }}
                       src={offchainData?.images.square}
                       fallback={
                         <Skeleton isLoaded={true}>
                           <img
                             src="https://img.freepik.com/premium-vector/gallery-simple-icon-vector-image-picture-sign-neumorphism-style-mobile-app-web-ui-vector-eps-10_532800-801.jpg"
-                            style={{ height: "100%", width: "100%", borderRadius: '20px' }}
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                              borderRadius: "20px",
+                            }}
                           />
                         </Skeleton>
                       }
@@ -82,19 +104,27 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                       startColor="#aaa"
                       endColor="#aaa"
                       style={{
-                        minHeight: '200px',
+                        minHeight: "200px",
                         maxHeight: "100%",
                         aspectRatio: "1/1",
                         borderRadius: 8,
                       }}
                     />
                   )}
-                  <Text>Off-chain Image</Text>
                 </VStack>
                 <VStack>
-                  
                   {base64ImageInscription ? (
-                    urlPrefix === 'application/text' ? <Center sx={{height :"100%", minHeight: '200px',}}><Text color='white'>{base64ImageInscription}</Text></Center>: <InscriptionImage stats={true} root={mint} sx={{ minHeight: '200px'}}/>
+                    urlPrefix === "application/text" ? (
+                      <Center sx={{ height: "100%", minHeight: "200px" }}>
+                        <Text color="white">{base64ImageInscription}</Text>
+                      </Center>
+                    ) : (
+                      <InscriptionImage
+                        stats={true}
+                        root={mint}
+                        sx={{ minHeight: "100%" }}
+                      />
+                    )
                   ) : (
                     <>
                       <Text
@@ -111,21 +141,26 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                         startColor="#aaa"
                         endColor="#aaa"
                         style={{
-                          minHeight: '200px',
+                          minHeight: "100%",
                           aspectRatio: "1/1",
                           borderRadius: 8,
                         }}
                       />
                     </>
                   )}
-                  <HStack>
-                    <Text>Inscription Data</Text>
-                    {inscriptionData && <CopyPublicKeyButton
-                      publicKey={inscriptionData.pubkey?.toBase58()}
-                    />}
-                    
-                  </HStack>
-                  <Text color="white">{urlPrefix}</Text>
+                </VStack>
+                <VStack>
+                  <Link target="_blank" href={offchainData?.images.url}>
+                    View Original
+                  </Link>
+                </VStack>
+
+                <VStack>
+                  <Text>Inscription Data</Text>
+                  <Text>{mediaType}</Text>
+                  {inscriptionData && (
+                    <SolscanLink address={inscriptionData.pubkey?.toBase58()} />
+                  )}
                 </VStack>
               </SimpleGrid>
             </Center>

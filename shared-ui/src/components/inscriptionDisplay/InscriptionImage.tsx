@@ -40,11 +40,6 @@ export const InscriptionImage = ({
 
   return base64ImageInscription ? (
     <Box {...rest} className="relative" sx={{ ...rest.sx }}>
-      <SolscanLink
-        address={inscriptionData.pubkey.toBase58()}
-        cluster={cluster}
-        className="absolute top-1 right-1"
-      />
       {stats &&<InscriptionStats root={root}/>}
       <img
         style={{
