@@ -120,32 +120,6 @@ export type LibreplexInscriptions = {
       ]
     },
     {
-      "name": "deleteInscription",
-      "accounts": [
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
       "name": "resizeInscription",
       "accounts": [
         {
@@ -182,37 +156,6 @@ export type LibreplexInscriptions = {
           }
         }
       ]
-    },
-    {
-      "name": "claimExcessRent",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
     },
     {
       "name": "writeToInscription",
@@ -655,16 +598,6 @@ export type LibreplexInscriptions = {
       ]
     },
     {
-      "name": "InscriptionEventDelete",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        }
-      ]
-    },
-    {
       "name": "InscriptionEventUpdate",
       "fields": [
         {
@@ -737,6 +670,11 @@ export type LibreplexInscriptions = {
       "code": 6005,
       "name": "LegacyMetadataSignerMismatch",
       "msg": "Legacy metadata signer key does not match the expected PDA"
+    },
+    {
+      "code": 6006,
+      "name": "LibreIsTakingACoffeeBreak",
+      "msg": "20,000 inscriptions. Libre is taking little a coffee break."
     }
   ]
 };
@@ -863,32 +801,6 @@ export const IDL: LibreplexInscriptions = {
       ]
     },
     {
-      "name": "deleteInscription",
-      "accounts": [
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
       "name": "resizeInscription",
       "accounts": [
         {
@@ -925,37 +837,6 @@ export const IDL: LibreplexInscriptions = {
           }
         }
       ]
-    },
-    {
-      "name": "claimExcessRent",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
     },
     {
       "name": "writeToInscription",
@@ -1398,16 +1279,6 @@ export const IDL: LibreplexInscriptions = {
       ]
     },
     {
-      "name": "InscriptionEventDelete",
-      "fields": [
-        {
-          "name": "id",
-          "type": "publicKey",
-          "index": false
-        }
-      ]
-    },
-    {
       "name": "InscriptionEventUpdate",
       "fields": [
         {
@@ -1480,6 +1351,11 @@ export const IDL: LibreplexInscriptions = {
       "code": 6005,
       "name": "LegacyMetadataSignerMismatch",
       "msg": "Legacy metadata signer key does not match the expected PDA"
+    },
+    {
+      "code": 6006,
+      "name": "LibreIsTakingACoffeeBreak",
+      "msg": "20,000 inscriptions. Libre is taking little a coffee break."
     }
   ]
 };

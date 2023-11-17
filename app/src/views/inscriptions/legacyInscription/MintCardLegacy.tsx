@@ -3,28 +3,21 @@ import {
   Badge,
   Box,
   BoxProps,
+  Center,
   Heading,
   IconButton,
-  VStack,
-  Text,
-  Center,
+  VStack
 } from "@chakra-ui/react";
 import {
   AssetDisplay,
-  getInscriptionPda,
-  getLegacyMetadataPda,
-  useOffChainMetadataCache,
   useInscriptionForRoot,
+  useOffChainMetadataCache
 } from "@libreplex/shared-ui";
-import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { HiMagnifyingGlassCircle } from "react-icons/hi2";
-import { TbRefresh } from "react-icons/tb";
-import { decodeLegacyMetadata } from "shared-ui/src/sdk/query/legacymetadata";
-import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { Immutability } from "./immutability/Immutability";
 const textMotion = {
   default: {
     color: "#ffffff",
@@ -53,16 +46,20 @@ export const MintCardLegacy = ({
 
   children?: ReactNode;
 } & BoxProps) => {
-
   const { data: offchainData } = useOffChainMetadataCache(mintId);
 
-  
   const {
     inscription: { data: inscription, refetch, isFetching },
   } = useInscriptionForRoot(mintId);
 
-  
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
+
+  const isImmutable = useMemo(
+    () =>
+      inscription.item.authority.toBase58() ===
+      "11111111111111111111111111111111",
+    [inscription]
+  );
 
   return (
     <Box
@@ -75,9 +72,7 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <div
-          className="flex flex-col items-end absolute top-2 right-2 z-10"
-        >
+        <div className="flex flex-col items-end absolute top-2 right-2 z-10">
           <Badge
             sx={{
               border: "1px solid #aaa",
@@ -100,7 +95,13 @@ export const MintCardLegacy = ({
               background: "#333",
             }}
           >
-             Rent: {(Math.round((0.00089088 + 0.00000696 * inscription?.item?.size)*100)/100).toFixed(2)} SOL
+            Rent:{" "}
+            {(
+              Math.round(
+                (0.00089088 + 0.00000696 * inscription?.item?.size) * 100
+              ) / 100
+            ).toFixed(2)}{" "}
+            SOL
           </Badge>
         </div>
       )}
@@ -114,14 +115,9 @@ export const MintCardLegacy = ({
               mint={mintId}
             />
           </Box>
-          <IconButton
-            style={{ position: "absolute", top: "8px", left: "8px" }}
-            size="xs"
-            onClick={() => refetch()}
-            aria-label={"Refresh"}
-          >
-            <TbRefresh />
-          </IconButton>
+          <Box className="absolute top-2 left-2">
+            <Immutability inscription={inscription} />
+          </Box>
 
           <VStack
             display={"flex"}
@@ -139,6 +135,7 @@ export const MintCardLegacy = ({
             >
               <Center>{offchainData?.name ?? "-"} </Center>
             </Heading>
+
             <Box>
               <IconButton
                 size="xs"
