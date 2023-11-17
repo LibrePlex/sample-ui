@@ -54,12 +54,7 @@ export const MintCardLegacy = ({
 
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
 
-  const isImmutable = useMemo(
-    () =>
-      inscription.item.authority.toBase58() ===
-      "11111111111111111111111111111111",
-    [inscription]
-  );
+ 
 
   return (
     <Box

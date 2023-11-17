@@ -44,7 +44,7 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
   }, [metadataPda, metadataAccount?.item?.buffer]);
 
   const url = useMemo(
-    () => metadataObj?.item.data.uri.replace(/\0/g, "").trim(),
+    () => metadataObj?.item?.data.uri.replace(/\0/g, "").trim(),
     [metadataObj]
   );
 
@@ -78,16 +78,16 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
     }
   }, [q.data?.data]);
 
-  useEffect(() => {
-    console.log({
-      q,
-      metadataObj,
-      metadataAccount,
-      url,
-      mintId: mintId?.toBase58(),
-      images,
-    });
-  }, [q, metadataObj, metadataAccount, mintId, url]);
+  // useEffect(() => {
+  //   console.log({
+  //     q,
+  //     metadataObj,
+  //     metadataAccount,
+  //     url,
+  //     mintId: mintId?.toBase58(),
+  //     images,
+  //   });
+  // }, [q, metadataObj, metadataAccount, mintId, url]);
 
   return { data: images };
 };

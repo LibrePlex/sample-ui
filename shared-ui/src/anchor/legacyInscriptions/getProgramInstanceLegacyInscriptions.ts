@@ -1,5 +1,6 @@
 
 
+
 import * as anchor from "@coral-xyz/anchor";
 import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 
@@ -9,15 +10,16 @@ export const PROGRAM_ID_INSCRIPTIONS =
   "inscokhJarcjaEs59QbQ7hYjrKz25LEPRfCbP8EmdUp";
   
 
-import { IDL} from "./libreplex_legacy";
-import {LibreplexLegacy} from "./libreplex_legacy";
+import { IDL} from "../libreplex_legacy";
+import {LibreplexLegacy} from "../libreplex_legacy";
 import { Wallet, WalletContextState } from "@solana/wallet-adapter-react";
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
+const LEGACY_INSCRIPTIONS_PROGRAM_ID ="Leg1xVbrpq5gY6mprak3Ud4q4mBwcJi5C9ZruYjWv7n"
+
 export function getProgramInstanceLegacyInscriptions(
-  programId: PublicKey,
   connection: Connection,
   wallet: Pick<WalletContextState, 'publicKey' |'signAllTransactions'|'signTransaction'>
 ) {
@@ -44,6 +46,6 @@ export function getProgramInstanceLegacyInscriptions(
     anchor.AnchorProvider.defaultOptions()
   );
   const idl = IDL;
-  const program = new anchor.Program<LibreplexLegacy>(idl, programId, provider)!;
+  const program = new anchor.Program<LibreplexLegacy>(idl, LEGACY_INSCRIPTIONS_PROGRAM_ID, provider)!;
   return program;
 }

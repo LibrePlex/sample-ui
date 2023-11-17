@@ -12,7 +12,7 @@ import React from "react";
 import { PublicKey } from "@solana/web3.js";
 
 
-import { LibreplexLegacy } from "./libreplex_legacy";
+import { LibreplexLegacy } from "../libreplex_legacy";
 
 export const LibrePlexLegacyInscriptionsProgramContext = createContext<{
   program: Program<LibreplexLegacy>;
@@ -59,7 +59,6 @@ export const LibrePlexLegacyInscriptionsProgramProvider = ({
   useEffect(() => {
     try {
       const _program = getProgramInstanceLegacyInscriptions(
-        programId,
         connection,
         new LibreWallet(Keypair.generate())
       );

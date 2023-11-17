@@ -40,7 +40,6 @@ const extensionToMediaType = (ext: string): MediaType => {
 
 export const mediaTypeToString = (mediaType: MediaType) => {
     // TODO: Do this better - there's gotta be a way!
-    console.log({mediaType});
     return mediaType.image ? `image/${mediaType.image.subtype}` :
         mediaType.video ? `image/${mediaType.video.subtype}` :
         mediaType.erc721 ? `application/json` :

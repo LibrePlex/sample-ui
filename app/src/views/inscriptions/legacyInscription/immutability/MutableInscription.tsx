@@ -16,13 +16,16 @@ export const MutableInscription = ({
   const { publicKey } = useWallet();
 
   
+
+  
   return (
     <VStack alignItems={"start"}>
       <Text>
-        NEVER buy a mutable inscription on a marketplace / OTC.
+        NEVER buy a MUTABLE inscription on a marketplace / OTC.
       </Text>
       <Text>The current holder is not necessarily the creator.</Text>
-      <Text>You must be the creator of an item to make it immutable.</Text>
+      <Text>You must be the CREATOR of an inscription to make it IMMUTABLE.</Text>
+      <Text>IMMUTABLE = NO CHANGES</Text>
       <Text>Immutability deploys on 17 Nov 2023.</Text>
       {/* <ScannerLink mintId={inscription?.item?.root} /> */}
     </VStack>

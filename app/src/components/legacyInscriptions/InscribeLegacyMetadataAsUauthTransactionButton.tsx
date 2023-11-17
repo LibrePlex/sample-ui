@@ -44,7 +44,6 @@ export const inscribeLegacyMint = async (
 }> => {
   const data: ITransactionTemplate[] = [];
   const legacyInscriptionsProgram = getProgramInstanceLegacyInscriptions(
-    new PublicKey(NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID),
     connection,
     wallet
   );
@@ -73,7 +72,7 @@ export const inscribeLegacyMint = async (
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   const inscriptionRanksCurrentPage = getInscriptionRankPda(BigInt(0))[0];
   const inscriptionRanksNextPage = getInscriptionRankPda(BigInt(1))[0];
-  const legacyInscription = getLegacyInscriptionPda(mint)[0];
+  const legacyInscription = getLegacyInscriptionPda(mint);
   const legacyMetadata = getLegacyMetadataPda(mint)[0];
   const instructions: TransactionInstruction[] = [];
 

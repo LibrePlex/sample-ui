@@ -71,7 +71,6 @@ const LegacyInscription: NextApiHandler = async (req, res) => {
     );
 
     const legacyInscriptionsProgram = getProgramInstanceLegacyInscriptions(
-      new PublicKey(NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID),
       connection,
       libreWallet
     );
@@ -105,7 +104,7 @@ const LegacyInscription: NextApiHandler = async (req, res) => {
       BigInt(1) // TODO: Make dynamic when pages swap
     )[0];
 
-    const legacyInscription = getLegacyInscriptionPda(mint)[0];
+    const legacyInscription = getLegacyInscriptionPda(mint);
 
     const legacySigner = getLegacySignerPda(
       legacyInscriptionsProgram.programId,

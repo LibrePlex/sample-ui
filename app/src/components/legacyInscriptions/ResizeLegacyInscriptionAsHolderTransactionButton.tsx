@@ -42,7 +42,6 @@ export const resizeLegacyInscription = async (
   const data: ITransactionTemplate[] = [];
 
   const legacyInscriptionsProgram = getProgramInstanceLegacyInscriptions(
-    new PublicKey(NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID),
     connection,
     wallet
   );
@@ -73,7 +72,7 @@ export const resizeLegacyInscription = async (
 
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
-  const legacyInscription = getLegacyInscriptionPda(mint)[0];
+  const legacyInscription = getLegacyInscriptionPda(mint);
 
   const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
 

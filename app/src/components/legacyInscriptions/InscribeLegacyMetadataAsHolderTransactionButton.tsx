@@ -34,7 +34,6 @@ export const inscribeLegacyMint = async (
   const data: ITransactionTemplate[] = [];
 
   const legacyInscriptionsProgram = getProgramInstanceLegacyInscriptions(
-    new PublicKey(NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID),
     connection,
     wallet
   );

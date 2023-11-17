@@ -11,7 +11,7 @@ import { decodeLegacyInscription } from "shared-ui/src/sdk/query/legacyInscripti
 export const useLegacyInscriptionForMint = (mint: PublicKey) => {
   const { connection } = useConnection();
   const legacyInscriptionId = useMemo(
-    () => getLegacyInscriptionPda(mint)[0],
+    () => getLegacyInscriptionPda(mint),
     [mint]
   );
   const { data } = useFetchSingleAccount(legacyInscriptionId, connection);

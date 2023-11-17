@@ -80,7 +80,7 @@ export const useLegacyMetadataByMintId = (
 ) => {
   const program = useContext(MetadataProgramContext);
 
-  const metadataKey = useMemo(() => getLegacyMetadataPda(mintId)[0], [mintId]);
+  const metadataKey = useMemo(() => mintId ? getLegacyMetadataPda(mintId)[0]: undefined, [mintId]);
 
 
 

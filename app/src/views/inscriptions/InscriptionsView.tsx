@@ -113,12 +113,12 @@ const InscriptionsView = () => {
                     FOC inscriptions.
                   </Text>
                 </ListItem> */}
-                <ListItem>
+                {/* <ListItem>
                   <Text fontSize={"2xl"}>
                     FOC Fact #5: You can make your inscriptions less blurry by
                     using PNG / SVG instead of JPEG.
                   </Text>
-                </ListItem>
+                </ListItem> */}
               </UnorderedList>
 
               <InscriptionsSummary mt={4} mb={4} />

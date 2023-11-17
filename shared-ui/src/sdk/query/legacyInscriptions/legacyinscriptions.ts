@@ -2,7 +2,7 @@
 import { PublicKey } from "@solana/web3.js";
 import { BorshCoder, IdlAccounts, Program, IdlTypes } from "@coral-xyz/anchor";
 
-import { LibreplexLegacy } from "../../../anchor/legacyInscriptions/libreplex_legacy";
+import { LibreplexLegacy } from "../../../anchor/libreplex_legacy";
 
 
 export type LegacyInscription = IdlAccounts<LibreplexLegacy>["legacyInscription"];

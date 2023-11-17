@@ -90,8 +90,6 @@ export class Executor<P> {
   public getSignedTransactions = async (
     transactions: ITransactionTemplate[]
   ) => {
-    
-    
     const transactionsWithPositions = transactions.map((tx, txPosition) => {
       const transaction = new Transaction();
       transaction.recentBlockhash = tx.blockhash.blockhash;
@@ -114,6 +112,7 @@ export class Executor<P> {
       };
     });
 
+    console.log({ transactionsWithPositions });
     const signedTransactions: Transaction[] = await this.signAllTransactions(
       transactionsWithPositions.map((item) => item.tx)
     ).catch((e) => {
@@ -129,21 +128,16 @@ export class Executor<P> {
       return { signedTransactions: undefined };
     }
 
+    console.log({ signedTransactions });
     for (const [idx, signedTransaction] of signedTransactions.entries()) {
       const signatures = transactions[idx].signatures;
-      for (const signature of signatures) {
+      for (const signature of signatures ?? []) {
         console.log({ pubkey: signature.pubkey, sig: signature.signature });
         signedTransaction.addSignature(
           new PublicKey(signature.pubkey),
           Buffer.from(signature.signature)
         );
       }
-      // console.log({
-      //   finalSignatures: signedTransaction.signatures.map((item) => ({
-      //     pubkey: item.publicKey.toBase58(),
-      //     sig: item.signature,
-      //   })),
-      // });
     }
 
     return {
@@ -151,7 +145,7 @@ export class Executor<P> {
         (item: Transaction, idx: number) => ({
           transaction: item,
           description: transactions[idx].description,
-          blockhash: transactions[idx].blockhash
+          blockhash: transactions[idx].blockhash,
         })
       ),
     };
@@ -171,7 +165,7 @@ export class Executor<P> {
       this.onError("Could not generate transactions");
       return;
     }
-    if( transactions.length === 0 ) {
+    if (transactions.length === 0) {
       this.onSuccess();
       return;
     }
@@ -185,8 +179,9 @@ export class Executor<P> {
         batchId++;
         const thisBatch = remainingTransactions.splice(0, TX_BATCH_SIZE);
 
-        const { signedTransactions } =
-          await this.getSignedTransactions(thisBatch);
+        const { signedTransactions } = await this.getSignedTransactions(
+          thisBatch
+        );
 
         if (signedTransactions) {
           const signedTransactionsBatch = [...signedTransactions];
@@ -212,10 +207,10 @@ export class Executor<P> {
                         }),
                         {
                           signature: txid,
-                          ...thisBatchSigned[idx].blockhash
+                          ...thisBatchSigned[idx].blockhash,
                         },
                         {
-                          skipPreflight: false,
+                          skipPreflight: true,
                           maxRetries: 5,
                         }
                       );

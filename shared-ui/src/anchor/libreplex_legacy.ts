@@ -496,18 +496,13 @@ export type LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "tokenAccount",
-          "isMut": false,
+          "name": "legacySigner",
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
           "isSigner": false
         },
         {
@@ -1351,18 +1346,13 @@ export const IDL: LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "tokenAccount",
-          "isMut": false,
+          "name": "legacySigner",
+          "isMut": true,
           "isSigner": false
         },
         {
           "name": "legacyInscription",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
           "isSigner": false
         },
         {

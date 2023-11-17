@@ -62,9 +62,9 @@ export const ContentContainer: React.FC<Props> = ({
           <li>
             <NavElement label="Tools" href={`/tools?${query}`} />
           </li>
-          <li>
+          {/* <li>
             <NavElement label="Costs" href={`/costs?${query}`} />
-          </li>
+          </li> */}
           <li>
             <NavElement label="Demo" href={`/demo?${query}`}/>
           </li>

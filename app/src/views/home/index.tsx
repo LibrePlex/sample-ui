@@ -54,10 +54,10 @@ const info = [
 export const HomeView: FC = ({}) => {
   const wallet = useWallet();
   const { connection } = useConnection();
-  const handleClickCosts = () => {
-    event.preventDefault();
-    router.push("/costs");
-  };
+  // const handleClickCosts = () => {
+  //   event.preventDefault();
+  //   router.push("/costs");
+  // };
 
   // const balance = useUserSOLBalanceStore((s) => s.balance);
   const { getUserSOLBalance } = useUserSOLBalanceStore();
@@ -232,7 +232,7 @@ export const HomeView: FC = ({}) => {
                 ecosystem that we all depend on.
               </Text>
             </Box>
-            <Button
+            {/* <Button
               onClick={handleClickCosts}
               mt={5}
               size={"lg"}
@@ -240,7 +240,7 @@ export const HomeView: FC = ({}) => {
               variant={"outline"}
             >
               Compare Prices
-            </Button>
+            </Button> */}
           </Box>
         </div>
 
