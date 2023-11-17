@@ -26,7 +26,6 @@ export const MutableInscription = ({
       <Text>The current holder is not necessarily the creator.</Text>
       <Text>You must be the CREATOR of an inscription to make it IMMUTABLE.</Text>
       <Text>IMMUTABLE = NO CHANGES</Text>
-      <Text>Immutability deploys on 17 Nov 2023.</Text>
       {/* <ScannerLink mintId={inscription?.item?.root} /> */}
     </VStack>
   );
