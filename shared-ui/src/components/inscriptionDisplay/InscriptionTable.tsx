@@ -43,7 +43,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
   const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
 
-  const { data: offchainData } = useOffChainMetadataCache(mint);
+  const {data: offchainData} = useOffChainMetadataCache(mint);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
   const base64ImageInscription = useMemo(

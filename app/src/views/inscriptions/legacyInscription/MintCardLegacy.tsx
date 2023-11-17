@@ -53,24 +53,10 @@ export const MintCardLegacy = ({
 
   children?: ReactNode;
 } & BoxProps) => {
-  const { connection } = useConnection();
-
-  const metadataId = useMemo(
-    () => (mintId ? getLegacyMetadataPda(mintId)[0] : undefined),
-    [mintId]
-  );
-
-  const metadataAccount = useFetchSingleAccount(metadataId, connection);
-  const metadata = useMemo(
-    () =>
-      metadataId &&
-      metadataAccount?.data?.item?.buffer &&
-      decodeLegacyMetadata(metadataAccount?.data?.item?.buffer, metadataId),
-    [metadataId, metadataAccount]
-  );
 
   const { data: offchainData } = useOffChainMetadataCache(mintId);
 
+  
   const {
     inscription: { data: inscription, refetch, isFetching },
   } = useInscriptionForRoot(mintId);
@@ -146,12 +132,12 @@ export const MintCardLegacy = ({
             gap={2}
           >
             <Heading
-              title={metadata?.item?.data.name ?? "-"}
+              title={offchainData?.name ?? "-"}
               // as={motion.p}
               size="md"
               noOfLines={1}
             >
-              <Center>{metadata?.item?.data.name ?? "-"} </Center>
+              <Center>{offchainData?.name ?? "-"} </Center>
             </Heading>
             <Box>
               <IconButton
