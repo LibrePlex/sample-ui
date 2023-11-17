@@ -47,8 +47,8 @@ export const Immutability = ({
   return (
     <Popover>
       <PopoverTrigger>
-        <IconButton aria-label={isMutable ? "mutable" : "immutable"}>
-          {isMutable ? <HiLockOpen /> : <HiLockClosed />}
+        <IconButton aria-label={isMutable ? "mutable" : "immutable"} >
+          {isMutable ? <HiLockOpen color='#e11' /> : <HiLockClosed color='#1c1'/>}
         </IconButton>
       </PopoverTrigger>
       <Portal>
