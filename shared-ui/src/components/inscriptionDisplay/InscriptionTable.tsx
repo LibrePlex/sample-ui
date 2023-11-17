@@ -92,8 +92,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                   <Text>Off-chain Image</Text>
                 </VStack>
                 <VStack>
+                  
                   {base64ImageInscription ? (
-                    urlPrefix === 'application/text' ? <Center sx={{height :"100%", minHeight: '200px',}}><Text color='white'>{base64ImageInscription}</Text></Center>: <InscriptionImage root={mint} sx={{ minHeight: '200px'}}/>
+                    urlPrefix === 'application/text' ? <Center sx={{height :"100%", minHeight: '200px',}}><Text color='white'>{base64ImageInscription}</Text></Center>: <InscriptionImage stats={true} root={mint} sx={{ minHeight: '200px'}}/>
                   ) : (
                     <>
                       <Text

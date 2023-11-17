@@ -31,14 +31,14 @@ export const OffchainUploader = ({
   const { data } = useOffChainMetadataCache(mint);
 
   useEffect(() => {
-    state.setImageOverride(data.images.url);
-    if( data.images.url) {
+    state.setImageOverride(data?.images.url);
+    if( data?.images.url) {
       progressState.setUpdateStatus({
         stage: Stage.UpdateTemplate,
         result: StageProgress.Success,
       });
     }
-  }, [data.images]);
+  }, [data?.images]);
 
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 

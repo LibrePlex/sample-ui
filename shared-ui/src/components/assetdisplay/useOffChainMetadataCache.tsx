@@ -35,13 +35,13 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
   const metadataObj = useMemo(() => {
     try {
       return metadataAccount
-        ? decodeLegacyMetadata(metadataAccount.item.buffer, metadataPda)
+        ? decodeLegacyMetadata(metadataAccount?.item?.buffer, metadataPda)
         : null;
     } catch (e) {
       // console.log(e);
       return null;
     }
-  }, [metadataPda, metadataAccount?.item.buffer]);
+  }, [metadataPda, metadataAccount?.item?.buffer]);
 
   const url = useMemo(
     () => metadataObj?.item.data.uri.replace(/\0/g, "").trim(),
@@ -68,7 +68,7 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
       const retval: IOffchainJson = {
         images: {
           square: `https://libreplex.pinit.io/${q.data.data.image}`,
-          url: `https://libreplex.pinit.io/${q.data.data.image}`,
+          url: q.data.data.image,
         },
         name: q.data.data.name,
       };

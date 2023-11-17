@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { getInscriptionRankPda } from "@libreplex/shared-ui";
 import { decodeInscriptionRankPage } from "@libreplex/shared-ui";
 import { useFetchSingleAccount } from "@libreplex/shared-ui";
-import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
+import { Button, HStack, Heading, Input, VStack } from "@chakra-ui/react";
 import { InscriptionCardLegacy } from "../InscriptionCardLegacy";
 import { Paginator } from "@app/components/Paginator";
 import { useInscriptionSummary } from "../../useInscriptionsSummary";
@@ -59,11 +59,23 @@ export const InscriptionGallery = () => {
     [item?.inscriptionKeys]
   );
 
+  const [startPosition, setStartPosition] = useState<string>("");
+
+  const effectiveStartPosition = useMemo(() => {
+    try {
+      return Math.floor(+startPosition)
+    } catch (e) {return null}
+  }, [startPosition]);
+
   return (
     <VStack className="w-full">
       <Heading pt={3} size={"md"}>
         Showing latest {item?.inscriptionKeys.length} inscriptions
       </Heading>
+      <Input
+        value={startPosition}
+        onChange={(e) => setStartPosition(e.currentTarget.value)}
+      />
       <Paginator
         onPageChange={setCurrentPage}
         pageCount={maxPages}

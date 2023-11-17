@@ -7,37 +7,27 @@ import {
   WriteToLegacyInscriptionAsUAuthTransactionButton,
   writeToLegacyInscriptionAsUauth,
 } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
-import {
-  HStack,
-  Heading,
-  Link,
-  Spinner,
-  Text,
-  VStack
-} from "@chakra-ui/react";
+import { HStack, Heading, Link, Spinner, Text, VStack } from "@chakra-ui/react";
 import {
   notify,
   useGenericTransactionClick,
   useInscriptionForRoot,
   useLegacyCompressedImage,
-  useMediaType
+  useMediaType,
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useMemo, useState } from "react";
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
 import { mediaTypeToString } from "shared-ui/src/components/inscriptionDisplay/useMediaType";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
-import {
-  useImageUploaderState
-} from "./CustomImageUploader";
-import {
-  ImageSourceSelector
-} from "./ImageSourceSelector";
+import { useImageUploaderState } from "./CustomImageUploader";
+import { ImageSourceSelector } from "./ImageSourceSelector";
 import {
   Stage,
   StageProgress,
   useImageUploadProgressState,
 } from "./useImageUploadProgressState";
+import { useRentForDataLength } from "shared-ui/src/components/useRentForDataLength";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
@@ -168,6 +158,8 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
   const progressState = useImageUploadProgressState();
 
+  const formatted = useRentForDataLength(imageBuffer?.length ?? 0);
+
   return (
     <VStack>
       {/* <Heading pt={2} size="md">
@@ -239,9 +231,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
       <VStack>
         <Text>Buffer length: {imageBuffer?.length}</Text>
-        <Link href={imageOverride} target="_blank">
-          View original
-        </Link>
+        <Text color="white">Total storage cost: {formatted} SOL</Text>
         {imageBuffer && !sizeOk && (
           <ResizeLegacyMetadataAsUAuthTransactionButton
             params={{
@@ -253,14 +243,15 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           />
         )}
       </VStack>
-      {sizeOk && imageBuffer ? (
+      {sizeOk && imageBuffer && (
         <HStack>
           <HiCheckCircle color="lightgreen" size="35px" />
           <Heading size="sm">
             SIZE CHECK: {inscription?.item?.size} bytes
           </Heading>
         </HStack>
-      ) : (
+      )}
+      {!sizeOk && imageBuffer && (
         <HStack>
           <HiXCircle color="#f66" size={"50px"} />
           <Text>

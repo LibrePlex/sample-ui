@@ -11,8 +11,9 @@ import { useEncodingForInscription } from "./useEncodingForInscription";
 import { InscriptionStats } from "./InscriptionStats";
 export const InscriptionImage = ({
   root,
+  stats,
   ...rest
-}: { root: PublicKey } & BoxProps) => {
+}: { stats: boolean,root: PublicKey } & BoxProps) => {
   const { cluster } = useContext(ClusterContext);
   const {
     inscription: {
@@ -44,7 +45,7 @@ export const InscriptionImage = ({
         cluster={cluster}
         className="absolute top-1 right-1"
       />
-      <InscriptionStats root={root}/>
+      {stats &&<InscriptionStats root={root}/>}
       <img
         style={{
           minHeight: "100%",
