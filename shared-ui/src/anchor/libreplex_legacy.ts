@@ -463,17 +463,13 @@ export type LibreplexLegacy = {
           {
             "name": "mediaType",
             "type": {
-              "option": {
-                "defined": "MediaType"
-              }
+              "option": "string"
             }
           },
           {
             "name": "encodingType",
             "type": {
-              "option": {
-                "defined": "EncodingType"
-              }
+              "option": "string"
             }
           }
         ]
@@ -1116,17 +1112,13 @@ export const IDL: LibreplexLegacy = {
           {
             "name": "mediaType",
             "type": {
-              "option": {
-                "defined": "MediaType"
-              }
+              "option": "string"
             }
           },
           {
             "name": "encodingType",
             "type": {
-              "option": {
-                "defined": "EncodingType"
-              }
+              "option": "string"
             }
           }
         ]

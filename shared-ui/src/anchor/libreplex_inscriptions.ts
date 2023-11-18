@@ -488,17 +488,13 @@ export type LibreplexInscriptions = {
           {
             "name": "mediaType",
             "type": {
-              "option": {
-                "defined": "MediaType"
-              }
+              "option": "string"
             }
           },
           {
             "name": "encodingType",
             "type": {
-              "option": {
-                "defined": "EncodingType"
-              }
+              "option": "string"
             }
           }
         ]
@@ -1234,17 +1230,13 @@ export const IDL: LibreplexInscriptions = {
           {
             "name": "mediaType",
             "type": {
-              "option": {
-                "defined": "MediaType"
-              }
+              "option": "string"
             }
           },
           {
             "name": "encodingType",
             "type": {
-              "option": {
-                "defined": "EncodingType"
-              }
+              "option": "string"
             }
           }
         ]

@@ -272,10 +272,8 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
               params={{
                 mint,
                 dataBytes,
-                encodingType: { base64: {} },
-                mediaType: {custom: {
-                  mediaType: uploaderState.filetype
-                }},
+                encodingType: "base64", // always assume this for now
+                mediaType: uploaderState.filetype,
               }}
               formatting={{}}
             />

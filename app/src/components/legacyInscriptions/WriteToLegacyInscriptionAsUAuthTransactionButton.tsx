@@ -35,8 +35,8 @@ import React from "react";
 export interface IWriteToLegacyInscriptionAsUAuth {
   mint: PublicKey;
   dataBytes: number[];
-  mediaType: MediaType;
-  encodingType: EncodingType;
+  mediaType: string;
+  encodingType: string;
 }
 
 export const writeToLegacyInscriptionAsUauth = async (
@@ -91,7 +91,7 @@ export const writeToLegacyInscriptionAsUauth = async (
     // reduce the first batch size a bit since we're passing media type and
     // encoding type
     const byteBatch = remainingBytes.splice(0, BATCH_SIZE);
-
+    console.log({byteBatch, startPos, mediaType, encodingType});
     instructions.push(
       await legacyInscriptionsProgram.methods
         .writeToLegacyInscriptionAsUauth({
