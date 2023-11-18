@@ -140,7 +140,6 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
             ) : (
               <InscriptionImage
                 // stats={true}
-                prefixOverride={prefixOverride}
                 root={mint}
                 sx={{ minHeight: "100%" }}
               />
@@ -166,8 +165,6 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
 
         <VStack>
-          <Text>Inscription Data</Text>
-          <Text>{mediaType}</Text>
           {inscriptionData && (
             <SolscanLink address={inscriptionData.pubkey?.toBase58()} />
           )}

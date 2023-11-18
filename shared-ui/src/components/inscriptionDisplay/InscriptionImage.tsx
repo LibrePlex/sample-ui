@@ -1,6 +1,6 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 import { useInscriptionDataForRoot } from "../../sdk/query/inscriptions/useInscriptionDataForRoot";
 import { useInscriptionForRoot } from "../../sdk/query/inscriptions/useInscriptionForRoot";
@@ -9,9 +9,8 @@ import { useEncodingForInscription } from "./useEncodingForInscription";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 export const InscriptionImage = ({
   root,
-  prefixOverride,
   ...rest
-}: { root: PublicKey; prefixOverride: string | undefined } & BoxProps) => {
+}: { root: PublicKey;  } & BoxProps) => {
   const { cluster } = useContext(ClusterContext);
   const {
     inscription: { data: inscription },
@@ -28,9 +27,20 @@ export const InscriptionImage = ({
     [inscriptionData?.item?.buffer]
   );
 
+  const asciiImageInscription = useMemo(
+    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii"),
+    [inscriptionData?.item?.buffer]
+  );
+
+  useEffect(()=>{
+    console.log({base64ImageInscription, asciiImageInscription})
+  },[base64ImageInscription, asciiImageInscription])
+
+  const prefixOverride = useMemo(()=>asciiImageInscription?.startsWith("<svg") || asciiImageInscription.startsWith("<SVG") ? "image/svg+xml": undefined,[asciiImageInscription])
+    
+
   return base64ImageInscription ? (
-    <Box {...rest} className="relative" sx={{ ...rest.sx }}>
-      <Text>{prefixOverride}asdasd</Text>
+    <Box {...rest} className="relative" sx={{ ...rest.sx, display :"flex", flexDirection: 'column', alignItems :"center" }}>
       <InscriptionStats root={root} />
       <img
         style={{
@@ -41,6 +51,8 @@ export const InscriptionImage = ({
         }}
         src={`data:${prefixOverride ?? urlPrefix};${encoding},${base64ImageInscription}`}
       />
+      
+      <Text>{prefixOverride ?? urlPrefix}</Text>
     </Box>
   ) : (
     <></>
