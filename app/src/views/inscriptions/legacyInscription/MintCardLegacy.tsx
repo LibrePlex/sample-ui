@@ -77,7 +77,7 @@ export const MintCardLegacy = ({
     >
       {inscription?.item && (
         <div className="flex flex-col items-end absolute top-2 right-2 z-10 gap-1">
-          <Badge
+          {/* <Badge
             sx={{
               // border: "1px solid #aaa",
               background: "#333",
@@ -90,7 +90,7 @@ export const MintCardLegacy = ({
               ) / 100
             ).toFixed(2)}{" "}
             SOL
-          </Badge>
+          </Badge> */}
           <Badge
             sx={{
               // border: "1px solid #aaa",
@@ -107,13 +107,22 @@ export const MintCardLegacy = ({
           >
             #{inscription.item.order.toNumber().toLocaleString()}
           </Badge>
-          
-          
         </div>
       )}
       {mintId && (
         <>
-          <Box sx={{ height: "200px" }} >
+          <Box sx={{ height: "200px", position: "relative" }}>
+            <IconButton
+              style={{ position: "absolute", bottom: 8, right: 12, zIndex: 10 }}
+              size="xs"
+              p={0}
+              onClick={() =>
+                window.open(`/scanner?mintId=${mintId.toBase58()}`)
+              }
+              aria-label={"Scanner"}
+            >
+              <HiMagnifyingGlassCircle size={"lg"} />
+            </IconButton>
             {/* <Center sx={{ height: "100%", width: "100%" }}>
               <VStack p={4} justifyContent={'end'} sx={{height :"100%"}}>
                 <Text color="white">
@@ -122,16 +131,7 @@ export const MintCardLegacy = ({
                   Click scanner icon below to
                   view this item.
                 </Text>
-                <IconButton
-                  size="xs"
-                  p={0}
-                  onClick={() =>
-                    window.open(`/scanner?mintId=${mintId.toBase58()}`)
-                  }
-                  aria-label={"Scanner"}
-                >
-                  <HiMagnifyingGlassCircle size={"lg"} />
-                </IconButton>
+               
               </VStack>
             </Center> */}
             {/* {inscription?.item && (
@@ -148,7 +148,7 @@ export const MintCardLegacy = ({
               mint={mintId}
             />
           </Box>
-          <Box className="absolute top-2 left-2">
+          <Box className="absolute top-3 left-3">
             <Immutability inscription={inscription} />
           </Box>
 
