@@ -156,7 +156,8 @@ export const MetadataRow = ({
               </Box>
 
               {inscription ? (
-                <InscriptionCell inscription={inscription} />
+                <></>
+                // <InscriptionCell inscription={inscription} />
               ) : item.item.asset.image ? (
                 "On-chain metadata"
               ) : item.item.asset.json ? (

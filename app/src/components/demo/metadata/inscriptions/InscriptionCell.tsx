@@ -14,15 +14,11 @@ export const InscriptionCell = ({
   inscription: IRpcObject<Inscription>;
 }) => {
 
-  const store = useContext(InscriptionStoreContext);
  
-
-  const updatedSize = useStore(store, s=>s.updatedInscriptionSizes[inscription?.pubkey.toBase58()])
-
   return (
     <>
       {inscription
-        ? `Inscription [${updatedSize ?? inscription?.item.size.toLocaleString() ?? "-"} bytes]`
+        ? `Inscription [${inscription?.item.size.toLocaleString() ?? "-"} bytes]`
         : ""}
     </>
   );

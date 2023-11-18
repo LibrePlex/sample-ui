@@ -51,7 +51,7 @@ export const LibreScanner = () => {
       router.query.mintId = mintPublicKey.toBase58();
       router.push(
         {
-          pathname: "/demo",
+          pathname: "/scanner",
           query: { ...router.query, mintId: mintPublicKey.toBase58() },
         },
         undefined,
