@@ -60,31 +60,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     [inscriptionData?.item?.buffer, urlPrefix]
   );
 
-  const mediaType = useMemo(
-    () =>
-      inscription?.item.mediaType
-        ? mediaTypeToString(inscription?.item.mediaType)
-        : undefined,
-    [inscription]
-  );
-
-  // big of a hack until we get media type sorted out properly
-  const extension = useMemo(() => {
-    const elems = offchainData
-      ? offchainData?.images.url.split(".")
-      : undefined;
-    return elems?.length > 0 ? elems[elems.length - 1] : undefined;
-  }, [offchainData]);
-
-  useEffect(() => {
-    console.log({ extension, url: offchainData?.images.url });
-  }, [extension, offchainData?.images.url]);
-
-  const prefixOverride = useMemo(
-    () => (extension === "svg" ? "image/svg+xml" : undefined),
-    [extension]
-  );
-
+  
+  
   const { publicKey } = useWallet();
   return (
     <VStack columnGap={2}>
