@@ -51,7 +51,7 @@ export const MintCardLegacy = ({
 
   children?: ReactNode;
 } & BoxProps) => {
-  // const { data: offchainData } = useOffChainMetadataCache(mintId);
+  const { data: offchainData } = useOffChainMetadataCache(mintId);
 
   const {
     inscription: { data: inscription, refetch, isFetching },
@@ -79,7 +79,7 @@ export const MintCardLegacy = ({
         <div className="flex flex-col items-end absolute top-2 right-2 z-10">
           <Badge
             sx={{
-              border: "1px solid #aaa",
+              // border: "1px solid #aaa",
               background: "#333",
             }}
           >
@@ -111,8 +111,8 @@ export const MintCardLegacy = ({
       )}
       {mintId && (
         <>
-          <Box sx={{ height: "200px" }} className="border-2 rounded-md">
-            <Center sx={{ height: "100%", width: "100%" }}>
+          <Box sx={{ height: "200px" }} >
+            {/* <Center sx={{ height: "100%", width: "100%" }}>
               <VStack p={4} justifyContent={'end'} sx={{height :"100%"}}>
                 <Text color="white">
                   We are busy! 
@@ -131,7 +131,7 @@ export const MintCardLegacy = ({
                   <HiMagnifyingGlassCircle size={"lg"} />
                 </IconButton>
               </VStack>
-            </Center>
+            </Center> */}
             {/* {inscription?.item && (
               <InscriptionImage
                 stats={true}
@@ -139,12 +139,12 @@ export const MintCardLegacy = ({
                 sx={{ minHeight: "100%" }}
               />
             )} */}
-            {/* <AssetDisplay
+            <AssetDisplay
               asset={{
                 image: { url: offchainData?.images.square, description: "" },
               }}
               mint={mintId}
-            /> */}
+            />
           </Box>
           <Box className="absolute top-2 left-2">
             <Immutability inscription={inscription} />
