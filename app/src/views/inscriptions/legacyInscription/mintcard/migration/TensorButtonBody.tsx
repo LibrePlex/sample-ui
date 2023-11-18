@@ -5,7 +5,7 @@ import {
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Box, Center, IconButton, VStack, Text } from "@chakra-ui/react";
+import { Box, Center, IconButton, VStack, Text, Spinner } from "@chakra-ui/react";
 import { MigrateToV3TransactionButton } from "@app/views/inscriptions/v3migration/MigrateToV3TransactionButton";
 
 export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
@@ -17,7 +17,7 @@ export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
 
   const { publicKey } = useWallet();
 
-  return inscriptionV3.data.item ? (
+  return inscriptionV3.isFetching ? <Spinner/> :inscriptionV3.data.item ? (
     <VStack align={"start"} pb={4}>
       <IconButton
         aria-label={"tensorhq"}
