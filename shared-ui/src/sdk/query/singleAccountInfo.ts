@@ -125,7 +125,7 @@ export const useFetchSingleAccount = (
   useEffect(() => {
     let _listeners: number[] = [];
 
-    if (accountId && live !== false) {
+    if (accountId && live) {
       _listeners.push(
         listener.add(
           accountUpdater(accountId, queryClient, accountId),

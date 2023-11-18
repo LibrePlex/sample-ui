@@ -1,5 +1,4 @@
-import { getLegacySignerPda } from './getLegacySignerPda';
-import { getLegacyMetadataPda } from './getLegacyMetadataPda';
+
 export {COLLECTION, PERMISSIONS, METADATA, METADATA_EXTENSION} from "./constants"
 export {getGroupPda} from "./getGroupPda"
 
@@ -23,8 +22,12 @@ export {getListingFilterPda}  from "./getListingFilterPda"
 
 export {getInscriptionPda} from "./getInscriptionPda"
 
+export {getInscriptionV2Pda} from "./getInscriptionV2Pda";
+
 export {getInscriptionDataPda} from "./getInscriptionDataPda"
 
 export {getInscriptionSummaryPda } from "./getInscriptionSummaryPda"
 
 export {getInscriptionRankPda} from "./getInscriptionRankPda"
+
+export {getLegacyInscriptionPda} from "./getLegacyInscriptionPda"

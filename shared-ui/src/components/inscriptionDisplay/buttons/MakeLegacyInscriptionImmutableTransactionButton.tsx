@@ -18,6 +18,7 @@ import {
 } from "../../../sdk/query/inscriptions/getProgramInstanceInscriptions";
 import {
   getInscriptionSummaryPda,
+  getInscriptionV2Pda,
   getLegacySignerPda,
   getProgramInstanceLegacyInscriptions,
   notify,
@@ -87,10 +88,11 @@ export const makeLegacyInscriptionImmutable = async (
 
   const instructions: TransactionInstruction[] = [];
 
-  const legacySigner = getLegacySignerPda(
-    legacyInscriptionsProgram.programId,
+  const inscriptionV2 = getInscriptionV2Pda(
     inscription.item.root
   )[0];
+
+
 
   console.log({legacyInscription:legacyInscription.toBase58()})
   const instruction = await legacyInscriptionsProgram.methods
@@ -99,6 +101,7 @@ export const makeLegacyInscriptionImmutable = async (
       authority: wallet.publicKey,
       mint: inscription.item.root,
       inscription: inscription.pubkey,
+      inscriptionV2,
       inscriptionSummary,
       legacyMetadata: metadata.pubkey,
       legacyInscription,

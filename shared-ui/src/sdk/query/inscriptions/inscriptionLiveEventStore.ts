@@ -143,8 +143,5 @@ export const createInscriptionLiveEventStore = (
   });
 
 
-  console.log('Adding resize event');
-
-
   return store;
 };

@@ -6,6 +6,7 @@ import {
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
   getInscriptionPda,
+  getInscriptionV2Pda,
   getLegacyMetadataPda
 } from "@libreplex/shared-ui";
 import {
@@ -82,6 +83,8 @@ export const resizeLegacyInscription = async (
   let sizeRemaining = targetSize - currentSize;
   const instructions: TransactionInstruction[] = [];
 
+  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
+
   while (Math.abs(sizeRemaining) > 0) {
     console.log({ change:
       sizeRemaining > 0
@@ -103,6 +106,7 @@ export const resizeLegacyInscription = async (
         payer: wallet.publicKey,
         mint,
         inscription,
+        inscriptionV2,
         inscriptionData,
         legacyInscription,
         legacyMetadata,

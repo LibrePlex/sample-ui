@@ -5,5 +5,7 @@ export {decodeInscriptionSummary} from "./inscriptionSummary"
 export {decodeInscriptionRankPage} from "./inscriptionRankPage"
 export {useInscriptionDataForRoot} from "./useInscriptionDataForRoot"
 export {useInscriptionForRoot} from "./useInscriptionForRoot"
+export {useInscriptionV2ForRoot} from "./useInscriptionV2ForRoot"
 
+export {useInscriptionV2ById} from "./inscriptionsv2"
 export type {MediaType, EncodingType} from "./inscriptions"

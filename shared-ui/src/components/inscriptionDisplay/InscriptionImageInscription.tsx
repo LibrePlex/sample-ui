@@ -1,18 +1,19 @@
 import { PublicKey } from "@solana/web3.js";
 import { useInscriptionDataForRoot } from "../../sdk/query/inscriptions/useInscriptionDataForRoot";
 import { useInscriptionForRoot } from "../../sdk/query/inscriptions/useInscriptionForRoot";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import React from "react";
-import { SolscanLink } from "../../components/SolscanLink";
+import { SolscanLink } from "../SolscanLink";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
-import { Text, Box, VStack, BoxProps } from "@chakra-ui/react";
+import { Text, Box, VStack, BoxProps, Button } from "@chakra-ui/react";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useEncodingForInscription } from "./useEncodingForInscription";
 import { InscriptionStats } from "./InscriptionStats";
 export const InscriptionImage = ({
   root,
+  stats,
   ...rest
-}: { root: PublicKey } & BoxProps) => {
+}: { stats: boolean; root: PublicKey } & BoxProps) => {
   const { cluster } = useContext(ClusterContext);
   const {
     inscription: {
@@ -32,29 +33,49 @@ export const InscriptionImage = ({
     refetch: refreshInscriptionData,
   } = useInscriptionDataForRoot(root);
 
-  const base64ImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer]
-  );
+  const [base64ImageInscription, setBase64ImageInscription] = useState<string>();
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    let active = true;
+    setBase64ImageInscription(undefined);
+    setLoading(true);
+    const myWorker = new Worker("worker.js");
+    myWorker.onmessage = (e) => {
+      console.log({e});
+      const _base64 = e.data
+        ? Buffer.from(e.data as Buffer).toString("base64")
+        : undefined;
+      active && setBase64ImageInscription(_base64);
+      active && setLoading(false);
+    };
+
+    myWorker.postMessage(inscriptionData?.item?.buffer);
+
+    return () => {
+      active = false;
+    };
+  }, [inscriptionData?.item?.buffer]);
+
+  // const base64ImageInscription = useMemo(
+  //   () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
+  //   [inscriptionData?.item?.buffer]
+  // );
 
   return base64ImageInscription ? (
     <Box {...rest} className="relative" sx={{ ...rest.sx }}>
-      <SolscanLink
-        address={inscriptionData.pubkey.toBase58()}
-        cluster={cluster}
-        className="absolute top-1 right-1"
-      />
-      <InscriptionStats root={root}/>
+      {stats && <InscriptionStats root={root} />}
       <img
         style={{
-          minHeight: "100%",
-          maxHeight: "100%",
+          minHeight: "300px",
+          maxHeight: "300px",
           aspectRatio: "1/1",
           borderRadius: 8,
         }}
         src={`data:${urlPrefix};${encoding},${base64ImageInscription}`}
       />
-   
+      <Button onClick={() => refreshInscriptionData()}>R</Button>
     </Box>
   ) : (
     <></>

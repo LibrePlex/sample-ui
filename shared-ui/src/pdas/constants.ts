@@ -5,6 +5,7 @@ export const PERMISSIONS = "permissions";
 export const METADATA = "metadata";
 export const METADATA_EXTENSION = "metadata_extension";
 export const INSCRIPTION = "inscription";
+export const INSCRIPTION_V2 = "inscription2";
 export const INSCRIPTION_DATA = "inscription_data";
 export const INSCRIPTION_SUMMARY = "inscription_summary";
 export const INSCRIPTION_RANK = "inscription_rank";

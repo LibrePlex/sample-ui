@@ -82,6 +82,11 @@ export type LibreplexLegacy = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "inscriptionData",
           "isMut": true,
           "isSigner": false
@@ -131,155 +136,6 @@ export type LibreplexLegacy = {
         {
           "name": "validationHash",
           "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "inscribeLegacyMetadataAsHolder",
-      "accounts": [
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "secondSignature",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "cannot inscribe any old garbage.  Second signature",
-            "is used to provide a validation hash that is consistent",
-            "with the legacy offline content"
-          ]
-        },
-        {
-          "name": "legacySigner",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "validationHash",
-          "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "writeToLegacyInscriptionAsHolder",
-      "accounts": [
-        {
-          "name": "owner",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "WriteToInscriptionInput"
-          }
         }
       ]
     },
@@ -298,6 +154,11 @@ export type LibreplexLegacy = {
         },
         {
           "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
@@ -365,76 +226,13 @@ export type LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "ResizeLegacyInscriptionInput"
-          }
-        }
-      ]
-    },
-    {
-      "name": "resizeLegacyInscriptionAsHolder",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
           "isSigner": false
         },
         {
@@ -482,6 +280,11 @@ export type LibreplexLegacy = {
         },
         {
           "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
@@ -839,6 +642,11 @@ export type LibreplexLegacy = {
       "code": 6006,
       "name": "NotSquadsMember",
       "msg": "Not squads member"
+    },
+    {
+      "code": 6007,
+      "name": "Inscription2KeyMismatch",
+      "msg": "Inscription V2 key mismatch"
     }
   ]
 };
@@ -927,6 +735,11 @@ export const IDL: LibreplexLegacy = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "inscriptionData",
           "isMut": true,
           "isSigner": false
@@ -976,155 +789,6 @@ export const IDL: LibreplexLegacy = {
         {
           "name": "validationHash",
           "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "inscribeLegacyMetadataAsHolder",
-      "accounts": [
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "secondSignature",
-          "isMut": true,
-          "isSigner": true,
-          "docs": [
-            "cannot inscribe any old garbage.  Second signature",
-            "is used to provide a validation hash that is consistent",
-            "with the legacy offline content"
-          ]
-        },
-        {
-          "name": "legacySigner",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksCurrentPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionRanksNextPage",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "validationHash",
-          "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "writeToLegacyInscriptionAsHolder",
-      "accounts": [
-        {
-          "name": "owner",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "WriteToInscriptionInput"
-          }
         }
       ]
     },
@@ -1143,6 +807,11 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
@@ -1210,76 +879,13 @@ export const IDL: LibreplexLegacy = {
           "isSigner": false
         },
         {
-          "name": "inscriptionData",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "ResizeLegacyInscriptionInput"
-          }
-        }
-      ]
-    },
-    {
-      "name": "resizeLegacyInscriptionAsHolder",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "owner",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
         {
           "name": "inscriptionData",
           "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenAccount",
-          "isMut": false,
           "isSigner": false
         },
         {
@@ -1327,6 +933,11 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "inscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
           "isMut": true,
           "isSigner": false
         },
@@ -1684,6 +1295,11 @@ export const IDL: LibreplexLegacy = {
       "code": 6006,
       "name": "NotSquadsMember",
       "msg": "Not squads member"
+    },
+    {
+      "code": 6007,
+      "name": "Inscription2KeyMismatch",
+      "msg": "Inscription V2 key mismatch"
     }
   ]
 };

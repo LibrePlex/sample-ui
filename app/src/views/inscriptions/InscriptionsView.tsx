@@ -1,4 +1,4 @@
-import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
+
 import {
   Box,
   Button,
@@ -22,29 +22,8 @@ enum View {
   Inscriber,
 }
 
-const InscriptionAction = ({
-  legacyMint,
-}: {
-  legacyMint: MintWithTokenAccount;
-}) => {
-  const {
-    inscription: { data },
-  } = useInscriptionForRoot(legacyMint.mint);
-
-  return data?.item ? (
-    <ViewLegacyInscription mint={legacyMint.mint} />
-  ) : (
-    <InscribeLegacyMetadataAsHolderTransactionButton
-      params={{ mint: legacyMint }}
-      formatting={{}}
-    />
-  );
-};
 
 const InscriptionsView = () => {
-  const actions = (item: MintWithTokenAccount) => {
-    return <InscriptionAction legacyMint={item} />;
-  };
 
   const [view, setView] = useState<View>(View.InscriptionGallery);
 

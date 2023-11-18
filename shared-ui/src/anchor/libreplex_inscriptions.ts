@@ -54,6 +54,12 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -105,6 +111,11 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -136,6 +147,12 @@ export type LibreplexInscriptions = {
           "name": "inscription",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "inscriptionData",
@@ -174,6 +191,12 @@ export type LibreplexInscriptions = {
           "name": "inscription",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "inscriptionData",
@@ -271,6 +294,52 @@ export type LibreplexInscriptions = {
             "name": "validationHash",
             "type": {
               "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "inscription2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "defined": "MediaType"
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "defined": "EncodingType"
             }
           }
         ]
@@ -673,8 +742,8 @@ export type LibreplexInscriptions = {
     },
     {
       "code": 6006,
-      "name": "LibreIsTakingACoffeeBreak",
-      "msg": "20,000 inscriptions. Libre is taking little a coffee break."
+      "name": "MismatchingInscriptions",
+      "msg": "Mismatching mints between v1 and v2 inscriptions"
     }
   ]
 };
@@ -735,6 +804,12 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -786,6 +861,11 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -817,6 +897,12 @@ export const IDL: LibreplexInscriptions = {
           "name": "inscription",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "inscriptionData",
@@ -855,6 +941,12 @@ export const IDL: LibreplexInscriptions = {
           "name": "inscription",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "inscriptionV2",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
         },
         {
           "name": "inscriptionData",
@@ -952,6 +1044,52 @@ export const IDL: LibreplexInscriptions = {
             "name": "validationHash",
             "type": {
               "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "inscription2",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "mediaType",
+            "type": {
+              "defined": "MediaType"
+            }
+          },
+          {
+            "name": "encodingType",
+            "type": {
+              "defined": "EncodingType"
             }
           }
         ]
@@ -1354,8 +1492,8 @@ export const IDL: LibreplexInscriptions = {
     },
     {
       "code": 6006,
-      "name": "LibreIsTakingACoffeeBreak",
-      "msg": "20,000 inscriptions. Libre is taking little a coffee break."
+      "name": "MismatchingInscriptions",
+      "msg": "Mismatching mints between v1 and v2 inscriptions"
     }
   ]
 };

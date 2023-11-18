@@ -27,6 +27,9 @@ import { InscriptionImage } from "./InscriptionImage";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useValidationHash } from "./useValidationHash";
 import { MutabilityDisplay } from "./MutabilityDisplay";
+import { useInscriptionV2ById } from "../../sdk/query";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { InscriptionV1V2 } from "./InscriptionV1V2";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
@@ -64,11 +67,17 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     [inscription]
   );
 
+  const { connection } = useConnection();
+
+  const { publicKey } = useWallet();
   return (
     <VStack columnGap={2}>
       <Heading size="lg">
         Order #{Number(inscription?.item.order ?? 0).toLocaleString()}
       </Heading>
+      {publicKey?.toBase58()?.startsWith("5LufDW6Mtb") && (
+        <InscriptionV1V2 mint={mint} />
+      )}
       <MutabilityDisplay inscription={inscription} />
       <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
         <Center>
@@ -117,7 +126,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               </Center>
             ) : (
               <InscriptionImage
-                stats={true}
+                // stats={true}
                 root={mint}
                 sx={{ minHeight: "100%" }}
               />

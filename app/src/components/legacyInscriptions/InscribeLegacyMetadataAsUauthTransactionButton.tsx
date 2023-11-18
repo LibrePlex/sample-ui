@@ -28,6 +28,7 @@ import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscription
 import { IWebHashAndBuffer, getLegacyCompressedImage } from "shared-ui/src/components/assetdisplay/useLegacyCompressedImage";
 import { getImageAsBuffer } from "@libreplex/shared-ui";
 import { calculateHashFromBuffer } from "@app/utils/calculateHashFromBuffer";
+import { getInscriptionV2Pda } from "@libreplex/shared-ui/src/pdas/getInscriptionV2Pda";
 
 export interface IInscribeLegacyMint {
   mint: PublicKey;
@@ -68,6 +69,7 @@ export const inscribeLegacyMint = async (
   const blockhash = await connection.getLatestBlockhash();
 
   const inscription = getInscriptionPda(mint)[0];
+  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   const inscriptionRanksCurrentPage = getInscriptionRankPda(BigInt(0))[0];
@@ -107,6 +109,7 @@ export const inscribeLegacyMint = async (
       legacySigner,
       mint,
       inscription,
+      inscriptionV2,
       inscriptionData,
       inscriptionSummary,
       inscriptionRanksCurrentPage,

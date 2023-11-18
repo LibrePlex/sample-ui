@@ -22,7 +22,7 @@ export const InscriptionGallery = () => {
 
   const { data: inscriptionSummary } = useInscriptionSummary();
 
-  const ITEMS_PER_PAGE = 50;
+  const ITEMS_PER_PAGE = 25;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
 
@@ -48,8 +48,6 @@ export const InscriptionGallery = () => {
       );
 
       const start = Math.max(0, end - ITEMS_PER_PAGE);
-
-      console.log({start, end});
 
       return decodeInscriptionRankPage(
         data?.item?.buffer,

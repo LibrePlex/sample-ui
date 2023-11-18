@@ -1,3 +1,4 @@
+import { useInscriptionV2ById } from './inscriptions/inscriptionsv2';
 import { useMultiSigById } from './squads/squad';
 
 // metadata stuff
@@ -38,6 +39,8 @@ export {
 export type {
   LegacyInscription
 } from "./legacyInscriptions/legacyinscriptions"
+
+export {useInscriptionV2ById, useInscriptionV2ForRoot} from "./inscriptions"
 
 export { useTokenAccountsByOwner, useTokenAccountById} from "./tokenaccountsbyowner";
 

@@ -1,3 +1,4 @@
+import { getLegacyInscriptionPda } from '@libreplex/shared-ui/src/pdas/getLegacyInscriptionPda';
 
 export {
   ContextProvider,
@@ -139,10 +140,12 @@ export {
   getListingGroupPda,
   getListingFilterPda,
   getInscriptionPda,
+  getInscriptionV2Pda,
   getInscriptionDataPda,
   getInscriptionSummaryPda ,
   getInscriptionRankPda,
-  getLegacySignerPda
+  getLegacySignerPda,
+  getLegacyInscriptionPda
 } from "./pdas";
 
 export { usePublicKeyOrNull } from "./hooks/usePublicKeyOrNull";

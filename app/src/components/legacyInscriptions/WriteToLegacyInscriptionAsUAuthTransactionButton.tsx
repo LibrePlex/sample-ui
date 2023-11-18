@@ -9,6 +9,7 @@ import {
   ScannerLink,
   getInscriptionDataPda,
   getInscriptionPda,
+  getInscriptionV2Pda,
   getLegacyMetadataPda,
 } from "@libreplex/shared-ui";
 import {
@@ -23,12 +24,13 @@ import { HStack, Heading, Progress, Text, VStack } from "@chakra-ui/react";
 import { notify } from "@libreplex/shared-ui";
 import { AccountLayout } from "@solana/spl-token";
 import { useMemo } from "react";
-import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
-import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
+import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui";
+import { getLegacyInscriptionPda } from "@libreplex/shared-ui";
 import {
   BATCH_SIZE,
   useInscriptionWriteStatus,
 } from "../inscriptions/WriteToInscriptionTransactionButton";
+
 
 export interface IWriteToLegacyInscriptionAsUAuth {
   mint: PublicKey;
@@ -81,6 +83,7 @@ export const writeToLegacyInscriptionAsUauth = async (
   owner = tokenAccountObj.owner;
 
   const inscription = getInscriptionPda(mint)[0];
+  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
 
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);
@@ -111,6 +114,7 @@ export const writeToLegacyInscriptionAsUauth = async (
           authority: wallet.publicKey,
           mint,
           inscription,
+          inscriptionV2,
           inscriptionData,
           legacyInscription,
           legacyMetadata,

@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import { MediaType } from "../../sdk";
 
@@ -21,9 +20,7 @@ const extensionToMediaType = (ext: string): MediaType => {
         subtype: "*",
       },
     };
-  }
-  
-  else if (ext === "jpg" || ext === "jpeg") {
+  } else if (ext === "jpg" || ext === "jpeg") {
     return {
       image: {
         subtype: "jpeg",
@@ -32,29 +29,37 @@ const extensionToMediaType = (ext: string): MediaType => {
   } else {
     return {
       custom: {
-        mediaType: `image/${ext}`,
+        mediaType: `image/*`,
       },
     };
   }
 };
 
-export const mediaTypeToString = (mediaType: MediaType) => {
-    // TODO: Do this better - there's gotta be a way!
-    return mediaType.image ? `image/${mediaType.image.subtype}` :
-        mediaType.video ? `image/${mediaType.video.subtype}` :
-        mediaType.erc721 ? `application/json` :
-        mediaType.video ? `image/${mediaType.video.subtype}` :
-        mediaType.custom ? mediaType.custom.mediaType :
-        mediaType.text ? `application/text` :
-        // populate other types as needed
-        null;
-
-}
+export const mediaTypeToString = (mediaType: MediaType | undefined) => {
+  // TODO: Do this better - there's gotta be a way!
+  return mediaType
+    ? mediaType.image
+      ? `image/${mediaType.image.subtype}`
+      : mediaType.video
+      ? `image/${mediaType.video.subtype}`
+      : mediaType.erc721
+      ? `application/json`
+      : mediaType.video
+      ? `image/${mediaType.video.subtype}`
+      : mediaType.custom
+      ? mediaType.custom.mediaType
+      : mediaType.text
+      ? `application/text`
+      : // populate other types as needed
+        null
+    : null;
+};
 
 export const getMediaType = (filename: string | undefined): MediaType => {
   const elems = filename?.split(".");
-  return elems && elems?.length > 1 
-    ? extensionToMediaType(elems[elems.length-1].toLocaleLowerCase())
+
+  return elems && elems?.length > 1
+    ? extensionToMediaType(elems[elems.length - 1].toLocaleLowerCase())
     : { none: {} };
 };
 
