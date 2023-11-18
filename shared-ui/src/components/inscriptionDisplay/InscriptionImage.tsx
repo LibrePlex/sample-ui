@@ -43,7 +43,7 @@ export const InscriptionImage = ({
 
   const prefixOverride = useMemo(
     () =>
-      asciiImageInscription?.startsWith("<svg") ||
+    asciiImageInscription?.startsWith("<svg") ||
       asciiImageInscription.startsWith("<SVG")
         ? "image/svg+xml"
         : undefined,

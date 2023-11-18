@@ -103,7 +103,7 @@ export const useInscriptionV3ById = (
   const q = useFetchSingleAccount(inscriptionId, connection, false);
 
   const decoded = useMemo(
-    () => decodeInscriptionV3(q?.data?.item.buffer, inscriptionId),
+    () => decodeInscriptionV3(q?.data?.item?.buffer, inscriptionId),
     [q?.data, inscriptionId]
   );
 
