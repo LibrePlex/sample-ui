@@ -22,7 +22,7 @@ import { ReactNode, useMemo } from "react";
 import { HiMagnifyingGlassCircle } from "react-icons/hi2";
 import { Immutability } from "../immutability/Immutability";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { TensorButton } from "./TensorButton";
+import { TensorButton } from "./migration/TensorButton";
 const textMotion = {
   default: {
     color: "#ffffff",

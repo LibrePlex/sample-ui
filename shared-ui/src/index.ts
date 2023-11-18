@@ -1,3 +1,4 @@
+import { useInscriptionV3ForRoot } from 'shared-ui/src/sdk/query/inscriptions/useInscriptionV2ForRoot';
 import { useRentForDataLength } from './components/useRentForDataLength';
 import { getLegacyInscriptionPda } from '@libreplex/shared-ui/src/pdas/getLegacyInscriptionPda';
 
@@ -67,7 +68,8 @@ export {
   InscriptionsProgramContext,
   SquadsProgramContext,
   SquadsProgramProvider,
-  useMultiSigById
+  useMultiSigById,
+  useInscriptionV3ForRoot
 } from "./sdk";
 export type {
   AttributeType,
