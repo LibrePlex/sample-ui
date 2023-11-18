@@ -54,7 +54,7 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -111,7 +111,7 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false
         },
@@ -149,7 +149,7 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -193,7 +193,7 @@ export type LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -300,52 +300,6 @@ export type LibreplexInscriptions = {
       }
     },
     {
-      "name": "inscription2",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "root",
-            "type": "publicKey"
-          },
-          {
-            "name": "inscriptionData",
-            "type": "publicKey"
-          },
-          {
-            "name": "order",
-            "type": "u64"
-          },
-          {
-            "name": "size",
-            "type": "u32"
-          },
-          {
-            "name": "validationHash",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "mediaType",
-            "type": {
-              "defined": "MediaType"
-            }
-          },
-          {
-            "name": "encodingType",
-            "type": {
-              "defined": "EncodingType"
-            }
-          }
-        ]
-      }
-    },
-    {
       "name": "inscriptionData",
       "type": {
         "kind": "struct",
@@ -393,6 +347,48 @@ export type LibreplexInscriptions = {
             "name": "extension",
             "type": {
               "defined": "SummaryExtension"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "inscriptionV3",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "contentType",
+            "type": "string"
+          },
+          {
+            "name": "encoding",
+            "type": "string"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
             }
           }
         ]
@@ -804,7 +800,7 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -861,7 +857,7 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false
         },
@@ -899,7 +895,7 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -943,7 +939,7 @@ export const IDL: LibreplexInscriptions = {
           "isSigner": false
         },
         {
-          "name": "inscriptionV2",
+          "name": "inscription2",
           "isMut": true,
           "isSigner": false,
           "isOptional": true
@@ -1050,52 +1046,6 @@ export const IDL: LibreplexInscriptions = {
       }
     },
     {
-      "name": "inscription2",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "root",
-            "type": "publicKey"
-          },
-          {
-            "name": "inscriptionData",
-            "type": "publicKey"
-          },
-          {
-            "name": "order",
-            "type": "u64"
-          },
-          {
-            "name": "size",
-            "type": "u32"
-          },
-          {
-            "name": "validationHash",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "mediaType",
-            "type": {
-              "defined": "MediaType"
-            }
-          },
-          {
-            "name": "encodingType",
-            "type": {
-              "defined": "EncodingType"
-            }
-          }
-        ]
-      }
-    },
-    {
       "name": "inscriptionData",
       "type": {
         "kind": "struct",
@@ -1143,6 +1093,48 @@ export const IDL: LibreplexInscriptions = {
             "name": "extension",
             "type": {
               "defined": "SummaryExtension"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "inscriptionV3",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "inscriptionData",
+            "type": "publicKey"
+          },
+          {
+            "name": "order",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "contentType",
+            "type": "string"
+          },
+          {
+            "name": "encoding",
+            "type": "string"
+          },
+          {
+            "name": "validationHash",
+            "type": {
+              "option": "string"
             }
           }
         ]

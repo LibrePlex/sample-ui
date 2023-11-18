@@ -20,15 +20,11 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
 import { notify } from "@libreplex/shared-ui";
-import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
-import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
+import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui";
+import { getLegacyInscriptionPda } from "@libreplex/shared-ui";
 
-import { IWebHashAndBuffer, getLegacyCompressedImage } from "shared-ui/src/components/assetdisplay/useLegacyCompressedImage";
-import { getImageAsBuffer } from "@libreplex/shared-ui";
-import { calculateHashFromBuffer } from "@app/utils/calculateHashFromBuffer";
-import { getInscriptionV2Pda } from "@libreplex/shared-ui/src/pdas/getInscriptionV2Pda";
+import { getInscriptionV2Pda } from "@libreplex/shared-ui";
 
 export interface IInscribeLegacyMint {
   mint: PublicKey;
@@ -54,7 +50,7 @@ export const inscribeLegacyMint = async (
     wallet
   );
 
-  if (!legacyInscriptionsProgram) {
+  if (!legacyInscriptionsProgram || !inscriptionsProgram) {
     throw Error("IDL not ready");
   }
 
@@ -79,31 +75,31 @@ export const inscribeLegacyMint = async (
   const instructions: TransactionInstruction[] = [];
 
     console.log({
-      legacySigner: legacySigner.toBase58(),
+      // legacySigner: legacySigner.toBase58(),
       inscription: inscription.toBase58(),
       inscriptionData: inscriptionData.toBase58(),
       inscriptionSummary: inscriptionSummary.toBase58(),
       inscriptionRanksCurrentPage: inscriptionRanksCurrentPage.toBase58(),
       inscriptionRanksNextPage: inscriptionRanksNextPage.toBase58(),
-      legacyInscription: legacyInscription.toBase58(),
       legacyMetadata: legacyMetadata.toBase58()
     })
 
-  let webphash: undefined | string;
-  if (imageOverride) {
-    const imageBuffer = await getImageAsBuffer(imageOverride);
-    webphash = await calculateHashFromBuffer(imageBuffer);
-  } else {
+  // let webphash = null; 
+  // | string;
+  // if (imageOverride) {
+  //   const imageBuffer = await getImageAsBuffer(imageOverride);
+  //   webphash = await calculateHashFromBuffer(imageBuffer);
+  // } else {
 
-    const data = await getLegacyCompressedImage(mint, cluster);
-    webphash = data.hash;
+  //   const data = await getLegacyCompressedImage(mint, cluster);
+  //   webphash = data.hash;
     
-  }
+  // }
 
 
   console.log('f');
   const ix = await legacyInscriptionsProgram.methods
-    .inscribeLegacyMetadataAsUauth(webphash)
+    .inscribeLegacyMetadataAsUauth("")
     .accounts({
       payer: wallet.publicKey,
       legacySigner,

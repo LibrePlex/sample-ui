@@ -11,17 +11,21 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
 
   return (
     <SimpleGrid columns={2}>
+        <Text>
+            {inscriptionV2.data?.item?'y':'n'}
+        </Text>
+        <Text></Text>
       <Text>{inscription.data?.item.authority.toBase58()}</Text>
       <Text>{inscriptionV2.data?.item.authority.toBase58()}</Text>
 
       <Text>{inscription.data?.item.encodingType.base64 ? "y" : "n"}</Text>
-      <Text>{inscriptionV2.data?.item.encodingType.base64 ? "y" : "n"}</Text>
+      <Text>{(inscriptionV2.data?.item as any)?.encoding as string}</Text>
 
       <Text>{inscription.data?.item.inscriptionData.toBase58()}</Text>
       <Text>{inscriptionV2.data?.item.inscriptionData.toBase58()}</Text>
 
       <Text>{mediaTypeToString(inscription.data?.item.mediaType)}</Text>
-      <Text>{mediaTypeToString(inscriptionV2.data?.item.mediaType)}</Text>
+      <Text>{(inscriptionV2.data?.item as any)?.contentType}</Text>
 
       <Text>{inscription.data?.item.order.toString()}</Text>
       <Text>{inscriptionV2.data?.item.order.toString()}</Text>
