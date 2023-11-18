@@ -1,4 +1,4 @@
-import { useInscriptionV2ById } from './inscriptions/inscriptionsv2';
+import { useInscriptionV3ById } from './inscriptions/inscriptionsv2';
 import { useMultiSigById } from './squads/squad';
 
 // metadata stuff

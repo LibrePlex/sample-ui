@@ -144,7 +144,7 @@ export {
   getListingGroupPda,
   getListingFilterPda,
   getInscriptionPda,
-  getInscriptionV2Pda,
+  getInscriptionV3Pda,
   getInscriptionDataPda,
   getInscriptionSummaryPda ,
   getInscriptionRankPda,

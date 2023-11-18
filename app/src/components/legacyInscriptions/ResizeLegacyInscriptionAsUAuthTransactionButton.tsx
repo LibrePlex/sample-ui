@@ -6,7 +6,7 @@ import {
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
   getInscriptionPda,
-  getInscriptionV2Pda,
+  getInscriptionV3Pda,
   getLegacyMetadataPda
 } from "@libreplex/shared-ui";
 import {
@@ -74,7 +74,7 @@ export const resizeLegacyInscription = async (
   let sizeRemaining = targetSize - currentSize;
   const instructions: TransactionInstruction[] = [];
 
-  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
+  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
 
   while (Math.abs(sizeRemaining) > 0) {
     console.log({ change:

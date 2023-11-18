@@ -24,7 +24,7 @@ import { notify } from "@libreplex/shared-ui";
 import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui";
 import { getLegacyInscriptionPda } from "@libreplex/shared-ui";
 
-import { getInscriptionV2Pda } from "@libreplex/shared-ui";
+import { getInscriptionV3Pda } from "@libreplex/shared-ui";
 
 export interface IInscribeLegacyMint {
   mint: PublicKey;
@@ -65,7 +65,7 @@ export const inscribeLegacyMint = async (
   const blockhash = await connection.getLatestBlockhash();
 
   const inscription = getInscriptionPda(mint)[0];
-  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
+  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   const inscriptionRanksCurrentPage = getInscriptionRankPda(BigInt(0))[0];

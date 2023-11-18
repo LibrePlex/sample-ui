@@ -22,7 +22,7 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
       <Text>{(inscriptionV2.data?.item as any)?.encoding as string}</Text>
 
       <Text>{inscription.data?.item.inscriptionData.toBase58()}</Text>
-      <Text>{inscriptionV2.data?.item.inscriptionData.toBase58()}</Text>
+      <Text>{inscriptionV2.data?.item?.inscriptionData.toBase58()}</Text>
 
       <Text>{mediaTypeToString(inscription.data?.item.mediaType)}</Text>
       <Text>{(inscriptionV2.data?.item as any)?.contentType}</Text>
@@ -36,8 +36,8 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
       <Text>{inscription.data?.item.size}</Text>
       <Text>{inscriptionV2.data?.item.size}</Text>
 
-      <Text>{inscription.data?.item.validationHash}</Text>
-      <Text>{inscriptionV2.data?.item.validationHash}</Text>
+      {/* <Text>{inscription.data?.item.validationHash}</Text> */}
+      {/* <Text>{inscriptionV2.data?.item.validationHash}</Text> */}
 
     
       

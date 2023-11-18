@@ -22,7 +22,7 @@ export {getListingFilterPda}  from "./getListingFilterPda"
 
 export {getInscriptionPda} from "./getInscriptionPda"
 
-export {getInscriptionV2Pda} from "./getInscriptionV2Pda";
+export {getInscriptionV3Pda} from "./getInscriptionV3Pda";
 
 export {getInscriptionDataPda} from "./getInscriptionDataPda"
 

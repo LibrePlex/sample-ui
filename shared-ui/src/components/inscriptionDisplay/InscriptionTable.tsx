@@ -19,7 +19,7 @@ import { useEffect, useMemo } from "react";
 import React from "react";
 import {
   SolscanLink,
-  getInscriptionV2Pda,
+  getInscriptionV3Pda,
   mediaTypeToString,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
@@ -47,7 +47,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     refetch: refreshInscriptionData,
   } = useInscriptionDataForRoot(mint);
 
-  const inscriptionV3Pda = useMemo(()=>getInscriptionV2Pda(mint)[0],[mint])
+  const inscriptionV3Pda = useMemo(()=>getInscriptionV3Pda(mint)[0],[mint])
   
   const { data: offchainData } = useOffChainMetadataCache(mint);
 

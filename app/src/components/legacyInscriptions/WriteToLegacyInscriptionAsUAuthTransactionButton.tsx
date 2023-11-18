@@ -9,7 +9,7 @@ import {
   ScannerLink,
   getInscriptionDataPda,
   getInscriptionPda,
-  getInscriptionV2Pda,
+  getInscriptionV3Pda,
   getLegacyMetadataPda,
 } from "@libreplex/shared-ui";
 import {
@@ -73,7 +73,7 @@ export const writeToLegacyInscriptionAsUauth = async (
   }
 
   const inscription = getInscriptionPda(mint)[0];
-  const inscriptionV2 = getInscriptionV2Pda(mint)[0];
+  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
 
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);

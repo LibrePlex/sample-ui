@@ -33,6 +33,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-table": "^8.9.1",
     "add": "^2.0.6",
+    "bigint-buffer": "^1.1.5",
     "bn.js": "^5.2.1",
     "cookies": "^0.8.0",
     "cross-env": "5.0.5",

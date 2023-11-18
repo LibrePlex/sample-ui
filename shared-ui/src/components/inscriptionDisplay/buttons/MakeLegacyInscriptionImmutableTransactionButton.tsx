@@ -18,7 +18,7 @@ import {
 } from "../../../sdk/query/inscriptions/getProgramInstanceInscriptions";
 import {
   getInscriptionSummaryPda,
-  getInscriptionV2Pda,
+  getInscriptionV3Pda,
   getLegacySignerPda,
   getProgramInstanceLegacyInscriptions,
   notify,
@@ -88,7 +88,7 @@ export const makeLegacyInscriptionImmutable = async (
 
   const instructions: TransactionInstruction[] = [];
 
-  const inscriptionV2 = getInscriptionV2Pda(
+  const inscriptionV2 = getInscriptionV3Pda(
     inscription.item.root
   )[0];
 
