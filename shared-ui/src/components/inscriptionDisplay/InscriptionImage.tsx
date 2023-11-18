@@ -1,36 +1,27 @@
+import { Box, BoxProps, Text } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
+import React, { useContext, useMemo } from "react";
+import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
 import { useInscriptionDataForRoot } from "../../sdk/query/inscriptions/useInscriptionDataForRoot";
 import { useInscriptionForRoot } from "../../sdk/query/inscriptions/useInscriptionForRoot";
-import { useContext, useMemo } from "react";
-import React from "react";
-import { SolscanLink } from "../../components/SolscanLink";
-import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
-import { Text, Box, VStack, BoxProps } from "@chakra-ui/react";
-import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
-import { useEncodingForInscription } from "./useEncodingForInscription";
 import { InscriptionStats } from "./InscriptionStats";
+import { useEncodingForInscription } from "./useEncodingForInscription";
+import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 export const InscriptionImage = ({
   root,
+  prefixOverride,
   ...rest
-}: { root: PublicKey } & BoxProps) => {
+}: { root: PublicKey; prefixOverride: string | undefined } & BoxProps) => {
   const { cluster } = useContext(ClusterContext);
   const {
-    inscription: {
-      data: inscription,
-      isFetching: isFetchingInscription,
-      refetch: refreshInscription,
-    },
+    inscription: { data: inscription },
   } = useInscriptionForRoot(root);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
 
   const encoding = useEncodingForInscription(inscription);
 
-  const {
-    data: inscriptionData,
-    isFetching: isFetchingInscriptionData,
-    refetch: refreshInscriptionData,
-  } = useInscriptionDataForRoot(root);
+  const { data: inscriptionData } = useInscriptionDataForRoot(root);
 
   const base64ImageInscription = useMemo(
     () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
@@ -39,7 +30,8 @@ export const InscriptionImage = ({
 
   return base64ImageInscription ? (
     <Box {...rest} className="relative" sx={{ ...rest.sx }}>
-      <InscriptionStats root={root}/>
+      <Text>{prefixOverride}asdasd</Text>
+      <InscriptionStats root={root} />
       <img
         style={{
           minHeight: "100%",
@@ -47,9 +39,8 @@ export const InscriptionImage = ({
           aspectRatio: "1/1",
           borderRadius: 8,
         }}
-        src={`data:${urlPrefix};${encoding},${base64ImageInscription}`}
+        src={`data:${prefixOverride ?? urlPrefix};${encoding},${base64ImageInscription}`}
       />
-   
     </Box>
   ) : (
     <></>

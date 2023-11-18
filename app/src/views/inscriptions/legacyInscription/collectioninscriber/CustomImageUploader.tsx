@@ -1,32 +1,42 @@
-import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
-import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
 import { VStack } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useFiletypeFromStream, useOffchainImageAsBuffer } from "@libreplex/shared-ui";
 import { useInscriptionForRoot } from "@libreplex/shared-ui";
 import { IImageUploadProgressState, Stage, StageProgress } from "./useImageUploadProgressState";
+import React from "react";
+import { useInscriptionWriteStatus } from "../../../../components/inscriptions/WriteToInscriptionTransactionButton";
+import { ImageUploader } from "../../../../components/shadowdrive/ImageUploader";
+import { set } from "date-fns";
 
 export interface IImageUploaderState {
-  imageOverride: string;
-  setImageOverride: Dispatch<SetStateAction<string>>;
+  imageOverride: string | undefined;
+  setImageOverride: Dispatch<SetStateAction<string | undefined>>;
   dataBytes: number[];
-  imageBuffer: Buffer;
+  filetype: string | undefined;
+  imageBuffer: Buffer | undefined;
   refetch: () => any;
 }
 
 export const useImageUploaderState = (): IImageUploaderState => {
   const [imageOverride, setImageOverride] = useState<string>();
 
-  const { data: imageBuffer, refetch } =
+  const {data: buf }=
     useOffchainImageAsBuffer(imageOverride);
 
+  const {data: filetype, refetch}=
+    useFiletypeFromStream(imageOverride);
+
+    useEffect(()=>{
+      console.log({buf, filetype})
+    },[buf, filetype])
+
   const dataBytes = useMemo(
-    () => (imageBuffer ? [...imageBuffer] : undefined),
-    [imageBuffer]
+    () => (buf ? [...buf] : undefined),
+    [buf]
   );
 
-  return { imageOverride, setImageOverride, imageBuffer, refetch, dataBytes };
+  return { imageOverride, setImageOverride, imageBuffer: buf, refetch, dataBytes, filetype };
 };
 
 export const CustomImageUploader = ({
@@ -53,8 +63,9 @@ export const CustomImageUploader = ({
         currentImage={state.imageOverride}
         linkedAccountId={mint?.toBase58()}
         afterUpdate={(url) => {
-          // console.log({ url });
+          console.log({ url });
           state.setImageOverride(url);
+          
           reset();
           progressState.setUpdateStatus({
             stage: Stage.UpdateTemplate,

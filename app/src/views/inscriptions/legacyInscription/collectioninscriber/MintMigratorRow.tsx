@@ -8,6 +8,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { InscriptionImage } from "shared-ui/src/components/inscriptionDisplay/InscriptionImage";
 import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
+import React from "react";
 
 export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
   const { data } = useOffChainMetadataCache(mint);
@@ -35,7 +36,7 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
 
       <Td>
         <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 h-full">
-          <InscriptionImage root={mint} 
+          <InscriptionImage root={mint} prefixOverride={undefined} 
           // stats={false}
           />
         </div>

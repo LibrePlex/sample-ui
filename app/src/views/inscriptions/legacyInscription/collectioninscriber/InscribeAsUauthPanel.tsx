@@ -18,7 +18,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useMemo, useState } from "react";
 import { HiCheckCircle, HiXCircle } from "react-icons/hi";
-import { mediaTypeToString } from "shared-ui/src/components/inscriptionDisplay/useMediaType";
+import { mediaTypeToString } from "@libreplex/shared-ui";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
 import { useImageUploaderState } from "./CustomImageUploader";
 import { ImageSourceSelector } from "./ImageSourceSelector";
@@ -27,7 +27,8 @@ import {
   StageProgress,
   useImageUploadProgressState,
 } from "./useImageUploadProgressState";
-import { useRentForDataLength } from "shared-ui/src/components/useRentForDataLength";
+import { useRentForDataLength } from "@libreplex/shared-ui";
+import React from "react";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
@@ -36,17 +37,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
     inscription: { data: inscription },
   } = useInscriptionForRoot(mint);
 
-  const {
-    data: compressedImage,
-    refetch: refetchOffchainData,
-    isFetching: isFetchingOffchainData,
-  } = useLegacyCompressedImage(mint);
-
-  const sizeOkCompressed = useMemo(
-    () => compressedImage?.buf.length === inscription?.item.size,
-    [compressedImage, inscription]
-  );
-
   const legacyInscription = useLegacyInscriptionForMint(mint);
 
   const uploaderState = useImageUploaderState();
@@ -54,7 +44,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const { imageBuffer, imageOverride, dataBytes } = uploaderState;
 
   const sizeOk = useMemo(
-    () => imageBuffer?.length === inscription?.item.size,
+    () => imageBuffer?.length === inscription?.item?.size,
     [imageBuffer, inscription]
   );
 
@@ -68,7 +58,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       params: {
         mint,
         targetSize: imageBuffer?.length,
-        currentSize: inscription?.item.size,
+        currentSize: inscription?.item?.size,
       },
       beforeClick: undefined,
       transactionGenerator: resizeLegacyInscription,
@@ -206,6 +196,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           )}
         </VStack>
       </HStack>
+      
 
       {inscription && (
         <VStack
@@ -228,6 +219,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
             updateStatus.result === StageProgress.Progress && <Spinner />}
         </VStack>
       )}
+      <Text color="white">{uploaderState?.filetype??'unknown filetype'}</Text>
 
       <VStack>
         <Text>Buffer length: {imageBuffer?.length}</Text>
@@ -237,12 +229,13 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
             params={{
               mint,
               targetSize: imageBuffer.length,
-              currentSize: inscription?.item.size,
+              currentSize: inscription?.item?.size,
             }}
             formatting={{}}
           />
         )}
       </VStack>
+      
       {sizeOk && imageBuffer && (
         <HStack>
           <HiCheckCircle color="lightgreen" size="35px" />
@@ -256,10 +249,11 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           <HiXCircle color="#f66" size={"50px"} />
           <Text>
             Image sizes do not match. Current inscription size:{" "}
-            {inscription?.item.size}, need: {imageBuffer?.length}
+            {inscription?.item?.size}, need: {imageBuffer?.length}
           </Text>
         </HStack>
       )}
+            
       {inscription && sizeOk ? (
         <VStack
           className="border-2 rounded-md border-inherit w-full"
@@ -272,22 +266,25 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           </Heading>
           {updateStatus.stage === Stage.Write &&
             updateStatus.result === StageProgress.Progress && <Spinner />}
+          <Text>Media type {mediaTypeToString(mediaType)}</Text>
           {dataBytes && (
             <WriteToLegacyInscriptionAsUAuthTransactionButton
               params={{
                 mint,
                 dataBytes,
                 encodingType: { base64: {} },
-                mediaType,
+                mediaType: {custom: {
+                  mediaType: uploaderState.filetype
+                }},
               }}
               formatting={{}}
             />
           )}
-          {mediaTypeToString(mediaType)}
         </VStack>
       ) : (
         <></>
       )}
+
     </VStack>
   );
 };

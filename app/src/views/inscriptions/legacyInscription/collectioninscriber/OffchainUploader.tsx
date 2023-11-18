@@ -1,10 +1,11 @@
 import { useInscriptionWriteStatus } from "@app/components/inscriptions/WriteToInscriptionTransactionButton";
 import { ImageUploader } from "@app/components/shadowdrive/ImageUploader";
-import { VStack } from "@chakra-ui/react";
+import { VStack, Text } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
 import {
+  useFiletypeFromStream,
   useInscriptionForRoot,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
@@ -30,9 +31,12 @@ export const OffchainUploader = ({
 
   const { data } = useOffChainMetadataCache(mint);
 
+  const { data: buf } = useOffchainImageAsBuffer(data?.images.url);
+  const { data: filetype } = useFiletypeFromStream(data?.images.url);
+
   useEffect(() => {
     state.setImageOverride(data?.images.url);
-    if( data?.images.url) {
+    if (data?.images.url) {
       progressState.setUpdateStatus({
         stage: Stage.UpdateTemplate,
         result: StageProgress.Success,
@@ -40,26 +44,30 @@ export const OffchainUploader = ({
     }
   }, [data?.images]);
 
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const imageDisplay = useMemo(
+    () =>
+      state.filetype === "image/svg+xml"
+        ? `data:image/svg+xml;base64,${encodeURIComponent(
+            buf.toString("base64")
+          )}`
+        : state.imageOverride,
+    [state]
+  );
 
   return (
-    <img
-    onLoadStart={() => {
-      setImageLoaded(false);
-    }}
-    onLoad={() => {
-      setImageLoaded(true);
-    }}
-    style={{
-      zIndex: 1,
-      opacity: imageLoaded ? 1 : 0,
-      maxHeight: 200,
-      maxWidth: 200,
-      overflow: "hidden",
-    }}
-    height={"200px"}
-    width={"200px"}
-    src={state.imageOverride}
-  />
+    <VStack>
+      <img
+        style={{
+          zIndex: 1,
+          maxHeight: 200,
+          maxWidth: 200,
+          overflow: "hidden",
+        }}
+        height={"200px"}
+        width={"200px"}
+        src={imageDisplay}
+      />
+      
+    </VStack>
   );
 };

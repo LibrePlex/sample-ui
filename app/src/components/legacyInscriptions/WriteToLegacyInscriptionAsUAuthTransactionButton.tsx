@@ -19,7 +19,6 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
 import { HStack, Heading, Progress, Text, VStack } from "@chakra-ui/react";
 import { notify } from "@libreplex/shared-ui";
 import { AccountLayout } from "@solana/spl-token";
@@ -30,6 +29,7 @@ import {
   BATCH_SIZE,
   useInscriptionWriteStatus,
 } from "../inscriptions/WriteToInscriptionTransactionButton";
+import React from "react";
 
 
 export interface IWriteToLegacyInscriptionAsUAuth {
@@ -71,16 +71,6 @@ export const writeToLegacyInscriptionAsUauth = async (
       tokenAccount = ta.address;
     }
   }
-
-  if (!tokenAccount) {
-    throw Error("Token account not found for mint");
-  }
-
-  const tokenAccountData = await connection.getAccountInfo(tokenAccount);
-
-  const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
-
-  owner = tokenAccountObj.owner;
 
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionV2 = getInscriptionV2Pda(mint)[0];

@@ -11,5 +11,10 @@ export const getImageAsBuffer = async (imageUrl: string) => {
         console.log({result});
         return result.data
       });
+    // console.log({offChainImage});
+    //   console.log({bufferlenbefore: ([...offChainImage as any]).length});
+  
+    console.log(`returning ${offChainImage}`);
     return Buffer.from(offChainImage);
+    // return webpBuffer as Buffer;
   };

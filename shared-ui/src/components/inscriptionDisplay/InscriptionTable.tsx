@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import React from "react";
 import {
@@ -67,7 +67,20 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     [inscription]
   );
 
-  const { connection } = useConnection();
+  // big of a hack until we get media type sorted out properly
+  const extension = useMemo(() => {
+
+    const elems = offchainData
+      ? offchainData?.images.url.split(".")
+      : undefined;
+    return elems?.length > 0 ? elems[elems.length - 1] : undefined;
+  }, [offchainData]);
+
+  useEffect(()=>{
+    console.log({extension, url: offchainData?.images.url})
+  },[extension, offchainData?.images.url])
+
+  const prefixOverride = useMemo(()=>extension === 'svg' ? 'image/svg+xml': undefined,[extension])
 
   const { publicKey } = useWallet();
   return (
@@ -127,6 +140,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
             ) : (
               <InscriptionImage
                 // stats={true}
+                prefixOverride={prefixOverride}
                 root={mint}
                 sx={{ minHeight: "100%" }}
               />

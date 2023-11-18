@@ -17,13 +17,13 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
 import { notify } from "@libreplex/shared-ui";
-import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
+import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui";
 import { ITransaction } from "../../transactions/ITransaction";
 
 import { AccountLayout } from "@solana/spl-token";
-import { getLegacyInscriptionPda } from "shared-ui/src/pdas/getLegacyInscriptionPda";
+import { getLegacyInscriptionPda } from "@libreplex/shared-ui";
+import React from "react";
 
 export interface IResizeLegacyInscription {
   mint: PublicKey;
@@ -66,19 +66,10 @@ export const resizeLegacyInscription = async (
     }
   }
 
-  if (!tokenAccount) {
-    throw Error("Token account not found for mint");
-  }
-
-  const tokenAccountData = await connection.getAccountInfo(tokenAccount);
-
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);
   const legacyMetadata= getLegacyMetadataPda(mint)[0];
-  const tokenAccountObj = AccountLayout.decode(tokenAccountData.data);
-
-  owner = tokenAccountObj.owner;
 
   let sizeRemaining = targetSize - currentSize;
   const instructions: TransactionInstruction[] = [];

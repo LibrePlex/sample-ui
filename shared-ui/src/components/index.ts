@@ -20,6 +20,8 @@ export { NetworkSwitcherDynamic } from "./NetworkSwitcher";
 export { NavElement } from "./navelement";
 
 export { GroupSelector } from "./GroupSelector";
+export {useOffchainImageAsBuffer} from "./inscriptionDisplay/useOffchainImageAsBuffer"
+export {useFiletypeFromStream}  from "./inscriptionDisplay/useFileTypeFromStream"
 export {InscriptionStats} from "./inscriptionDisplay/InscriptionStats"
 
 export {useMediaType, mediaTypeToString} from "./inscriptionDisplay/useMediaType"
@@ -29,6 +31,8 @@ export {useOffChainMetadataCache} from "./assetdisplay/useOffChainMetadataCache"
 export { useLegacyCompressedImage } from "./assetdisplay/useLegacyCompressedImage";
 export {useUrlPrefixForInscription} from "./inscriptionDisplay/useUrlPrefixForInscription"
 export { ScannerLink } from "./ScannerLink";
+
+export {useRentForDataLength} from "./useRentForDataLength"
 
 export { MintDisplay } from "./MintDisplay";
 

@@ -9,6 +9,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { IImageUploadProgressState } from "./useImageUploadProgressState";
 import { OffchainUploader } from "./OffchainUploader";
+import React from "react";
 
 export interface IImageSourceState {
   imageBuffer: Buffer | undefined;
