@@ -10,6 +10,7 @@ import {
   Td,
   Text,
   Tr,
+  HStack,
   VStack,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
@@ -18,6 +19,7 @@ import { useEffect, useMemo } from "react";
 import React from "react";
 import {
   SolscanLink,
+  getInscriptionV2Pda,
   mediaTypeToString,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
@@ -33,7 +35,6 @@ import { InscriptionV1V2 } from "./InscriptionV1V2";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
-    inscriptionId,
     inscription: {
       data: inscription,
       isFetching: isFetchingInscription,
@@ -46,8 +47,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     refetch: refreshInscriptionData,
   } = useInscriptionDataForRoot(mint);
 
-  const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
-
+  const inscriptionV3Pda = useMemo(()=>getInscriptionV2Pda(mint)[0],[mint])
+  
   const { data: offchainData } = useOffChainMetadataCache(mint);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
@@ -69,18 +70,20 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
   // big of a hack until we get media type sorted out properly
   const extension = useMemo(() => {
-
     const elems = offchainData
       ? offchainData?.images.url.split(".")
       : undefined;
     return elems?.length > 0 ? elems[elems.length - 1] : undefined;
   }, [offchainData]);
 
-  useEffect(()=>{
-    console.log({extension, url: offchainData?.images.url})
-  },[extension, offchainData?.images.url])
+  useEffect(() => {
+    console.log({ extension, url: offchainData?.images.url });
+  }, [extension, offchainData?.images.url]);
 
-  const prefixOverride = useMemo(()=>extension === 'svg' ? 'image/svg+xml': undefined,[extension])
+  const prefixOverride = useMemo(
+    () => (extension === "svg" ? "image/svg+xml" : undefined),
+    [extension]
+  );
 
   const { publicKey } = useWallet();
   return (
@@ -138,11 +141,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                 <Text color="white">{base64ImageInscription}</Text>
               </Center>
             ) : (
-              <InscriptionImage
-                // stats={true}
-                root={mint}
-                sx={{ minHeight: "100%" }}
-              />
+              <InscriptionImage root={mint} />
             )
           ) : (
             <>
@@ -165,9 +164,18 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
 
         <VStack>
-          {inscriptionData && (
-            <SolscanLink address={inscriptionData.pubkey?.toBase58()} />
-          )}
+          <HStack>
+            <Text>View inscription account</Text>
+            {inscriptionV3Pda && (
+              <SolscanLink address={inscriptionV3Pda.toBase58()} />
+            )}
+          </HStack>
+          <HStack>
+            <Text>View data account</Text>
+            {inscriptionData && (
+              <SolscanLink address={inscriptionData.pubkey?.toBase58()} />
+            )}
+          </HStack>
         </VStack>
       </SimpleGrid>
     </VStack>

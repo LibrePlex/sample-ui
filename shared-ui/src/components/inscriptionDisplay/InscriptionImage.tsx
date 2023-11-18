@@ -44,15 +44,14 @@ export const InscriptionImage = ({
       <InscriptionStats root={root} />
       <img
         style={{
-          minHeight: "100%",
-          maxHeight: "100%",
-          aspectRatio: "1/1",
+          minWidth: "100%",
+          maxWidth: "100%",
           borderRadius: 8,
         }}
         src={`data:${prefixOverride ?? urlPrefix};${encoding},${base64ImageInscription}`}
       />
       
-      <Text>{prefixOverride ?? urlPrefix}</Text>
+      <Text mt={3}>{prefixOverride ?? urlPrefix}</Text>
     </Box>
   ) : (
     <></>
