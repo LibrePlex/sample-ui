@@ -56,7 +56,7 @@ const InscriptionsView = () => {
               }}
             >
               <UnorderedList>
-                <ListItem>
+                {/* <ListItem>
                   <Text fontSize={"2xl"}>
                     FOC FACT #1: The inscription number is forever linked to the
                     mint of the inscription.
@@ -73,7 +73,7 @@ const InscriptionsView = () => {
                     FOC FACT #3: The update authority can withdraw rent unless
                     the inscription is immutable. DO NOT IGNORE THIS.
                   </Text>
-                </ListItem>
+                </ListItem> */}
 
                 {/* <ListItem>
                   <Text fontSize={"2xl"}>

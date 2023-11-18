@@ -7,5 +7,5 @@ export {useInscriptionDataForRoot} from "./useInscriptionDataForRoot"
 export {useInscriptionForRoot} from "./useInscriptionForRoot"
 export {useInscriptionV3ForRoot as useInscriptionV2ForRoot} from "./useInscriptionV2ForRoot"
 
-export {useInscriptionV3ById as useInscriptionV2ById} from "./inscriptionsv2"
+export {useInscriptionV3ById as useInscriptionV2ById} from "./inscriptionsV3"
 export type {MediaType, EncodingType} from "./inscriptions"

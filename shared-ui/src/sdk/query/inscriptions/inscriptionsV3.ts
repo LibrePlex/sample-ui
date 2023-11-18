@@ -33,49 +33,52 @@ export interface IInscriptionV3 {
 export const decodeInscriptionV3Buffer = (buffer: Buffer | undefined) => {
   // skip the first 8 bytes - discriminator. We could validate this?
 
-  // authority: 8
-  const authority = new PublicKey(buffer.subarray(8, 40));
-  
-  // 8 + 32
-  const root = new PublicKey(buffer.subarray(40, 72));
+  if (buffer) {
+    // authority: 8
+    const authority = new PublicKey(buffer.subarray(8, 40));
 
-  // 8 + 32 + 32
-  const inscriptionData = new PublicKey(buffer.subarray(72, 104));
+    // 8 + 32
+    const root = new PublicKey(buffer.subarray(40, 72));
 
-  // 8 + 32 + 32 + 32
-  const order = toBigIntLE(buffer.subarray(104, 112));
+    // 8 + 32 + 32
+    const inscriptionData = new PublicKey(buffer.subarray(72, 104));
 
-  // 8 + 32 + 32 + 32 + 32
-  const size = Number(toBigIntLE(buffer.subarray(112, 116)));
-  
-  // 8 + 32 + 32 + 32 + 32 + 4
-  const contentTypeSize = Number(toBigIntLE(buffer.subarray(116, 120)));
+    // 8 + 32 + 32 + 32
+    const order = toBigIntLE(buffer.subarray(104, 112));
 
-  const contentType = buffer.toString("utf8", 120, 120 + contentTypeSize);
+    // 8 + 32 + 32 + 32 + 32
+    const size = Number(toBigIntLE(buffer.subarray(112, 116)));
 
-  // length of the encoding string
-  const encodingSize = Number(
-    toBigIntLE(
-      buffer.subarray(120 + contentTypeSize, 120 + contentTypeSize + 4)
-    )
-  );
-  const encoding = buffer.toString(
-    "utf8",
-    120 + contentTypeSize + 4,
-    120 + contentTypeSize + 4 + encodingSize
-  );
+    // 8 + 32 + 32 + 32 + 32 + 4
+    const contentTypeSize = Number(toBigIntLE(buffer.subarray(116, 120)));
 
-  const item: IInscriptionV3 = {
-    authority,
-    root,
-    inscriptionData,
-    order,
-    size,
-    contentType,
-    encoding,
-  };
+    const contentType = buffer.toString("utf8", 120, 120 + contentTypeSize);
 
-  return item
+    // length of the encoding string
+    const encodingSize = Number(
+      toBigIntLE(
+        buffer.subarray(120 + contentTypeSize, 120 + contentTypeSize + 4)
+      )
+    );
+    const encoding = buffer.toString(
+      "utf8",
+      120 + contentTypeSize + 4,
+      120 + contentTypeSize + 4 + encodingSize
+    );
+
+    const item: IInscriptionV3 = {
+      authority,
+      root,
+      inscriptionData,
+      order,
+      size,
+      contentType,
+      encoding,
+    };
+
+    return item;
+  }
+  return null;
 };
 
 // moving to custom deserializers going forward to avoid anchor deserialization overhead
@@ -99,28 +102,10 @@ export const useInscriptionV3ById = (
 
   const q = useFetchSingleAccount(inscriptionId, connection, false);
 
-  const updatedInscription = useStore(store, (s) => s.updatedInscription);
+  const decoded = useMemo(
+    () => decodeInscriptionV3(q?.data?.item.buffer, inscriptionId),
+    [q?.data, inscriptionId]
+  );
 
-  const decoded = useMemo(() => {
-    try {
-      const obj = updatedInscription[inscriptionId.toBase58()]
-        ? {
-            pubkey: inscriptionId,
-            item: updatedInscription[inscriptionId.toBase58()],
-          }
-        : q?.data?.item
-        ? decodeInscriptionV3(q?.data?.item.buffer, inscriptionId)
-        : undefined;
-      return obj;
-    } catch (e) {
-      return null;
-    }
-  }, [inscriptionId, program, q.data?.item?.buffer.length, updatedInscription]);
-
-  //
-  return {
-    data: decoded,
-    refetch: q.refetch,
-    isFetching: q.isFetching,
-  };
+  return { ...q, data: decoded };
 };

@@ -97,8 +97,9 @@ export const writeToLegacyInscriptionAsUauth = async (
         .writeToLegacyInscriptionAsUauth({
           data: Buffer.from(byteBatch),
           startPos,
-          mediaType: isFirst ? mediaType : null, // not setting these as it's been already set above
-          encodingType: isFirst ? encodingType : null, // not setting this as it's been already set above
+          // always write these in case some transactions do not go through
+          mediaType: mediaType, 
+          encodingType: encodingType
         })
         .accounts({
           authority: wallet.publicKey,

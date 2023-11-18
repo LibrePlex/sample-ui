@@ -2,7 +2,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useMemo } from "react";
 import { getInscriptionV3Pda } from "../../../pdas";
-import { useInscriptionV3ById } from "./inscriptionsv2";
+import { useInscriptionV3ById } from "./inscriptionsV3";
 
 export const useInscriptionV3ForRoot = (root: PublicKey) => {
   const { connection } = useConnection();
@@ -11,8 +11,10 @@ export const useInscriptionV3ForRoot = (root: PublicKey) => {
     [root]
   );
 
+  const inscriptionV3 = useInscriptionV3ById(inscriptionId, connection);
+
   return {
     inscriptionId,
-    inscription: useInscriptionV3ById(inscriptionId, connection),
+    inscription: inscriptionV3,
   };
 };

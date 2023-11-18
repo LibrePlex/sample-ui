@@ -7,6 +7,6 @@ export const useUrlPrefixForInscription = (
 ) => {
 
 
-  return inscription?.item?.mediaType ? mediaTypeToString(inscription?.item?.mediaType) : '';
+  return inscription?.item?.mediaType ? mediaTypeToString(inscription?.item?.mediaType) : undefined;
 
 };

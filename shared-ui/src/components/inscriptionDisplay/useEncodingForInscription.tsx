@@ -3,7 +3,7 @@ import { EncodingType, Inscription } from "../../sdk";
 import { mediaTypeToString } from "./useMediaType";
 
 const encodingToString = (encodingType: EncodingType) => {
-    return encodingType.base64 ? 'base64' : 'none'
+    return 'base64'
 }
 
 export const useEncodingForInscription = (
@@ -11,5 +11,5 @@ export const useEncodingForInscription = (
 ) => {
   return inscription?.item?.encodingType
     ? encodingToString(inscription?.item?.encodingType)
-    : "";
+    : undefined;
 };
