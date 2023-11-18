@@ -18,7 +18,7 @@ import {
 import { ReactNode, useMemo, useState } from "react";
 
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
-import { InscriptionFilter, MintCardLegacy } from "./MintCardLegacy";
+import { InscriptionFilter, MintCardLegacy } from "./mintcard/MintCardLegacy";
 import { DisappearingBox } from "@app/components/DisappearingBox";
 
 export const WalletLegacyGallery = ({

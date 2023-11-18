@@ -61,17 +61,6 @@ export const writeToLegacyInscriptionAsUauth = async (
   // have to check the owner here - unfortunate as it's expensive
   const { mint, dataBytes, mediaType, encodingType } = params;
 
-  const tokenAccounts = await connection.getTokenLargestAccounts(mint);
-
-  let owner: PublicKey;
-  let tokenAccount: PublicKey;
-
-  for (const ta of tokenAccounts.value) {
-    if (BigInt(ta.amount) > BigInt(0)) {
-      tokenAccount = ta.address;
-    }
-  }
-
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionV2 = getInscriptionV3Pda(mint)[0];
 

@@ -149,7 +149,8 @@ export {
   getInscriptionSummaryPda ,
   getInscriptionRankPda,
   getLegacySignerPda,
-  getLegacyInscriptionPda
+  getLegacyInscriptionPda,
+  getMigratorPda
 } from "./pdas";
 
 export { usePublicKeyOrNull } from "./hooks/usePublicKeyOrNull";

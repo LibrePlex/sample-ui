@@ -1,6 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 
 export const COLLECTION = "collection";
+export const MIGRATOR = "migrator";
 export const PERMISSIONS = "permissions";
 export const METADATA = "metadata";
 export const METADATA_EXTENSION = "metadata_extension";

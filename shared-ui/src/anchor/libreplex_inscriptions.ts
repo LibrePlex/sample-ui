@@ -219,6 +219,42 @@ export type LibreplexInscriptions = {
       ]
     },
     {
+      "name": "migrateToV3",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "root",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "migrator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "setValidationHash",
       "accounts": [
         {
@@ -390,6 +426,22 @@ export type LibreplexInscriptions = {
             "type": {
               "option": "string"
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "migrator",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "migrator",
+            "type": "publicKey"
           }
         ]
       }
@@ -961,6 +1013,42 @@ export const IDL: LibreplexInscriptions = {
       ]
     },
     {
+      "name": "migrateToV3",
+      "accounts": [
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "root",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "migrator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscription",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscription2",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "setValidationHash",
       "accounts": [
         {
@@ -1132,6 +1220,22 @@ export const IDL: LibreplexInscriptions = {
             "type": {
               "option": "string"
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "migrator",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "root",
+            "type": "publicKey"
+          },
+          {
+            "name": "migrator",
+            "type": "publicKey"
           }
         ]
       }

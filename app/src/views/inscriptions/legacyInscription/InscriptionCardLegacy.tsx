@@ -4,7 +4,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { ReactNode } from "react";
 import { ViewLegacyInscription } from "./ViewLegacyInscription";
-import { MintCardLegacy } from "./MintCardLegacy";
+import { MintCardLegacy } from "./mintcard/MintCardLegacy";
 import { DisappearingBox } from "@app/components/DisappearingBox";
 
 const textMotion = {

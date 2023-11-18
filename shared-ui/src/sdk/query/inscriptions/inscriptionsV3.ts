@@ -95,12 +95,11 @@ export const decodeInscriptionV3 = (
 
 export const useInscriptionV3ById = (
   inscriptionId: PublicKey | null,
-  connection: Connection
+  connection: Connection,
+  live: boolean = false
 ) => {
-  const program = useContext(InscriptionsProgramContext);
-  const store = useContext(InscriptionStoreContext);
-
-  const q = useFetchSingleAccount(inscriptionId, connection, false);
+  
+  const q = useFetchSingleAccount(inscriptionId, connection, live);
 
   const decoded = useMemo(
     () => decodeInscriptionV3(q?.data?.item?.buffer, inscriptionId),

@@ -27,12 +27,15 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
       <Text>{JSON.stringify(inscription.data?.item.mediaType)}</Text>
       <Text>{(inscriptionV2.data?.item as any)?.contentType}</Text>
 
+      <Text>order</Text>
       <Text>{inscription.data?.item.order.toString()}</Text>
       <Text>{inscriptionV2.data?.item?.order.toString()}</Text>
 
+      <Text>root</Text>
       <Text>{inscription.data?.item.root.toString()}</Text>
       <Text>{inscriptionV2.data?.item?.root.toString()}</Text>
 
+      <Text>size</Text>
       <Text>{inscription.data?.item.size}</Text>
       <Text>{inscriptionV2.data?.item?.size}</Text>
 

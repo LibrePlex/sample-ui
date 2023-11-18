@@ -20,9 +20,9 @@ import { PublicKey } from "@solana/web3.js";
 import { motion } from "framer-motion";
 import { ReactNode, useMemo } from "react";
 import { HiMagnifyingGlassCircle } from "react-icons/hi2";
-import { Immutability } from "./immutability/Immutability";
-import { InscriptionImage } from "shared-ui/src/components/inscriptionDisplay/InscriptionImage";
+import { Immutability } from "../immutability/Immutability";
 import { useConnection } from "@solana/wallet-adapter-react";
+import { TensorButton } from "./TensorButton";
 const textMotion = {
   default: {
     color: "#ffffff",
@@ -76,24 +76,10 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <div className="flex flex-col items-end absolute top-2 right-2 z-10 gap-1">
-          {/* <Badge
-            sx={{
-              // border: "1px solid #aaa",
-              background: "#333",
-            }}
-          >
-            Rent:{" "}
-            {(
-              Math.round(
-                (0.00089088 + 0.00000696 * inscription?.item?.size) * 100
-              ) / 100
-            ).toFixed(2)}{" "}
-            SOL
-          </Badge> */}
+        <div className="flex flex-col items-end absolute top-2 right-2 gap-1">
           <Badge
             sx={{
-              // border: "1px solid #aaa",
+              zIndex: 10,
               background: "#333",
             }}
           >
@@ -101,7 +87,8 @@ export const MintCardLegacy = ({
           </Badge>
           <Badge
             sx={{
-              // border: "1px solid #aaa",
+              // border: "1px solid #aaa"
+              zIndex: 10,
               background: "#333",
             }}
           >
@@ -123,24 +110,7 @@ export const MintCardLegacy = ({
             >
               <HiMagnifyingGlassCircle size={"lg"} />
             </IconButton>
-            {/* <Center sx={{ height: "100%", width: "100%" }}>
-              <VStack p={4} justifyContent={'end'} sx={{height :"100%"}}>
-                <Text color="white">
-                  We are busy! 
-                  No image preview.
-                  Click scanner icon below to
-                  view this item.
-                </Text>
-               
-              </VStack>
-            </Center> */}
-            {/* {inscription?.item && (
-              <InscriptionImage
-                stats={true}
-                root={inscription.item.root}
-                sx={{ minHeight: "100%" }}
-              />
-            )} */}
+
             <AssetDisplay
               asset={{
                 image: { url: offchainData?.images.square, description: "" },
@@ -150,6 +120,9 @@ export const MintCardLegacy = ({
           </Box>
           <Box className="absolute top-3 left-3">
             <Immutability inscription={inscription} />
+          </Box>
+          <Box className="absolute bottom-11 left-3" >
+            <TensorButton mint={inscription.item.root} />
           </Box>
 
           <VStack
@@ -168,10 +141,6 @@ export const MintCardLegacy = ({
             >
               <Center>{itemName ?? "-"} </Center>
             </Heading>
-
-            {/* <Box>
-              
-            </Box> */}
 
             {children}
           </VStack>

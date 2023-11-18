@@ -14,7 +14,7 @@ export const InscriptionStats = ({ root }: { root: PublicKey }) => {
   const rent = useRentForDataLength(inscription.item.size);
 
   return inscription?.item ? (
-    <div className="flex flex-col items-end absolute top-2 right-2 z-10">
+    <div className="flex flex-col items-end absolute top-2 right-2">
       <Badge
         sx={{
           border: "1px solid #aaa",

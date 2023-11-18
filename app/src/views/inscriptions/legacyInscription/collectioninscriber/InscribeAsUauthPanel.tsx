@@ -89,8 +89,8 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       params: {
         mint,
         dataBytes,
-        encodingType: { base64: {} },
-        mediaType,
+        encodingType: 'base64',
+        mediaType: mediaTypeToString(mediaType),
       },
       beforeClick: undefined,
       transactionGenerator: writeToLegacyInscriptionAsUauth,
