@@ -76,26 +76,10 @@ export const MintCardLegacy = ({
       sx={{ position: "relative", ...rest.sx }}
     >
       {inscription?.item && (
-        <div className="flex flex-col items-end absolute top-2 right-2 z-10">
+        <div className="flex flex-col items-end absolute top-2 right-2 z-10 gap-1">
           <Badge
             sx={{
               // border: "1px solid #aaa",
-              background: "#333",
-            }}
-          >
-            #{inscription.item.order.toNumber().toLocaleString()}
-          </Badge>
-          {/* <Badge
-            sx={{
-              border: "1px solid #aaa",
-              background: "#333",
-            }}
-          >
-            Size: {formattedSize}B
-          </Badge> */}
-          <Badge
-            sx={{
-              border: "1px solid #aaa",
               background: "#333",
             }}
           >
@@ -107,6 +91,24 @@ export const MintCardLegacy = ({
             ).toFixed(2)}{" "}
             SOL
           </Badge>
+          <Badge
+            sx={{
+              // border: "1px solid #aaa",
+              background: "#333",
+            }}
+          >
+            Size: {formattedSize}B
+          </Badge>
+          <Badge
+            sx={{
+              // border: "1px solid #aaa",
+              background: "#333",
+            }}
+          >
+            #{inscription.item.order.toNumber().toLocaleString()}
+          </Badge>
+          
+          
         </div>
       )}
       {mintId && (
