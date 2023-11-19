@@ -63,17 +63,6 @@ export const claimExcessRentTransactionButton = async (
   const inscriptionData = await getInscriptionDataPda(mint)[0];
   const legacyInscription = await getLegacyInscriptionPda(mint);
 
-  console.log({
-    authority: wallet.publicKey,
-    payer: wallet.publicKey,
-    mint,
-    legacyMetadata,
-    inscription,
-    inscriptionData,
-    legacyInscription,
-    systemProgram: SystemProgram.programId,
-    inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
-  });
   const instruction = await libreplexLegacyProgram.methods
     .claimExcessRentAsUauth()
     .accounts({
@@ -138,7 +127,7 @@ export const ClaimExcessRentTransactionButton = (
   const metadata = useLegacyMetadataByMintId(props.params.mint, connection);
 
   const lamportDiff = useMemo(() => {
-    return inscriptionData && targetLamports
+    return inscriptionData.item && targetLamports
       ? Number(inscriptionData.item.balance) -
           Math.max(targetLamports, 70_490_000)
       : 0;
@@ -151,7 +140,7 @@ export const ClaimExcessRentTransactionButton = (
   const amIUauth = useMemo(
     () =>
       publicKey &&
-      metadata &&
+      metadata.data.item &&
       publicKey?.equals(metadata.data.item.updateAuthority),
     [publicKey, metadata]
   );
