@@ -13,6 +13,8 @@ export interface IImageUploaderState {
   imageOverride: string | undefined;
   setImageOverride: Dispatch<SetStateAction<string | undefined>>;
   dataBytes: number[];
+  mediaFile: File | undefined,
+  setMediaFile: Dispatch<SetStateAction<File | undefined>>,
   filetype: string | undefined;
   imageBuffer: Buffer | undefined;
   refetch: () => any;
@@ -36,7 +38,9 @@ export const useImageUploaderState = (): IImageUploaderState => {
     [buf]
   );
 
-  return { imageOverride, setImageOverride, imageBuffer: buf, refetch, dataBytes, filetype };
+  const [mediaFile, setMediaFile] = useState<File|undefined>()
+
+  return { imageOverride, setImageOverride, imageBuffer: buf, refetch, dataBytes, filetype, mediaFile, setMediaFile };
 };
 
 export const CustomImageUploader = ({

@@ -55,7 +55,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const urlPrefix = useUrlPrefixForInscription(inscription);
   const base64ImageInscription = useMemo(
     () =>
-      urlPrefix === "application/text"
+      urlPrefix === "application/text" || urlPrefix === 'text/plain'
         ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii")
         : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
     [inscriptionData?.item?.buffer, urlPrefix]
@@ -116,7 +116,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
         <VStack>
           {base64ImageInscription ? (
-            urlPrefix === "application/text" ? (
+            urlPrefix === "application/text" || urlPrefix === 'text/plain' ? (
               <Center sx={{ height: "100%", minHeight: "200px" }}>
                 <Text color="white">{base64ImageInscription}</Text>
               </Center>

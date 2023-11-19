@@ -43,14 +43,12 @@ export const InscriptionImage = ({
 
   const prefixOverride = useMemo(
     () =>
-    asciiImageInscription?.startsWith("<svg") ||
+      asciiImageInscription?.startsWith("<svg") ||
       asciiImageInscription.startsWith("<SVG")
         ? "image/svg+xml"
         : undefined,
     [asciiImageInscription]
   );
-
-  
 
   const mediaType = useMemo(
     () =>
@@ -63,16 +61,10 @@ export const InscriptionImage = ({
     [inscriptionV3.item, prefixOverride, urlPrefix]
   );
 
-  useEffect(() => {
-    console.log({
-      inscriptionV3: inscriptionV3?.item?.contentType,
-      prefixOverride,
-      urlPrefix,
-      mediaType,
-      encoding,
-      base64ImageInscription
-    });
-  }, [inscriptionV3, prefixOverride, urlPrefix, mediaType, encoding, base64ImageInscription]);
+  const isText = useMemo(
+    () => mediaType.startsWith("text/") || mediaType === "application/text",
+    [mediaType]
+  );
 
   return base64ImageInscription ? (
     <Box
@@ -83,21 +75,25 @@ export const InscriptionImage = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        height :"100%",
+        height: "100%",
       }}
     >
       {/* <InscriptionStats root={root} /> */}
 
-      <img
-        style={{
-          height :"100%",
-          borderRadius: 8,
-        }}
-        src={`data:${mediaType};${
-          encoding ?? "base64"
-        },${base64ImageInscription}`}
-      />
-      <Text mt={3}>{(prefixOverride ?? urlPrefix)?.slice(0,15)}</Text>
+      {isText ? (
+        <Text>{asciiImageInscription}</Text>
+      ) : (
+        <img
+          style={{
+            height: "100%",
+            borderRadius: 8,
+          }}
+          src={`data:${mediaType};${
+            encoding ?? "base64"
+          },${base64ImageInscription}`}
+        />
+      )}
+      <Text mt={3}>{(prefixOverride ?? mediaType)?.slice(0, 15)}</Text>
     </Box>
   ) : (
     <></>

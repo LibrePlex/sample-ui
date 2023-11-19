@@ -10,6 +10,7 @@ import { PublicKey } from "@solana/web3.js";
 import { IImageUploadProgressState } from "./useImageUploadProgressState";
 import { OffchainUploader } from "./OffchainUploader";
 import React from "react";
+import { ImageSelector } from "@app/components/shadowdrive/ImageSelector";
 
 export interface IImageSourceState {
   imageBuffer: Buffer | undefined;
@@ -75,12 +76,19 @@ export const ImageSourceSelector = (props: {
     <VStack>
       {props.allowCustom && <SourceSelector {...sourceSelectorState} />}
       {sourceSelectorState.sourceType === SourceType.Custom ? (
-        <CustomImageUploader
-          mint={props.mint}
-          state={props.state}
-          progressState={props.progressState}
-        />
+        <ImageSelector
+          height={"200px"}
+          width={"200px"}
+          currentImageUrl={""}
+          selectedImage={props.state.mediaFile}
+          setSelectedImage={props.state.setMediaFile}
+        ></ImageSelector>
       ) : (
+        // <CustomImageUploader
+        //   mint={props.mint}
+        //   state={props.state}
+        //   progressState={props.progressState}
+        // />
         <OffchainUploader
           mint={props.mint}
           state={props.state}

@@ -29,6 +29,8 @@ import {
 } from "./useImageUploadProgressState";
 import { useRentForDataLength } from "@libreplex/shared-ui";
 import React from "react";
+import { useFileToBase64 } from "@app/components/shadowdrive/useFileToBase64";
+import { buffer } from "stream/consumers";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
@@ -41,7 +43,49 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
 
   const uploaderState = useImageUploaderState();
 
-  const { imageBuffer, imageOverride, dataBytes } = uploaderState;
+  const {
+    imageBuffer: streamImageBuffer,
+    imageOverride,
+    dataBytes: dataBytesStream,
+  } = uploaderState;
+
+  const [bufferFromFile, setBufferFromFile] = useState<Buffer>();
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const _buf = await uploaderState.mediaFile?.arrayBuffer();
+      if (_buf) {
+        active && setBufferFromFile(Buffer.from(_buf));
+      } else {
+        active && setBufferFromFile(undefined);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [uploaderState.mediaFile]);
+
+  const base64FromFile = useFileToBase64(uploaderState.mediaFile);
+
+  const dataBytes = useMemo(
+    () => (bufferFromFile ? [...bufferFromFile] : dataBytesStream),
+    [bufferFromFile, dataBytesStream]
+  );
+
+  const fileTypeFromFile = useMemo(
+    () => uploaderState?.mediaFile?.type,
+    [uploaderState?.mediaFile]
+  );
+
+  useEffect(() => {
+    console.log({ base64FromFile, fileTypeFromFile });
+  }, [base64FromFile, fileTypeFromFile]);
+
+  const imageBuffer = useMemo(
+    () => bufferFromFile ?? streamImageBuffer,
+    [bufferFromFile, streamImageBuffer]
+  );
 
   const sizeOk = useMemo(
     () => imageBuffer?.length === inscription?.item?.size,
@@ -89,7 +133,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       params: {
         mint,
         dataBytes,
-        encodingType: 'base64',
+        encodingType: "base64",
         mediaType: mediaTypeToString(mediaType),
       },
       beforeClick: undefined,
@@ -155,7 +199,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       {/* <Heading pt={2} size="md">
         Inscribing as Update Authority
       </Heading> */}
-
       {legacyInscription?.item.authorityType.updateAuthority && (
         <Text>
           As the update authority on this mint, you can either inscribe the
@@ -196,7 +239,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           )}
         </VStack>
       </HStack>
-      
 
       {inscription && (
         <VStack
@@ -219,7 +261,9 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
             updateStatus.result === StageProgress.Progress && <Spinner />}
         </VStack>
       )}
-      <Text color="white">{uploaderState?.filetype??'unknown filetype'}</Text>
+      <Text color="white">
+        {fileTypeFromFile ?? uploaderState?.filetype ?? "unknown filetype"}
+      </Text>
 
       <VStack>
         <Text>Buffer length: {imageBuffer?.length}</Text>
@@ -235,7 +279,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           />
         )}
       </VStack>
-      
+
       {sizeOk && imageBuffer && (
         <HStack>
           <HiCheckCircle color="lightgreen" size="35px" />
@@ -253,7 +297,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           </Text>
         </HStack>
       )}
-            
+
       {inscription && sizeOk ? (
         <VStack
           className="border-2 rounded-md border-inherit w-full"
@@ -266,14 +310,13 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
           </Heading>
           {updateStatus.stage === Stage.Write &&
             updateStatus.result === StageProgress.Progress && <Spinner />}
-          <Text>Media type {mediaTypeToString(mediaType)}</Text>
           {dataBytes && (
             <WriteToLegacyInscriptionAsUAuthTransactionButton
               params={{
                 mint,
                 dataBytes,
                 encodingType: "base64", // always assume this for now
-                mediaType: uploaderState.filetype,
+                mediaType: fileTypeFromFile ?? uploaderState?.filetype,
               }}
               formatting={{}}
             />
@@ -282,7 +325,6 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
       ) : (
         <></>
       )}
-
     </VStack>
   );
 };

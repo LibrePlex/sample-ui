@@ -55,51 +55,7 @@ const InscriptionsView = () => {
                 pb: 5,
               }}
             >
-              <UnorderedList>
-                {/* <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC FACT #1: The inscription number is forever linked to the
-                    mint of the inscription.
-                  </Text>
-                </ListItem>
-                <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC FACT #2: The inscription content CAN CHANGE until it is
-                    made immutable. There are NO immutable inscriptions YET.
-                  </Text>
-                </ListItem>
-                <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC FACT #3: The update authority can withdraw rent unless
-                    the inscription is immutable. DO NOT IGNORE THIS.
-                  </Text>
-                </ListItem> */}
-
-                {/* <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC Fact #3: As long as Solana lives, your inscription
-                    lives.
-                  </Text>
-                </ListItem>
-                <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC Fact #5: Inscriptions are ranked 1,2,3....
-                  </Text>
-                </ListItem> */}
-                {/* <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC Fact #4: At 2:29am on 16 November 2023, there were 2,497
-                    FOC inscriptions.
-                  </Text>
-                </ListItem> */}
-                {/* <ListItem>
-                  <Text fontSize={"2xl"}>
-                    FOC Fact #5: You can make your inscriptions less blurry by
-                    using PNG / SVG instead of JPEG.
-                  </Text>
-                </ListItem> */}
-              </UnorderedList>
-
+            
               <InscriptionsSummary mt={4} mb={4} />
               <Box
                 mt={6}
