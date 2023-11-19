@@ -1,38 +1,32 @@
 import {
   Center,
+  HStack,
   Heading,
   Image,
   Link,
   SimpleGrid,
   Skeleton,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Tr,
-  HStack,
   VStack,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
+import { useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
 import {
   SolscanLink,
   getInscriptionV3Pda,
-  mediaTypeToString,
   useInscriptionDataForRoot,
   useInscriptionForRoot,
   useOffChainMetadataCache,
 } from "../..";
-import { InscriptionImage } from "./InscriptionImage";
-import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
-import { useValidationHash } from "./useValidationHash";
-import { MutabilityDisplay } from "./MutabilityDisplay";
-import { useInscriptionV2ById } from "../../sdk/query";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { InscriptionV1V2 } from "./InscriptionV1V2";
 import { TensorButton } from "../../components/migration/TensorButton";
+import { InscriptionImage } from "./InscriptionImage";
+import { InscriptionV1V2 } from "./InscriptionV1V2";
+import { MutabilityDisplay } from "./MutabilityDisplay";
+import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
+import { useMediaPrefix } from "./useMediaPrefix";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
@@ -55,11 +49,13 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const urlPrefix = useUrlPrefixForInscription(inscription);
   const base64ImageInscription = useMemo(
     () =>
-      urlPrefix === "application/text" || urlPrefix === 'text/plain'
+      urlPrefix === "application/text" || urlPrefix === "text/plain"
         ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii")
         : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
     [inscriptionData?.item?.buffer, urlPrefix]
   );
+
+  const {mediaType} = useMediaPrefix(mint);
 
   const { publicKey } = useWallet();
   return (
@@ -71,9 +67,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         <Heading size="md">Trading</Heading>
         <TensorButton mint={inscription?.item.root} />
       </HStack>
-      {publicKey?.toBase58()?.startsWith("5LufDW6Mtb") && (
-        <InscriptionV1V2 mint={mint} />
-      )}
+
       <MutabilityDisplay inscription={inscription} />
       <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
         <Center>
@@ -93,7 +87,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
                   <img
                     src="https://img.freepik.com/premium-vector/gallery-simple-icon-vector-image-picture-sign-neumorphism-style-mobile-app-web-ui-vector-eps-10_532800-801.jpg"
                     style={{
-                      height: "100%",
+                      height: "300px",
+                      maxHeight: "300px",
                       width: "100%",
                       borderRadius: "20px",
                     }}
@@ -106,8 +101,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               startColor="#aaa"
               endColor="#aaa"
               style={{
-                minHeight: "200px",
-                maxHeight: "100%",
+                minHeight: "300px",
+                maxHeight: "300px",
                 aspectRatio: "1/1",
                 borderRadius: 8,
               }}
@@ -116,8 +111,10 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
         <VStack>
           {base64ImageInscription ? (
-            urlPrefix === "application/text" || urlPrefix === 'text/plain' ? (
-              <Center sx={{ height: "100%", minHeight: "200px" }}>
+            urlPrefix === "application/text" || urlPrefix === "text/plain" ? (
+              <Center
+                sx={{ height: "100%", minHeight: "300px", maxHeight: "300px" }}
+              >
                 <Text color="white">{base64ImageInscription}</Text>
               </Center>
             ) : (
@@ -144,6 +141,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
 
         <VStack>
+          <Text mt={3}>{(mediaType)?.slice(0, 15)}</Text>
+
           <HStack>
             <Text>View inscription account</Text>
             {inscriptionV3Pda && (
@@ -158,6 +157,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
           </HStack>
         </VStack>
       </SimpleGrid>
+      {publicKey?.toBase58()?.startsWith("5LufDW6Mtb") && (
+        <InscriptionV1V2 mint={mint} />
+      )}
     </VStack>
   );
 };

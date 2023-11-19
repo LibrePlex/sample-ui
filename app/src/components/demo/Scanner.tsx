@@ -1,42 +1,29 @@
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   HStack,
-  Input,
-  Text,
+  Input
 } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useContext, useEffect, useState } from "react";
 
 import {
-  CopyPublicKeyButton,
   MetadataProgramContext,
   MintDisplay,
-  PROGRAM_ID_METADATA,
   SolscanLink,
   useMetadataByMintId,
-  usePublicKeyOrNull,
+  usePublicKeyOrNull
 } from "@libreplex/shared-ui";
 
-import { PublicKey } from "@solana/web3.js";
-import { useRouter } from "next/router";
-import React from "react";
 import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
+import { useRouter } from "next/router";
 
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");
   const mintPublicKey = usePublicKeyOrNull(mintId);
 
   const { connection } = useConnection();
-  const metadata = useMetadataByMintId(mintPublicKey, connection);
-
-  const { setProgramId, program } = useContext(MetadataProgramContext);
-
-  const [programIdOverride, setProgramIdOverride] = useState<string>("");
-
-  const programIdOverridePubkey = usePublicKeyOrNull(programIdOverride);
 
   const router = useRouter();
 
@@ -90,38 +77,7 @@ export const LibreScanner = () => {
         </HStack>
       </FormControl>
 
-      {/* <HStack>
-        <Text>Program ID</Text>{" "}
-        <CopyPublicKeyButton publicKey={program.programId.toBase58()} />
-      </HStack>
-      <HStack>
-        <FormControl>
-          <Input
-            placeholder="Override program id"
-            value={programIdOverride}
-            onChange={(e) => setProgramIdOverride(e.currentTarget.value)}
-          />
-        </FormControl>
-        {programIdOverridePubkey &&
-          !programIdOverridePubkey.equals(program.programId) && (
-            <Button
-              onClick={() => {
-                setProgramId(programIdOverridePubkey);
-              }}
-            >
-              Override
-            </Button>
-          )}
-        {!program.programId?.equals(new PublicKey(PROGRAM_ID_METADATA)) && (
-          <Button
-            onClick={() => {
-              setProgramId(new PublicKey(PROGRAM_ID_METADATA));
-            }}
-          >
-            Default
-          </Button>
-        )}
-      </HStack> */}
+      
       {mintPublicKey && <MintDisplay mint={mintPublicKey} />}
     </Box>
   );

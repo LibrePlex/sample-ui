@@ -236,7 +236,8 @@ export const MintDisplay = ({
           </VStack>{" "}
         </VStack>
       ) : (
-        <Box>Missing LibrePlex metadata - is this a legacy mint?</Box>
+        <></>
+        // <Box>Missing LibrePlex metadata - is this a legacy mint?</Box>
       )}
     </VStack>
   );

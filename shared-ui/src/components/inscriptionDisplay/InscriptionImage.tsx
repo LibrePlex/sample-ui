@@ -8,6 +8,7 @@ import { useInscriptionV3ForRoot } from "../../sdk/query/inscriptions/useInscrip
 import { InscriptionStats } from "./InscriptionStats";
 import { useEncodingForInscription } from "./useEncodingForInscription";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
+import { useMediaPrefix } from "./useMediaPrefix";
 export const InscriptionImage = ({
   root,
   ...rest
@@ -21,50 +22,13 @@ export const InscriptionImage = ({
     inscription: { data: inscriptionV3 },
   } = useInscriptionV3ForRoot(root);
 
-  const urlPrefix = useUrlPrefixForInscription(inscription);
-
-  const encoding = useEncodingForInscription(inscription);
-
-  const { data: inscriptionData } = useInscriptionDataForRoot(root);
-
-  const base64ImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer]
-  );
-
-  const asciiImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii"),
-    [inscriptionData?.item?.buffer]
-  );
-
-  // useEffect(()=>{
-  //   console.log({base64ImageInscription, asciiImageInscription})
-  // },[base64ImageInscription, asciiImageInscription])
-
-  const prefixOverride = useMemo(
-    () =>
-      asciiImageInscription?.startsWith("<svg") ||
-      asciiImageInscription.startsWith("<SVG")
-        ? "image/svg+xml"
-        : undefined,
-    [asciiImageInscription]
-  );
-
-  const mediaType = useMemo(
-    () =>
-      (inscriptionV3?.item?.contentType !== ""
-        ? inscriptionV3?.item?.contentType
-        : undefined) ??
-      prefixOverride ??
-      urlPrefix ??
-      "image/*",
-    [inscriptionV3.item, prefixOverride, urlPrefix]
-  );
-
-  const isText = useMemo(
-    () => mediaType.startsWith("text/") || mediaType === "application/text",
-    [mediaType]
-  );
+  const {
+    base64ImageInscription,
+    asciiImageInscription,
+    isText,
+    encoding,
+    mediaType,
+  } = useMediaPrefix(root);
 
   return base64ImageInscription ? (
     <Box
@@ -93,7 +57,6 @@ export const InscriptionImage = ({
           },${base64ImageInscription}`}
         />
       )}
-      <Text mt={3}>{(prefixOverride ?? mediaType)?.slice(0, 15)}</Text>
     </Box>
   ) : (
     <></>
