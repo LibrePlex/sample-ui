@@ -55,17 +55,6 @@ export const resizeLegacyInscription = async (
   // have to check the owner here - unfortunate as it's expensive
   const { mint, targetSize, currentSize } = params;
 
-  const tokenAccounts = await connection.getTokenLargestAccounts(mint);
-
-  let owner: PublicKey;
-  let tokenAccount: PublicKey;
-
-  for (const ta of tokenAccounts.value) {
-    if (BigInt(ta.amount) > BigInt(0)) {
-      tokenAccount = ta.address;
-    }
-  }
-
   const inscription = getInscriptionPda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);
@@ -75,6 +64,9 @@ export const resizeLegacyInscription = async (
   const instructions: TransactionInstruction[] = [];
 
   const inscriptionV2 = getInscriptionV3Pda(mint)[0];
+
+
+  console.log({legacyInscription: legacyInscription.toBase58()});
 
   while (Math.abs(sizeRemaining) > 0) {
     console.log({ change:

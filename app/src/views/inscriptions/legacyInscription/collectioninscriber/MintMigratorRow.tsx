@@ -4,10 +4,11 @@ import {
   ScannerLink,
   SolscanLink,
   TensorButton,
+  useInscriptionForRoot,
   useLegacyMetadataByMintId,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { InscriptionImage } from "shared-ui/src/components/inscriptionDisplay/InscriptionImage";
 import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
 import React, { useMemo } from "react";
@@ -15,13 +16,25 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
   const { publicKey } = useWallet();
-  const { data} = useOffChainMetadataCache(mint);
+  const { data } = useOffChainMetadataCache(mint);
   const { connection } = useConnection();
-  const {data: legacyMetadata, isFetching} = useLegacyMetadataByMintId(mint, connection);
+  const { data: legacyMetadata, isFetching } = useLegacyMetadataByMintId(
+    mint,
+    connection
+  );
+
+  const { inscription } = useInscriptionForRoot(mint);
 
   const haveUauth = useMemo(
-    () => legacyMetadata?.item.updateAuthority && publicKey?.equals(legacyMetadata?.item.updateAuthority),
+    () =>
+      legacyMetadata?.item.updateAuthority &&
+      publicKey?.equals(legacyMetadata?.item.updateAuthority),
     [legacyMetadata, publicKey]
+  );
+
+  const isImmutable = useMemo(
+    () => inscription?.data?.item?.authority.equals(SystemProgram.programId),
+    [inscription]
   );
 
   return (
@@ -64,9 +77,13 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
         </VStack>
       </Td>
       <Td>
-        {isFetching && <Spinner/>}
+        {isFetching && <Spinner />}
         {haveUauth ? (
-          <CreateNewLegacyInscriptionModal mint={mint} />
+          isImmutable ? (
+            <Text>Immutable inscription</Text>
+          ) : (
+            <CreateNewLegacyInscriptionModal mint={mint} />
+          )
         ) : (
           <Text>No update auth</Text>
         )}
