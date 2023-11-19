@@ -23,12 +23,12 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-import {HStack, Text} from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 
 import { notify } from "@libreplex/shared-ui";
-import React, { useMemo } from "react";
-import { getRentFromDataLength } from "../../../components/useRentForDataLength";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import React, { useEffect, useMemo } from "react";
+import { getRentFromDataLength } from "../../../components/useRentForDataLength";
 
 export interface IRemoveFromGroup {
   mint: PublicKey;
@@ -117,13 +117,22 @@ export const ClaimExcessRentTransactionButton = (
   );
   const { inscription } = useInscriptionForRoot(props.params.mint);
 
-  const targetLamports = useMemo(
-    () =>
-      inscription.data
-        ? getRentFromDataLength(inscription.data.item.size)
-        : 0,
-    [inscriptionData, inscription]
+  const minimumBalanceForRent = useMemo(
+    () => inscription?.data?.item.size ? getRentFromDataLength(inscription.data.item.size) * 1_000_000_000 : undefined,
+    [inscription?.data?.item.size]
   );
+
+  const targetLamports = useMemo(
+    () => (inscription.data ? minimumBalanceForRent : 0),
+    [inscription]
+  );
+
+  useEffect(() => {
+    console.log({
+      inscriptionSize: inscription?.data?.item.size,
+      minimumBalanceForRent,
+    });
+  }, [inscription, minimumBalanceForRent]);
 
   const { connection } = useConnection();
   const metadata = useLegacyMetadataByMintId(props.params.mint, connection);
@@ -148,9 +157,9 @@ export const ClaimExcessRentTransactionButton = (
   );
   return amIUauth ? (
     <>
-      {solDiff > 0 ? (
+      {solDiff > 0.000001 ? (
         <GenericTransactionButton<IRemoveFromGroup>
-          text={`Claim Excess Rent (${solDiff.toFixed(2)})`}
+          text={`Claim Excess Rent (${solDiff.toFixed(3)})`}
           transactionGenerator={claimExcessRentTransactionButton}
           onError={(msg) => notify({ message: msg })}
           {...props}
@@ -163,7 +172,7 @@ export const ClaimExcessRentTransactionButton = (
     <>
       {metadata.data && (
         <HStack>
-           <Text>Update auth</Text>
+          <Text>Update auth</Text>
           <CopyPublicKeyButton
             publicKey={metadata.data.item.updateAuthority.toBase58()}
           />
