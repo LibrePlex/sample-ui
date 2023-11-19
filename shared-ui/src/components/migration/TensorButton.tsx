@@ -20,11 +20,12 @@ export const TensorButton = ({ mint }: { mint: PublicKey }) => {
     <>
       <IconButton
         aria-label={"tensorhq"}
+        background={'black'}
         onClick={() => {
           setOpen(true);
         }}
       >
-        <img src="/tensorhq.png" style={{ height: "28px" }} />
+        <img src="/tensorhq-white.png" style={{ height: "28px" }} />
       </IconButton>
 
       <Modal

@@ -23,12 +23,13 @@ export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
     <VStack align={"start"} pb={4}>
       <IconButton
         aria-label={"tensorhq"}
+        background={'black'}
         mb={2}
         onClick={() => {
           window.open(`https://www.tensor.trade/item/${mint.toBase58()}`);
         }}
       >
-        <img src="/tensorhq.png" style={{ height: "28px" }} />
+        <img src="/tensorhq-white.png" style={{ height: "28px" }} />
       </IconButton>
       <Box>
         <Text pb={3}>

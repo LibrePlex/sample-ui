@@ -7,7 +7,7 @@ export type LibreplexLegacy = {
       "accounts": [
         {
           "name": "authority",
-          "isMut": true,
+          "isMut": false,
           "isSigner": true
         },
         {
@@ -27,7 +27,7 @@ export type LibreplexLegacy = {
         },
         {
           "name": "inscription",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -37,13 +37,11 @@ export type LibreplexLegacy = {
         },
         {
           "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
           "isMut": false,
-          "isSigner": false
+          "isSigner": false,
+          "docs": [
+            "is passed on to inscriptions program as the authority of the INSCRIPTION"
+          ]
         },
         {
           "name": "systemProgram",
@@ -202,7 +200,7 @@ export type LibreplexLegacy = {
       "accounts": [
         {
           "name": "authority",
-          "isMut": true,
+          "isMut": false,
           "isSigner": true
         },
         {
@@ -656,7 +654,7 @@ export const IDL: LibreplexLegacy = {
       "accounts": [
         {
           "name": "authority",
-          "isMut": true,
+          "isMut": false,
           "isSigner": true
         },
         {
@@ -676,7 +674,7 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "inscription",
-          "isMut": true,
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -686,13 +684,11 @@ export const IDL: LibreplexLegacy = {
         },
         {
           "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "tokenProgram",
           "isMut": false,
-          "isSigner": false
+          "isSigner": false,
+          "docs": [
+            "is passed on to inscriptions program as the authority of the INSCRIPTION"
+          ]
         },
         {
           "name": "systemProgram",
@@ -851,7 +847,7 @@ export const IDL: LibreplexLegacy = {
       "accounts": [
         {
           "name": "authority",
-          "isMut": true,
+          "isMut": false,
           "isSigner": true
         },
         {

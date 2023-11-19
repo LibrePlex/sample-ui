@@ -35,6 +35,7 @@ import { InscriptionV1V2 } from "./InscriptionV1V2";
 import { MutabilityDisplay } from "./MutabilityDisplay";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useMediaPrefix } from "./useMediaPrefix";
+import { ClaimExcessRentTransactionButton } from "./buttons/ClaimExcessRentTransactionButtonAsUauth";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
@@ -61,18 +62,17 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
   const { publicKey } = useWallet();
 
-
   return (
-    <VStack columnGap={2}>
-      <Heading size="lg">
-        Order #{Number(inscription?.item.order ?? 0).toLocaleString()}
-      </Heading>
+    <VStack columnGap={2} className="relative">
       <HStack>
-        <Heading size="md">Trading</Heading>
-        <TensorButton mint={inscription?.item.root} />
+        <Heading size="lg">
+          Order #{Number(inscription?.item.order ?? 0).toLocaleString()}
+        </Heading>
       </HStack>
-
+      <ClaimExcessRentTransactionButton params={{ mint }} formatting={{}} />
+      
       <MutabilityDisplay inscription={inscription} />
+      
       <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
         <VStack>
           {offchainData?.images.square ? (
@@ -131,7 +131,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               />
             </>
           )}
-          <HStack className="absolute top-8 p-2" >
+          <HStack className="absolute top-8 p-2">
             <Popover size="md">
               <PopoverTrigger>
                 <Button colorScheme="teal" variant="solid">
@@ -140,7 +140,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               </PopoverTrigger>
               <PopoverContent>
                 <PopoverArrow />
-                <Box p={3} sx={{maxHeight :"50vh", overflow: "auto"}}>{base64ImageInscription}</Box>
+                <Box p={3} sx={{ maxHeight: "50vh", overflow: "auto" }}>
+                  {base64ImageInscription}
+                </Box>
               </PopoverContent>
             </Popover>
             <Popover size="md">
@@ -151,7 +153,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               </PopoverTrigger>
               <PopoverContent>
                 <PopoverArrow />
-                <Box p={3} sx={{maxHeight :"50vh", overflow: "auto"}}>{asciiImageInscription}</Box>
+                <Box p={3} sx={{ maxHeight: "50vh", overflow: "auto" }}>
+                  {asciiImageInscription}
+                </Box>
               </PopoverContent>
             </Popover>
           </HStack>
@@ -179,6 +183,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
           </HStack>
         </VStack>
       </SimpleGrid>
+
       {publicKey?.toBase58()?.startsWith("5LufDW6Mtb") && (
         <InscriptionV1V2 mint={mint} />
       )}

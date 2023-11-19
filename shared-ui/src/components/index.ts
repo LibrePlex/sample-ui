@@ -23,6 +23,7 @@ export { GroupSelector } from "./GroupSelector";
 export {useOffchainImageAsBuffer} from "./inscriptionDisplay/useOffchainImageAsBuffer"
 export {useFiletypeFromStream}  from "./inscriptionDisplay/useFileTypeFromStream"
 export {InscriptionStats} from "./inscriptionDisplay/InscriptionStats"
+export {InscriptionImage} from "./inscriptionDisplay/InscriptionImage"
 
 export {useMediaType, mediaTypeToString} from "./inscriptionDisplay/useMediaType"
 export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";

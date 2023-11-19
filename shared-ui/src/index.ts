@@ -127,7 +127,8 @@ export {
   useRentForDataLength,
   useOffchainImageAsBuffer,
   useFiletypeFromStream,
-  TensorButton
+  TensorButton,
+  InscriptionImage
 } from "./components";
 
 export {

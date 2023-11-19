@@ -12,6 +12,7 @@ import {
   MetadataProgramContext,
   MintDisplay,
   SolscanLink,
+  TensorButton,
   useMetadataByMintId,
   usePublicKeyOrNull
 } from "@libreplex/shared-ui";
@@ -22,8 +23,6 @@ import { useRouter } from "next/router";
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");
   const mintPublicKey = usePublicKeyOrNull(mintId);
-
-  const { connection } = useConnection();
 
   const router = useRouter();
 
@@ -74,6 +73,7 @@ export const LibreScanner = () => {
             onChange={(e) => setMintId(e.currentTarget.value)}
           />
           <SolscanLink address={mintId} cluster={cluster} />
+          <TensorButton mint={mintPublicKey} />
         </HStack>
       </FormControl>
 

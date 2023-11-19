@@ -9,7 +9,7 @@ import {
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { InscriptionImage } from "shared-ui/src/components/inscriptionDisplay/InscriptionImage";
+import { InscriptionImage } from "@libreplex/shared-ui";
 import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
 import React, { useMemo } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -27,7 +27,7 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
 
   const haveUauth = useMemo(
     () =>
-      legacyMetadata?.item.updateAuthority &&
+      legacyMetadata?.item?.updateAuthority &&
       publicKey?.equals(legacyMetadata?.item.updateAuthority),
     [legacyMetadata, publicKey]
   );
