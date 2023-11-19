@@ -93,7 +93,6 @@ export const MintCardLegacy = ({
           <Box sx={{ height: "200px", position: "relative" }}>
             <IconButton
               style={{ position: "absolute", bottom: 8, right: 12, zIndex: 10 }}
-              size="xs"
               p={0}
               onClick={() =>
                 window.open(`/scanner?mintId=${mintId.toBase58()}`)
