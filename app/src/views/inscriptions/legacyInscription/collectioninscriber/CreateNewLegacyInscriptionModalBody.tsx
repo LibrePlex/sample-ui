@@ -1,34 +1,17 @@
 import {
-  Box,
-  Button,
-  Input,
-  Modal,
   ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  VStack,
-  Text,
+  Text
 } from "@chakra-ui/react";
-import { RawAccount } from "@solana/spl-token";
 
-import React, { useEffect, useMemo, useState } from "react";
 import {
-  Collection,
-  GroupSelector,
-  IRpcObject,
-  Metadata,
-  useLegacyMetadataByMintId,
-  useMultiSigById
+  useLegacyMetadataByMintId
 } from "@libreplex/shared-ui";
-import { PublicKey } from "@solana/web3.js";
-import { connect } from "http2";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { InscribeAsUauthPanel } from "./InscribeAsUauthPanel";
-import { InscribeAsHolderPanel } from "./InscribeAsHolderPanel";
+import { PublicKey } from "@solana/web3.js";
 import { useOwnerOfMint } from "app/src/hooks/useOwnerOfMint";
-import { useSquadsByUauth } from "./useSquadsByUauth";
+import { useMemo } from "react";
+import { InscribeAsHolderPanel } from "./InscribeAsHolderPanel";
+import { InscribeAsUauthPanel } from "./InscribeAsUauthPanel";
 
 enum InscribeAs {
   Uauth,
@@ -45,16 +28,20 @@ export const CreateNewLegacyInscriptionModalBody = ({
   const metadata = useLegacyMetadataByMintId(mint, connection);
 
   const isUauth = useMemo(
-    () => publicKey && metadata?.item ? metadata?.item?.updateAuthority?.equals(publicKey) : false,
+    () =>
+      publicKey && metadata?.data?.item
+        ? metadata?.data.item.updateAuthority?.equals(publicKey)
+        : false,
     [metadata, publicKey]
   );
-
-  
 
   const { data: ownerTokenAccount } = useOwnerOfMint(mint);
 
   const isHolder = useMemo(
-    () => ownerTokenAccount && publicKey ? ownerTokenAccount?.tokenAccount.item.owner.equals(publicKey) : false,
+    () =>
+      ownerTokenAccount && publicKey
+        ? ownerTokenAccount?.tokenAccount.item.owner.equals(publicKey)
+        : false,
     [ownerTokenAccount, publicKey]
   );
 

@@ -1,4 +1,3 @@
-import { InscribeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/InscribeLegacyMetadataAsHolderTransactionButton";
 import { Heading, Text, VStack } from "@chakra-ui/react";
 import {
   MintWithTokenAccount,
@@ -8,12 +7,6 @@ import {
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { useEffect, useMemo, useState } from "react";
-import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
-import { HiCheckCircle, HiXCircle } from "react-icons/hi";
-import { mediaTypeToString } from "@libreplex/shared-ui";
-import { WriteToLegacyInscriptionAsUAuthTransactionButton } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsUAuthTransactionButton";
-import { WriteToLegacyInscriptionAsHolderTransactionButton } from "@app/components/legacyInscriptions/WriteToLegacyInscriptionAsHolderTransactionButton";
-import { ResizeLegacyMetadataAsHolderTransactionButton } from "@app/components/legacyInscriptions/ResizeLegacyInscriptionAsHolderTransactionButton";
 import { useLegacyInscriptionForMint } from "../useLegacyInscriptionForMint";
 
 export const InscribeAsHolderPanel = ({
@@ -66,7 +59,7 @@ export const InscribeAsHolderPanel = ({
           Please contact them to update the inscription
         </Text>
       )}
-{/* 
+      {/* 
       {legacyInscription?.item.authorityType.holder && (
         <VStack>
           <img
