@@ -140,7 +140,7 @@ export const ClaimExcessRentTransactionButton = (
   const amIUauth = useMemo(
     () =>
       publicKey &&
-      metadata.data.item &&
+      metadata?.data?.item &&
       publicKey?.equals(metadata.data.item.updateAuthority),
     [publicKey, metadata]
   );
