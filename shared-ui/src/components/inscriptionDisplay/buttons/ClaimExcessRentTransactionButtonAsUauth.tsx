@@ -127,7 +127,7 @@ export const ClaimExcessRentTransactionButton = (
   const metadata = useLegacyMetadataByMintId(props.params.mint, connection);
 
   const lamportDiff = useMemo(() => {
-    return inscriptionData.item && targetLamports
+    return inscriptionData?.item && targetLamports
       ? Number(inscriptionData.item.balance) -
           Math.max(targetLamports, 70_490_000)
       : 0;
