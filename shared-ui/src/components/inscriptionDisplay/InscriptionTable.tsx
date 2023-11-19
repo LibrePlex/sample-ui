@@ -8,9 +8,17 @@ import {
   Skeleton,
   Text,
   VStack,
+  Popover,
+  PopoverTrigger,
+  Button,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
@@ -47,17 +55,13 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const { data: offchainData } = useOffChainMetadataCache(mint);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
-  const base64ImageInscription = useMemo(
-    () =>
-      urlPrefix === "application/text" || urlPrefix === "text/plain"
-        ? Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii")
-        : Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer, urlPrefix]
-  );
 
-  const {mediaType} = useMediaPrefix(mint);
+  const { mediaType, base64ImageInscription, asciiImageInscription } =
+    useMediaPrefix(mint);
 
   const { publicKey } = useWallet();
+
+
   return (
     <VStack columnGap={2}>
       <Heading size="lg">
@@ -109,13 +113,13 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
             />
           )}
         </VStack>
-        <VStack>
+        <VStack className="relative">
           {base64ImageInscription ? (
             urlPrefix === "application/text" || urlPrefix === "text/plain" ? (
               <Center
                 sx={{ height: "100%", minHeight: "300px", maxHeight: "300px" }}
               >
-                <Text color="white">{base64ImageInscription}</Text>
+                <Text color="white">{asciiImageInscription}</Text>
               </Center>
             ) : (
               <InscriptionImage root={mint} />
@@ -133,6 +137,30 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
               />
             </>
           )}
+          <HStack className="absolute top-8 p-2" >
+            <Popover size="md">
+              <PopoverTrigger>
+                <Button colorScheme="teal" variant="solid">
+                  Base64
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <Box p={3} sx={{maxHeight :"50vh", overflow: "auto"}}>{base64ImageInscription}</Box>
+              </PopoverContent>
+            </Popover>
+            <Popover size="md">
+              <PopoverTrigger>
+                <Button colorScheme="teal" variant="solid">
+                  Ascii
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <Box p={3} sx={{maxHeight :"50vh", overflow: "auto"}}>{asciiImageInscription}</Box>
+              </PopoverContent>
+            </Popover>
+          </HStack>
         </VStack>
         <VStack>
           <Link target="_blank" href={offchainData?.images.url}>
@@ -141,7 +169,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </VStack>
 
         <VStack>
-          <Text mt={3}>{(mediaType)?.slice(0, 15)}</Text>
+          <Text mt={3}>{mediaType?.slice(0, 15)}</Text>
 
           <HStack>
             <Text>View inscription account</Text>

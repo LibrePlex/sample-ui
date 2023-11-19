@@ -1,13 +1,9 @@
 import { Box, BoxProps, Text } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext } from "react";
 import { ClusterContext } from "../../contexts/NetworkConfigurationProvider";
-import { useInscriptionDataForRoot } from "../../sdk/query/inscriptions/useInscriptionDataForRoot";
 import { useInscriptionForRoot } from "../../sdk/query/inscriptions/useInscriptionForRoot";
 import { useInscriptionV3ForRoot } from "../../sdk/query/inscriptions/useInscriptionV2ForRoot";
-import { InscriptionStats } from "./InscriptionStats";
-import { useEncodingForInscription } from "./useEncodingForInscription";
-import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useMediaPrefix } from "./useMediaPrefix";
 export const InscriptionImage = ({
   root,
