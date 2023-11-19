@@ -83,14 +83,14 @@ export const InscriptionImage = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        height :"100%",
       }}
     >
       {/* <InscriptionStats root={root} /> */}
 
       <img
         style={{
-          minWidth: "100%",
-          maxWidth: "100%",
+          height :"100%",
           borderRadius: 8,
         }}
         src={`data:${mediaType};${
