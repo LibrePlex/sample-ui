@@ -31,7 +31,7 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
       </Td>
       <Td>{data?.name}</Td>
       <Td>
-        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 relative">
+        <div className="rounded-md overflow-hidden min-h-24 h-24 max-h-24 max-w-24 w-24 relative">
           {/* <div className="object-cover"> */}
           <img
             src={data?.images.square ?? ""}
@@ -46,7 +46,7 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
       </Td>
 
       <Td>
-        <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 h-full">
+        <div className="rounded-md overflow-hidden max-h-24 min-h-24 max-w-24 w-24">
           <InscriptionImage
             root={mint}
             // stats={false}
