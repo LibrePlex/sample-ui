@@ -97,7 +97,7 @@ export const InscriptionImage = ({
           encoding ?? "base64"
         },${base64ImageInscription}`}
       />
-      <Text mt={3}>{prefixOverride ?? urlPrefix}</Text>
+      <Text mt={3}>{(prefixOverride ?? urlPrefix)?.slice(0,15)}</Text>
     </Box>
   ) : (
     <></>
