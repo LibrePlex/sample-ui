@@ -6,7 +6,9 @@ import {
 } from "@libreplex/shared-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Box, Center, IconButton, VStack, Text, Spinner } from "@chakra-ui/react";
-import { MigrateToV3TransactionButton } from "@app/views/inscriptions/v3migration/MigrateToV3TransactionButton";
+import React from "react";
+import { MigrateToV3TransactionButton } from "./MigrateToV3TransactionButton";
+
 
 export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
   const { inscription: inscriptionV3 } = useInscriptionV3ForRoot(mint, true);

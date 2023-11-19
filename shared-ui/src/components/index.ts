@@ -37,3 +37,5 @@ export {useRentForDataLength} from "./useRentForDataLength"
 export { MintDisplay } from "./MintDisplay";
 
 export { ShareIcon } from "./icons";
+
+export {TensorButton} from "./migration/TensorButton"

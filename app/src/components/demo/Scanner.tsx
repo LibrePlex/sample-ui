@@ -90,7 +90,7 @@ export const LibreScanner = () => {
         </HStack>
       </FormControl>
 
-      <HStack>
+      {/* <HStack>
         <Text>Program ID</Text>{" "}
         <CopyPublicKeyButton publicKey={program.programId.toBase58()} />
       </HStack>
@@ -121,7 +121,7 @@ export const LibreScanner = () => {
             Default
           </Button>
         )}
-      </HStack>
+      </HStack> */}
       {mintPublicKey && <MintDisplay mint={mintPublicKey} />}
     </Box>
   );

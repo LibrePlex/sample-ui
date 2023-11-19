@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import {
   AssetDisplay,
+  TensorButton,
   useInscriptionForRoot,
   useLegacyMetadataByMintId,
   useMetadataByMintId,
@@ -22,15 +23,6 @@ import { ReactNode, useMemo } from "react";
 import { HiMagnifyingGlassCircle } from "react-icons/hi2";
 import { Immutability } from "../immutability/Immutability";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { TensorButton } from "./migration/TensorButton";
-const textMotion = {
-  default: {
-    color: "#ffffff",
-  },
-  hover: {
-    color: "#9448FF",
-  },
-};
 
 export enum InscriptionFilter {
   With,
@@ -139,7 +131,7 @@ export const MintCardLegacy = ({
               size="md"
               noOfLines={1}
             >
-              <Center>{itemName ?? "-"} </Center>
+              <Center><Text className="whitespace-nowrap text-ellipsis">{itemName ?? "-"} </Text></Center>
             </Heading>
 
             {children}

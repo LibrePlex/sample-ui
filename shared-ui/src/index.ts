@@ -1,6 +1,3 @@
-import { useInscriptionV3ForRoot } from 'shared-ui/src/sdk/query/inscriptions/useInscriptionV2ForRoot';
-import { useRentForDataLength } from './components/useRentForDataLength';
-import { getLegacyInscriptionPda } from '@libreplex/shared-ui/src/pdas/getLegacyInscriptionPda';
 
 export {
   ContextProvider,
@@ -69,7 +66,8 @@ export {
   SquadsProgramContext,
   SquadsProgramProvider,
   useMultiSigById,
-  useInscriptionV3ForRoot
+  useInscriptionV3ForRoot,
+  
 } from "./sdk";
 export type {
   AttributeType,
@@ -128,7 +126,8 @@ export {
   InscriptionStats,
   useRentForDataLength,
   useOffchainImageAsBuffer,
-  useFiletypeFromStream
+  useFiletypeFromStream,
+  TensorButton
 } from "./components";
 
 export {

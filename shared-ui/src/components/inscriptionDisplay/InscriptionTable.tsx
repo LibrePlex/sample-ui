@@ -32,6 +32,7 @@ import { MutabilityDisplay } from "./MutabilityDisplay";
 import { useInscriptionV2ById } from "../../sdk/query";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { InscriptionV1V2 } from "./InscriptionV1V2";
+import { TensorButton } from "../../components/migration/TensorButton";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
@@ -47,8 +48,8 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     refetch: refreshInscriptionData,
   } = useInscriptionDataForRoot(mint);
 
-  const inscriptionV3Pda = useMemo(()=>getInscriptionV3Pda(mint)[0],[mint])
-  
+  const inscriptionV3Pda = useMemo(() => getInscriptionV3Pda(mint)[0], [mint]);
+
   const { data: offchainData } = useOffChainMetadataCache(mint);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
@@ -60,14 +61,16 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
     [inscriptionData?.item?.buffer, urlPrefix]
   );
 
-  
-  
   const { publicKey } = useWallet();
   return (
     <VStack columnGap={2}>
       <Heading size="lg">
         Order #{Number(inscription?.item.order ?? 0).toLocaleString()}
       </Heading>
+      <HStack>
+        <Heading size="md">Trading</Heading>
+        <TensorButton mint={inscription?.item.root} />
+      </HStack>
       {publicKey?.toBase58()?.startsWith("5LufDW6Mtb") && (
         <InscriptionV1V2 mint={mint} />
       )}
