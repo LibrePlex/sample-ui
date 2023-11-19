@@ -29,6 +29,7 @@ export const AssetDisplay = ({
               borderRadius: "20px",
               aspectRatio: "1/1",
               width: "100%",
+              objectFit: 'cover'
             }}
             src={asset.image.url}
             fallback={
