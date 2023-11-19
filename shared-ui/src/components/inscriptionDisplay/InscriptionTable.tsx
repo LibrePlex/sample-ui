@@ -74,12 +74,6 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
       <MutabilityDisplay inscription={inscription} />
       <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
-        <Center>
-          <Heading size="md">Off-chain Image</Heading>
-        </Center>
-        <Center>
-          <Heading size="md">FOC Inscription</Heading>
-        </Center>
         <VStack>
           {offchainData?.images.square ? (
             <Image
