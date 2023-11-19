@@ -50,7 +50,7 @@ export const MintCardLegacy = ({
   } = useInscriptionForRoot(mintId);
 
   const { connection } = useConnection();
-  const metadata = useLegacyMetadataByMintId(mintId, connection);
+  const {data: metadata} = useLegacyMetadataByMintId(mintId, connection);
 
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
   const itemName = useMemo(

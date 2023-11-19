@@ -21,7 +21,7 @@ export const TokenAccountDisplay = ({
   tokenAccount: IRpcObject<RawAccount>;
 }) => {
   const { connection } = useConnection();
-  const legacyMetadata = useLegacyMetadataByMintId(
+  const {data: legacyMetadata} = useLegacyMetadataByMintId(
     tokenAccount.item.mint,
     connection
   );

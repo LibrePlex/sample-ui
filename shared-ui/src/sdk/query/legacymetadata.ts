@@ -97,7 +97,7 @@ export const useLegacyMetadataByMintId = (
     }
   }, [metadataKey, program, q.data?.item]);
 
-  return decoded;
+  return {...q, data: decoded};
 
   // return useQuery<IRpcObject<Collection>[]>(collectionKeys, fetcher);
 };

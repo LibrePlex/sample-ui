@@ -1,16 +1,15 @@
-import { Box, BoxProps, HStack, Heading, VStack } from "@chakra-ui/react";
+import { Box, BoxProps, Heading, VStack } from "@chakra-ui/react";
+import {
+  AssetDisplay,
+  MetadataProgramContext,
+  useMetadataByMintId
+} from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
-import { useRouter } from "next/router";
-import React, { ReactNode, useCallback, useContext } from "react";
-import {
-  MetadataProgramContext,
-  ScannerLink,
-  useMetadataByMintId,
-} from "@libreplex/shared-ui";
-import { AssetDisplay } from "@libreplex/shared-ui";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactNode, useContext } from "react";
 
 const textMotion = {
   default: {

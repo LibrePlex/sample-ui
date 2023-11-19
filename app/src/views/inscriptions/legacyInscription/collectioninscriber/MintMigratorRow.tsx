@@ -1,17 +1,28 @@
-import { Box, Td, Tr, VStack } from "@chakra-ui/react";
+import { Box, Td, Tr, VStack, Text, Spinner } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
   ScannerLink,
   SolscanLink,
+  TensorButton,
+  useLegacyMetadataByMintId,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { InscriptionImage } from "shared-ui/src/components/inscriptionDisplay/InscriptionImage";
 import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
-import React from "react";
+import React, { useMemo } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
-  const { data } = useOffChainMetadataCache(mint);
+  const { publicKey } = useWallet();
+  const { data} = useOffChainMetadataCache(mint);
+  const { connection } = useConnection();
+  const {data: legacyMetadata, isFetching} = useLegacyMetadataByMintId(mint, connection);
+
+  const haveUauth = useMemo(
+    () => legacyMetadata?.item.updateAuthority && publicKey?.equals(legacyMetadata?.item.updateAuthority),
+    [legacyMetadata, publicKey]
+  );
 
   return (
     <Tr>
@@ -36,8 +47,9 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
 
       <Td>
         <div className="rounded-md overflow-hidden max-h-24 max-w-24 w-24 h-full">
-          <InscriptionImage root={mint} 
-          // stats={false}
+          <InscriptionImage
+            root={mint}
+            // stats={false}
           />
         </div>
       </Td>
@@ -47,7 +59,17 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
         </VStack>
       </Td>
       <Td>
-        <CreateNewLegacyInscriptionModal mint={mint} />
+        <VStack>
+          <TensorButton mint={mint} />
+        </VStack>
+      </Td>
+      <Td>
+        {isFetching && <Spinner/>}
+        {haveUauth ? (
+          <CreateNewLegacyInscriptionModal mint={mint} />
+        ) : (
+          <Text>No update auth</Text>
+        )}
       </Td>
     </Tr>
   );

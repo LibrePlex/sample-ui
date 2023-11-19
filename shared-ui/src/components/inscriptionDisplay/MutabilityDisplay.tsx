@@ -34,7 +34,7 @@ export const MutabilityDisplay = ({
 
   const { connection } = useConnection();
 
-  const metadata = useLegacyMetadataByMintId(
+  const { data: metadata } = useLegacyMetadataByMintId(
     inscription?.item.root,
     connection
   );
@@ -106,9 +106,9 @@ export const MutabilityDisplay = ({
       )}
       {amIUpdateAuth && isMutable && (
         <VStack>
-          <Text style={{ maxWidth: "400px" }} textAlign='center' color='#f66'>
-            After making the inscription immutable, you WILL NOT be able to reclaim any rent.
-            Choose wisely!
+          <Text style={{ maxWidth: "400px" }} textAlign="center" color="#f66">
+            After making the inscription immutable, you WILL NOT be able to
+            reclaim any rent. Choose wisely!
           </Text>
 
           <MakeLegacyInscriptionImmutableTransactionButton

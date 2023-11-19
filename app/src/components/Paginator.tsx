@@ -10,21 +10,20 @@ import {
 import { RiContractLeftLine } from "react-icons/ri";
 import { RiContractRightLine } from "react-icons/ri";
 
-export const usePaginator = <T extends unknown>(items: T[]) => {
-  const ITEMS_PER_PAGE = 25;
-
+export const usePaginator = <T extends unknown>(items: T[], itemsPerPage: number = 25) => {
+  
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const maxPages = useMemo(
-    () => Math.ceil(items.length / ITEMS_PER_PAGE),
+    () => Math.ceil(items.length / itemsPerPage),
     [items.length]
   );
 
   const currentPageItems = useMemo(
     () =>
       items.slice(
-        currentPage * ITEMS_PER_PAGE,
-        (currentPage + 1) * ITEMS_PER_PAGE
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
       ),
     [items, currentPage]
   );

@@ -1,30 +1,19 @@
-
-import {
-  Box,
-  Button,
-  Heading,
-  ListItem,
-  Text,
-  UnorderedList,
-} from "@chakra-ui/react";
-import {
-  MintWithTokenAccount,
-  useInscriptionForRoot,
-} from "@libreplex/shared-ui";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { InscriptionsSummary } from "./InscriptionsSummary";
-import { ViewLegacyInscription } from "./legacyInscription/ViewLegacyInscription";
-import { LegacyCollectionInscriber } from "./legacyInscription/collectioninscriber/LegacyCollectionInscriber";
+import {
+  CustomMintsInscriber
+} from "./legacyInscription/collectioninscriber/CustomMintsInscriber";
+import { MyMintsInscriber } from "./legacyInscription/collectioninscriber/MyMintsInscriber";
 import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
 
 enum View {
   InscriptionGallery,
   Inscriber,
+  CustomMints,
 }
 
-
 const InscriptionsView = () => {
-
   const [view, setView] = useState<View>(View.InscriptionGallery);
 
   return (
@@ -55,7 +44,6 @@ const InscriptionsView = () => {
                 pb: 5,
               }}
             >
-            
               <InscriptionsSummary mt={4} mb={4} />
               <Box
                 mt={6}
@@ -64,16 +52,6 @@ const InscriptionsView = () => {
                 }}
                 gap={1}
               >
-                <Button
-                  colorScheme={view === View.Inscriber ? "teal" : "white"}
-                  variant={view === View.Inscriber ? "solid" : "outline"}
-                  onClick={() => {
-                    setView(View.Inscriber);
-                  }}
-                >
-                  Inscribe Yours
-                </Button>
-                
                 <Button
                   colorScheme={
                     view === View.InscriptionGallery ? "teal" : "white"
@@ -87,10 +65,28 @@ const InscriptionsView = () => {
                 >
                   Browse Inscriptions
                 </Button>
-                {/* <Button>Mint new</Button> */}
+                <Button
+                  colorScheme={view === View.Inscriber ? "teal" : "white"}
+                  variant={view === View.Inscriber ? "solid" : "outline"}
+                  onClick={() => {
+                    setView(View.Inscriber);
+                  }}
+                >
+                  View your wallet
+                </Button>
+                <Button
+                  colorScheme={view === View.CustomMints ? "teal" : "white"}
+                  variant={view === View.CustomMints ? "solid" : "outline"}
+                  onClick={() => {
+                    setView(View.CustomMints);
+                  }}
+                >
+                  View custom inscriptions
+                </Button>
               </Box>
               {view === View.InscriptionGallery && <InscriptionGallery />}
-              {view === View.Inscriber && <LegacyCollectionInscriber />}
+              {view === View.Inscriber && <MyMintsInscriber />}
+              {view === View.CustomMints && <CustomMintsInscriber />}
             </Box>
           </Box>
         </Box>

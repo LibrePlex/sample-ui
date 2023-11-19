@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  HStack,
   Table,
   Tbody,
   Td,
@@ -25,14 +24,13 @@ import { PublicKey } from "@solana/web3.js";
 import { useCallback, useMemo, useState } from "react";
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
 import { MintMigratorRow } from "./MintMigratorRow";
-import { CreateRankPageTransactionButton } from "@app/components/legacyInscriptions/CreateRankPageTransactionButton";
+import { MyMintsInscriber } from "./MyMintsInscriber";
+import { LegacyMintInscriber } from "./LegacyMintInscriber";
 
-export const LegacyCollectionInscriber = () => {
+export const CustomMintsInscriber = () => {
   const [mintIds, setMintIds] = useState<PublicKey[]>([]);
   const [errors, setErrors] = useState<{ i: string; e: string }[]>([]);
-  const [inputTxt, setInputTxt] = useState<string>(
-    '["hegbXW571Dr2CdA7ntLFaVckEutVM2Lgf4gDhV3Urk7",    "E7hd2ExvjyPuyMKFw2sxoqC1uXtxgPe5PqEiRN1HgMop",    "8YXubLwjSoJGArQqBySCGRoJcnfeW7owfWjmFjDi4JS1",    "CY6MnUhZvWhLBbAfWREp3V7GnMyQdFkDgGfZt2fAa8ZM",    "DExrrFVeEKr1k366XCiqZP5tSPK6GTwNgYjWpVMMTMgV",    "5Qca5GeMbXVttwWJ96dVr7tbmqg7GuEXFegyQjPdg8ny",    "7rcYbci4ESHqTMrPoJFCcQjn2pUZcV9dShWPmrw856jK",    "J9drnQrcT9FAd2Rvd4QLHvTyM1gCvt1bA1XUfsCpWuny",    "4aYRqRG7b8shturV8MNh1QFNUMkBJpce3YHQdovz5WRg",    "DtbKfuMG8kXkGiYZH9jgHPfzpucUmGjYpsvAEWJ7sHrp"    ]'
-  );
+  const [inputTxt, setInputTxt] = useState<string>("[]");
 
   const { publicKey } = useWallet();
   const { connection } = useConnection();
@@ -144,78 +142,42 @@ export const LegacyCollectionInscriber = () => {
       {/* <CreateRankPageTransactionButton params={{
         pageIndex: 1
       }} formatting={{}} /> */}
-      <Box className="border-2 rounded-xl border-inherit" m={1} p={4} maxW={"300px"}>
+      <Box
+        className="border-2 rounded-xl border-inherit"
+        m={1}
+        p={4}
+        maxW={"300px"}
+      >
         <Text fontSize="2xl">
-          Hit the button below to check your wallet or else paste your
-          hashlist into the text box.
+          Hit the button below to check your wallet or else paste your hashlist
+          into the text box.
         </Text>
       </Box>
-      {mintIds.length === 0 && (
-        <>
-          <Text>Your wallet: {data?.length} mints</Text>
-          <Button
-            onClick={() => {
-              fetchMintsFromWallet();
-            }}
-          >
-            Use wallet contents
-          </Button>
-        </>
-      )}
       <VStack>
-        {mintIds.length === 0 ? (
+        {mintIds.length === 0 && selectedInputCount > 0 && (
           <Button onClick={() => processInput()}>
             Fetch mints ({selectedInputCount})
           </Button>
-        ) : (
-          <>
-            <Button onClick={() => setMintIds([])}>Re-enter mints</Button>
-            {/* <InputGroup>
-              <InputRightElement pointerEvents="none">
-                <HiOutlineSearch color="gray.300" />
-              </InputRightElement>
-              <Input placeholder="Search by mintId" />
-            </InputGroup> */}
-          </>
+        )}
+        {mintIds.length > 0 && (
+          <Button onClick={() => setMintIds([])}>Re-enter mints</Button>
         )}
       </VStack>
-      {/* {mintIds.length > 0 && (
-        <HStack
-          sx={{
-            display: "flex",
-          }}
-          gap={1}
-        >
-          <Button
-            colorScheme="teal"
-            variant={view === View.All ? "solid" : "outline"}
-            onClick={() => {
-              setView(View.All);
-            }}
-          >
-            All
-          </Button>
-          <Button
-            colorScheme="teal"
-            variant={view === View.WithInscriptions ? "solid" : "outline"}
-            onClick={() => {
-              setView(View.WithInscriptions);
-            }}
-          >
-            With Inscriptions
-          </Button>
-          <Button
-            colorScheme="teal"
-            variant={view === View.WithoutInscriptions ? "solid" : "outline"}
-            onClick={() => {
-              setView(View.WithoutInscriptions);
-            }}
-          >
-            Without Inscriptions
-          </Button>
-        </HStack>
-      )} */}
 
+      {errors.length > 0 && (
+        <Table>
+          <Tbody>
+            {errors.map((e, idx) => (
+              <Tr key={idx}>
+                <Td>
+                  <CopyPublicKeyButton publicKey={e.i} />
+                </Td>
+                <Td color="#f33">{e.e}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
       {mintIds.length === 0 && (
         <Textarea
           size="md"
@@ -229,46 +191,7 @@ export const LegacyCollectionInscriber = () => {
         />
       )}
 
-      <Paginator
-        onPageChange={setCurrentPage}
-        pageCount={maxPages}
-        currentPage={currentPage}
-      />
-      {currentPageItems.length > 0 && (
-        <Table>
-          <Tbody>
-            <Tr>
-              <Th>
-                <Text color="#aaa">
-                  Displayed items: {filteredMintIds.length}
-                </Text>
-              </Th>
-              <Th color="#aaa">Name</Th>
-              <Th color="#aaa">
-                <Center>Off-chain image</Center>
-              </Th>
-              <Th color="#aaa">
-                <Center>Inscription</Center>
-              </Th>
-              <Th color="#aaa">
-                <Center>Explore</Center>
-              </Th>
-              <Th></Th>
-            </Tr>
-            {currentPageItems.map((m, i) => (
-              <MintMigratorRow mint={m} key={i} />
-            ))}
-            {errors.map((e, idx) => (
-              <Tr key={idx}>
-                <Td>
-                  <CopyPublicKeyButton publicKey={e.i} />
-                </Td>
-                <Td>{e.e}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      )}
+      <LegacyMintInscriber mintIds={filteredMintIds} />
     </VStack>
   );
 };
