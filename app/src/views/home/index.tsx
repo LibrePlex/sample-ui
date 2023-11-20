@@ -36,7 +36,7 @@ const info = [
   },
   {
     id: 3,
-    header: "Guaranteed fees-free for life",
+    header: "Guaranteed fees-free Metadata for life",
     text: "Applications built on top of the protocol may introduce fees, but LibrePlex protocol will never do so. This establishes a level playing field to all and enforces predictability and transparency.",
   },
   {

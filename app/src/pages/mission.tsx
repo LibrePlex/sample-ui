@@ -60,7 +60,7 @@ export const Mission = () => {
           constant, to minimise uncertainty and maximise transparency."
         />
         <Feature
-          title="Guaranteed fees-free for life"
+          title="Guaranteed fees-free Metadata for life"
           desc="Applications built on top of the protocol
           may introduce fees, but LibrePlex protocol will never do so. This
           establishes a level playing field to all and enforces predictability
