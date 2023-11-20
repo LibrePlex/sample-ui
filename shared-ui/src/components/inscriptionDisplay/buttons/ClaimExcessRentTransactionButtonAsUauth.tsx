@@ -107,7 +107,10 @@ export const ClaimExcessRentTransactionButton = (
   const { inscription } = useInscriptionForRoot(props.params.mint);
 
   const minimumBalanceForRent = useMemo(
-    () => inscription?.data?.item.size ? getRentFromDataLength(inscription.data.item.size) * 1_000_000_000 : undefined,
+    () =>
+      inscription?.data?.item.size
+        ? getRentFromDataLength(inscription.data.item.size) * 1_000_000_000
+        : undefined,
     [inscription?.data?.item.size]
   );
 
@@ -144,17 +147,27 @@ export const ClaimExcessRentTransactionButton = (
       publicKey?.equals(metadata.data.item.updateAuthority),
     [publicKey, metadata]
   );
+
+  const isImmutable = useMemo(
+    () => inscription?.data?.item?.authority.equals(SystemProgram.programId),
+    [inscription]
+  );
+
   return amIUauth ? (
     <>
       {solDiff > 0.000001 ? (
-        <GenericTransactionButton<IRemoveFromGroup>
-          text={`Claim Excess Rent (${solDiff.toFixed(3)})`}
-          transactionGenerator={claimExcessRentTransactionButton}
-          onError={(msg) => notify({ message: msg })}
-          {...props}
-        />
+        isImmutable ? (
+          <Text>Immutable. Cannot claim rent</Text>
+        ) : (
+          <GenericTransactionButton<IRemoveFromGroup>
+            text={`Claim Excess Rent (${solDiff.toFixed(3)})`}
+            transactionGenerator={claimExcessRentTransactionButton}
+            onError={(msg) => notify({ message: msg })}
+            {...props}
+          />
+        )
       ) : (
-        <>No rent to reclaim</>
+        <Text>No rent to reclaim</Text>
       )}
     </>
   ) : (
