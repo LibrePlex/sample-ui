@@ -91,17 +91,15 @@ export const MintCardLegacy = ({
       {mintId && (
         <>
           <Box sx={{ height: "200px", position: "relative" }}>
-            <IconButton
-              style={{ position: "absolute", bottom: 8, right: 12, zIndex: 10 }}
-              p={0}
-              onClick={() =>
-                window.open(`/scanner?mintId=${mintId.toBase58()}`)
-              }
-              aria-label={"Scanner"}
-            >
-              <HiMagnifyingGlassCircle size={"lg"} />
-            </IconButton>
-
+            <a title="Open in scanner" href={`/scanner?mintId=${mintId.toBase58()}`} target="_blank">
+              <IconButton
+                style={{ position: "absolute", bottom: 8, right: 12, zIndex: 10 }}
+                p={0}
+                aria-label={"Scanner"}
+              >
+                <HiMagnifyingGlassCircle size={"100%"} />
+              </IconButton>
+            </a>
             <AssetDisplay
               asset={{
                 image: { url: offchainData?.images.square, description: "" },
