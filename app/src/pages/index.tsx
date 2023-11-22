@@ -1,19 +1,14 @@
+import React from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { HomeView } from "../views";
+import { NextSeo } from "next-seo";
 
-const Home: NextPage = (props) => {
+const Home: NextPage = () => {
   return (
-    <div>
-      <Head>
-        <title>LibrePlex</title>
-        <meta
-          name="description"
-          content="LibrePlex digital asset standard for Solana"
-        />
-      </Head>
+    <>
+      <NextSeo title="Web3 digital asset standard for Solana" />
       <HomeView />
-    </div>
+    </>
   );
 };
 

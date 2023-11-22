@@ -52,6 +52,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-connect": "^1.0.0",
     "next-joi": "^2.2.1",
+    "next-seo": "^6.4.0",
     "next-transpile-modules": "^10.0.0",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
