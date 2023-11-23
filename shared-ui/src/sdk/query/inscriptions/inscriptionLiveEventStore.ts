@@ -126,21 +126,21 @@ export const createInscriptionLiveEventStore = (
     state.incrementWriteStatus(event.id.toBase58());
   });
 
-  program?.addEventListener("InscriptionEventCreate", (event: {
-    id: PublicKey,
-    data: InscriptionEventData
-  }, slot, sig) => {
-    // console.log({id: event.id.toBase58(), data: event.data});
-    state.setUpdatedInscription(event.id.toBase58(), event.data);
-  });
+  // program?.addEventListener("InscriptionEventCreate", (event: {
+  //   id: PublicKey,
+  //   data: InscriptionEventData
+  // }, slot, sig) => {
+  //   // console.log({id: event.id.toBase58(), data: event.data});
+  //   state.setUpdatedInscription(event.id.toBase58(), event.data);
+  // });
 
-  program?.addEventListener("InscriptionEventUpdate", (event: {
-    id: PublicKey,
-    data: InscriptionEventData
-  }, slot, sig) => {
-    // console.log({event});
-    state.setUpdatedInscription(event.id.toBase58(), event.data);
-  });
+  // program?.addEventListener("InscriptionEventUpdate", (event: {
+  //   id: PublicKey,
+  //   data: InscriptionEventData
+  // }, slot, sig) => {
+  //   // console.log({event});
+  //   state.setUpdatedInscription(event.id.toBase58(), event.data);
+  // });
 
 
   return store;

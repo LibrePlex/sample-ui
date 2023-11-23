@@ -13,12 +13,11 @@ import {
 } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
-  getInscriptionRankPda
+  getInscriptionRankPda,
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { TbRefresh } from "react-icons/tb";
-import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
 import { useInscriptionSummary } from "./useInscriptionsSummary";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
@@ -30,15 +29,15 @@ export const InscriptionsSummary = (rest: BoxProps) => {
   ); // for now consider the first inscription page only
 
   const { connection } = useConnection();
-  const { data, refetch: refetchInscriptionPage } = useFetchSingleAccount(
-    inscriptionPageId,
-    connection
-  );
+  // const { data, refetch: refetchInscriptionPage } = useFetchSingleAccount(
+  //   inscriptionPageId,
+  //   connection
+  // );
 
-  const refetch = useCallback(() => {
-    refetchSummary();
-    refetchInscriptionPage();
-  }, [refetchSummary, refetchInscriptionPage]);
+  // const refetch = useCallback(() => {
+  //   refetchSummary();
+  //   refetchInscriptionPage();
+  // }, [refetchSummary, refetchInscriptionPage]);
   return (
     <Box {...rest}>
       <Box sx={{ position: "relative" }}>
@@ -47,7 +46,7 @@ export const InscriptionsSummary = (rest: BoxProps) => {
             <IconButton
               style={{ position: "absolute", bottom: "26px", right: "12px" }}
               size="xs"
-              onClick={() => refetch()}
+              onClick={() => refetchSummary()}
               aria-label={"Refresh"}
             >
               <TbRefresh />

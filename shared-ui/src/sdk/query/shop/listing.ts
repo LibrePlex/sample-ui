@@ -153,31 +153,31 @@ export const useAllListings = (connection: Connection) => {
     return filters;
   }, [program]);
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    let listener = program.addEventListener(
-      "DelistEvent",
-      (event, slot, sig) => {
-        setDeletedIds((old) => new Set([...old, event.id.toString()]));
-      }
-    );
-    return () => {
-      program.removeEventListener(listener);
-    };
-  }, [program]);
+  //   let listener = program.addEventListener(
+  //     "DelistEvent",
+  //     (event, slot, sig) => {
+  //       setDeletedIds((old) => new Set([...old, event.id.toString()]));
+  //     }
+  //   );
+  //   return () => {
+  //     program.removeEventListener(listener);
+  //   };
+  // }, [program]);
 
-  useEffect(() => {
-    let listener = program.addEventListener(
-      "ExecuteEvent",
-      (event, slot, sig) => {
-        console.log('Executed', event);
-        setExecutedIds((old) => new Set([...old, event.id.toString()]));
-      }
-    );
-    return () => {
-      program.removeEventListener(listener);
-    };
-  }, [program]);
+  // useEffect(() => {
+  //   let listener = program.addEventListener(
+  //     "ExecuteEvent",
+  //     (event, slot, sig) => {
+  //       console.log('Executed', event);
+  //       setExecutedIds((old) => new Set([...old, event.id.toString()]));
+  //     }
+  //   );
+  //   return () => {
+  //     program.removeEventListener(listener);
+  //   };
+  // }, [program]);
 
   const q = useGpa(program.programId, filters, connection, [`allListings`]);
 
