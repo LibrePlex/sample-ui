@@ -6,6 +6,7 @@ import {
 } from "./legacyInscription/collectioninscriber/CustomMintsInscriber";
 import { MyMintsInscriber } from "./legacyInscription/collectioninscriber/MyMintsInscriber";
 import { InscriptionGallery } from "./legacyInscription/holderinscriber/InscriptionGallery";
+import React from "react";
 
 enum View {
   InscriptionGallery,

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useInscriptionSummary } from "../../useInscriptionsSummary";
 import { InscriptionCardLegacy } from "../InscriptionCardLegacy";
+import React from "react";
 export const InscriptionGallery = () => {
   // const inscriptionPageId = useMemo(
   //   () => getInscriptionRankPda(BigInt(0))[0],
@@ -99,9 +100,10 @@ export const InscriptionGallery = () => {
           As you can see in the summary above, this just just keeps on growing
           and growing!! (hit the little refresh button to get an update)
         </Text>
-        
+
         <Text sx={{ maxWidth: "500px" }}>
-          Apart from this gallery, everything else in the website remains fully functional. 
+          Apart from this gallery, everything else in the website remains fully
+          functional.
         </Text>
         {/* {inscriptionKeysReversed?.map((item, idx) => (
           <InscriptionCardLegacy inscriptionId={item} key={idx} />

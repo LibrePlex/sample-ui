@@ -18,8 +18,9 @@ import {
 import { useConnection } from "@solana/wallet-adapter-react";
 import { useCallback, useMemo } from "react";
 import { TbRefresh } from "react-icons/tb";
-import { useFetchSingleAccount } from "shared-ui/src/sdk/query/singleAccountInfo";
+import { useFetchSingleAccount } from "@libreplex/shared-ui";
 import { useInscriptionSummary } from "./useInscriptionsSummary";
+import React from "react";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
   const { data: inscriptionSummary, refetch: refetchSummary } =
