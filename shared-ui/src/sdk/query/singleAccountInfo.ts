@@ -94,7 +94,8 @@ export const useFetchSingleAccount = (
     same decoder interface as in useGpa
   */
   connection: Connection,
-  live?: boolean
+  refetchInterval?: number,
+  
 ) => {
   const { fetcher, listener } = useMemo(
     () => fetchSingleAccount(accountId, connection),
@@ -112,8 +113,6 @@ export const useFetchSingleAccount = (
     though it's not currently used.
   */
 
-  const queryClient = useQueryClient();
-
   const key = useMemo(() => accountId?.toBase58() ?? "dummy", [accountId]);
 
   const q = useQuery<IRpcObject<{
@@ -121,6 +120,7 @@ export const useFetchSingleAccount = (
     balance: bigint;
   } | null> | null>(key, fetcher, {
     refetchOnMount: false,
+    refetchInterval
   });
 
   /// intercept account changes and refetch as needed

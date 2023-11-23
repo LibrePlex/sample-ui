@@ -3,6 +3,7 @@ import {
   BoxProps,
   Center,
   IconButton,
+  Skeleton,
   Table,
   Tbody,
   Td,
@@ -14,30 +15,29 @@ import {
 import {
   CopyPublicKeyButton,
   getInscriptionRankPda,
+  useInscriptionById,
+  useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { TbRefresh } from "react-icons/tb";
+import { Image } from "@chakra-ui/react";
 import { useInscriptionSummary } from "./useInscriptionsSummary";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
   const { data: inscriptionSummary, refetch: refetchSummary } =
-    useInscriptionSummary();
-  const inscriptionPageId = useMemo(
-    () => getInscriptionRankPda(BigInt(0))[0],
-    []
-  ); // for now consider the first inscription page only
+    useInscriptionSummary(7500);
+
+  
 
   const { connection } = useConnection();
-  // const { data, refetch: refetchInscriptionPage } = useFetchSingleAccount(
-  //   inscriptionPageId,
-  //   connection
-  // );
+  const { data: lastInscription } = useInscriptionById(
+    inscriptionSummary?.item?.lastInscription,
+    connection
+  );
 
-  // const refetch = useCallback(() => {
-  //   refetchSummary();
-  //   refetchInscriptionPage();
-  // }, [refetchSummary, refetchInscriptionPage]);
+  const metadata = useOffChainMetadataCache(lastInscription?.item.root);
+
   return (
     <Box {...rest}>
       <Box sx={{ position: "relative" }}>
@@ -52,8 +52,25 @@ export const InscriptionsSummary = (rest: BoxProps) => {
               <TbRefresh />
             </IconButton>
             <VStack>
+              {metadata?.data?.images?.square ? (
+                <Image
+                  style={{ width: "400px", height: "400px" }}
+                  alt="off-chain-image"
+                  src={metadata?.data?.images?.square}
+                />
+              ) : (
+                <Skeleton style={{ width: "400px", height: "400px" }} />
+              )}
               <Table style={{ border: "1px solid #aaa" }} m={3}>
                 <Tbody>
+                <Tr>
+                    <Th>
+                      <Text color="#aaa">Name</Text>
+                    </Th>
+                    <Td>
+                      {metadata?.data?.name}
+                    </Td>
+                  </Tr>
                   <Tr>
                     <Th>
                       <Text color="#aaa">Last inscriber</Text>
@@ -61,6 +78,17 @@ export const InscriptionsSummary = (rest: BoxProps) => {
                     <Td>
                       <CopyPublicKeyButton
                         publicKey={inscriptionSummary?.item?.lastInscriber.toBase58()}
+                      />
+                    </Td>
+                  </Tr>
+
+                  <Tr>
+                    <Th>
+                      <Text color="#aaa">Last mint</Text>
+                    </Th>
+                    <Td>
+                      <CopyPublicKeyButton
+                        publicKey={lastInscription?.item?.root.toBase58()}
                       />
                     </Td>
                   </Tr>

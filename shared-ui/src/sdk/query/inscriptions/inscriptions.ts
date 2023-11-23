@@ -38,35 +38,24 @@ export const decodeInscription =
 
 export const useInscriptionById = (
   inscriptionId: PublicKey | null,
-  connection: Connection
+  connection: Connection,
+  refetchInterval?: number
 ) => {
   const program = useContext(InscriptionsProgramContext);
   const store = useContext(InscriptionStoreContext);
 
-  const q = useFetchSingleAccount(inscriptionId, connection, false);
-
-  // const updatedInscriptionSizes = useStore(
-  //   store,
-  //   (s) => s.updatedInscriptionSizes
-  // );
-
-  const updatedInscription = useStore(store, (s) => s.updatedInscription);
+  const q = useFetchSingleAccount(inscriptionId, connection, refetchInterval);
 
   const decoded = useMemo(() => {
     try {
-      const obj = updatedInscription[inscriptionId.toBase58()]
-        ? {
-            pubkey: inscriptionId,
-            item: updatedInscription[inscriptionId.toBase58()],
-          }
-        : q?.data?.item
+      const obj = q?.data?.item
         ? decodeInscription(program)(q?.data?.item.buffer, inscriptionId)
         : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [inscriptionId, program, q.data?.item?.buffer.length, updatedInscription]);
+  }, [inscriptionId, program, q.data?.item?.buffer.length]);
 
   // useEffect(()=>{
   //   console.log({updatedInscriptionSizes})

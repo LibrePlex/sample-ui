@@ -7,7 +7,7 @@ import {
 } from "@libreplex/shared-ui";
 import { useConnection } from "@solana/wallet-adapter-react";
 
-export const useInscriptionSummary = () => {
+export const useInscriptionSummary = (internal?: number) => {
   const inscriptionSummaryId = useMemo(() => getInscriptionSummaryPda()[0], []);
 
   const program = useContext(InscriptionsProgramContext);
@@ -15,7 +15,8 @@ export const useInscriptionSummary = () => {
   const { connection } = useConnection();
   const { data, refetch } = useFetchSingleAccount(
     inscriptionSummaryId,
-    connection
+    connection,
+    internal
   );
 
   return {
