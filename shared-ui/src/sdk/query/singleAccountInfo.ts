@@ -40,12 +40,14 @@ export const fetchSingleAccount = (
     }
   },
   listener: {
-    add: (onAccountChange: AccountChangeCallback, accountId: PublicKey) =>
-      connection &&
-      accountId &&
-      connection.onAccountChange(accountId, onAccountChange),
+    add: (onAccountChange: AccountChangeCallback, accountId: PublicKey) => {
+
+    },
+      // connection &&
+      // accountId &&
+      // connection.onAccountChange(accountId, onAccountChange),
     remove: (i: number) => {
-      connection && connection.removeAccountChangeListener(i);
+      // connection && connection.removeAccountChangeListener(i);
     },
   },
 });
@@ -122,24 +124,24 @@ export const useFetchSingleAccount = (
   });
 
   /// intercept account changes and refetch as needed
-  useEffect(() => {
-    let _listeners: number[] = [];
+  // useEffect(() => {
+  //   let _listeners: number[] = [];
 
-    if (accountId && live) {
-      _listeners.push(
-        listener.add(
-          accountUpdater(accountId, queryClient, accountId),
-          accountId
-        )
-      );
-    }
+  //   if (accountId && live) {
+  //     _listeners.push(
+  //       listener.add(
+  //         accountUpdater(accountId, queryClient, accountId),
+  //         accountId
+  //       )
+  //     );
+  //   }
 
-    return () => {
-      for (const i of _listeners) {
-        listener.remove(i);
-      }
-    };
-  }, [listener, accountId, queryClient, live]);
+  //   return () => {
+  //     for (const i of _listeners) {
+  //       listener.remove(i);
+  //     }
+  //   };
+  // }, [listener, accountId, queryClient, live]);
 
   return q;
 };

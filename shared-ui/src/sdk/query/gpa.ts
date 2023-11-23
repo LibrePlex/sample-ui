@@ -74,15 +74,15 @@ export const fetchGpa = <T extends unknown, P extends Idl>(
     add: (
       onAccountChange: ProgramAccountChangeCallback,
       programId: PublicKey
-    ) =>
-      connection?.onProgramAccountChange(
-        programId,
-        onAccountChange,
-        "processed",
-        filters
-      ),
+    ) => {},
+      // connection?.onProgramAccountChange(
+      //   programId,
+      //   onAccountChange,
+      //   "processed",
+      //   filters
+      // ),
     remove: (i: number) => {
-      connection?.removeProgramAccountChangeListener(i);
+      // connection?.removeProgramAccountChangeListener(i);
     },
   },
 });
@@ -104,18 +104,18 @@ export const useGpa = <T extends unknown, P extends Idl>(
 
   const q = useQuery<IRpcObject<Buffer>[]>(key, fetcher, { enabled, refetchOnMount: false });
 
-  /// intercept account changes and refetch as needed
-  useEffect(() => {
-    let i: any;
-    if (programId) {
-      i = listener.add(accountUpdater(queryClient, key), programId);
-    }
-    return () => {
-      if (i !== undefined) {
-        listener.remove(i);
-      }
-    };
-  }, [listener, programId, queryClient, key]);
+  // /// intercept account changes and refetch as needed
+  // useEffect(() => {
+  //   let i: any;
+  //   if (programId) {
+  //     i = listener.add(accountUpdater(queryClient, key), programId);
+  //   }
+  //   return () => {
+  //     if (i !== undefined) {
+  //       listener.remove(i);
+  //     }
+  //   };
+  // }, [listener, programId, queryClient, key]);
 
   return q;
 };

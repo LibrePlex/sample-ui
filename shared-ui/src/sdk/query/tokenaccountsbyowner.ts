@@ -70,22 +70,22 @@ export const fetchTokenAccountsByOwner = <T extends unknown, P extends Idl>(
     return _items;
   },
   listener: {
-      add: (onAccountChange: ProgramAccountChangeCallback, programId: PublicKey) =>
-      owner ? connection?.onProgramAccountChange(
-          programId,
-          onAccountChange,
-          "processed",
-          [
-            {
-              memcmp: {
-                offset: 32,
-                bytes: owner?.toBase58()??'',
-              },
-            }
-          ]
-        ) : null,
+      add: (onAccountChange: ProgramAccountChangeCallback, programId: PublicKey) =>{},
+      // owner ? connection?.onProgramAccountChange(
+      //     programId,
+      //     onAccountChange,
+      //     "processed",
+      //     [
+      //       {
+      //         memcmp: {
+      //           offset: 32,
+      //           bytes: owner?.toBase58()??'',
+      //         },
+      //       }
+      //     ]
+      //   ) : null,
       remove: (i: number) => {
-        connection?.removeProgramAccountChangeListener(i);
+        // connection?.removeProgramAccountChangeListener(i);
       },
   },
 });
