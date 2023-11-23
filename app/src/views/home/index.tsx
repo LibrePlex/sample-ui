@@ -52,23 +52,8 @@ const info = [
 ];
 
 export const HomeView: FC = ({}) => {
-  const wallet = useWallet();
-  const { connection } = useConnection();
-  // const handleClickCosts = () => {
-  //   event.preventDefault();
-  //   router.push("/costs");
-  // };
-
-  // const balance = useUserSOLBalanceStore((s) => s.balance);
-  const { getUserSOLBalance } = useUserSOLBalanceStore();
-
-  useEffect(() => {
-    if (wallet.publicKey) {
-      console.log(wallet.publicKey.toBase58());
-      getUserSOLBalance(wallet.publicKey, connection);
-    }
-  }, [wallet.publicKey, connection, getUserSOLBalance]);
-
+  
+  
   return (
     <div style={{ overflow: "hidden" }}>
       <Background imageUrl={"heroImage.png"}>
@@ -80,16 +65,6 @@ export const HomeView: FC = ({}) => {
               gap={4}
               // mb={10}
             >
-              {/* <GridItem
-                colSpan={{ base: 0, md: 1 }}
-                display={"flex"}
-                justifySelf={{ base: "center", md: "flex-end" }}
-                mr={2}
-              >
-                <Box width={"100%"} maxW={"450px"} hideBelow={"md"}>
-                  <img src="LibreL.png" height={"100%"} width={"100%"} />
-                </Box>
-              </GridItem> */}
               <GridItem
                 display={"flex"}
                 w={"100%"}
