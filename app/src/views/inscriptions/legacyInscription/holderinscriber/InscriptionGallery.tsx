@@ -22,7 +22,6 @@ export const InscriptionGallery = () => {
   // const ITEMS_PER_PAGE = 25;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
-
   const [startPosition, setStartPosition] = useState<string>("");
 
   // const effectiveStartPositionCurrent = useMemo(() => {
@@ -37,7 +36,7 @@ export const InscriptionGallery = () => {
 
   // const { item, pubkey } = useMemo(() => {
   //   if (inscriptionSummary && data) {
-      
+
   //     const end = Math.max(
   //       (effectiveStartPosition || Number(inscriptionSummary.item.inscriptionCountTotal))-
   //         currentPage * ITEMS_PER_PAGE,
@@ -67,40 +66,47 @@ export const InscriptionGallery = () => {
   //   [item?.inscriptionKeys]
   // );
 
-
   return (
     <VStack className="w-full">
-      <Heading pt={3} size={"md"}>
-        {/* Showing latest {item?.inscriptionKeys.length} inscriptions */}
-      </Heading>
-      <HStack>
+      {/* <Heading pt={3} size={"md"}> */}
+      {/* Showing latest {item?.inscriptionKeys.length} inscriptions */}
+      {/* </Heading> */}
+      {/* <HStack>
         <Text color="white">Start from #</Text>
         <Input
           sx={{ maxWidth: "200px" }}
           value={startPosition}
           onChange={(e) => setStartPosition(e.currentTarget.value)}
         />
-      </HStack>
-      <Paginator
+      </HStack> */}
+      {/* <Paginator
         onPageChange={setCurrentPage}
         pageCount={maxPages}
         currentPage={currentPage}
-      />
-      <HStack
+      /> */}
+      <VStack
+        p={10}
         gap={8}
         alignItems="flex-start"
         justifyContent="center"
         flexWrap="wrap"
       >
-        <Heading size="sm">The gallery view of libreplex has been currently disabled because of the very large size of the inscription rank page account.</Heading>
-        <Text>As you can see in the summary above, we currently have 189k accounts and counting!</Text>
-        <Text>We will formulate a sustainable, properly indexed infrastructure solution in the coming days and keep you posted.
-          In the meantime, the libre editor / wallet browser and scanners remain fully functional.
+        <Heading size="sm" sx={{ maxWidth: "500px" }}>
+          The gallery view of libreplex has been currently disabled because of
+          the very large size of the inscription rank page account.
+        </Heading>
+        <Text sx={{ maxWidth: "500px" }}>
+          As you can see in the summary above, this just just keeps on growing
+          and growing!! (hit the little refresh button to get an update)
+        </Text>
+        
+        <Text sx={{ maxWidth: "500px" }}>
+          Apart from this gallery, everything else in the website remains fully functional. 
         </Text>
         {/* {inscriptionKeysReversed?.map((item, idx) => (
           <InscriptionCardLegacy inscriptionId={item} key={idx} />
         ))} */}
-      </HStack>
+      </VStack>
     </VStack>
   );
 };
