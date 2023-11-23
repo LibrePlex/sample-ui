@@ -1,11 +1,7 @@
-import { Paginator } from "@app/components/Paginator";
-import { HStack, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import { Heading, Text, VStack } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { useMemo, useState } from "react";
-import { useDebounce } from "use-debounce";
+import React, { useState } from "react";
 import { useInscriptionSummary } from "../../useInscriptionsSummary";
-import { InscriptionCardLegacy } from "../InscriptionCardLegacy";
-import React from "react";
 export const InscriptionGallery = () => {
   // const inscriptionPageId = useMemo(
   //   () => getInscriptionRankPda(BigInt(0))[0],
