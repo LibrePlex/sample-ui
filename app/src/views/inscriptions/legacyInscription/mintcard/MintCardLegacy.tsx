@@ -107,12 +107,14 @@ export const MintCardLegacy = ({
               mint={mintId}
             />
           </Box>
-          <Box className="absolute top-3 left-3">
-            <Immutability inscription={inscription} />
-          </Box>
-          <Box className="absolute bottom-11 left-3" >
-            <TensorButton mint={inscription.item.root} />
-          </Box>
+          {inscription && <>
+            <Box className="absolute top-3 left-3">
+              <Immutability inscription={inscription}/>
+            </Box>
+            <Box className="absolute bottom-11 left-3">
+              {<TensorButton mint={inscription.item.root}/>}
+            </Box>
+          </>}
 
           <VStack
             display={"flex"}

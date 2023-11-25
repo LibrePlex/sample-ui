@@ -1,25 +1,24 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import {Heading, HStack, Text, VStack} from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import React, { useState } from "react";
 import { useInscriptionSummary } from "../../useInscriptionsSummary";
+import {useQuery} from "react-query";
+import {DisappearingBox} from "@app/components/DisappearingBox";
+import {MintCardLegacy} from "@app/views/inscriptions/legacyInscription/mintcard/MintCardLegacy";
+import {PublicKey} from "@solana/web3.js";
+import {ViewLegacyInscription} from "@app/views/inscriptions/legacyInscription/ViewLegacyInscription";
+
+const latestInscriptionsUrl = "https://inscription-index.pinit.io/"
+const ITEMS_PER_PAGE = 10;
 export const InscriptionGallery = () => {
-  // const inscriptionPageId = useMemo(
-  //   () => getInscriptionRankPda(BigInt(0))[0],
-  //   []
-  // ); // for now consider the first inscription page only
-
-  const { connection } = useConnection();
-  // const { data, refetch } = useFetchSingleAccount(
-  //   inscriptionPageId,
-  //   connection
-  // );
-
-  const { data: inscriptionSummary } = useInscriptionSummary();
-
-  // const ITEMS_PER_PAGE = 25;
-  const [currentPage, setCurrentPage] = useState<number>(0);
-
-  const [startPosition, setStartPosition] = useState<string>("");
+  const latestInscriptions = useQuery<{
+    mint: string,
+    order: number,
+  }[]>([], async () => {
+    return ((await (await fetch(latestInscriptionsUrl)).json()) as any[]).reverse().slice(0, ITEMS_PER_PAGE)
+  }, {
+    refetchInterval: 5000,
+  })
 
   // const effectiveStartPositionCurrent = useMemo(() => {
   //   try {
@@ -65,6 +64,10 @@ export const InscriptionGallery = () => {
 
   return (
     <VStack className="w-full">
+      <Heading pt={3} size={"md"}>
+        Showing {ITEMS_PER_PAGE} latest inscriptions
+        {/* Showing latest {item?.inscriptionKeys.length} inscriptions */}
+      </Heading>
       {/* <Heading pt={3} size={"md"}> */}
       {/* Showing latest {item?.inscriptionKeys.length} inscriptions */}
       {/* </Heading> */}
@@ -81,29 +84,21 @@ export const InscriptionGallery = () => {
         pageCount={maxPages}
         currentPage={currentPage}
       /> */}
-      <VStack
-        p={10}
-        gap={8}
-        alignItems="flex-start"
-        justifyContent="center"
-        flexWrap="wrap"
-      >
-        <Heading size="sm" sx={{ maxWidth: "500px" }}>
-          The gallery view of libreplex has been currently disabled because of
-          the very large size of the inscription rank page account.
-        </Heading>
-        <Text sx={{ maxWidth: "500px" }}>
-          As you can see in the summary above, this just just keeps on growing
-          and growing!! (hit the little refresh button to get an update)
-        </Text>
-
-        <Text sx={{ maxWidth: "500px" }}>
-          Apart from this gallery, everything else in the website remains fully
-          functional.
-        </Text>
-        {/* {inscriptionKeysReversed?.map((item, idx) => (
-          <InscriptionCardLegacy inscriptionId={item} key={idx} />
-        ))} */}
+      <VStack className="w-full">
+        <HStack
+            gap={8}
+            alignItems="flex-start"
+            justifyContent="center"
+            flexWrap="wrap"
+        >
+          {latestInscriptions?.data?.map((item, idx) => (
+              <DisappearingBox key={idx} >
+                <MintCardLegacy mintId={new PublicKey(item.mint)}>
+                  {/*<ViewLegacyInscription mint={new PublicKey(item.mint)} />*/}
+                </MintCardLegacy>
+              </DisappearingBox>
+          ))}
+        </HStack>
       </VStack>
     </VStack>
   );

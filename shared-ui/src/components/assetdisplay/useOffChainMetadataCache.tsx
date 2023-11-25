@@ -28,8 +28,7 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
 
   const { data: metadataAccount } = useFetchSingleAccount(
     metadataPda,
-    connection,
-    false
+    connection
   );
 
   const metadataObj = useMemo(() => {

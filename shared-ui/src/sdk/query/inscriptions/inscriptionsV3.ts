@@ -99,7 +99,7 @@ export const useInscriptionV3ById = (
   live: boolean = false
 ) => {
   
-  const q = useFetchSingleAccount(inscriptionId, connection, live);
+  const q = useFetchSingleAccount(inscriptionId, connection);
 
   const decoded = useMemo(
     () => decodeInscriptionV3(q?.data?.item?.buffer, inscriptionId),
