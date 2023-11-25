@@ -35,7 +35,7 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
           aria-label={"me"}
           background={"black"}
           onClick={() => {
-            window.open(`https://magiceden.io/`);
+            window.open(`https://magiceden.io/item-details/${mint.toBase58()}`);
           }}
         >
           <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />
