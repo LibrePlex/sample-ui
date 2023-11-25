@@ -10,7 +10,7 @@ import React from "react";
 import { MigrateToV3TransactionButton } from "./MigrateToV3TransactionButton";
 
 
-export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
+export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
   const { inscription: inscriptionV3 } = useInscriptionV3ForRoot(mint, true);
 
   const { inscription } = useInscriptionForRoot(mint);
@@ -35,7 +35,7 @@ export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
           aria-label={"me"}
           background={"black"}
           onClick={() => {
-            window.open(`https://magiceden.io/marketplace`);
+            window.open(`https://magiceden.io/`);
           }}
         >
           <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />

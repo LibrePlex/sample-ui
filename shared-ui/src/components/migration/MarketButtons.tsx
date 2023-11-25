@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useState } from "react";
-import { TensorButtonBody } from "./TensorButtonBody";
+import { MarketplaceButtonBody } from "./MarketplaceButtonBody";
 import React from "react";
 
 export const TensorButton = ({ mint }: { mint: PublicKey }) => {
@@ -52,7 +52,7 @@ export const TensorButton = ({ mint }: { mint: PublicKey }) => {
 
           <ModalCloseButton />
           <ModalBody>
-            <TensorButtonBody mint={mint} />
+            <MarketplaceButtonBody mint={mint} />
           </ModalBody>
         </ModalContent>
       </Modal>
