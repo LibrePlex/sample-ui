@@ -5,7 +5,7 @@ import {
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Box, Center, IconButton, VStack, Text, Spinner } from "@chakra-ui/react";
+import { Box, Center, IconButton, HStack, VStack, Text, Spinner } from "@chakra-ui/react";
 import React from "react";
 import { MigrateToV3TransactionButton } from "./MigrateToV3TransactionButton";
 
@@ -20,7 +20,7 @@ export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
   const { publicKey } = useWallet();
 
   return inscriptionV3.isFetching ? <Spinner/> :inscriptionV3.data.item ? (
-    <VStack align={"start"} pb={4}>
+    <HStack align={"start"} pb={4}>
       <IconButton
         aria-label={"tensorhq"}
         background={'black'}
@@ -31,15 +31,24 @@ export const TensorButtonBody = ({ mint }: { mint: PublicKey }) => {
       >
         <img src="/tensorhq-white.png" style={{ height: "28px" }} />
       </IconButton>
+      <IconButton
+          aria-label={"me"}
+          background={"black"}
+          onClick={() => {
+            window.open(`https://magiceden.io/marketplace`);
+          }}
+        >
+          <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />
+        </IconButton>
       <Box>
         <Text pb={3}>
           This item has succesfully been migrated onto V3 inscriptions index.
         </Text>
         <Text>
-          Please click on the above link to buy / sell this item.
+          Please click on the links to buy / sell inscriptions.
         </Text>
       </Box>
-    </VStack>
+    </HStack>
   ) : (
     <Center>
       <VStack align={"start"}>

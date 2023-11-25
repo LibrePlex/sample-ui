@@ -39,4 +39,4 @@ export { MintDisplay } from "./MintDisplay";
 
 export { ShareIcon } from "./icons";
 
-export {TensorButton} from "./migration/TensorButton"
+export {TensorButton} from "./migration/MarketButtons"

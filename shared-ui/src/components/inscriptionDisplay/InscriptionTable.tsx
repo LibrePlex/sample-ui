@@ -29,7 +29,7 @@ import {
   useInscriptionForRoot,
   useOffChainMetadataCache,
 } from "../..";
-import { TensorButton } from "../../components/migration/TensorButton";
+import { TensorButton } from "../migration/MarketButtons";
 import { InscriptionImage } from "./InscriptionImage";
 import { InscriptionV1V2 } from "./InscriptionV1V2";
 import { MutabilityDisplay } from "./MutabilityDisplay";

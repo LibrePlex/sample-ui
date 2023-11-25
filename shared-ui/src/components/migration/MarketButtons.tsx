@@ -6,7 +6,8 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { useState } from "react";
@@ -18,15 +19,26 @@ export const TensorButton = ({ mint }: { mint: PublicKey }) => {
 
   return (
     <>
-      <IconButton
-        aria-label={"tensorhq"}
-        background={'black'}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        <img src="/tensorhq-white.png" style={{ height: "28px" }} />
-      </IconButton>
+      <HStack>
+        <IconButton
+          aria-label={"tensorhq"}
+          background={"black"}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <img src="/tensorhq-white.png" style={{ height: "28px" }} />
+        </IconButton>
+        <IconButton
+          aria-label={"tensorhq"}
+          background={"black"}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />
+        </IconButton>
+      </HStack>
 
       <Modal
         isOpen={open}
