@@ -1,9 +1,9 @@
 import { FormControl, FormLabel, HStack, Input, NumberInput, NumberInputField, Text, VStack } from "@chakra-ui/react";
 import { CopyPublicKeyButton, IRpcObject } from "shared-ui/src";
 import { Validator } from "./useLegacyValidators";
-import { MigrateFromLegacyTransactionButton } from "./MigrateFromLegacyTransactionButton";
+// import { MigrateFromLegacyTransactionButton } from "./MigrateFromLegacyTransactionButton";
 import { useEffect, useMemo, useState } from "react";
-import { UpdateFromLegacyTransactionButton } from "./UpdateFromLegacyTransactionButton";
+// import { UpdateFromLegacyTransactionButton } from "./UpdateFromLegacyTransactionButton";
 export const ValidatorImporterDetail = ({
   item,
 }: {
@@ -43,7 +43,7 @@ export const ValidatorImporterDetail = ({
               <NumberInputField />
             </NumberInput>
           </FormControl>
-      <MigrateFromLegacyTransactionButton
+      {/* <MigrateFromLegacyTransactionButton
         params={{ validator: item, limitPerMint }}
         formatting={{}}
       />
@@ -53,7 +53,7 @@ export const ValidatorImporterDetail = ({
           ticker: tick
         }}, offChainUrl }}
         formatting={{}}
-      />
+      /> */}
     </VStack>
   );
 };

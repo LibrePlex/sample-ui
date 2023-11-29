@@ -3,14 +3,11 @@ import {
   Connection,
   Keypair,
   PublicKey,
-  SYSVAR_INSTRUCTIONS_PUBKEY,
-  SYSVAR_RENT_PUBKEY,
   SystemProgram,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
 
 import { VStack } from "@chakra-ui/react";
-import { IdlTypes } from "@coral-xyz/anchor";
 import {
   Deployment,
   GenericTransactionButton,
@@ -18,11 +15,7 @@ import {
   IExecutorParams,
   IRpcObject,
   ITransactionTemplate,
-  LibreplexFairLaunchLegacy,
-  PROGRAM_ID_FAIR_LAUNCH,
   PROGRAM_ID_INSCRIPTIONS,
-  PROGRAM_ID_METADATA,
-  getDeploymentPda,
   getHashlistPda,
   getInscriptionDataPda,
   getInscriptionPda,
@@ -30,12 +23,9 @@ import {
   getInscriptionV3Pda,
   getLegacyMetadataPda,
   getMasterEditionPda,
-  getMetadataPda,
   getProgramInstanceFairLaunch,
-  getProgramInstanceFairLaunchLegacy,
-  notify,
+  notify
 } from "@libreplex/shared-ui";
-import { DeployInput } from "@libreplex/shared-ui";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
@@ -96,8 +86,6 @@ export const launchDeployment = async (
     wallet.publicKey
   );
 
-  
-
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   const inscription = getInscriptionPda(nonFungibleMint.publicKey)[0];
   const inscriptionV3 = getInscriptionV3Pda(nonFungibleMint.publicKey)[0];
@@ -108,7 +96,6 @@ export const launchDeployment = async (
       units: 600000,
     })
   );
-
 
   instructions.push(
     await fairLaunch.methods
