@@ -226,6 +226,32 @@ export type LibreplexFairLaunch = {
           }
         },
         {
+          "name": "hashlistMarker",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "hashlist_marker"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Deployment",
+                "path": "deployment"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Mint",
+                "path": "non_fungible_mint"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -773,6 +799,48 @@ export type LibreplexFairLaunch = {
           }
         ]
       }
+    }
+  ],
+  "events": [
+    {
+      "name": "NewDeploymentEvent",
+      "fields": [
+        {
+          "name": "ticker",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "limitPerMint",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "maxNumberOfTokens",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "creator",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MintEvent",
+      "fields": [
+        {
+          "name": "mint",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "ticker",
+          "type": "string",
+          "index": false
+        }
+      ]
     }
   ],
   "errors": [
@@ -1037,6 +1105,32 @@ export const IDL: LibreplexFairLaunch = {
           }
         },
         {
+          "name": "hashlistMarker",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "hashlist_marker"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Deployment",
+                "path": "deployment"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Mint",
+                "path": "non_fungible_mint"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "isMut": true,
           "isSigner": true
@@ -1584,6 +1678,48 @@ export const IDL: LibreplexFairLaunch = {
           }
         ]
       }
+    }
+  ],
+  "events": [
+    {
+      "name": "NewDeploymentEvent",
+      "fields": [
+        {
+          "name": "ticker",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "limitPerMint",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "maxNumberOfTokens",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "creator",
+          "type": "publicKey",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MintEvent",
+      "fields": [
+        {
+          "name": "mint",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "ticker",
+          "type": "string",
+          "index": false
+        }
+      ]
     }
   ],
   "errors": [

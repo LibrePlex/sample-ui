@@ -16,7 +16,7 @@ import { DeployTransactionButton } from "./DeployTransactionButton";
 import { RefetchButton } from "@app/components/RefetchButton";
 import { SwapArea } from "./SwapArea";
 import { useMint } from "@libreplex/shared-ui";
-import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
+// import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 import { FairLaunchProgramContext, decodeHashlist } from "shared-ui/src/anchor";
 
 export const DeploymentDetailView = () => {
@@ -96,14 +96,14 @@ export const DeploymentDetailView = () => {
       <Button onClick={()=>{
         download()
       }}>Download hashlist</Button>
-      {publicKey?.toBase58().startsWith("4aAifU9ck88koMhSK") && (
+      {/* {publicKey?.toBase58().startsWith("4aAifU9ck88koMhSK") && (
         <DeployMigratedTransactionButton
           params={{
             deployment,
           }}
           formatting={{}}
         />
-      )}
+      )} */}
       <Image height="200px" aspectRatio="1/1" src={imageUrl} />
       {!deployment?.item.deployed && (
         <DeployTransactionButton params={undefined} formatting={undefined} />

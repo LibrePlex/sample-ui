@@ -31,6 +31,7 @@ import {
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
+import { getHashlistMarkerPda } from "shared-ui/src/anchor/fair_launch/pdas/getHashlistMarkerPda";
 
 export const PROGRAM_ID_LEGACY_METADATA = new PublicKey(
   "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
@@ -63,6 +64,8 @@ export const launchDeployment = async (
   const nonFungibleMint = Keypair.generate();
 
   const hashlist = getHashlistPda(deployment.pubkey)[0];
+
+  const hashlistMarker = getHashlistMarkerPda(deployment.pubkey, nonFungibleMint.publicKey)[0];
 
   const fungibleMint = deployment.item.fungibleMint;
 
@@ -106,6 +109,7 @@ export const launchDeployment = async (
         inscriber: wallet.publicKey,
         fungibleMint,
         hashlist,
+        hashlistMarker,
         nonFungibleMint: nonFungibleMint.publicKey,
         nonFungibleMetadata,
         nonFungibleMasteredition,
