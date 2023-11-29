@@ -52,7 +52,7 @@ export const FeaturesView = () => {
                 pb: 5,
               }}
             >
-              <Table>z
+              <Table>
                 <Thead>
                   <Tr>
                     <Th></Th>

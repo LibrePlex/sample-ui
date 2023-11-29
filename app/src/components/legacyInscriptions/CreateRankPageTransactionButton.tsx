@@ -15,7 +15,7 @@ import {
 
 import { NEXT_PUBLIC_LEGACY_INSCRIPTIONS_PROGRAM_ID } from "@app/environmentvariables";
 import { notify } from "@libreplex/shared-ui";
-import { getProgramInstanceLegacyInscriptions } from "shared-ui/src/anchor/legacyInscriptions/getProgramInstanceLegacyInscriptions";
+import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui/src/anchor/legacyInscriptions/getProgramInstanceFairLaunch";
 
 
 export interface IInscribeLegacyMint {

@@ -18,7 +18,7 @@ export const fetchOffchainMetadata = (url: string) => ({
   },
 });
 
-export const useOffChainMetadataCache = (url: string) => {
+export const useOffChainMetadataFromUrl = (url: string) => {
   const { fetcher } = useMemo(
     () => fetchOffchainMetadata(url),
     [url]

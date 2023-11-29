@@ -3,12 +3,11 @@
 import { IExecutorParams } from "../executor/Executor";
 import { useExecutor } from "../executor/useExecutor";
 import { Connection } from "@solana/web3.js";
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import { ITransactionTemplate } from "./ITransactionTemplate";
-import { ButtonProps, Spinner } from "@chakra-ui/react";
+import { ButtonProps, Spinner, Text } from "@chakra-ui/react";
 import { Button, ButtonGroup } from '@chakra-ui/react'
 import React from "react";
-import { useCluster } from "../../contexts/NetworkConfigurationProvider";
 
 export interface GenericTransactionButtonProps<P> {
   params: P;
@@ -75,23 +74,30 @@ export const GenericTransactionButton = <P extends unknown>({
     "onError"
   >) => {
 
+    const [success, setSuccess] = useState<boolean>(false)
+
   const { onClick, isExecuting } = useGenericTransactionClick({
     params,
     beforeClick,
     transactionGenerator,
-    onSuccess,
+    onSuccess: (msg)=>{
+      setSuccess(true);
+      onSuccess && onSuccess(msg);
+    },
     onError,
     afterSign
   });
   const { children, ...rest } = formatting;
 
+  
   return (
-    <Button
+    success ? <Text>Success</Text> :<Button
       disabled={isExecuting}
       colorScheme="teal"
       size="md"
       {...rest}
       onClick={onClick}
+
     >
       {isExecuting ? <Spinner /> : text}
     </Button>

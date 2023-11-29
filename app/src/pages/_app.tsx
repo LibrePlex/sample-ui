@@ -19,6 +19,7 @@ import { ContentContainer } from "../components/ContentContainer";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { SquadsProgramProvider } from "@libreplex/shared-ui";
+import { FairLaunchProgramProvider } from "@libreplex/shared-ui";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.css");
@@ -39,24 +40,24 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <ContextProvider>
             <MetadataProgramProvider>
               <InscriptionsProgramProvider>
-                <SquadsProgramProvider>
-                  <LibrePlexLegacyInscriptionsProgramProvider>
-                    <div className="flex flex-col h-screen bg-[#121212]">
-                      <Notifications />
+                <FairLaunchProgramProvider>
+                    <LibrePlexLegacyInscriptionsProgramProvider>
+                      <div className="flex flex-col h-screen bg-[#121212]">
+                        <Notifications />
 
-                      <AppBar
-                        isNavOpen={isNavOpen}
-                        setIsNavOpen={setIsNavOpen}
-                      />
-                      <ContentContainer>
-                        <PortalManager>
-                          <Component {...pageProps} />
-                          {/* <Footer /> */}
-                        </PortalManager>
-                      </ContentContainer>
-                    </div>
-                  </LibrePlexLegacyInscriptionsProgramProvider>
-                </SquadsProgramProvider>
+                        <AppBar
+                          isNavOpen={isNavOpen}
+                          setIsNavOpen={setIsNavOpen}
+                        />
+                        <ContentContainer>
+                          <PortalManager>
+                            <Component {...pageProps} />
+                            {/* <Footer /> */}
+                          </PortalManager>
+                        </ContentContainer>
+                      </div>
+                    </LibrePlexLegacyInscriptionsProgramProvider>
+                </FairLaunchProgramProvider>
               </InscriptionsProgramProvider>
             </MetadataProgramProvider>
           </ContextProvider>

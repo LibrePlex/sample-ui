@@ -30,36 +30,18 @@ export const useLegacyMintsByWallet = (
     return _tokenAccountByMint;
   }, [ownedMints]);
 
-  const legacyMetadataIds = useMemo(
-    () =>
-      ownedMints
-        .filter((item) => item.item?.mint!)
-        .map((item) => ({
-          mint: item.item!.mint,
-          metadata: getLegacyMetadataPda(item.item!.mint!)[0],
-        })),
-    [ownedMints]
-  );
-
-  // const { data: metadata, isFetching: isFetchingMetadata } =
-  //   useMultipleAccountsById(
-  //     legacyMetadataIds.map((item) => item.metadata),
-  //     connection
-  //   );
-
-  // /
 
   const combined = useMemo(() => {
     const _combined: MintWithTokenAccount[] = [];
 
-    for (const o of legacyMetadataIds) {
+    for (const o of ownedMints) {
       _combined.push({
-        mint: o.mint,
-        tokenAccount: tokenAccountByMint[o.mint.toBase58()],
+        mint: o.item.mint,
+        tokenAccount: tokenAccountByMint[o.item.mint.toBase58()],
       });
     }
     return _combined;
-  }, [tokenAccountByMint, legacyMetadataIds]);
+  }, [tokenAccountByMint, ownedMints]);
 
 
   return {

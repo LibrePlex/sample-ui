@@ -49,6 +49,9 @@ export const ContentContainer: React.FC<Props> = ({
             <NavElement label="Home" href={`/?${query}`} />
           </li> */}
 
+<li>
+            <NavElement label="Fair launch" href={`/fairlaunch?${query}`} />
+          </li>
           <li>
             <NavElement label="Features" href={`/features?${query}`} />
           </li>

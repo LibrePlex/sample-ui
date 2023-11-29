@@ -27,6 +27,7 @@ export {InscriptionImage} from "./inscriptionDisplay/InscriptionImage"
 
 export {useMediaType, mediaTypeToString} from "./inscriptionDisplay/useMediaType"
 export type { IOffchainJson } from "./assetdisplay/useOffChainMetadata";
+export {useOffChainMetadataFromUrl} from "./assetdisplay/useOffChainMetadata"
 export { AssetDisplay } from "./assetdisplay/AssetDisplay";
 export {useOffChainMetadataCache} from "./assetdisplay/useOffChainMetadataCache"
 export { useLegacyCompressedImage } from "./assetdisplay/useLegacyCompressedImage";

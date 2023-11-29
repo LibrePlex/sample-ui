@@ -7,12 +7,13 @@ import {
 } from "@solana/wallet-adapter-react";
 import { Keypair, Transaction } from "@solana/web3.js";
 import { ReactNode, createContext, useEffect, useRef, useState } from "react";
-import { getProgramInstanceLegacyInscriptions } from "./getProgramInstanceLegacyInscriptions";
+
 import React from "react";
 import { PublicKey } from "@solana/web3.js";
 
 
 import { LibreplexLegacy } from "../libreplex_legacy";
+import { getProgramInstanceLegacyInscriptions } from "./getProgramInstanceLegacyInscriptions";
 
 export const LibrePlexLegacyInscriptionsProgramContext = createContext<{
   program: Program<LibreplexLegacy>;
@@ -74,8 +75,8 @@ export const LibrePlexLegacyInscriptionsProgramProvider = ({
       {children}
     </LibrePlexLegacyInscriptionsProgramContext.Provider>
   ) : (
-    <Box sx={{ display: "flex" }} columnGap={2}>
-      <Text>Loading libreplex legacy program...</Text>
+    <Box sx={{ display: "flex", position: "fixed", top: '50%', left: "50%", transform: "translate(-50%, -50%)"}} columnGap={2}>
+      <Text>Loading libreplex fair launch program...</Text>
       <Spinner />
     </Box>
   );

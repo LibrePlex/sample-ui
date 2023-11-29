@@ -33,3 +33,5 @@ export {getInscriptionRankPda} from "./getInscriptionRankPda"
 export {getLegacyInscriptionPda} from "./getLegacyInscriptionPda"
 
 export {getMigratorPda} from "./getMigratorPda"
+
+export {getMasterEditionPda} from "./getMasterEditionPda";

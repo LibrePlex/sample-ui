@@ -1,0 +1,71 @@
+// Next, React
+import {
+    Center,
+    SimpleGrid,
+    VStack
+  } from "@chakra-ui/react";
+  import { PublicKey } from "@metaplex-foundation/js";
+  import { useWallet } from "@solana/wallet-adapter-react";
+  
+  
+  import { useRouter } from "next/router";
+  import { FC, useMemo } from "react";
+  
+  
+  export const WalletView: FC = ({}) => {
+    const router = useRouter();
+    const walletId = useMemo(() => {
+      try {
+        return new PublicKey(router.query.walletId);
+      } catch (e) {}
+    }, [router.query.walletId]);
+  
+    const myValidatorIndices = useMemo(() => {
+      const keys: PublicKey[] = [];
+      if (walletId) {
+        for (let i = 0; i < 10; ++i) {
+          keys.push(getDepl(walletId, BigInt(i))[0]);
+        }
+      }
+      return keys;
+    }, [walletId]);
+  
+    const { publicKey } = useWallet();
+    const isAdmin = useMemo(
+      () => publicKey?.toBase58()?.startsWith("4aAifU9ck88koM"),
+      [publicKey]
+    );
+  
+    return (
+      <div className="md:hero mx-auto p-4">
+        <div className="md:hero-content flex flex-col">
+          <div className="mt-6">
+            <div className="text-sm font-normal align-bottom text-right text-slate-600 mt-4">
+              v1.0.0
+            </div>
+            <h1 className="text-center text-5xl md:pl-12 font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mb-4">
+              spl20.io
+            </h1>
+  
+            <Center>
+              <VStack className="center">
+                {isAdmin && (
+                  <CreateValidatorIndexTransactionButton
+                    params={{}}
+                    formatting={{}}
+                  />
+                )}
+                <SimpleGrid spacing={4}>
+                  {myValidatorIndices.map((item, idx) => (
+                    <ValidatorCard key={idx} index={idx} publicKey={item} />
+                  ))}
+                </SimpleGrid>
+              </VStack>
+            </Center>
+            {/* <InscriberOverView/> */}
+          </div>
+        </div>
+      </div>
+    );
+  };
+  

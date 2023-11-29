@@ -192,7 +192,7 @@ export class Executor<P> {
                 this.connection
                   .sendRawTransaction(
                     item.transaction.serialize({
-                      verifySignatures: true,
+                      verifySignatures: false,
                     }),
                     {
                       skipPreflight: true,
@@ -234,7 +234,7 @@ export class Executor<P> {
                   (a, b) => (b ? a + 1 : a),
                   0
                 );
-                // console.log({ success, successCount });
+                console.log({ success, successCount });
                 if (successCount > 0) {
                   this.onSuccess(`Success: ${successCount}/${success.length}`);
                 } else {

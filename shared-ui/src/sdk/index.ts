@@ -56,5 +56,6 @@ export {
   SquadsProgramContext,
   SquadsProgramProvider,
   useMultiSigById,
-  useInscriptionV3ForRoot
+  useInscriptionV3ForRoot,
+  useMint
 } from "./query";

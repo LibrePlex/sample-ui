@@ -4,7 +4,8 @@ import React from "react";
 import { Asset } from "../../sdk/query/metadata/metadata";
 import { AssetDisplayChainRenderer } from "./AssetDisplayChainRenderer";
 import { AssetDisplayInscription } from "./AssetDisplayInscription";
-import { useOffChainMetadataCache } from "./useOffChainMetadata";
+import { useOffChainMetadataCache } from "./useOffChainMetadataCache";
+import { useOffChainMetadataFromUrl } from "./useOffChainMetadata";
 
 export const AssetDisplay = ({
   asset,
@@ -13,7 +14,7 @@ export const AssetDisplay = ({
   asset: Asset | undefined;
   mint: PublicKey;
 }) => {
-  const { data: offchainJson, isFetching } = useOffChainMetadataCache(
+  const { data: offchainJson, isFetching } = useOffChainMetadataFromUrl(
     asset?.json?.url
   );
 
