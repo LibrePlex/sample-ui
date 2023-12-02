@@ -85,8 +85,8 @@ const FairLaunchView = () => {
           LibrePlex Fair Launch
         </h1>
 
-        <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
-          Even though life {"ain't"} fair.
+        <h1 className="text-center font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
+          Showing all Fair Launches as well as Launches migrated from legacy validators
         </h1>
 
         <Box
