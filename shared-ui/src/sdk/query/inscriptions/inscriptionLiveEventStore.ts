@@ -134,13 +134,13 @@ export const createInscriptionLiveEventStore = (
   //   state.setUpdatedInscription(event.id.toBase58(), event.data);
   // });
 
-  // program?.addEventListener("InscriptionEventUpdate", (event: {
-  //   id: PublicKey,
-  //   data: InscriptionEventData
-  // }, slot, sig) => {
-  //   // console.log({event});
-  //   state.setUpdatedInscription(event.id.toBase58(), event.data);
-  // });
+  program?.addEventListener("InscriptionEventUpdate", (event: {
+    id: PublicKey,
+    data: InscriptionEventData
+  }, slot, sig) => {
+    // console.log({event});
+    state.setUpdatedInscription(event.id.toBase58(), event.data);
+  });
 
 
   return store;
