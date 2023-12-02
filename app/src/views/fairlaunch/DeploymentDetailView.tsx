@@ -109,7 +109,7 @@ export const DeploymentDetailView = () => {
       {!deployment?.item.deployed && (
         <DeployTransactionButton params={undefined} formatting={undefined} />
       )}
-      <DeployMigratedTransactionButton params={{deployment}} formatting={undefined} />
+      {/* <DeployMigratedTransactionButton params={{deployment}} formatting={undefined} /> */}
       {deployment?.item.deployed && <Heading size="sm">Deployed</Heading>}
       <RefetchButton refetch={refetch} />
       {deployment?.item && <SwapArea deployment={deployment} />}
