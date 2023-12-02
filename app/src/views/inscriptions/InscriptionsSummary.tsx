@@ -37,7 +37,7 @@ export const InscriptionsSummary = (rest: BoxProps) => {
     connection
   );
 
-  const metadata = useOffChainMetadataCache(lastInscription?.item.root);
+  const metadata = useOffChainMetadataCache(lastInscription?.item?.root);
 
   return (
     <Box {...rest}>
