@@ -96,7 +96,7 @@ export const launchDeployment = async (
 
   instructions.push(
     await fairLaunch.methods
-      .deployMigrated()
+      .deployLegacy()
       .accounts({
         deployment: deployment.pubkey,
         hashlist,
@@ -105,6 +105,15 @@ export const launchDeployment = async (
         fungibleEscrowTokenAccount,
         fungibleMetadata,
 
+        nonFungibleMint: nonFungibleMint.publicKey,
+        nonFungibleMetadata,
+        nonFungibleMasterEdition,
+        nonFungibleTokenAccount: nonFungibleEscrowTokenAccount,
+
+        inscriptionSummary,
+        inscription,
+        inscriptionV3,
+        inscriptionData,
         tokenProgram: TOKEN_PROGRAM_ID,
         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
         inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,

@@ -441,54 +441,6 @@ export type LibreplexFairLaunch = {
       "args": []
     },
     {
-      "name": "migrateFromValidator",
-      "accounts": [
-        {
-          "name": "deployment",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "deployment"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "InitialiseInput"
-                },
-                "path": "input.ticker"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "InitialiseInput"
-          }
-        },
-        {
-          "name": "validatedTokenCount",
-          "type": "u64"
-        }
-      ]
-    },
-    {
       "name": "migrateToHashlist",
       "accounts": [
         {
@@ -527,6 +479,26 @@ export type LibreplexFairLaunch = {
                 "type": "publicKey",
                 "account": "Mint",
                 "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "migrationCounter",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "migration_counter"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Deployment",
+                "path": "deployment"
               }
             ]
           }
@@ -727,6 +699,22 @@ export type LibreplexFairLaunch = {
       "type": {
         "kind": "struct",
         "fields": []
+      }
+    },
+    {
+      "name": "migrationCounter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "deployment",
+            "type": "publicKey"
+          },
+          {
+            "name": "migrationCount",
+            "type": "u64"
+          }
+        ]
       }
     }
   ],
@@ -1320,54 +1308,6 @@ export const IDL: LibreplexFairLaunch = {
       "args": []
     },
     {
-      "name": "migrateFromValidator",
-      "accounts": [
-        {
-          "name": "deployment",
-          "isMut": true,
-          "isSigner": false,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "type": "string",
-                "value": "deployment"
-              },
-              {
-                "kind": "arg",
-                "type": {
-                  "defined": "InitialiseInput"
-                },
-                "path": "input.ticker"
-              }
-            ]
-          }
-        },
-        {
-          "name": "payer",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "input",
-          "type": {
-            "defined": "InitialiseInput"
-          }
-        },
-        {
-          "name": "validatedTokenCount",
-          "type": "u64"
-        }
-      ]
-    },
-    {
       "name": "migrateToHashlist",
       "accounts": [
         {
@@ -1406,6 +1346,26 @@ export const IDL: LibreplexFairLaunch = {
                 "type": "publicKey",
                 "account": "Mint",
                 "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "migrationCounter",
+          "isMut": true,
+          "isSigner": false,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "type": "string",
+                "value": "migration_counter"
+              },
+              {
+                "kind": "account",
+                "type": "publicKey",
+                "account": "Deployment",
+                "path": "deployment"
               }
             ]
           }
@@ -1606,6 +1566,22 @@ export const IDL: LibreplexFairLaunch = {
       "type": {
         "kind": "struct",
         "fields": []
+      }
+    },
+    {
+      "name": "migrationCounter",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "deployment",
+            "type": "publicKey"
+          },
+          {
+            "name": "migrationCount",
+            "type": "u64"
+          }
+        ]
       }
     }
   ],

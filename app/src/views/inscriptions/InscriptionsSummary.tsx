@@ -23,6 +23,7 @@ import React, { useEffect, useMemo } from "react";
 import { TbRefresh } from "react-icons/tb";
 import { Image } from "@chakra-ui/react";
 import { useInscriptionSummary } from "./useInscriptionsSummary";
+import { useInscriptionV3ById } from "shared-ui/src/sdk/query/inscriptions/inscriptionsV3";
 
 export const InscriptionsSummary = (rest: BoxProps) => {
   const { data: inscriptionSummary, refetch: refetchSummary } =
@@ -31,7 +32,7 @@ export const InscriptionsSummary = (rest: BoxProps) => {
   
 
   const { connection } = useConnection();
-  const { data: lastInscription } = useInscriptionById(
+  const { data: lastInscription } = useInscriptionV3ById(
     inscriptionSummary?.item?.lastInscription,
     connection
   );

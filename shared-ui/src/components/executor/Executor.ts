@@ -199,26 +199,26 @@ export class Executor<P> {
                     }
                   )
                   .then(async (txid) => {
-                    // if (awaitConfirmation) {
-                    //   const result = await sendAndConfirmRawTransaction(
-                    //     this.connection,
-                    //     item.transaction.serialize({
-                    //       verifySignatures: false,
-                    //     }),
-                    //     {
-                    //       signature: txid,
-                    //       ...thisBatchSigned[idx].blockhash,
-                    //     },
-                    //     {
-                    //       skipPreflight: true,
-                    //       maxRetries: 5,
-                    //     }
-                    //   );
-                    //   // console.log(result);
-                    //   return result;
-                    // } else {
-                    //   return txid;
-                    // }
+                    if (awaitConfirmation) {
+                      const result = await sendAndConfirmRawTransaction(
+                        this.connection,
+                        item.transaction.serialize({
+                          verifySignatures: false,
+                        }),
+                        {
+                          signature: txid,
+                          ...thisBatchSigned[idx].blockhash,
+                        },
+                        {
+                          skipPreflight: true,
+                          maxRetries: 5,
+                        }
+                      );
+                      // console.log(result);
+                      return result;
+                    } else {
+                      return txid;
+                    }
                   })
                   .catch((err) => {
                     console.log({ err });
