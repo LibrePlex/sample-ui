@@ -1,24 +1,20 @@
-import { Heading, Image, VStack, Text, Button } from "@chakra-ui/react";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
-import { useRouter } from "next/router";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Button, Heading, Image, VStack } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
   HttpClient,
   IOffchainJson,
-  decodeDeployment,
   getHashlistPda,
   useDeploymentById,
-  useFetchSingleAccount,
+  useFetchSingleAccount
 } from "@libreplex/shared-ui";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { useRouter } from "next/router";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DeployTransactionButton } from "./DeployTransactionButton";
-import { RefetchButton } from "@app/components/RefetchButton";
 import { SwapArea } from "./SwapArea";
-import { useMint } from "@libreplex/shared-ui";
 // import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 import { FairLaunchProgramContext, decodeHashlist } from "shared-ui/src/anchor";
-import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 
 export const DeploymentDetailView = () => {
   const router = useRouter();
@@ -54,7 +50,7 @@ export const DeploymentDetailView = () => {
   const { publicKey } = useWallet();
 
   const hashlistPda = useMemo(
-    () => deployment ? getHashlistPda(deployment.pubkey)[0] : undefined,
+    () => (deployment ? getHashlistPda(deployment.pubkey)[0] : undefined),
     [deployment]
   );
 
@@ -73,7 +69,7 @@ export const DeploymentDetailView = () => {
       "href",
       "data:application/json;charset=utf-8, " +
         encodeURIComponent(
-          JSON.stringify(vals.item.issues.map((item) => item.mint.toBase58())),
+          JSON.stringify(vals.item.issues.map((item) => item.mint.toBase58()))
         )
     );
 
@@ -94,9 +90,13 @@ export const DeploymentDetailView = () => {
           publicKey={deployment?.item?.fungibleMint?.toBase58()}
         />
       )}
-      <Button onClick={()=>{
-        download()
-      }}>Download hashlist</Button>
+      <Button
+        onClick={() => {
+          download();
+        }}
+      >
+        Download hashlist
+      </Button>
       {/* {publicKey?.toBase58().startsWith("4aAifU9ck88koMhSK") && (
         <DeployMigratedTransactionButton
           params={{
@@ -111,7 +111,6 @@ export const DeploymentDetailView = () => {
       )}
       {/* <DeployMigratedTransactionButton params={{deployment}} formatting={undefined} /> */}
       {deployment?.item.deployed && <Heading size="sm">Deployed</Heading>}
-      <RefetchButton refetch={refetch} />
       {deployment?.item && <SwapArea deployment={deployment} />}
     </VStack>
   );
