@@ -1,7 +1,13 @@
 import {
+  Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   Center,
   Flex,
+  HStack,
   Heading,
   Popover,
   PopoverArrow,
@@ -9,37 +15,26 @@ import {
   PopoverHeader,
   PopoverTrigger,
   SimpleGrid,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  VStack,
-  Box,
   Text,
+  VStack
 } from "@chakra-ui/react";
-import { Metadata as LegacyMetadata } from "@metaplex-foundation/mpl-token-metadata";
+
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useEffect, useMemo, useState } from "react";
+import { DeploymentMintDisplay } from "./DeploymentMintDisplay";
+
+import { InfoIcon } from "@chakra-ui/icons";
 import {
+  CopyPublicKeyButton,
   Deployment,
   IRpcObject,
-  decodeLegacyMetadata,
   getHashlistPda,
-  getLegacyMetadataPda,
-  getProgramInstanceMetadata,
   useHashlistById,
   useLegacyMintsByWallet,
   useMint,
-  useTokenAccountsByOwner,
 } from "@libreplex/shared-ui";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useMemo } from "react";
 import { MintTransactionButton } from "./MintTransactionButton";
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
-import { DeploymentMintDisplay } from "./DeploymentMintDisplay";
-import { Paginator, usePaginator } from "@app/components/Paginator";
-import { de } from "date-fns/locale";
-import { InfoIcon } from "@chakra-ui/icons";
+
 
 export const SwapArea = ({
   deployment,
@@ -53,9 +48,19 @@ export const SwapArea = ({
 
   const { connection } = useConnection();
 
+  const { publicKey } = useWallet();
+
   const fungibleMint = useMint(fungibleMintId, connection);
 
-  const { data } = useLegacyMintsByWallet(deployment.pubkey, connection);
+  const { data: mintsInEscrow } = useLegacyMintsByWallet(
+    deployment.pubkey,
+    connection
+  );
+
+  const { data: mintsInMyWallet } = useLegacyMintsByWallet(
+    publicKey,
+    connection
+  );
 
   const hashlistId = useMemo(
     () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : undefined),
@@ -74,24 +79,43 @@ export const SwapArea = ({
     return _hashlistIndex;
   }, [hashlist]);
 
-  const mintsFromThisDeployer = useMemo(
+  const mintsFromThisDeployerHeldInWallet = useMemo(
     () =>
-      data.filter((item) => hashlistIndex[item.mint.toBase58()] !== undefined),
-    [data, hashlistIndex]
+      [
+        ...mintsInMyWallet.filter(
+          (item) => hashlistIndex[item.mint.toBase58()] !== undefined
+        ),
+      ].sort((a, b) => a.mint.toBase58().localeCompare(b.mint.toBase58())),
+    [mintsInMyWallet, hashlistIndex]
   );
 
-  const { setCurrentPage, maxPages, currentPage, currentPageItems } =
-    usePaginator(mintsFromThisDeployer, 10);
+  const mintsFromThisDeployerHeldInEscrow = useMemo(
+    () =>
+      [
+        ...mintsInEscrow.filter(
+          (item) => hashlistIndex[item.mint.toBase58()] !== undefined
+        ),
+      ].sort((a, b) => a.mint.toBase58().localeCompare(b.mint.toBase58())),
+    [mintsInEscrow, hashlistIndex]
+  );
+
+  useEffect(() => {
+    console.log({
+      mintsFromThisDeployer: mintsFromThisDeployerHeldInEscrow,
+      hashlistIndex,
+      data: mintsInEscrow,
+    });
+  }, [mintsFromThisDeployerHeldInEscrow, hashlistIndex, mintsInEscrow]);
 
   const totalSplBalance = useMemo(
     () =>
-      data
+      mintsInEscrow
         .filter(
           (item) =>
             item?.mint.toBase58() === deployment?.item?.fungibleMint.toBase58()
         )
         .reduce((a, b) => a + Number(b.tokenAccount.item.amount ?? 0), 0),
-    [data, deployment?.item?.fungibleMint]
+    [mintsInEscrow, deployment?.item?.fungibleMint]
   );
 
   const denominator = useMemo(
@@ -101,106 +125,135 @@ export const SwapArea = ({
 
   return (
     <VStack>
-      <Heading size="md">Escrow Contents</Heading>
-      <Paginator
-        onPageChange={setCurrentPage}
-        pageCount={maxPages}
-        currentPage={currentPage}
-      />
-      <Table>
-        <Thead>
-          <Th colSpan={3}>
-            <Center>NFT</Center>
-          </Th>
-          <Th colSpan={1}>
-            {" "}
-            <Center>SPL</Center>
-          </Th>
-          <Td colSpan={2}>
-            <Popover size="md">
-              <PopoverTrigger>
-                <Button colorScheme="white" variant="outline">
-                  <InfoIcon />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverHeader>
-                  <Flex justify="space-between" align="center" p={2}>
-                    <Box>
-                      <Text as="b">SPL Token Balance</Text>
-                    </Box>
-                  </Flex>
-                </PopoverHeader>
-                <Box p={5}>
-                  <Center>
-                    <VStack align={"start"}>
-                      <Text>
-                        The escrow always holds exactly the correct amount of
-                        SPL token to allow all NFTs in circulation to be
-                        converted.
-                      </Text>
+      <VStack>
+        <VStack minW={"400px"} width="100%">
+          <Card width="100%">
+            <CardHeader>
+              <Heading size="md">SPL-20s</Heading>
+            </CardHeader>
+            <CardBody>
+              <SimpleGrid columns={3} gap={2} width="100%">
+                <Heading size="sm">Escrow</Heading>
+                <Heading size="sm">Circulation</Heading>
+                <Heading size="sm">Total</Heading>
 
-                      <Text>
-                        For pre-Fair Launch deployments, escrow balance can be
-                        lower than the amount of NFTs in circulation. However,
-                        once all NFTs are migrated from pre-Fair Launch
-                        validators, the balances will match exactly.
-                      </Text>
-                    </VStack>
-                  </Center>
-                </Box>
-              </PopoverContent>
-            </Popover>
-          </Td>
-        </Thead>
-        <Thead>
-          <Th>Escrow</Th>
-          <Th>Circulation</Th>
-          <Th>Total</Th>
-          <Th>Escrow</Th>
-          <Th>Circulation</Th>
-          <Th>Total</Th>
-        </Thead>
-        <Tbody>
-          <Td>
-            {Number(
-              deployment?.item?.escrowNonFungibleCount ?? 0
-            ).toLocaleString()}{" "}
-            x {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
-          </Td>
-          <Td>
-            {(
-              Number(deployment?.item?.numberOfTokensIssued ?? 0) -
-              Number(deployment?.item?.escrowNonFungibleCount ?? 0)
-            ).toLocaleString()}{" "}
-            x {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
-          </Td>
-          <Td>
-            {Number(
-              deployment?.item?.numberOfTokensIssued ?? 0
-            ).toLocaleString()}{" "}
-            x {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
-          </Td>
-          <Td>
-            {(Number(totalSplBalance ?? 0) / denominator).toLocaleString()}
-          </Td>
-          <Td>
-            {(
-              (Number(fungibleMint?.item?.supply ?? 0) -
-                Number(totalSplBalance ?? 0)) /
-              denominator
-            ).toLocaleString()}
-          </Td>
-          <Td>
-            {(
-              Number(fungibleMint?.item?.supply ?? 0) / denominator
-            ).toLocaleString()}
-          </Td>
-        </Tbody>
-      </Table>
+                <Text>
+                  {Number(
+                    deployment?.item?.escrowNonFungibleCount ?? 0
+                  ).toLocaleString()}{" "}
+                  x{" "}
+                  {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
+                </Text>
+                <Text>
+                  {(
+                    Number(deployment?.item?.numberOfTokensIssued ?? 0) -
+                    Number(deployment?.item?.escrowNonFungibleCount ?? 0)
+                  ).toLocaleString()}{" "}
+                  x{" "}
+                  {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
+                </Text>
+                <Text>
+                  {Number(
+                    deployment?.item?.numberOfTokensIssued ?? 0
+                  ).toLocaleString()}{" "}
+                  x{" "}
+                  {Number(deployment?.item?.limitPerMint ?? 0).toLocaleString()}
+                </Text>
+              </SimpleGrid>
+            </CardBody>
+            <CardFooter>
+              <HStack>
+                <Text fontSize={"12px"}>
+                  Each spl-20 token has its own token address
+                </Text>
+              </HStack>
+            </CardFooter>
+          </Card>
+        </VStack>
+        <VStack className="relative" minW={"400px"} width="100%">
+          <Card width="100%">
+            <CardHeader>
+              <HStack>
+                <Heading size="md">SPL Tokens</Heading>
+
+                <Popover size="md">
+                  <PopoverTrigger>
+                    <Button colorScheme="white" variant="outline">
+                      <InfoIcon />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverHeader>
+                      <Flex justify="space-between" align="center" p={2}>
+                        <Box>
+                          <Text as="b">SPL Token Balance</Text>
+                        </Box>
+                      </Flex>
+                    </PopoverHeader>
+                    <Box p={5}>
+                      <Center>
+                        <VStack align={"start"}>
+                          <Text>
+                            The escrow always holds exactly the correct amount
+                            of SPL token to allow all NFTs in circulation to be
+                            converted.
+                          </Text>
+
+                          <Text>
+                            For pre-Fair Launch deployments, escrow balance can
+                            be lower than the amount of NFTs in circulation.
+                            However, once all NFTs are migrated from pre-Fair
+                            Launch validators, the balances will match exactly.
+                          </Text>
+                        </VStack>
+                      </Center>
+                    </Box>
+                  </PopoverContent>
+                </Popover>
+              </HStack>
+            </CardHeader>
+            <CardBody>
+              <SimpleGrid columns={3} width="100%">
+                <Heading size="sm">Escrow</Heading>
+                <Heading size="sm">Circulation</Heading>
+                <Heading size="sm">Total</Heading>
+
+                <Text>
+                  {(
+                    Number(totalSplBalance ?? 0) / denominator
+                  ).toLocaleString()}
+                </Text>
+                <Text>
+                  {(
+                    (Number(fungibleMint?.item?.supply ?? 0) -
+                      Number(totalSplBalance ?? 0)) /
+                    denominator
+                  ).toLocaleString()}
+                </Text>
+                <Text>
+                  {(
+                    Number(fungibleMint?.item?.supply ?? 0) / denominator
+                  ).toLocaleString()}
+                </Text>
+              </SimpleGrid>
+            </CardBody>
+            <CardFooter>
+              <HStack>
+                <Text fontSize={"12px"}>token address</Text>
+                {deployment?.item && (
+                  <CopyPublicKeyButton
+                    publicKey={deployment?.item?.fungibleMint.toBase58()}
+                  />
+                )}
+              </HStack>
+            </CardFooter>
+          </Card>
+        </VStack>
+      </VStack>
+
       {deployment.item.migratedFromLegacy ? (
-        <Text>Hashlist closed - cannot mint more tokens</Text>
+        <Text>Inscribed out.</Text>
       ) : (
         <MintTransactionButton
           params={{
@@ -209,11 +262,12 @@ export const SwapArea = ({
           formatting={{}}
         />
       )}
-      {/* <Heading size="md">
-        {mintsFromThisDeployer.length} NFTs + {totalSplBalance / denominator}{" "}
-        SPL tokens{" "}
-      </Heading> */}
-      <DeploymentMintDisplay mints={currentPageItems} deployment={deployment} />
+
+      <DeploymentMintDisplay
+        mintsInEscrow={mintsFromThisDeployerHeldInEscrow}
+        mintsInWallet={mintsFromThisDeployerHeldInWallet}
+        deployment={deployment}
+      />
     </VStack>
   );
 };

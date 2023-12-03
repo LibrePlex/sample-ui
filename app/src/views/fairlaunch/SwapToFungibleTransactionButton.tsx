@@ -6,30 +6,21 @@ import {
 } from "@solana/web3.js";
 
 import { VStack } from "@chakra-ui/react";
-import {
-  Deployment,
-  GenericTransactionButton,
-  GenericTransactionButtonProps,
-  IExecutorParams,
-  IRpcObject,
-  ITransactionTemplate,
-  MintWithTokenAccount,
-  PROGRAM_ID_INSCRIPTIONS,
-  getProgramInstanceFairLaunch,
-  notify
-} from "@libreplex/shared-ui";
+
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 
+import { Deployment, GenericTransactionButton, GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate, MintWithTokenAccount, getProgramInstanceFairLaunch, notify } from "@libreplex/shared-ui";
+
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;
   nonFungibleMint: MintWithTokenAccount;
 }
 
-export const launchDeployment = async (
+export const generateTx = async (
   { wallet, params }: IExecutorParams<IDeployTransactionButton>,
   connection: Connection,
   cluster: string
@@ -51,7 +42,7 @@ export const launchDeployment = async (
 
   const fungibleMint = deployment.item.fungibleMint;
 
-  const fungibleTokenAccountEscrow = getAssociatedTokenAddressSync(
+  const fungibleSourceTokenAccount = getAssociatedTokenAddressSync(
     fungibleMint,
     deployment.pubkey,
     true
@@ -75,7 +66,7 @@ export const launchDeployment = async (
         deployment: deployment.pubkey,
         payer: wallet.publicKey,
         fungibleMint,
-        fungibleTokenAccountEscrow,
+        fungibleSourceTokenAccount,
         fungibleTargetTokenAccount,
         nonFungibleMint: nonFungibleMint.mint,
         nonFungibleSourceTokenAccount: nonFungibleMint.tokenAccount.pubkey,
@@ -116,7 +107,7 @@ export const SwapToFungibleTransactionButton = (
     <VStack gap={2}>
       <GenericTransactionButton<IDeployTransactionButton>
         text={`Swap to SPL`}
-        transactionGenerator={launchDeployment}
+        transactionGenerator={generateTx}
         onError={(msg) =>
           notify({ message: msg ?? "Unknown error", type: "error" })
         }

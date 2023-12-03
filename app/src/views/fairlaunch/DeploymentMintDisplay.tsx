@@ -1,29 +1,87 @@
-import { Center, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-  CopyPublicKeyButton,
-  Deployment,
-  IRpcObject,
-  MintWithTokenAccount,
-  useLegacyMetadataByMintId,
-} from "@libreplex/shared-ui";
+  Box,
+  Heading,
+  SimpleGrid,
+  VStack,
+  useMediaQuery,
+} from "@chakra-ui/react";
 
-import { Metadata as LegacyMetadata } from "@metaplex-foundation/mpl-token-metadata";
-import { useConnection } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
 import { DeploymentMintDisplayRow } from "./DeploymentMintDisplayRow";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { Deployment, IRpcObject, MintWithTokenAccount } from "@libreplex/shared-ui";
+import { Paginator, usePaginator } from "@app/components/Paginator";
 
-export const DeploymentMintDisplay = ({ mints, deployment }: { mints: MintWithTokenAccount[], deployment: IRpcObject<Deployment> }) => {
+export const DeploymentMintDisplay = ({
+  mintsInWallet,
+  mintsInEscrow,
+  deployment,
+}: {
+  mintsInEscrow: MintWithTokenAccount[];
+  mintsInWallet: MintWithTokenAccount[];
+  deployment: IRpcObject<Deployment>;
+}) => {
+  const {
+    setCurrentPage: setCurrentPageWallet,
+    maxPages: maxPagesWallet,
+    currentPage: currentPageWallet,
+    currentPageItems: currentPageItemsWallet,
+  } = usePaginator(mintsInWallet, 10);
+
+  const {
+    setCurrentPage: setCurrentPageEscrow,
+    maxPages: maxPagesEscrow,
+    currentPage: currentPageEscrow,
+    currentPageItems: currentPageItemsEscrow,
+  } = usePaginator(mintsInEscrow, 10);
+
+  const [narrowScreen] = useMediaQuery("(max-width: 600px)");
+
+  const {publicKey} = useWallet();
+
   return (
-    <Table>
-      <Thead>
-        <Th>Mint</Th>
-        {/* <Th><Center>Swap</Center></Th> */}
-      </Thead>
-      <Tbody>
-        {mints?.map((item, idx) => (
-          <DeploymentMintDisplayRow key={idx} mint={item} deployment={deployment}/>
+    <SimpleGrid columns={narrowScreen ? 1 : 2} gap={2}>
+      <VStack className="border-2 p-2">
+        <Heading size="md">Your wallet</Heading>
+        <Paginator
+          onPageChange={setCurrentPageWallet}
+          pageCount={maxPagesWallet}
+          currentPage={currentPageWallet}
+        />
+        <VStack>
+          {currentPageItemsWallet?.map((item, idx) => (
+            <DeploymentMintDisplayRow
+              key={idx}
+              mint={item}
+              deployment={deployment}
+            />
+          ))}
+        </VStack>
+        <Box p={3} maxWidth="300px">
+          {publicKey ? (
+            <Heading size="md">
+              You have no NFTs from this deployment in your wallet.
+            </Heading>
+          ) : (
+            <Heading size="md">Please connect your wallet.</Heading>
+          )}
+        </Box>
+      </VStack>
+      <VStack className="border-2 p-2">
+        <Heading size="md">Escrow</Heading>
+        <Paginator
+          onPageChange={setCurrentPageEscrow}
+          pageCount={maxPagesEscrow}
+          currentPage={currentPageEscrow}
+        />
+
+        {currentPageItemsEscrow?.map((item, idx) => (
+          <DeploymentMintDisplayRow
+            key={idx}
+            mint={item}
+            deployment={deployment}
+          />
         ))}
-      </Tbody>
-    </Table>
+      </VStack>
+    </SimpleGrid>
   );
 };

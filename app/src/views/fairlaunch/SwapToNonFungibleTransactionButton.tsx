@@ -1,39 +1,25 @@
 import {
   Connection,
-  Keypair,
+  PublicKey,
   SystemProgram,
-  TransactionInstruction,
+  TransactionInstruction
 } from "@solana/web3.js";
 
 import { VStack } from "@chakra-ui/react";
-import {
-  Deployment,
-  GenericTransactionButton,
-  GenericTransactionButtonProps,
-  IExecutorParams,
-  IRpcObject,
-  ITransactionTemplate,
-  MintWithTokenAccount,
-  PROGRAM_ID_INSCRIPTIONS,
-  getHashlistPda,
-  getLegacyMetadataPda,
-  getMasterEditionPda,
-  getProgramInstanceFairLaunch,
-  notify,
-} from "@libreplex/shared-ui";
+
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
+import { Deployment, GenericTransactionButton, GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate, MintWithTokenAccount, getProgramInstanceFairLaunch, notify } from "@libreplex/shared-ui";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;
-  fungibleSourceAccount: MintWithTokenAccount;
-  nonFungibleSourceAccount: MintWithTokenAccount
+  nonFungibleMint: MintWithTokenAccount;
 }
 
-export const swapToNonFungible = async (
+export const generateTx = async (
   { wallet, params }: IExecutorParams<IDeployTransactionButton>,
   connection: Connection,
   cluster: string
@@ -43,7 +29,7 @@ export const swapToNonFungible = async (
 }> => {
   const data: ITransactionTemplate[] = [];
 
-  const { deployment, fungibleSourceAccount, nonFungibleSourceAccount } = params;
+  const { deployment, nonFungibleMint } = params;
 
   const fairLaunch = getProgramInstanceFairLaunch(connection, wallet);
 
@@ -53,40 +39,47 @@ export const swapToNonFungible = async (
 
   const instructions: TransactionInstruction[] = [];
 
-  const fungibleMint = Keypair.generate();
-  const nonFungibleMint = Keypair.generate();
-
-  const nonFungibleTargetTokenAccount = getAssociatedTokenAddressSync(
-    nonFungibleMint.publicKey,
-    wallet.publicKey
-  );
-
-
+  const fungibleMint = deployment.item.fungibleMint;
 
   const fungibleTargetTokenAccount = getAssociatedTokenAddressSync(
-    fungibleMint.publicKey,
+    fungibleMint,
     deployment.pubkey,
     true
   );
 
+  const nonFungibleTargetTokenAccount = getAssociatedTokenAddressSync(
+    nonFungibleMint.mint,
+    wallet.publicKey,
+  );
 
-
+  const fungibleSourceTokenAccount = getAssociatedTokenAddressSync(
+    fungibleMint,
+    wallet.publicKey,
+  );
+  
+  const nonFungibleSourceTokenAccount = getAssociatedTokenAddressSync(
+    nonFungibleMint.mint,
+    deployment.pubkey,
+    true
+  );
   instructions.push(
     await fairLaunch.methods
       .swapToNonfungible()
       .accounts({
         deployment: deployment.pubkey,
         payer: wallet.publicKey,
-        fungibleMint: fungibleMint.publicKey,
-        nonFungibleMint: nonFungibleMint.publicKey,
-        nonFungibleSourceAcountEscrow: nonFungibleSourceAccount.tokenAccount.pubkey,
-        nonFungibleTargetTokenAccount,
-        fungibleSourceTokenAccount: fungibleSourceAccount.tokenAccount.pubkey,
+        fungibleMint,
         fungibleTargetTokenAccount,
+        fungibleSourceTokenAccount,
+        nonFungibleSourceTokenAccount,
+        nonFungibleMint: nonFungibleMint.mint,
+        nonFungibleTargetTokenAccount,
         tokenProgram: TOKEN_PROGRAM_ID,
         associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
         systemProgram: SystemProgram.programId,
+        sysvarInstructions: new PublicKey(
+          "Sysvar1nstructions1111111111111111111111111"
+        ),
       })
       .instruction()
   );
@@ -116,12 +109,12 @@ export const SwapToNonFungibleTransactionButton = (
   return (
     <VStack gap={2}>
       <GenericTransactionButton<IDeployTransactionButton>
-        text={`Launch deployment`}
-        transactionGenerator={swapToNonFungible}
+        text={`Swap to NFT`}
+        transactionGenerator={generateTx}
         onError={(msg) =>
           notify({ message: msg ?? "Unknown error", type: "error" })
         }
-        size="lg"
+        size="sm"
         {...props}
         formatting={{ colorScheme: "red" }}
       />
