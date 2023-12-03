@@ -15,8 +15,9 @@ import {
   PopoverHeader,
   PopoverTrigger,
   SimpleGrid,
+  Spinner,
   Text,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -35,7 +36,6 @@ import {
 } from "@libreplex/shared-ui";
 import { MintTransactionButton } from "./MintTransactionButton";
 
-
 export const SwapArea = ({
   deployment,
 }: {
@@ -52,15 +52,17 @@ export const SwapArea = ({
 
   const fungibleMint = useMint(fungibleMintId, connection);
 
-  const { data: mintsInEscrow } = useLegacyMintsByWallet(
-    deployment.pubkey,
-    connection
-  );
+  const {
+    data: mintsInEscrow,
+    refetch: refreshEscrow,
+    isFetching: isFetchingEscrow,
+  } = useLegacyMintsByWallet(deployment.pubkey, connection);
 
-  const { data: mintsInMyWallet } = useLegacyMintsByWallet(
-    publicKey,
-    connection
-  );
+  const {
+    data: mintsInMyWallet,
+    refetch: refreshWallet,
+    isFetching: isFetchingWallet,
+  } = useLegacyMintsByWallet(publicKey, connection);
 
   const hashlistId = useMemo(
     () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : undefined),
@@ -263,6 +265,15 @@ export const SwapArea = ({
         />
       )}
 
+      <Button
+        onClick={async () => {
+          refreshEscrow();
+          refreshWallet();
+        }}
+      >
+        Refresh
+      </Button>
+      {isFetchingEscrow || (isFetchingWallet && <Spinner />)}
       <DeploymentMintDisplay
         mintsInEscrow={mintsFromThisDeployerHeldInEscrow}
         mintsInWallet={mintsFromThisDeployerHeldInWallet}

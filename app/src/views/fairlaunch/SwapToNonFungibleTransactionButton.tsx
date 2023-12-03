@@ -2,21 +2,33 @@ import {
   Connection,
   PublicKey,
   SystemProgram,
-  TransactionInstruction
+  TransactionInstruction,
 } from "@solana/web3.js";
 
 import { VStack } from "@chakra-ui/react";
 
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
+  AccountLayout,
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
-import { Deployment, GenericTransactionButton, GenericTransactionButtonProps, IExecutorParams, IRpcObject, ITransactionTemplate, MintWithTokenAccount, getProgramInstanceFairLaunch, notify } from "@libreplex/shared-ui";
+import {
+  Deployment,
+  GenericTransactionButton,
+  GenericTransactionButtonProps,
+  IExecutorParams,
+  IRpcObject,
+  ITransactionTemplate,
+  MintWithTokenAccount,
+  getProgramInstanceFairLaunch,
+  notify,
+} from "@libreplex/shared-ui";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;
   nonFungibleMint: MintWithTokenAccount;
+  fungibleTokenAccount: MintWithTokenAccount;
 }
 
 export const generateTx = async (
@@ -29,7 +41,7 @@ export const generateTx = async (
 }> => {
   const data: ITransactionTemplate[] = [];
 
-  const { deployment, nonFungibleMint } = params;
+  const { deployment, nonFungibleMint, fungibleTokenAccount } = params;
 
   const fairLaunch = getProgramInstanceFairLaunch(connection, wallet);
 
@@ -49,14 +61,21 @@ export const generateTx = async (
 
   const nonFungibleTargetTokenAccount = getAssociatedTokenAddressSync(
     nonFungibleMint.mint,
-    wallet.publicKey,
+    wallet.publicKey
   );
 
-  const fungibleSourceTokenAccount = getAssociatedTokenAddressSync(
-    fungibleMint,
-    wallet.publicKey,
+  const fungibleSourceTokenAccount = fungibleTokenAccount.tokenAccount.pubkey;
+
+  const accountData = await connection.getAccountInfo(
+    fungibleSourceTokenAccount
   );
-  
+
+  const tokenAccount = AccountLayout.decode(accountData.data);
+
+  if (Number(tokenAccount.amount) < Number(deployment.item.limitPerMint)) {
+    throw Error("Insufficient tokens available ");
+  }
+
   const nonFungibleSourceTokenAccount = getAssociatedTokenAddressSync(
     nonFungibleMint.mint,
     deployment.pubkey,

@@ -4,11 +4,17 @@ import {
   SimpleGrid,
   VStack,
   useMediaQuery,
+  Text,
+  Button,
 } from "@chakra-ui/react";
 
 import { DeploymentMintDisplayRow } from "./DeploymentMintDisplayRow";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Deployment, IRpcObject, MintWithTokenAccount } from "@libreplex/shared-ui";
+import {
+  Deployment,
+  IRpcObject,
+  MintWithTokenAccount,
+} from "@libreplex/shared-ui";
 import { Paginator, usePaginator } from "@app/components/Paginator";
 
 export const DeploymentMintDisplay = ({
@@ -36,9 +42,11 @@ export const DeploymentMintDisplay = ({
 
   const [narrowScreen] = useMediaQuery("(max-width: 600px)");
 
-  const {publicKey} = useWallet();
+  const { publicKey } = useWallet();
 
   return (
+    <VStack>
+      
     <SimpleGrid columns={narrowScreen ? 1 : 2} gap={2}>
       <VStack className="border-2 p-2">
         <Heading size="md">Your wallet</Heading>
@@ -68,6 +76,13 @@ export const DeploymentMintDisplay = ({
       </VStack>
       <VStack className="border-2 p-2">
         <Heading size="md">Escrow</Heading>
+        <Text maxW={'200px'}>
+          You need{" "}
+          {deployment.item
+            ? Number(deployment?.item?.limitPerMint).toLocaleString()
+            : ""}{" "}
+          {deployment.item.ticker} tokens to swap for an NFT
+        </Text>
         <Paginator
           onPageChange={setCurrentPageEscrow}
           pageCount={maxPagesEscrow}
@@ -83,5 +98,6 @@ export const DeploymentMintDisplay = ({
         ))}
       </VStack>
     </SimpleGrid>
+    </VStack>
   );
 };

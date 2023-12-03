@@ -15,7 +15,7 @@ export const useLegacyMintsByWallet = (
   owner: PublicKey,
   connection: Connection
 ) => {
-  const { data: ownedMints, isFetching: isFetchingMints } =
+  const { data: ownedMints, isFetching: isFetchingMints, refetch } =
     useTokenAccountsByOwner(owner, connection, TOKEN_PROGRAM_ID);
 
   const tokenAccountByMint = useMemo(() => {
@@ -46,6 +46,7 @@ export const useLegacyMintsByWallet = (
 
   return {
     data: combined,
-    isFetching: isFetchingMints
+    isFetching: isFetchingMints,
+    refetch
   };
 };
