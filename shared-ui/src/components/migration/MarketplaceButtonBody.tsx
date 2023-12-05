@@ -44,7 +44,7 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
           aria-label={"solsniper"}
           background={"black"}
           onClick={() => {
-            window.open(`https://sniper.xyz`);
+            window.open(`https://www.sniper.xyz/asset/${mint.toBase58()}`);
           }}
         >
           <img src="/sniper_square.png" style={{ height: "28px" }} />
