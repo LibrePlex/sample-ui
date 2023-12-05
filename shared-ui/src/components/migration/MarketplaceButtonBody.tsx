@@ -40,6 +40,15 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
         >
           <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />
         </IconButton>
+        <IconButton
+          aria-label={"solsniper"}
+          background={"black"}
+          onClick={() => {
+            window.open(`https://sniper.xyz`);
+          }}
+        >
+          <img src="/sniper_square.png" style={{ height: "28px" }} />
+        </IconButton>
       <Box>
         <Text pb={3}>
           This item has succesfully been migrated onto V3 inscriptions index.

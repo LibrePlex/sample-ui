@@ -30,13 +30,22 @@ export const TensorButton = ({ mint }: { mint: PublicKey }) => {
           <img src="/tensorhq-white.png" style={{ height: "28px" }} />
         </IconButton>
         <IconButton
-          aria-label={"tensorhq"}
+          aria-label={"ME"}
           background={"black"}
           onClick={() => {
             setOpen(true);
           }}
         >
           <img src="/ME_Logo_Gradient_BG.png" style={{ height: "28px" }} />
+        </IconButton>
+        <IconButton
+          aria-label={"solsniper"}
+          background={"black"}
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          <img src="/sniper_square.png" style={{ height: "28px" }} />
         </IconButton>
       </HStack>
 
