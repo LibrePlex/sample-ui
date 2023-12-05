@@ -47,7 +47,7 @@ export const AppBar = ({
             >
               <Box display={"flex"} h={"100%"} mt={7} mb={6}>
                 <img
-                  src="LibreL.png"
+                  src="/LibreL.png"
                   height={"55px"}
                   style={{ maxHeight: "55px" }}
                 />

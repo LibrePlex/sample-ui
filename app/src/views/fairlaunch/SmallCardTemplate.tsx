@@ -74,7 +74,7 @@ export const SmallCardTemplate = ({
               </Text>
             </Td>
           </Tr>
-          <Tr>
+          {/* <Tr>
             <Th p={1} colSpan={2}>
               Inscription
             </Th>
@@ -83,7 +83,7 @@ export const SmallCardTemplate = ({
             <Td colSpan={2}>
               <Text className="break-all">{data?.item?.mintTemplate}</Text>
             </Td>
-          </Tr>
+          </Tr> */}
         </Table>
       </CardBody>
 
@@ -102,7 +102,7 @@ export const SmallCardTemplate = ({
               cluster === "devnet" ? "?env=devnet" : ""
             }`}
           >
-            <Button flex="1" variant="ghost" leftIcon={<GrLinkNext />}>
+            <Button flex="1" variant="solid" leftIcon={<GrLinkNext />}>
               Select
             </Button>
           </NextLink>
