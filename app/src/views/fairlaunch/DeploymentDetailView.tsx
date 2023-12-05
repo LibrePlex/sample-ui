@@ -1,12 +1,13 @@
-import { Button, Heading, Image, VStack } from "@chakra-ui/react";
+import { Button, HStack, Heading, Image, VStack } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
   HttpClient,
   IOffchainJson,
   getHashlistPda,
   useDeploymentById,
-  useFetchSingleAccount
+  useFetchSingleAccount,
 } from "@libreplex/shared-ui";
+import NextLink from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ import { DeployTransactionButton } from "./DeployTransactionButton";
 import { SwapArea } from "./SwapArea";
 // import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 import { FairLaunchProgramContext, decodeHashlist } from "shared-ui/src/anchor";
+import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 
 export const DeploymentDetailView = () => {
   const router = useRouter();
@@ -90,27 +92,33 @@ export const DeploymentDetailView = () => {
           publicKey={deployment?.item?.fungibleMint?.toBase58()}
         />
       )}
-      <Button
-        onClick={() => {
-          download();
-        }}
-      >
-        Download hashlist
-      </Button>
-      {/* {publicKey?.toBase58().startsWith("4aAifU9ck88koMhSK") && (
-        <DeployMigratedTransactionButton
-          params={{
-            deployment,
-          }}
-          formatting={{}}
-        />
-      )} */}
-      <Image height="200px" aspectRatio="1/1" src={imageUrl} />
-      {!deployment?.item.deployed && (
-        <DeployTransactionButton params={undefined} formatting={undefined} />
-      )}
-      {/* <DeployMigratedTransactionButton params={{deployment}} formatting={undefined} /> */}
-      {deployment?.item.deployed && <Heading size="sm">Deployed</Heading>}
+
+      <HStack>
+        <Image height="200px" aspectRatio="1/1" src={imageUrl} />
+        {!deployment?.item.deployed && (
+          <DeployTransactionButton params={undefined} formatting={undefined} />
+        )}
+        <VStack>
+          <Button
+            onClick={() => {
+              download();
+            }}
+          >
+            Download hashlist
+          </Button>
+          {process.env.NEXT_PUBLIC_DISPLAY_DEPLOY_MIGRATED && (
+            <DeployMigratedTransactionButton
+              params={{ deployment }}
+              formatting={undefined}
+            />
+          )}
+          <NextLink
+            href={`https://v1.orca.so/liquidity/browse?tokenMint=${deployment?.item?.fungibleMint?.toBase58()}`}
+          >
+            <Image width="120px" src="/orca-logo.svg"/>
+          </NextLink>
+        </VStack>
+      </HStack>
       {deployment?.item && <SwapArea deployment={deployment} />}
     </VStack>
   );
