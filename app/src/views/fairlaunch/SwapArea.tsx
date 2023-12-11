@@ -65,7 +65,7 @@ export const SwapArea = ({
   } = useLegacyMintsByWallet(publicKey, connection);
 
   const hashlistId = useMemo(
-    () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : undefined),
+    () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : null),
     [deployment]
   );
 

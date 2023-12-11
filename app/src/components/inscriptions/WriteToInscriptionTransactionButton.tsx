@@ -23,6 +23,7 @@ import {
   notify,
 } from "@libreplex/shared-ui";
 import { useStore } from "zustand";
+import React from "react";
 
 export interface IWriteToInscription {
   inscription: IRpcObject<Inscription>;
@@ -87,6 +88,10 @@ export const writeToInscription = async (
     blockhash,
   });
 
+  if(!inscriptionsProgram) {
+    throw Error("Inscriptions program not defined");
+  }
+
   while (remainingBytes.length > 0) {
     console.log("BATCH CREATING", remainingBytes.length);
     const instructions: TransactionInstruction[] = [];
@@ -97,12 +102,8 @@ export const writeToInscription = async (
         .writeToInscription({
           data: Buffer.from(byteBatch),
           startPos,
-          mediaType: {
-            none: {},
-          },
-          encodingType: {
-            none: {},
-          },
+          mediaType: 'none',
+          encodingType: 'none',
         })
         .accounts({
           authority: wallet.publicKey,
@@ -128,7 +129,7 @@ export const writeToInscription = async (
 
 export const useInscriptionWriteStatus = (
   dataBytes: number[],
-  inscription: PublicKey
+  inscription: PublicKey | undefined
 ) => {
   const expectedCount = useMemo(
     () => dataBytes ? Math.ceil(dataBytes.length / BATCH_SIZE) : 0,
@@ -143,11 +144,11 @@ export const useInscriptionWriteStatus = (
   );
   const updatedInscriptionData = useStore(
     store,
-    (s) => s.updatedInscriptionData[inscription?.toBase58()]
+    (s) => s.updatedInscriptionData[inscription?.toBase58()??'']
   );
   const writeStates = useStore(
     store,
-    (s) => s.writeStates[inscription?.toBase58()]
+    (s) => s.writeStates[inscription?.toBase58()??'']
   );
 
   const reset = useCallback(
@@ -161,6 +162,7 @@ export const useInscriptionWriteStatus = (
 
   useEffect(() => {
     if (
+      inscription && 
       expectedCount > 0 &&
       expectedCount === writeStates &&
       updatedInscriptionData === undefined
@@ -204,7 +206,7 @@ export const WriteToInscriptionTransactionButton = (
         <GenericTransactionButton<IWriteToInscription>
           text={"Write"}
           transactionGenerator={writeToInscription}
-          onError={(msg) => notify({ message: msg })}
+          onError={(msg) => notify({ message: msg??'N/A' })}
           {...props}
         />
       )}
