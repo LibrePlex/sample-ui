@@ -22,6 +22,7 @@ export interface GenericTransactionButtonProps<P> {
     data?: ITransactionTemplate[];
     error?: any;
   }>;
+  disableSuccess: boolean // prevent the button being replaced by 'success' text after processing finishes
   onSuccess?: (msg: string | undefined) => any;
   onError?: (msg: string | undefined) => any;
 }
@@ -34,7 +35,7 @@ export const useGenericTransactionClick = <P extends unknown>({
   onError,
   beforeClick,
   afterSign
-}: Omit<GenericTransactionButtonProps<P>, "formatting" | "text">) => {
+}: Omit<GenericTransactionButtonProps<P>, "formatting" | "text" | "disableSuccess">) => {
 
   
   const { onClick, isExecuting: isExecuting } = useExecutor(
@@ -68,7 +69,8 @@ export const GenericTransactionButton = <P extends unknown>({
   onSuccess,
   onError,
   beforeClick,
-  afterSign
+  afterSign,
+  disableSuccess
 }: GenericTransactionButtonProps<P> & { text: ReactNode } & Omit<
     ButtonProps,
     "onError"
@@ -91,7 +93,7 @@ export const GenericTransactionButton = <P extends unknown>({
 
   
   return (
-    success ? <Text>Success</Text> :<Button
+    success && !disableSuccess ? <Text>Success</Text> :<Button
       disabled={isExecuting}
       colorScheme="teal"
       size="md"

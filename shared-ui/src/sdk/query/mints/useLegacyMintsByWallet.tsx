@@ -12,7 +12,7 @@ export type MintWithTokenAccount = {
 }
 
 export const useLegacyMintsByWallet = (
-  owner: PublicKey,
+  owner: PublicKey | null,
   connection: Connection
 ) => {
   const { data: ownedMints, isFetching: isFetchingMints, refetch } =

@@ -1,18 +1,13 @@
-import { IdlAccounts, IdlTypes } from "@coral-xyz/anchor";
-import { BorshCoder, Program } from "@coral-xyz/anchor";
+import { IdlAccounts } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { useContext, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { useFetchSingleAccount } from "../singleAccountInfo";
-import { InscriptionsProgramContext } from "./InscriptionsProgramContext";
-import { InscriptionStoreContext } from "./InscriptionStoreContext";
-import { useStore } from "zustand";
 
-import { toBigIntBE, toBigIntLE, toBufferBE, toBufferLE } from "bigint-buffer";
+import { toBigIntLE } from "bigint-buffer";
 
-export type InscriptionV2 = IdlAccounts<LibreplexInscriptions>["inscriptionV3"];
 
 export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
   console.log({ dataBytes });
@@ -20,7 +15,7 @@ export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
   return `data:${dataType};base64,${base}`;
 };
 
-export interface IInscriptionV3 {
+export interface InscriptionV3 {
   authority: PublicKey;
   root: PublicKey;
   inscriptionData: PublicKey;
@@ -66,7 +61,7 @@ export const decodeInscriptionV3Buffer = (buffer: Buffer | undefined) => {
       120 + contentTypeSize + 4 + encodingSize
     );
 
-    const item: IInscriptionV3 = {
+    const item: InscriptionV3 = {
       authority,
       root,
       inscriptionData,
@@ -98,7 +93,6 @@ export const useInscriptionV3ById = (
   connection: Connection,
   live: boolean = false
 ) => {
-  
   const q = useFetchSingleAccount(inscriptionId, connection);
 
   const decoded = useMemo(

@@ -1,13 +1,11 @@
-import { useFetchSingleAccount } from '@libreplex/shared-ui';
-import { FairLaunchProgramContext } from './FairLaunchProgramContext';
+import { useFetchSingleAccount } from "@libreplex/shared-ui";
+import { FairLaunchProgramContext } from "./FairLaunchProgramContext";
 import { IdlAccounts, IdlTypes } from "@coral-xyz/anchor";
 import { BorshCoder, Program } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 import { useContext, useEffect, useMemo } from "react";
 import { LibreplexFairLaunch } from "./libreplex_fair_launch";
-
-
 
 export type Deployment = IdlAccounts<LibreplexFairLaunch>["deployment"];
 export type Hashlist = IdlAccounts<LibreplexFairLaunch>["hashlist"];
@@ -37,15 +35,16 @@ export const useDeploymentById = (
   connection: Connection,
   refetchInterval?: number
 ) => {
-  const {program} = useContext(FairLaunchProgramContext);
-  
+  const { program } = useContext(FairLaunchProgramContext);
+
   const q = useFetchSingleAccount(deploymentId, connection, refetchInterval);
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item && deploymentId
-        ? decodeDeployment(program)(q?.data?.item.buffer, deploymentId)
-        : undefined;
+      const obj =
+        q?.data?.item && deploymentId
+          ? decodeDeployment(program)(q?.data?.item.buffer, deploymentId)
+          : undefined;
       return obj;
     } catch (e) {
       return null;
@@ -59,19 +58,22 @@ export const useDeploymentById = (
   };
 };
 
-
 export const decodeHashlist =
   (program: Program<LibreplexFairLaunch>) =>
-  (buffer: Buffer | undefined, pubkey: PublicKey) => {
-    const coder = new BorshCoder(program.idl);
-    const inscription = buffer
-      ? coder.accounts.decode<Hashlist>("hashlist", buffer)
-      : null;
+  (buffer: Buffer | undefined, pubkey: PublicKey | undefined) => {
+    if (buffer && pubkey) {
+      const coder = new BorshCoder(program.idl);
+      const inscription = buffer
+        ? coder.accounts.decode<Hashlist>("hashlist", buffer)
+        : null;
 
-    return {
-      item: inscription,
-      pubkey,
-    };
+      return {
+        item: inscription,
+        pubkey,
+      };
+    } else {
+      return undefined;
+    }
   };
 
 export const useHashlistById = (
@@ -79,15 +81,16 @@ export const useHashlistById = (
   connection: Connection,
   refetchInterval?: number
 ) => {
-  const {program} = useContext(FairLaunchProgramContext);
-  
+  const { program } = useContext(FairLaunchProgramContext);
+
   const q = useFetchSingleAccount(hashlistId, connection, refetchInterval);
 
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item && hashlistId
-        ? decodeHashlist(program)(q?.data?.item.buffer, hashlistId)
-        : undefined;
+      const obj =
+        q?.data?.item && hashlistId
+          ? decodeHashlist(program)(q?.data?.item.buffer, hashlistId)
+          : undefined;
       return obj;
     } catch (e) {
       return null;

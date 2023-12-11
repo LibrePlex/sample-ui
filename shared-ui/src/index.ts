@@ -17,6 +17,7 @@ export {
 } from "./stores";
 
 export {
+  FairLaunchProgramContext,
   MetadataProgramContext,
   MetadataProgramProvider,
   PROGRAM_ID_INSCRIPTIONS,
@@ -88,6 +89,7 @@ export type {
   AttributeValue,
   Collection,
   Inscription,
+  InscriptionV3,
   Metadata,
   // Royalties,
   RoyaltyShare,

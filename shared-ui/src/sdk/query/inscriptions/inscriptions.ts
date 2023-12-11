@@ -37,7 +37,7 @@ export const decodeInscription =
   };
 
 export const useInscriptionById = (
-  inscriptionId: PublicKey | null,
+  inscriptionId: PublicKey | null | undefined,
   connection: Connection
 ) => {
   const program = useContext(InscriptionsProgramContext);
@@ -57,29 +57,13 @@ export const useInscriptionById = (
           }
         : q?.data?.item
         ? decodeInscription(program)(q?.data?.item.buffer, inscriptionId)
-        : undefined;
+        : null;
       return obj;
     } catch (e) {
       return null;
     }
   }, [inscriptionId, program, q.data?.item?.buffer.length, updatedInscription]);
 
-  // useEffect(()=>{
-  //   console.log({updatedInscriptionSizes})
-  // },[updatedInscriptionSizes])
-
-  // const decodedAndUpdated = useMemo(
-  //   () =>
-  //     decoded
-  //       ? {
-  //           ...decoded,
-  //           item: {
-  //             ...decoded.item,
-  //           },
-  //         }
-  //       : null,
-  //   [updatedInscriptionSizes, decoded, inscriptionId]
-  // );
 
   return {
     data: decoded,

@@ -4,6 +4,7 @@ export type {
   RoyaltyShare,
   Metadata,
   Inscription,
+  InscriptionV3,
   AttributeType,
   CollectionInput,
   AttributeValue,

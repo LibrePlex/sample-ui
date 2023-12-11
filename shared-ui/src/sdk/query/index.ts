@@ -58,6 +58,7 @@ export {
   useInscriptionById,
 } from "./inscriptions/inscriptions";
 export type { Inscription } from "./inscriptions/inscriptions";
+export type {InscriptionV3} from "./inscriptions/inscriptionsV3"
 // shop stuff
 export {
   useAllListings,
