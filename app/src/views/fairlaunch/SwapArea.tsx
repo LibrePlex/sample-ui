@@ -131,7 +131,7 @@ export const SwapArea = ({
         <VStack minW={"400px"} width="100%">
           <Card width="100%">
             <CardHeader>
-              <Heading size="md">SPL-20s</Heading>
+              <Heading size="md">Inscription NFTs</Heading>
             </CardHeader>
             <CardBody>
               <SimpleGrid columns={3} gap={2} width="100%">
@@ -261,6 +261,7 @@ export const SwapArea = ({
           params={{
             deployment,
           }}
+          disableSuccess={false}
           formatting={{}}
         />
       )}
