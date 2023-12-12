@@ -11,5 +11,5 @@ export interface ITransactionTemplate {
   blockhash: {
     blockhash: string,
     lastValidBlockHeight: number;
-  }
+  } | undefined
 }

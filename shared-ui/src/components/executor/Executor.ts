@@ -90,9 +90,12 @@ export class Executor<P> {
   public getSignedTransactions = async (
     transactions: ITransactionTemplate[]
   ) => {
+
+    const blockhash = await this.connection.getLatestBlockhash();
+    
     const transactionsWithPositions = transactions.map((tx, txPosition) => {
       const transaction = new Transaction();
-      transaction.recentBlockhash = tx.blockhash.blockhash;
+      transaction.recentBlockhash = tx.blockhash?.blockhash ?? blockhash.blockhash;
       transaction.feePayer = this.walletPublicKey;
       for (const instruction of tx.instructions) {
         transaction.add(instruction);
