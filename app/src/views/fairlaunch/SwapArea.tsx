@@ -36,6 +36,27 @@ import {
 } from "@libreplex/shared-ui";
 import { MintTransactionButton } from "./MintTransactionButton";
 
+
+// we use this to make sure that each wallet gets a different ordering of 
+// NFTs. This prevents everybody from instinctively hitting the top one.
+// well, they will still hit the top one but the top one will be a different
+// mint in each case depending on the value of this hash (salted with publickey)
+const cyrb53 = (str, seed = 0) => {
+  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+  for(let i = 0, ch; i < str.length; i++) {
+      ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+  return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
+
 export const SwapArea = ({
   deployment,
 }: {
@@ -91,15 +112,17 @@ export const SwapArea = ({
     [mintsInMyWallet, hashlistIndex]
   );
 
+  
   const mintsFromThisDeployerHeldInEscrow = useMemo(
     () =>
       [
         ...mintsInEscrow.filter(
           (item) => hashlistIndex[item.mint.toBase58()] !== undefined
         ),
-      ].sort((a, b) => a.mint.toBase58().localeCompare(b.mint.toBase58())),
-    [mintsInEscrow, hashlistIndex]
+      ].sort((a, b) => publicKey ? cyrb53(a.mint.toBase58()+publicKey?.toBase58()) - cyrb53(b.mint.toBase58()+publicKey?.toBase58()): 0),
+    [mintsInEscrow, hashlistIndex, publicKey]
   );
+
 
   useEffect(() => {
     console.log({
