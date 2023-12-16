@@ -12,7 +12,7 @@ import {
 import {
   AssetDisplay,
   TensorButton,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyMetadataByMintId,
   useMetadataByMintId,
   useOffChainMetadataCache,
@@ -47,7 +47,7 @@ export const MintCardLegacy = ({
 
   const {
     inscription: { data: inscription, refetch, isFetching },
-  } = useInscriptionForRoot(mintId);
+  } = useInscriptionV3ForRoot(mintId);
 
   const { connection } = useConnection();
   const {data: metadata} = useLegacyMetadataByMintId(mintId, connection);
@@ -84,7 +84,7 @@ export const MintCardLegacy = ({
               background: "#333",
             }}
           >
-            #{inscription.item.order.toNumber().toLocaleString()}
+            #{Number(inscription.item.order).toLocaleString()}
           </Badge>
         </div>
       )}
@@ -107,7 +107,7 @@ export const MintCardLegacy = ({
               mint={mintId}
             />
           </Box>
-          {inscription && <>
+          {inscription?.item && <>
             <Box className="absolute top-3 left-3">
               <Immutability inscription={inscription}/>
             </Box>

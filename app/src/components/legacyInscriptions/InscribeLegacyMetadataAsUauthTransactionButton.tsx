@@ -64,8 +64,7 @@ export const inscribeLegacyMint = async (
 
   const blockhash = await connection.getLatestBlockhash();
 
-  const inscription = getInscriptionPda(mint)[0];
-  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
+  const inscriptionV3 = getInscriptionV3Pda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   const inscriptionRanksCurrentPage = getInscriptionRankPda(BigInt(0))[0];
@@ -76,8 +75,9 @@ export const inscribeLegacyMint = async (
 
     console.log({
       // legacySigner: legacySigner.toBase58(),
-      inscription: inscription.toBase58(),
+      inscriptionV3: inscriptionV3.toBase58(),
       inscriptionData: inscriptionData.toBase58(),
+      legacyInscription: legacyInscription.toBase58(),
       inscriptionSummary: inscriptionSummary.toBase58(),
       inscriptionRanksCurrentPage: inscriptionRanksCurrentPage.toBase58(),
       inscriptionRanksNextPage: inscriptionRanksNextPage.toBase58(),
@@ -99,17 +99,14 @@ export const inscribeLegacyMint = async (
 
   console.log('f');
   const ix = await legacyInscriptionsProgram.methods
-    .inscribeLegacyMetadataAsUauth("")
+    .inscribeLegacyMetadataAsUauthV3("")
     .accounts({
       payer: wallet.publicKey,
       legacySigner,
       mint,
-      inscription,
-      inscriptionV2,
+      inscriptionV3,
       inscriptionData,
       inscriptionSummary,
-      inscriptionRanksCurrentPage,
-      inscriptionRanksNextPage,
       legacyInscription,
       legacyMetadata,
       tokenProgram: TOKEN_PROGRAM_ID,

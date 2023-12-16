@@ -116,6 +116,7 @@ export const ResizeInscriptionTransactionButton = (
     <>
       <GenericTransactionButton<IResizeInscription>
         text={"Resize"}
+        disableSuccess={true}
         transactionGenerator={resizeInscription}
         onError={(msg) => notify({ message: msg })}
         {...props}

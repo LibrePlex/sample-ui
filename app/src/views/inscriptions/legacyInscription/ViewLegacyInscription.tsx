@@ -26,7 +26,7 @@ import {
 import {
   SolscanLink,
   useInscriptionDataForRoot,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyCompressedImage,
 } from "@libreplex/shared-ui";
 
@@ -41,7 +41,7 @@ import { useMediaType } from "@libreplex/shared-ui";
 import { useUrlPrefixForInscription } from "@libreplex/shared-ui";
 
 export const ViewLegacyInscription = ({ mint }: { mint: PublicKey }) => {
-  const {inscription: { data: inscription }} = useInscriptionForRoot(mint);
+  const {inscription: { data: inscription }} = useInscriptionV3ForRoot(mint);
   const legacyInscription = useLegacyInscriptionForMint(mint);
   const {
     data: inscriptionData,

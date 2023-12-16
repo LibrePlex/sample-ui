@@ -1,13 +1,15 @@
 import { IdlAccounts } from "@coral-xyz/anchor";
 import { Connection, PublicKey } from "@solana/web3.js";
 
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 
 import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { useFetchSingleAccount } from "../singleAccountInfo";
 
 import { toBigIntLE } from "bigint-buffer";
-
+import { useStore } from "zustand";
+import { InscriptionStoreContext } from "./InscriptionStoreContext";
+import BN from "bn.js";
 
 export const getBase64FromDatabytes = (dataBytes: Buffer, dataType: string) => {
   console.log({ dataBytes });
@@ -19,7 +21,7 @@ export interface InscriptionV3 {
   authority: PublicKey;
   root: PublicKey;
   inscriptionData: PublicKey;
-  order: bigint;
+  order: BN;
   size: number;
   contentType: string;
   encoding: string;
@@ -65,7 +67,7 @@ export const decodeInscriptionV3Buffer = (buffer: Buffer | undefined) => {
       authority,
       root,
       inscriptionData,
-      order,
+      order: new BN(Number(order)),
       size,
       contentType,
       encoding,
@@ -95,10 +97,27 @@ export const useInscriptionV3ById = (
 ) => {
   const q = useFetchSingleAccount(inscriptionId, connection);
 
-  const decoded = useMemo(
-    () => decodeInscriptionV3(q?.data?.item?.buffer, inscriptionId),
-    [q?.data, inscriptionId]
-  );
+  const store = useContext(InscriptionStoreContext);
+
+  const updatedInscription = useStore(store, (s) => s.updatedInscription);
+
+  const decoded = useMemo(() => {
+    try {
+      const obj = updatedInscription[inscriptionId.toBase58()]
+        ? {
+            pubkey: inscriptionId,
+            item: updatedInscription[inscriptionId.toBase58()],
+          }
+        : q?.data?.item
+        ? decodeInscriptionV3(q?.data?.item.buffer, inscriptionId)
+        : null;
+      return obj;
+    } catch (e) {
+      return null;
+    }
+  }, [inscriptionId,  q.data?.item?.buffer.length, updatedInscription]);
+
+
 
   return { ...q, data: decoded };
 };

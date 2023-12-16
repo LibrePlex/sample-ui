@@ -11,12 +11,13 @@ import {
   IRpcObject,
   ITransactionTemplate,
 } from "../../executor";
-import { Inscription } from "../../../sdk";
+import { Inscription, InscriptionV3 } from "../../../sdk";
 import {
   PROGRAM_ID_INSCRIPTIONS,
   getProgramInstanceInscriptions,
 } from "../../../sdk/query/inscriptions/getProgramInstanceInscriptions";
 import {
+  getInscriptionPda,
   getInscriptionSummaryPda,
   getInscriptionV3Pda,
   getLegacySignerPda,
@@ -39,7 +40,7 @@ export enum AssetType {
 // }
 
 export interface IMakeLegacyInscriptionImmutable {
-  inscription: IRpcObject<Inscription>;
+  inscriptionV3: IRpcObject<InscriptionV3>;
   metadata: IRpcObject<Metadata>;
 }
 
@@ -69,16 +70,16 @@ export const makeLegacyInscriptionImmutable = async (
   );
 
 
-  const { inscription, metadata } = params;
+  const { inscriptionV3, metadata } = params;
 
-  console.log({ root: inscription?.item.root.toBase58() });
-  const legacyInscription = getLegacyInscriptionPda(inscription?.item.root);
+  console.log({ root: inscriptionV3?.item.root.toBase58() });
+  const legacyInscription = getLegacyInscriptionPda(inscriptionV3?.item.root);
 
   const inscriptionSummary = getInscriptionSummaryPda()[0];
   console.log({
     authority: wallet.publicKey.toBase58(),
-    mint: inscription.item.root.toBase58(),
-    inscription: inscription.pubkey.toBase58(),
+    mint: inscriptionV3.item.root.toBase58(),
+    inscription: inscriptionV3.pubkey.toBase58(),
     inscriptionSummary: inscriptionSummary?.toBase58(),
     legacyMetadata: metadata.pubkey.toBase58(),
     legacyInscription: legacyInscription.toBase58(),
@@ -88,10 +89,9 @@ export const makeLegacyInscriptionImmutable = async (
 
   const instructions: TransactionInstruction[] = [];
 
-  const inscriptionV2 = getInscriptionV3Pda(
-    inscription.item.root
+  const inscription = getInscriptionPda(
+    inscriptionV3.item.root
   )[0];
-
 
 
   console.log({legacyInscription:legacyInscription.toBase58()})
@@ -101,7 +101,7 @@ export const makeLegacyInscriptionImmutable = async (
       authority: wallet.publicKey,
       mint: inscription.item.root,
       inscription: inscription.pubkey,
-      inscriptionV2,
+      inscriptionV2: inscriptionV3.pubkey,
       inscriptionSummary,
       legacyMetadata: metadata.pubkey,
       legacyInscription,

@@ -19,13 +19,16 @@ import { PublicKey } from "@solana/web3.js";
 import NextLink from "next/link";
 import { GrLinkNext } from "react-icons/gr";
 import {
+  getHashlistPda,
   useCluster,
   useDeploymentById,
+  useHashlistById,
   useLegacyMetadataByMintId,
   useOffChainMetadataFromUrl
-} from "shared-ui/src";
+} from "@libreplex/shared-ui";
 import { DeployTransactionButton } from "./DeployTransactionButton";
 import { SetTokensTransactionButton } from "./SetAmountTransactionButton";
+import { useMemo } from "react";
 
 export const SmallCardTemplate = ({
   deploymentPublicKey,
@@ -34,6 +37,14 @@ export const SmallCardTemplate = ({
 }) => {
   const { connection } = useConnection();
   const { data } = useDeploymentById(deploymentPublicKey, connection);
+
+  const hashlistId = useMemo(
+    () => (deploymentPublicKey ? getHashlistPda(deploymentPublicKey)[0] : null),
+    [deploymentPublicKey]
+  );
+
+
+  const {data: hashlist} = useHashlistById(hashlistId, connection);
 
   const { data: metadata } = useLegacyMetadataByMintId(
     data?.item?.fungibleMint,
@@ -96,7 +107,7 @@ export const SmallCardTemplate = ({
           },
         }}
       >
-        {data?.item?.deployed ? (
+        {hashlist ? (
           <NextLink
             href={`/fairlaunch/deployments/${deploymentPublicKey.toBase58()}${
               cluster === "devnet" ? "?env=devnet" : ""
@@ -110,6 +121,7 @@ export const SmallCardTemplate = ({
           <DeployTransactionButton
             params={{ deployment: data }}
             formatting={{}}
+            disableSuccess={false}
           />
         ) : (
           <Text>Not deployed</Text>

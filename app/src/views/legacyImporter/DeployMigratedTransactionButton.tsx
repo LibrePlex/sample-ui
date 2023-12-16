@@ -25,6 +25,7 @@ import {
 import { Validator } from "./useLegacyValidators";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { PROGRAM_ID_LEGACY_METADATA } from "../fairlaunch/MintTransactionButton";
+import React from "react";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;

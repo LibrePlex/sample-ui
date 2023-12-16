@@ -1,12 +1,12 @@
 import { IRpcObject } from "../executor";
-import { Inscription } from "../../sdk";
+import { Inscription, InscriptionV3 } from "../../sdk";
 import { mediaTypeToString } from "./useMediaType";
 
 export const useUrlPrefixForInscription = (
-  inscription: IRpcObject<Inscription | null>
+  inscription: IRpcObject<InscriptionV3 | null>
 ) => {
 
 
-  return inscription?.item?.mediaType ? mediaTypeToString(inscription?.item?.mediaType) : undefined;
+  return inscription?.item?.contentType;
 
 };

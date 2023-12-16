@@ -24,8 +24,9 @@ import {
   notify,
 } from "@libreplex/shared-ui";
 import { useInscriptionWriteStatus } from "../inscriptions/WriteToInscriptionTransactionButton";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Heading, Text } from "@chakra-ui/react";
 import {useInscriptionChunks} from "../inscriptions/useInscriptionChunks"
+import { HiCheckCircle } from "react-icons/hi";
 
 export interface IWriteToLegacyInscriptionAsUAuth {
   mint: PublicKey;
@@ -63,8 +64,7 @@ export const writeToLegacyInscriptionAsUauth = async (
   // have to check the owner here - unfortunate as it's expensive
   const { mint, mediaType, encodingType, chunks } = params;
 
-  const inscription = getInscriptionPda(mint)[0];
-  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
+  const inscriptionV3 = getInscriptionV3Pda(mint)[0];
 
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);
@@ -83,7 +83,7 @@ export const writeToLegacyInscriptionAsUauth = async (
       const byteBatch = chunks[i].chunk;
       instructions.push(
         await legacyInscriptionsProgram.methods
-          .writeToLegacyInscriptionAsUauth({
+          .writeToLegacyInscriptionAsUauthV3({
             data: Buffer.from(byteBatch),
             startPos: BATCH_SIZE * i,
             // always write these in case some transactions do not go through
@@ -93,8 +93,7 @@ export const writeToLegacyInscriptionAsUauth = async (
           .accounts({
             authority: wallet.publicKey,
             mint,
-            inscription,
-            inscriptionV2,
+            inscriptionV3,
             inscriptionData,
             legacyInscription,
             legacyMetadata,
@@ -172,9 +171,12 @@ export const WriteToLegacyInscriptionAsUAuthTransactionButton = (
   return (
     <Box gap={2}>
       {writeStates === expectedCount ? (
-        <Box>
-          <Text>Inscribed</Text>
-        </Box>
+        <HStack>
+        <HiCheckCircle color="lightgreen" size="35px" />
+        <Heading size="sm">
+          Inscribed
+        </Heading>
+      </HStack>
       ) : chunksToWriteIndices.length === 0 ? (
         <Text>Already inscribed ({chunks.length} written)</Text>
       ) : (

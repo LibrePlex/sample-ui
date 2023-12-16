@@ -55,7 +55,6 @@ export const resizeLegacyInscription = async (
   // have to check the owner here - unfortunate as it's expensive
   const { mint, targetSize, currentSize } = params;
 
-  const inscription = getInscriptionPda(mint)[0];
   const inscriptionData = getInscriptionDataPda(mint)[0];
   const legacyInscription = getLegacyInscriptionPda(mint);
   const legacyMetadata= getLegacyMetadataPda(mint)[0];
@@ -63,7 +62,7 @@ export const resizeLegacyInscription = async (
   let sizeRemaining = targetSize - currentSize;
   const instructions: TransactionInstruction[] = [];
 
-  const inscriptionV2 = getInscriptionV3Pda(mint)[0];
+  const inscriptionV3 = getInscriptionV3Pda(mint)[0];
 
 
   console.log({legacyInscription: legacyInscription.toBase58()});
@@ -76,7 +75,7 @@ export const resizeLegacyInscription = async (
     expectedStartSize: Math.abs(sizeRemaining),
     targetSize});
     const instruction = await legacyInscriptionsProgram.methods
-      .resizeLegacyInscriptionAsUauth({
+      .resizeLegacyInscriptionAsUauthV3({
         change:
           sizeRemaining > 0
             ? Math.min(sizeRemaining, MAX_CHANGE)
@@ -88,8 +87,7 @@ export const resizeLegacyInscription = async (
         authority: wallet.publicKey, // this needs to be either the holder or update auth
         payer: wallet.publicKey,
         mint,
-        inscription,
-        inscriptionV2,
+        inscriptionV3,
         inscriptionData,
         legacyInscription,
         legacyMetadata,

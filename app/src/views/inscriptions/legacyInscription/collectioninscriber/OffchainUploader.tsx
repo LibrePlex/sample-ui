@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useOffchainImageAsBuffer } from "shared-ui/src/components/inscriptionDisplay/useOffchainImageAsBuffer";
 import {
   useFiletypeFromStream,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
 import {
@@ -27,7 +27,7 @@ export const OffchainUploader = ({
 }) => {
   const {
     inscription: { data: inscription },
-  } = useInscriptionForRoot(mint);
+  } = useInscriptionV3ForRoot(mint);
 
   const { data } = useOffChainMetadataCache(mint);
 
@@ -48,10 +48,10 @@ export const OffchainUploader = ({
     () =>
       state.filetype === "image/svg+xml"
         ? `data:image/svg+xml;base64,${encodeURIComponent(
-            buf.toString("base64")
+            buf?.toString("base64") ?? ""
           )}`
         : state.imageOverride,
-    [state]
+    [buf, state.filetype, state.imageOverride]
   );
 
   return (

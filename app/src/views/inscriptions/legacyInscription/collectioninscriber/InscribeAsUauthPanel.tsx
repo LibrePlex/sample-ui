@@ -11,7 +11,7 @@ import { HStack, Heading, Link, Spinner, Text, VStack } from "@chakra-ui/react";
 import {
   notify,
   useGenericTransactionClick,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyCompressedImage,
   useMediaType,
 } from "@libreplex/shared-ui";
@@ -31,13 +31,14 @@ import { useRentForDataLength } from "@libreplex/shared-ui";
 import React from "react";
 import { useFileToBase64 } from "@app/components/shadowdrive/useFileToBase64";
 import { buffer } from "stream/consumers";
+import { useInscriptionChunks } from "@app/components/inscriptions/useInscriptionChunks";
 
 export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const [customImage, setCustomImage] = useState<boolean>(true);
 
   const {
     inscription: { data: inscription },
-  } = useInscriptionForRoot(mint);
+  } = useInscriptionV3ForRoot(mint);
 
   const legacyInscription = useLegacyInscriptionForMint(mint);
 
@@ -76,6 +77,11 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
   const fileTypeFromFile = useMemo(
     () => uploaderState?.mediaFile?.type,
     [uploaderState?.mediaFile]
+  );
+
+  const { chunks, refetch } = useInscriptionChunks(
+    mint,
+    dataBytes
   );
 
   useEffect(() => {
@@ -132,7 +138,7 @@ export const InscribeAsUauthPanel = ({ mint }: { mint: PublicKey }) => {
     useGenericTransactionClick({
       params: {
         mint,
-        dataBytes,
+        chunks,
         encodingType: "base64",
         mediaType: mediaTypeToString(mediaType),
       },

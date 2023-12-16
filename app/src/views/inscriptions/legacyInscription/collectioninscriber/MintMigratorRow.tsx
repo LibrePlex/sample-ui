@@ -5,6 +5,7 @@ import {
   SolscanLink,
   TensorButton,
   useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyMetadataByMintId,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
@@ -13,6 +14,7 @@ import { InscriptionImage } from "@libreplex/shared-ui";
 import { CreateNewLegacyInscriptionModal } from "./CreateNewLegacyInscriptionModal";
 import React, { useMemo } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { MigrateToV3TransactionButton } from "shared-ui/src/components/migration/MigrateToV3TransactionButton";
 
 export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
   const { publicKey } = useWallet();
@@ -23,7 +25,9 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
     connection
   );
 
-  const { inscription } = useInscriptionForRoot(mint);
+  const { inscription: inscriptionV1 } = useInscriptionForRoot(mint);
+
+  const { inscription } = useInscriptionV3ForRoot(mint);
 
   const haveUauth = useMemo(
     () =>
@@ -35,6 +39,11 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
   const isImmutable = useMemo(
     () => inscription?.data?.item?.authority.equals(SystemProgram.programId),
     [inscription]
+  );
+
+  const needsMigration = useMemo(
+    () => inscriptionV1.data?.item && !inscription.data?.item,
+    [inscription.data?.item, inscriptionV1.data?.item]
   );
 
   return (
@@ -77,15 +86,26 @@ export const MintMigratorRow = ({ mint }: { mint: PublicKey }) => {
         </VStack>
       </Td>
       <Td>
-        {isFetching && <Spinner />}
-        {haveUauth ? (
-          isImmutable ? (
-            <Text>Immutable inscription</Text>
-          ) : (
-            <CreateNewLegacyInscriptionModal mint={mint} />
-          )
+        {needsMigration ? (
+          <MigrateToV3TransactionButton
+            params={{
+              root: mint,
+            }}
+            formatting={{}}
+          />
         ) : (
-          <Text>No update auth</Text>
+          <>
+            {isFetching && <Spinner />}
+            {haveUauth ? (
+              isImmutable ? (
+                <Text>Immutable inscription</Text>
+              ) : (
+                <CreateNewLegacyInscriptionModal mint={mint} />
+              )
+            ) : (
+              <Text>No update auth</Text>
+            )}
+          </>
         )}
       </Td>
     </Tr>

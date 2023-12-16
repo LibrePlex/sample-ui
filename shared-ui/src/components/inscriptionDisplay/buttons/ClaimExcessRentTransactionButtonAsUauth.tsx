@@ -8,11 +8,12 @@ import {
   PROGRAM_ID_INSCRIPTIONS,
   getInscriptionDataPda,
   getInscriptionPda,
+  getInscriptionV3Pda,
   getLegacyInscriptionPda,
   getLegacyMetadataPda,
   getProgramInstanceLegacyInscriptions,
   useInscriptionDataForRoot,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyMetadataByMintId,
 } from "@libreplex/shared-ui";
 import {
@@ -59,7 +60,7 @@ export const claimExcessRentTransactionButton = async (
   const instructions: TransactionInstruction[] = [];
 
   const legacyMetadata = await getLegacyMetadataPda(mint)[0];
-  const inscription = await getInscriptionPda(mint)[0];
+  const inscriptionV3 = await getInscriptionV3Pda(mint)[0];
   const inscriptionData = await getInscriptionDataPda(mint)[0];
   const legacyInscription = await getLegacyInscriptionPda(mint);
 
@@ -70,7 +71,7 @@ export const claimExcessRentTransactionButton = async (
       payer: wallet.publicKey,
       mint,
       legacyMetadata,
-      inscription,
+      inscriptionV3,
       inscriptionData,
       legacyInscription,
       systemProgram: SystemProgram.programId,
@@ -104,7 +105,7 @@ export const ClaimExcessRentTransactionButton = (
   const { data: inscriptionData } = useInscriptionDataForRoot(
     props.params.mint
   );
-  const { inscription } = useInscriptionForRoot(props.params.mint);
+  const { inscription } = useInscriptionV3ForRoot(props.params.mint);
 
   const minimumBalanceForRent = useMemo(
     () =>

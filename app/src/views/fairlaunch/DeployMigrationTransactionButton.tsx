@@ -32,6 +32,7 @@ import {
   getAssociatedTokenAddressSync,
 } from "@solana/spl-token";
 import { PROGRAM_ID_LEGACY_METADATA } from "./MintTransactionButton";
+import React from "react";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;

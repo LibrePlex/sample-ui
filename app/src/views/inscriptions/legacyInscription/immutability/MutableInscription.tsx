@@ -2,8 +2,9 @@ import {
   CopyPublicKeyButton,
   IRpcObject,
   Inscription,
+  InscriptionV3,
   ScannerLink,
-} from "shared-ui/src";
+} from "@libreplex/shared-ui";
 import { Heading, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -11,7 +12,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 export const MutableInscription = ({
   inscription,
 }: {
-  inscription: IRpcObject<Inscription>;
+  inscription: IRpcObject<InscriptionV3>;
 }) => {
   const { publicKey } = useWallet();
 

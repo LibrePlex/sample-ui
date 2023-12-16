@@ -1,5 +1,5 @@
 import { IRpcObject } from "../executor";
-import { EncodingType, Inscription } from "../../sdk";
+import { EncodingType, Inscription, InscriptionV3 } from "../../sdk";
 import { mediaTypeToString } from "./useMediaType";
 
 const encodingToString = (encodingType: EncodingType) => {
@@ -7,9 +7,7 @@ const encodingToString = (encodingType: EncodingType) => {
 }
 
 export const useEncodingForInscription = (
-  inscription: IRpcObject<Inscription | null>
+  inscription: IRpcObject<InscriptionV3 | null>
 ) => {
-  return inscription?.item?.encodingType
-    ? encodingToString(inscription?.item?.encodingType)
-    : undefined;
+  return inscription?.item?.encoding;
 };

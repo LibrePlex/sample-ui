@@ -1,6 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
 import {
-  useInscriptionForRoot,
   useInscriptionV3ForRoot,
   useOffChainMetadataCache,
 } from "@libreplex/shared-ui";
@@ -13,7 +12,7 @@ import { MigrateToV3TransactionButton } from "./MigrateToV3TransactionButton";
 export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
   const { inscription: inscriptionV3 } = useInscriptionV3ForRoot(mint, true);
 
-  const { inscription } = useInscriptionForRoot(mint);
+  const { inscription } = useInscriptionV3ForRoot(mint);
 
   const { data: offchainData } = useOffChainMetadataCache(mint);
 

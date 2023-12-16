@@ -2,7 +2,7 @@ import { VStack } from "@chakra-ui/react";
 import { PublicKey } from "@solana/web3.js";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { useFiletypeFromStream, useOffchainImageAsBuffer } from "@libreplex/shared-ui";
-import { useInscriptionForRoot } from "@libreplex/shared-ui";
+import { useInscriptionV3ForRoot } from "@libreplex/shared-ui";
 import { IImageUploadProgressState, Stage, StageProgress } from "./useImageUploadProgressState";
 import React from "react";
 import { useInscriptionWriteStatus } from "../../../../components/inscriptions/WriteToInscriptionTransactionButton";
@@ -54,7 +54,7 @@ export const CustomImageUploader = ({
 }) => {
   const {
     inscription: { data: inscription },
-  } = useInscriptionForRoot(mint);
+  } = useInscriptionV3ForRoot(mint);
 
   const { reset } = useInscriptionWriteStatus(
     state.dataBytes,

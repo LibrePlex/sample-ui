@@ -1,5 +1,4 @@
 import { Paginator, usePaginator } from "@app/components/Paginator";
-import { CreateDeploymentDialog } from "@app/views/fairlaunch/CreateDeploymentDialog";
 import { FaArrowDownShortWide } from "react-icons/fa6";
 import { FaArrowUpWideShort } from "react-icons/fa6";
 import { FaSortAlphaDown } from "react-icons/fa";
@@ -23,6 +22,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useMemo, useState } from "react";
 import { SmallCardTemplate } from "./SmallCardTemplate";
 import { useFairLaunchDeployments } from "./useFairLaunchDeployments";
+import React from "react";
 
 enum View {
   InscriptionGallery,

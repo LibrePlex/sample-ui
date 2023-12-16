@@ -31,7 +31,6 @@ export type { LegacyInscription } from "./legacyInscriptions/legacyinscriptions"
 
 export {
   useInscriptionV2ById,
-  useInscriptionV2ForRoot,
   useInscriptionV3ForRoot,
 } from "./inscriptions";
 
@@ -77,7 +76,7 @@ export {
   decodeInscriptionRankPage,
   decodeInscriptionSummary,
   useInscriptionDataForRoot,
-  useInscriptionForRoot,
+  useInscriptionForRoot
 } from "./inscriptions";
 
 export { useFetchSingleAccount } from "./singleAccountInfo";

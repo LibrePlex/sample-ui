@@ -1,5 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
-import { useInscriptionDataForRoot, useInscriptionForRoot } from "../../sdk";
+import { useInscriptionDataForRoot, useInscriptionV3ForRoot } from "../../sdk";
 import {VStack} from "@chakra-ui/react"
 import React from "react";
 import { InscriptionTable } from "./InscriptionTable";

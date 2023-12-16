@@ -22,7 +22,7 @@ export interface GenericTransactionButtonProps<P> {
     data?: ITransactionTemplate[];
     error?: any;
   }>;
-  disableSuccess: boolean // prevent the button being replaced by 'success' text after processing finishes
+  disableSuccess?: boolean, // prevent the button being replaced by 'success' text after processing finishes
   onSuccess?: (msg: string | undefined) => any;
   onError?: (msg: string | undefined) => any;
 }

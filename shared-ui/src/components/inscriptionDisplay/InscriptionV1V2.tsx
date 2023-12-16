@@ -1,13 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
 import { useInscriptionForRoot } from "../../sdk";
-import { useInscriptionV2ForRoot } from "../../sdk/query";
+import { useInscriptionV3ForRoot } from "../../sdk/query";
 import React from "react";
 import { SimpleGrid, Text } from "@chakra-ui/react";
 import { mediaTypeToString } from "./useMediaType";
 
 export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
   const { inscription } = useInscriptionForRoot(mint);
-  const { inscription: inscriptionV2 } = useInscriptionV2ForRoot(mint);
+  const { inscription: inscriptionV2 } = useInscriptionV3ForRoot(mint);
 
   return (
     <SimpleGrid columns={3}>
@@ -16,7 +16,7 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
       <Text>{inscriptionV2.data?.item?.authority.toBase58()}</Text>
 
       <Text>encoding</Text>
-      <Text>{inscription.data?.item.encodingType.base64 ? "y" : "n"}</Text>
+      {/* <Text>{inscription.data?.item..base64 ? "y" : "n"}</Text> */}
       <Text>{(inscriptionV2.data?.item as any)?.encoding as string}</Text>
 
       <Text>inscription data</Text>
@@ -24,7 +24,7 @@ export const InscriptionV1V2 = ({ mint }: { mint: PublicKey }) => {
       <Text>{inscriptionV2.data?.item?.inscriptionData.toBase58()}</Text>
 
       <Text>media type</Text>
-      <Text>{JSON.stringify(inscription.data?.item.mediaType)}</Text>
+      {/* <Text>{JSON.stringify(inscription.data?.item.mediaType)}</Text> */}
       <Text>{(inscriptionV2.data?.item as any)?.contentType}</Text>
 
       <Text>order</Text>

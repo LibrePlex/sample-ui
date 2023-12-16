@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   Inscription,
+  InscriptionV3,
   useLegacyMetadataByMintId,
   useMetadataByMintId,
 } from "../../sdk";
@@ -26,7 +27,7 @@ import { CopyPublicKeyButton } from "../../components/buttons";
 export const MutabilityDisplay = ({
   inscription,
 }: {
-  inscription: IRpcObject<Inscription>;
+  inscription: IRpcObject<InscriptionV3>;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const isMutable = useMemo(
@@ -161,7 +162,7 @@ export const MutabilityDisplay = ({
 
               <MakeLegacyInscriptionImmutableTransactionButton
                 params={{
-                  inscription,
+                  inscriptionV3: inscription,
                   metadata,
                 }}
                 formatting={{}}

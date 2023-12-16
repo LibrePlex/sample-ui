@@ -1,7 +1,7 @@
 import { Heading, Text, VStack } from "@chakra-ui/react";
 import {
   MintWithTokenAccount,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useLegacyCompressedImage,
   useMediaType,
   useOffChainMetadataCache,
@@ -26,7 +26,7 @@ export const InscribeAsHolderPanel = ({
 
   const {
     inscription: { data: inscription },
-  } = useInscriptionForRoot(mint?.mint);
+  } = useInscriptionV3ForRoot(mint?.mint);
 
   const sizeOk = useMemo(
     () => compressedImage?.buf?.length === inscription?.item.size,

@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DeployTransactionButton } from "./DeployTransactionButton";
 import { SwapArea } from "./SwapArea";
-// import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 import { decodeHashlist } from "@libreplex/shared-ui";
 import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
 import React from "react";
@@ -117,7 +116,9 @@ export const DeploymentDetailView = () => {
         </VStack>
       </HStack>
       <Text>{deployment?.item?.mintTemplate}</Text>
+      
       {deployment?.item && <SwapArea deployment={deployment} />}
+      
     </VStack>
   );
 };

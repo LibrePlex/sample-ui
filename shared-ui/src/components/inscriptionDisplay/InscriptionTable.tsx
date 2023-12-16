@@ -26,7 +26,7 @@ import {
   SolscanLink,
   getInscriptionV3Pda,
   useInscriptionDataForRoot,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
   useOffChainMetadataCache,
 } from "../..";
 import { TensorButton } from "../migration/MarketButtons";
@@ -44,7 +44,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
       isFetching: isFetchingInscription,
       refetch: refreshInscription,
     },
-  } = useInscriptionForRoot(mint);
+  } = useInscriptionV3ForRoot(mint);
   const {
     data: inscriptionData,
     isFetching: isFetchingInscriptionData,

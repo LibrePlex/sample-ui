@@ -1,8 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 import {
-  useInscriptionById,
   useInscriptionDataForRoot,
-  useInscriptionForRoot,
   useInscriptionV3ForRoot,
 } from "../../sdk";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
@@ -11,12 +9,12 @@ import { useMemo } from "react";
 
 export const useMediaPrefix = (root: PublicKey) => {
   const { data: inscriptionData } = useInscriptionDataForRoot(root);
-  const {inscription} = useInscriptionForRoot(root);
+  const {inscription} = useInscriptionV3ForRoot(root);
 
   const {inscription: inscriptionV3} = useInscriptionV3ForRoot(root);
-  const urlPrefix = useUrlPrefixForInscription(inscription?.data);
+  const urlPrefix = useUrlPrefixForInscription(inscriptionV3?.data);
 
-  const encoding = useEncodingForInscription(inscription?.data);
+  const encoding = useEncodingForInscription(inscriptionV3?.data);
 
   const base64ImageInscription = useMemo(
     () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),

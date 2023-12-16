@@ -4,13 +4,14 @@ import { LibreplexInscriptions } from "../../../anchor/libreplex_inscriptions";
 import { createStore } from "zustand";
 import { PublicKey } from "@solana/web3.js";
 
-export type InscriptionEventData = IdlTypes<LibreplexInscriptions>["InscriptionEventData"];
+
+export type InscriptionV3EventData = IdlTypes<LibreplexInscriptions>["InscriptionV3EventData"];
 
 interface InscriptionWrites {
   writeStates: { [key: string]: number };
   updatedInscriptionData: { [key: string]: Buffer | undefined };
   // updatedInscriptionSizes: { [key: string]: number | undefined};
-  updatedInscription: { [key: string]: InscriptionEventData};
+  updatedInscription: { [key: string]: InscriptionV3EventData};
 }
 
 export interface InscriptionLiveEventState extends InscriptionWrites {
@@ -18,7 +19,7 @@ export interface InscriptionLiveEventState extends InscriptionWrites {
   resetWriteStatus: (inscriptionKey: string) => void;
   setUpdatedInscriptionData: (inscriptionKey: string, buf: Buffer) => void;
   // setUpdatedInscriptionSize: (inscriptionKey: string, size: number) => void;
-  setUpdatedInscription: (inscriptionKey: string, data: InscriptionEventData) => void;
+  setUpdatedInscription: (inscriptionKey: string, data: InscriptionV3EventData) => void;
 }
 
 export type InscriptionWriteStore = ReturnType<
@@ -77,7 +78,7 @@ export const createInscriptionLiveEventStore = (
         };
       });
     },
-    setUpdatedInscription: (inscriptionKey: string, data: InscriptionEventData) => {
+    setUpdatedInscription: (inscriptionKey: string, data: InscriptionV3EventData) => {
       return set((state) => {
         return {
           ...state,
@@ -116,7 +117,7 @@ export const createInscriptionLiveEventStore = (
 
   program?.addEventListener("InscriptionResizeFinal", (event: {
     id: PublicKey,
-    data: InscriptionEventData
+    data: InscriptionV3EventData
   }, slot, sig) => {
     console.log('Inscription resize final triggered', event);
     state.setUpdatedInscription(event.id.toBase58(), event.data);
@@ -134,11 +135,11 @@ export const createInscriptionLiveEventStore = (
   //   state.setUpdatedInscription(event.id.toBase58(), event.data);
   // });
 
-  program?.addEventListener("InscriptionEventUpdate", (event: {
+  program?.addEventListener("InscriptionV3EventUpdate", (event: {
     id: PublicKey,
-    data: InscriptionEventData
+    data: InscriptionV3EventData
   }, slot, sig) => {
-    // console.log({event});
+    console.log({event});
     state.setUpdatedInscription(event.id.toBase58(), event.data);
   });
 

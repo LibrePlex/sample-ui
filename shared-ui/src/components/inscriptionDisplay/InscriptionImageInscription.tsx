@@ -1,6 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
 import { useInscriptionDataForRoot } from "../../sdk/query/inscriptions/useInscriptionDataForRoot";
-import { useInscriptionForRoot } from "../../sdk/query/inscriptions/useInscriptionForRoot";
 import { useContext, useEffect, useMemo, useState } from "react";
 import React from "react";
 import { SolscanLink } from "../SolscanLink";
@@ -9,6 +8,7 @@ import { Text, Box, VStack, BoxProps, Button } from "@chakra-ui/react";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useEncodingForInscription } from "./useEncodingForInscription";
 import { InscriptionStats } from "./InscriptionStats";
+import { useInscriptionV3ForRoot } from "../../sdk/query/inscriptions/useInscriptionV3ForRoot";
 export const InscriptionImage = ({
   root,
   stats,
@@ -21,7 +21,7 @@ export const InscriptionImage = ({
       isFetching: isFetchingInscription,
       refetch: refreshInscription,
     },
-  } = useInscriptionForRoot(root);
+  } = useInscriptionV3ForRoot(root);
 
   const urlPrefix = useUrlPrefixForInscription(inscription);
 

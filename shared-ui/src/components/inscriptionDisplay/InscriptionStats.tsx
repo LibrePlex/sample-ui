@@ -1,13 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
 import React from "react";
-import { useInscriptionForRoot } from "../../sdk";
+import { useInscriptionV3ForRoot } from "../../sdk";
 import { Badge } from "@chakra-ui/react";
 import { useFormattedNumber } from "../../utils/useFormattedNumber";
 import { useRentForDataLength } from "../../components/useRentForDataLength";
 export const InscriptionStats = ({ root }: { root: PublicKey }) => {
   const {
     inscription: { data: inscription, refetch, isFetching },
-  } = useInscriptionForRoot(root);
+  } = useInscriptionV3ForRoot(root);
 
   const formattedSize = useFormattedNumber(inscription?.item?.size ?? 0, 0);
 
@@ -21,7 +21,7 @@ export const InscriptionStats = ({ root }: { root: PublicKey }) => {
           background: "#333",
         }}
       >
-        #{inscription.item.order.toNumber().toLocaleString()}
+        #{Number(inscription.item.order).toLocaleString()}
       </Badge>
       <Badge
         sx={{

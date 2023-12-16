@@ -1,4 +1,4 @@
-import { Progress, Text } from "@chakra-ui/react";
+import { HStack, Heading, Progress, Text } from "@chakra-ui/react";
 import {
   Connection,
   Keypair,
@@ -24,6 +24,7 @@ import {
 } from "@libreplex/shared-ui";
 import { useStore } from "zustand";
 import React from "react";
+import { HiCheckCircle } from "react-icons/hi";
 
 export interface IWriteToInscription {
   inscription: IRpcObject<Inscription>;
@@ -201,7 +202,12 @@ export const WriteToInscriptionTransactionButton = (
         />
       </div>
       {writeStates === expectedCount ? (
-        <Text p={2}>Inscribed</Text>
+        <HStack>
+          <HiCheckCircle color="lightgreen" size="35px" />
+          <Heading size="sm">
+            Inscribed
+          </Heading>
+        </HStack>
       ) : (
         <GenericTransactionButton<IWriteToInscription>
           text={"Write"}

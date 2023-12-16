@@ -23,19 +23,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { HiLockClosed, HiLockOpen } from "react-icons/hi2";
-import { IRpcObject, Inscription, SolscanLink } from "@libreplex/shared-ui";
+import { IRpcObject, Inscription, InscriptionV3, SolscanLink } from "@libreplex/shared-ui";
 import { SystemProgram } from "@solana/web3.js";
 
 import { useMemo } from "react";
-import { HiCheckCircle, HiXCircle } from "react-icons/hi";
-import { TbRefresh } from "react-icons/tb";
 import { MutableInscription } from "./MutableInscription";
 import { ImmutableInscription } from "./ImmutableInscription";
 
 export const Immutability = ({
   inscription,
 }: {
-  inscription: IRpcObject<Inscription>;
+  inscription: IRpcObject<InscriptionV3>;
 }) => {
   const isMutable = useMemo(
     () => !inscription.item?.authority.equals(SystemProgram.programId),

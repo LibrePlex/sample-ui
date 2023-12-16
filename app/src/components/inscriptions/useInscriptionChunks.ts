@@ -9,7 +9,7 @@ export function getChunkedData(oldData: number[], newData: number[]) {
     const chunks: { chunk: number[]; isValid: boolean; }[] = [];
     const oldDataBytes = [...(oldData ?? [])];
     let i = 0;
-    
+
     while (oldDataBytes.length > 0) {
         const sliceLength = Math.min(oldDataBytes.length, BATCH_SIZE);
         const chunk = oldDataBytes.splice(0, sliceLength);
@@ -38,7 +38,7 @@ export const useInscriptionChunks = (root: PublicKey, dataBytes: number[]) => {
   return {
     refetch,
     chunks: useMemo(() => {
-      return getChunkedData(data?.item?.buffer ? [...data.item.buffer] : [], dataBytes);
+      return getChunkedData(data?.item?.buffer ? [...data.item.buffer] : [], dataBytes??[]);
     }, [data, dataBytes]),
   };
 };

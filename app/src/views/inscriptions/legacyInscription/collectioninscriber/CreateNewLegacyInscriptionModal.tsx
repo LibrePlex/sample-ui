@@ -19,7 +19,7 @@ import {
   GroupSelector,
   IRpcObject,
   Metadata,
-  useInscriptionForRoot,
+  useInscriptionV3ForRoot,
 } from "@libreplex/shared-ui";
 import { PublicKey } from "@solana/web3.js";
 import { CreateNewLegacyInscriptionModalBody } from "./CreateNewLegacyInscriptionModalBody";
@@ -41,7 +41,7 @@ export const CreateNewLegacyInscriptionModal = ({
 
   const [name, setName] = useState<string>("");
 
-  const {inscription: { data: inscription }} = useInscriptionForRoot(mint);
+  const {inscription: { data: inscription }} = useInscriptionV3ForRoot(mint);
 
   return (
     <>
