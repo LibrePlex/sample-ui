@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/node": "20.2.3",
     "lerna": "^7.1.5",
+    "turbo": "^1.11.2",
     "typescript": "5.0.4"
   },
   "resolutions": {
