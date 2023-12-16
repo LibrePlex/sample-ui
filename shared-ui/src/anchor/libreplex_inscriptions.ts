@@ -1,5 +1,5 @@
 export type LibreplexInscriptions = {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "name": "libreplex_inscriptions",
   "instructions": [
     {
@@ -56,8 +56,7 @@ export type LibreplexInscriptions = {
         {
           "name": "inscription2",
           "isMut": true,
-          "isSigner": false,
-          "isOptional": true
+          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -925,7 +924,7 @@ export type LibreplexInscriptions = {
 };
 
 export const IDL: LibreplexInscriptions = {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "name": "libreplex_inscriptions",
   "instructions": [
     {
@@ -982,8 +981,7 @@ export const IDL: LibreplexInscriptions = {
         {
           "name": "inscription2",
           "isMut": true,
-          "isSigner": false,
-          "isOptional": true
+          "isSigner": false
         },
         {
           "name": "systemProgram",

@@ -19,6 +19,7 @@ import {
 
 import { ClusterContext } from "@shared-ui/contexts/NetworkConfigurationProvider";
 import { useRouter } from "next/router";
+import React from "react";
 
 export const LibreScanner = () => {
   const [mintId, setMintId] = useState<string>("");

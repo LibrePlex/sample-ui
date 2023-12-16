@@ -1,5 +1,5 @@
 export type LibreplexLegacy = {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "name": "libreplex_legacy",
   "instructions": [
     {
@@ -42,57 +42,6 @@ export type LibreplexLegacy = {
           "docs": [
             "is passed on to inscriptions program as the authority of the INSCRIPTION"
           ]
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "makeImmutable",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionV2",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -341,6 +290,52 @@ export type LibreplexLegacy = {
           }
         }
       ]
+    },
+    {
+      "name": "makeLegacyInscriptionImmutableV3",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV3",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionSummary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -540,7 +535,7 @@ export type LibreplexLegacy = {
 };
 
 export const IDL: LibreplexLegacy = {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "name": "libreplex_legacy",
   "instructions": [
     {
@@ -583,57 +578,6 @@ export const IDL: LibreplexLegacy = {
           "docs": [
             "is passed on to inscriptions program as the authority of the INSCRIPTION"
           ]
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionsProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "makeImmutable",
-      "accounts": [
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "mint",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "inscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionV2",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "inscriptionSummary",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "legacyMetadata",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "legacyInscription",
-          "isMut": true,
-          "isSigner": false
         },
         {
           "name": "systemProgram",
@@ -882,6 +826,52 @@ export const IDL: LibreplexLegacy = {
           }
         }
       ]
+    },
+    {
+      "name": "makeLegacyInscriptionImmutableV3",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "mint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionV3",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionSummary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "legacyMetadata",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "legacyInscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "inscriptionsProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
