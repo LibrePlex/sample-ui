@@ -18,7 +18,7 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
 
   const { publicKey } = useWallet();
 
-  return inscriptionV3.isFetching ? <Spinner/> :inscriptionV3.data.item ? (
+  return inscriptionV3.isFetching ? <Spinner/> :inscriptionV3?.data?.item ? (
     <HStack align={"start"} pb={4}>
       <IconButton
         aria-label={"tensorhq"}
