@@ -99,7 +99,7 @@ export const makeLegacyInscriptionImmutable = async (
     .makeLegacyInscriptionImmutableV3()
     .accounts({
       authority: wallet.publicKey,
-      mint: inscription.item.root,
+      mint: inscriptionV3.item.root,
       inscriptionV3: inscriptionV3.pubkey,
       inscriptionSummary,
       legacyMetadata: metadata.pubkey,
