@@ -89,17 +89,11 @@ export const makeLegacyInscriptionImmutable = async (
 
   const instructions: TransactionInstruction[] = [];
 
-  const inscription = getInscriptionPda(
-    inscriptionV3.item.root
-  )[0];
-
-
-  console.log({legacyInscription:legacyInscription.toBase58()})
   const instruction = await legacyInscriptionsProgram.methods
     .makeLegacyInscriptionImmutableV3()
     .accounts({
       authority: wallet.publicKey,
-      mint: inscription.item.root,
+      mint: inscriptionV3.item.root,
       inscriptionV3: inscriptionV3.pubkey,
       inscriptionSummary,
       legacyMetadata: metadata.pubkey,
