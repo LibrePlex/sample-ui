@@ -18,6 +18,25 @@ export interface IOffchainJson {
   name: string;
 }
 
+export const getAsset = async (mint: string, url: string) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      id: 'my-id',
+      method: 'getAsset',
+      params: {
+        id: mint
+      },
+    }),
+  });
+  const { result } = await response.json();
+  return result
+};
+
 export const useOffChainMetadataCache = (mintId: PublicKey) => {
   const { connection } = useConnection();
 
@@ -31,30 +50,36 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
     connection
   );
 
-  const metadataObj = useMemo(() => {
-    try {
-      return metadataAccount
-        ? decodeLegacyMetadata(metadataAccount?.item?.buffer, metadataPda)
-        : null;
-    } catch (e) {
-      // console.log(e);
-      return null;
-    }
-  }, [metadataPda, metadataAccount?.item?.buffer]);
+  const jsonUriQuery = useQuery(["offChain", mintId?.toString()], async () => {
+    const asset = await getAsset(mintId.toString(), connection.rpcEndpoint)
 
-  const url = useMemo(
-    () => metadataObj?.item?.data.uri.replace(/\0/g, "").trim(),
-    [metadataObj]
-  );
+    return asset.content.json_uri
+  })
+
+  // const metadataObj = useMemo(() => {
+  //   try {
+  //     return metadataAccount
+  //       ? decodeLegacyMetadata(metadataAccount?.item?.buffer, metadataPda)
+  //       : null;
+  //   } catch (e) {
+  //     // console.log(e);
+  //     return null;
+  //   }
+  // }, [metadataPda, metadataAccount?.item?.buffer]);
+  //
+  // const url = useMemo(
+  //   () => metadataObj?.item?.data.uri.replace(/\0/g, "").trim(),
+  //   [metadataObj]
+  // );
 
   const fetcher = useCallback(async () => {
     const httpClient = new HttpClient("");
-    const res = await httpClient.get<{ image: string; name: string }>(url);
+    const res = await httpClient.get<{ image: string; name: string }>(jsonUriQuery.data);
     return res;
-  }, [url]);
+  }, [jsonUriQuery.data]);
 
   const q = useQuery<HttpResponse<{ image: string; name: string }>>(
-    `offchaindata-${mintId?.toBase58()}-${url}`,
+    `offchaindata-${mintId?.toBase58()}-${jsonUriQuery.data}`,
     fetcher,
     {
       enabled: true,
