@@ -70,10 +70,9 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
         </Heading>
       </HStack>
       <ClaimExcessRentTransactionButton params={{ mint }} formatting={{}} />
-      
       <MutabilityDisplay inscription={inscription} />
-      
-      <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
+
+      <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300" >
         <VStack>
           {offchainData?.images.square ? (
             <Image
@@ -107,16 +106,20 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
             />
           )}
         </VStack>
-        <VStack className="relative">
+        <VStack
+          sx={{ height :"100%"}}
+        >
           {base64ImageInscription ? (
             urlPrefix === "application/text" || urlPrefix === "text/plain" ? (
               <Center
                 sx={{ height: "100%", minHeight: "300px", maxHeight: "300px" }}
               >
+                
                 <Text color="white">{asciiImageInscription}</Text>
               </Center>
             ) : (
-              <InscriptionImage root={mint} />
+
+              <InscriptionImage root={mint} sx={{ height: "100%", width :"100%"}}/>
             )
           ) : (
             <>
