@@ -45,27 +45,23 @@ const FairLaunchView = () => {
 
   const { connection } = useConnection();
 
-  const { deployments, processing } = useFairLaunchDeployments();
+  const { deployments, processing } = useFairLaunchDeployments('');
 
   const [orderBy, setOrderBy] = useState<OrderBy>(OrderBy.ValCount);
   const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.Desc);
 
   const orderedValidators = useMemo(() => {
     return [...deployments]
-      .filter(
-        (item) =>
-          item.pubkey.toBase58() !==
-          "G2MKngkSEF6vdmGDCXDsEAc8dEh6hfLryTdiS1b5q5hv"
-      )
+      
       .sort(
         (a, b) =>
           (sortOrder === SortOrder.Asc ? 1 : -1) *
           (orderBy === OrderBy.ValCount
-            ? -Number(b.item.numberOfTokensIssued) +
-              Number(a.item.numberOfTokensIssued)
-            : a.item.ticker
+            ? -Number(b.tokens_minted) +
+              Number(a.tokens_minted)
+            : a.ticker
                 .toLocaleLowerCase()
-                .localeCompare(b.item.ticker.toLocaleUpperCase()))
+                .localeCompare(b.ticker.toLocaleUpperCase()))
       );
   }, [deployments, sortOrder, orderBy]);
 
@@ -172,7 +168,7 @@ const FairLaunchView = () => {
                 .map((item, idx) => (
                   <SmallCardTemplate
                     key={idx}
-                    deploymentPublicKey={new PublicKey(item.pubkey)}
+                    deploymentTicker={item.ticker}
                   />
                 ))}
             </SimpleGrid>

@@ -19,6 +19,7 @@ import { PublicKey } from "@solana/web3.js";
 import NextLink from "next/link";
 import { GrLinkNext } from "react-icons/gr";
 import {
+  getDeploymentPda,
   getHashlistPda,
   useCluster,
   useDeploymentById,
@@ -31,10 +32,13 @@ import { SetTokensTransactionButton } from "./SetAmountTransactionButton";
 import { useMemo } from "react";
 
 export const SmallCardTemplate = ({
-  deploymentPublicKey,
+  deploymentTicker,
 }: {
-  deploymentPublicKey: PublicKey;
+  deploymentTicker: string;
 }) => {
+
+  const deploymentPublicKey = useMemo(()=>getDeploymentPda(deploymentTicker)[0],[deploymentTicker])
+
   const { connection } = useConnection();
   const { data } = useDeploymentById(deploymentPublicKey, connection);
 
