@@ -20,6 +20,7 @@ import { ReactNode, useMemo, useState } from "react";
 import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
 import { InscriptionFilter, MintCardLegacy } from "./mintcard/MintCardLegacy";
 import { DisappearingBox } from "@app/components/DisappearingBox";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 export const WalletLegacyGallery = ({
   publicKey,
@@ -30,7 +31,7 @@ export const WalletLegacyGallery = ({
 }) => {
   const { connection } = useConnection();
 
-  const { data } = useLegacyMintsByWallet(publicKey, connection);
+  const { data } = useLegacyMintsByWallet(publicKey, connection, TOKEN_PROGRAM_ID);
 
   const orderedData = useMemo(
     () =>

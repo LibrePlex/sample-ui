@@ -1,12 +1,10 @@
-
-
 import { IExecutorParams } from "../executor/Executor";
 import { useExecutor } from "../executor/useExecutor";
 import { Connection } from "@solana/web3.js";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { ITransactionTemplate } from "./ITransactionTemplate";
 import { ButtonProps, Spinner, Text } from "@chakra-ui/react";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button, ButtonGroup, VStack } from "@chakra-ui/react";
 import React from "react";
 
 export interface GenericTransactionButtonProps<P> {
@@ -22,11 +20,11 @@ export interface GenericTransactionButtonProps<P> {
     data?: ITransactionTemplate[];
     error?: any;
   }>;
-  disableSuccess?: boolean, // prevent the button being replaced by 'success' text after processing finishes
+  disableSuccess?: boolean; // prevent the button being replaced by 'success' text after processing finishes
   onSuccess?: (msg: string | undefined) => any;
   onError?: (msg: string | undefined) => any;
+  multiUse?: boolean
 }
-
 
 export const useGenericTransactionClick = <P extends unknown>({
   params,
@@ -34,13 +32,14 @@ export const useGenericTransactionClick = <P extends unknown>({
   onSuccess,
   onError,
   beforeClick,
-  afterSign
-}: Omit<GenericTransactionButtonProps<P>, "formatting" | "text" | "disableSuccess">) => {
-
-  
+  afterSign,
+}: Omit<
+  GenericTransactionButtonProps<P>,
+  "formatting" | "text" | "disableSuccess"
+>) => {
   const { onClick, isExecuting: isExecuting } = useExecutor(
     transactionGenerator,
-    
+
     params,
     "confirmed",
     (msg) => {
@@ -49,8 +48,8 @@ export const useGenericTransactionClick = <P extends unknown>({
     (msg) => {
       onError && onError(msg);
     },
-    undefined, 
-    afterSign,
+    undefined,
+    afterSign
   );
 
   const wrappedClick = useCallback(async () => {
@@ -70,38 +69,43 @@ export const GenericTransactionButton = <P extends unknown>({
   onError,
   beforeClick,
   afterSign,
-  disableSuccess
+  disableSuccess,
+  multiUse
 }: GenericTransactionButtonProps<P> & { text: ReactNode } & Omit<
     ButtonProps,
     "onError"
   >) => {
-
-    const [success, setSuccess] = useState<boolean>(false)
-
+  const [success, setSuccess] = useState<boolean>(false);
+ 
   const { onClick, isExecuting } = useGenericTransactionClick({
     params,
     beforeClick,
     transactionGenerator,
-    onSuccess: (msg)=>{
+    onSuccess: (msg) => {
       setSuccess(true);
       onSuccess && onSuccess(msg);
     },
     onError,
-    afterSign
+    afterSign,
   });
+
+  useEffect(() => {
+    if (isExecuting) setSuccess(false);
+  }, [isExecuting]);
   const { children, ...rest } = formatting;
 
-  
   return (
-    success && !disableSuccess ? <Text>Success</Text> :<Button
-      disabled={isExecuting}
-      colorScheme="teal"
-      size="md"
-      {...rest}
-      onClick={onClick}
-
-    >
-      {isExecuting ? <Spinner /> : text}
-    </Button>
+    <VStack>
+      {(multiUse || !success) && <Button
+        disabled={isExecuting}
+        colorScheme="teal"
+        size="md"
+        {...rest}
+        onClick={onClick}
+      >
+        {isExecuting ? <Spinner /> : text}
+      </Button>}
+      {success && !disableSuccess && <Text>Success</Text>}
+    </VStack>
   );
 };

@@ -24,6 +24,8 @@ import {
   getProgramInstanceFairLaunch,
   notify,
 } from "@libreplex/shared-ui";
+import { getTokenProgramForDeployment } from "./useTokenProgramForDeployment";
+import { DEPLOYMENT_TYPE_2022 } from "./MintTransactionButton";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;
@@ -43,6 +45,8 @@ export const generateTx = async (
 
   const { deployment, nonFungibleMint, fungibleTokenAccount } = params;
 
+  const tokenProgram = getTokenProgramForDeployment(deployment);
+
   const fairLaunch = getProgramInstanceFairLaunch(connection, wallet);
 
   if (!fairLaunch) {
@@ -56,15 +60,20 @@ export const generateTx = async (
   const fungibleTargetTokenAccount = getAssociatedTokenAddressSync(
     fungibleMint,
     deployment.pubkey,
-    true
+    true,
+    tokenProgram
   );
 
   const nonFungibleTargetTokenAccount = getAssociatedTokenAddressSync(
     nonFungibleMint.mint,
-    wallet.publicKey
+    wallet.publicKey,
+    false,
+    tokenProgram
   );
 
   const fungibleSourceTokenAccount = fungibleTokenAccount.tokenAccount.pubkey;
+
+
 
   const accountData = await connection.getAccountInfo(
     fungibleSourceTokenAccount
@@ -79,29 +88,54 @@ export const generateTx = async (
   const nonFungibleSourceTokenAccount = getAssociatedTokenAddressSync(
     nonFungibleMint.mint,
     deployment.pubkey,
-    true
+    true,
+    tokenProgram
   );
-  instructions.push(
-    await fairLaunch.methods
-      .swapToNonfungible()
-      .accounts({
-        deployment: deployment.pubkey,
-        payer: wallet.publicKey,
-        fungibleMint,
-        fungibleTargetTokenAccount,
-        fungibleSourceTokenAccount,
-        nonFungibleSourceTokenAccount,
-        nonFungibleMint: nonFungibleMint.mint,
-        nonFungibleTargetTokenAccount,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-        sysvarInstructions: new PublicKey(
-          "Sysvar1nstructions1111111111111111111111111"
-        ),
-      })
-      .instruction()
-  );
+  if (deployment.item.deploymentType === DEPLOYMENT_TYPE_2022) {
+    instructions.push(
+      await fairLaunch.methods
+        .swapToNonfungible22()
+        .accounts({
+          deployment: deployment.pubkey,
+          payer: wallet.publicKey,
+          fungibleMint,
+          fungibleTargetTokenAccount,
+          fungibleSourceTokenAccount,
+          nonFungibleSourceTokenAccount,
+          nonFungibleMint: nonFungibleMint.mint,
+          nonFungibleTargetTokenAccount,
+          tokenProgram,
+          associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+          sysvarInstructions: new PublicKey(
+            "Sysvar1nstructions1111111111111111111111111"
+          ),
+        })
+        .instruction()
+    );
+  } else {
+    instructions.push(
+      await fairLaunch.methods
+        .swapToNonfungible()
+        .accounts({
+          deployment: deployment.pubkey,
+          payer: wallet.publicKey,
+          fungibleMint,
+          fungibleTargetTokenAccount,
+          fungibleSourceTokenAccount,
+          nonFungibleSourceTokenAccount,
+          nonFungibleMint: nonFungibleMint.mint,
+          nonFungibleTargetTokenAccount,
+          tokenProgram,
+          associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+          sysvarInstructions: new PublicKey(
+            "Sysvar1nstructions1111111111111111111111111"
+          ),
+        })
+        .instruction()
+    );
+  }
 
   const blockhash = await connection.getLatestBlockhash();
 

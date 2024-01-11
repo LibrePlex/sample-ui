@@ -13,10 +13,11 @@ export type MintWithTokenAccount = {
 
 export const useLegacyMintsByWallet = (
   owner: PublicKey | null,
-  connection: Connection
+  connection: Connection,
+  tokenProgram: PublicKey
 ) => {
   const { data: ownedMints, isFetching: isFetchingMints, refetch } =
-    useTokenAccountsByOwner(owner, connection, TOKEN_PROGRAM_ID);
+    useTokenAccountsByOwner(owner, connection, tokenProgram);
 
   const tokenAccountByMint = useMemo(() => {
     const _tokenAccountByMint: {

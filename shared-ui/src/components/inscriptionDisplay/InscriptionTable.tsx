@@ -74,6 +74,7 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
 
       <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300" >
         <VStack>
+          
           {offchainData?.images.square ? (
             <Image
               className="aspect-square rounded-md"

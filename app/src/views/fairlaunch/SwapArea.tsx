@@ -35,6 +35,9 @@ import {
   useMint,
 } from "@libreplex/shared-ui";
 import { MintTransactionButton } from "./MintTransactionButton";
+import React from "react";
+import { useTokenProgramForDeployment } from "./useTokenProgramForDeployment";
+import { useDeploymentConfigByDeploymentId } from "shared-ui/src/anchor/fair_launch/accounts";
 
 
 // we use this to make sure that each wallet gets a different ordering of 
@@ -73,17 +76,19 @@ export const SwapArea = ({
 
   const fungibleMint = useMint(fungibleMintId, connection);
 
+    const tokenProgram = useTokenProgramForDeployment(deployment);
+
   const {
     data: mintsInEscrow,
     refetch: refreshEscrow,
     isFetching: isFetchingEscrow,
-  } = useLegacyMintsByWallet(deployment.pubkey, connection);
+  } = useLegacyMintsByWallet(deployment.pubkey, connection, tokenProgram);
 
   const {
     data: mintsInMyWallet,
     refetch: refreshWallet,
     isFetching: isFetchingWallet,
-  } = useLegacyMintsByWallet(publicKey, connection);
+  } = useLegacyMintsByWallet(publicKey, connection, tokenProgram);
 
   const hashlistId = useMemo(
     () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : null),
@@ -147,6 +152,8 @@ export const SwapArea = ({
     () => 10 ** deployment.item.decimals,
     [deployment.item.decimals]
   );
+
+  const {data: deploymentConfig} = useDeploymentConfigByDeploymentId(deployment.pubkey, connection);
 
   return (
     <VStack>
@@ -283,6 +290,7 @@ export const SwapArea = ({
         <MintTransactionButton
           params={{
             deployment,
+            deploymentConfig
           }}
           disableSuccess={false}
           formatting={{}}

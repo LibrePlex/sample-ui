@@ -12,6 +12,7 @@ import {
   useLegacyMintsByWallet,
 } from "@libreplex/shared-ui";
 import { useMemo } from "react";
+import { useTokenProgramForDeployment } from "./useTokenProgramForDeployment";
 
 export const DeploymentMintDisplayRow = ({
   mint,
@@ -29,9 +30,12 @@ export const DeploymentMintDisplayRow = ({
     [mint, publicKey]
   );
 
+  const tokenProgram = useTokenProgramForDeployment(deployment);
+
   const { data: mintsInMyWallet } = useLegacyMintsByWallet(
     publicKey,
-    connection
+    connection,
+    tokenProgram
   );
 
   const fungibleTokenAccount = useMemo(
