@@ -58,7 +58,7 @@ export const useLegacyTokenRecordByTokenAccount = (
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item && tokenRecordPda
-        ? decodeTokenRecord(q?.data?.item.buffer, tokenRecordPda)
+        ? decodeTokenRecord(q?.data?.item.data, tokenRecordPda)
         : null;
       return obj;
     } catch (e) {
@@ -88,7 +88,7 @@ export const useLegacyMetadataByMintId = (
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeLegacyMetadata(q?.data?.item.buffer, metadataKey)
+        ? decodeLegacyMetadata(q?.data?.item.data, metadataKey)
         : null;
       return obj;
     } catch (e) {

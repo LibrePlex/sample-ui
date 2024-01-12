@@ -19,7 +19,7 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
   const { publicKey } = useWallet();
 
   return inscriptionV3.isFetching ? <Spinner/> :inscriptionV3?.data?.item ? (
-    <HStack align={"start"} pb={4}>
+    <HStack align={"start"} pb={4} verticalAlign={'center'}>
       <IconButton
         aria-label={"tensorhq"}
         background={'black'}
@@ -49,9 +49,6 @@ export const MarketplaceButtonBody = ({ mint }: { mint: PublicKey }) => {
           <img src="/sniper_square.png" style={{ height: "28px" }} />
         </IconButton>
       <Box>
-        <Text pb={3}>
-          This item has succesfully been migrated onto V3 inscriptions index.
-        </Text>
         <Text>
           Please click on the links to buy / sell inscriptions.
         </Text>

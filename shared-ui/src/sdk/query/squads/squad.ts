@@ -44,7 +44,7 @@ export const useMultiSigById = (groupKey: PublicKey, connection: Connection) => 
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeMultiSig(program)(q.data.item.buffer, groupKey)
+        ? decodeMultiSig(program)(q.data.item.data, groupKey)
         : null;
       return obj;
     } catch (e) {

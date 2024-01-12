@@ -74,7 +74,7 @@ export const useCollectionById = (
     try {
       const obj =
         groupKey && q?.data?.item
-          ? decoder(q.data.item.buffer, groupKey)
+          ? decoder(q.data.item.data, groupKey)
           : null;
       return obj;
     } catch (e) {

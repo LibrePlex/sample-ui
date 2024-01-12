@@ -62,7 +62,7 @@ export const DeploymentDetailView = () => {
   const { program } = useContext(FairLaunchProgramContext);
 
   const download = useCallback(() => {
-    const vals = decodeHashlist(program)(data?.item?.buffer, data?.pubkey);
+    const vals = decodeHashlist(program)(data?.item?.data, data?.pubkey);
 
     if (vals?.item) {
       // Create dummy <a> element using JavaScript.
@@ -85,7 +85,7 @@ export const DeploymentDetailView = () => {
       hidden_a.click();
       document.body.removeChild(hidden_a);
     }
-  }, [data?.item?.buffer, data?.pubkey, program]);
+  }, [data?.item?.data, data?.pubkey, program]);
 
   return (
     <VStack>

@@ -20,7 +20,7 @@ export const useLegacyInscriptionForMint = (mint: PublicKey) => {
   const obj = useMemo(
     () =>
       data?.item
-        ? decodeLegacyInscription(program)(data.item.buffer, data.pubkey)
+        ? decodeLegacyInscription(program)(data.item.data, data.pubkey)
         : undefined,
     [data?.item, data?.pubkey, program]
   );

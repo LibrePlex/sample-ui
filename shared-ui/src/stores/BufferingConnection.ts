@@ -1,4 +1,4 @@
-import { PublicKey, Connection, Keypair } from "@solana/web3.js";
+import { PublicKey, Connection, Keypair, AccountInfo } from "@solana/web3.js";
 
 /* 
     this class exists to buffer rpc calls
@@ -16,18 +16,17 @@ export class BufferingConnection {
   static rpcBuffers: { [key: string]: BufferingConnection } = {};
   private accountRequests: {
     accountId: PublicKey;
-    cb: (a: { data: Buffer | null; accountId: PublicKey, balance: bigint }) => any;
+    cb: (a: AccountInfo<Buffer>) => any;
   }[];
   private connection: Connection;
   private firstPendingTimestamp: number | null;
   private timeout: NodeJS.Timeout | null;
   private processing: boolean;
 
-  public static getOrCreate( connection: Connection) {
+  public static getOrCreate(connection: Connection) {
     if (!BufferingConnection.rpcBuffers[connection.rpcEndpoint]) {
-        BufferingConnection.rpcBuffers[connection.rpcEndpoint] = new BufferingConnection(
-        connection
-      );
+      BufferingConnection.rpcBuffers[connection.rpcEndpoint] =
+        new BufferingConnection(connection);
     }
     return BufferingConnection.rpcBuffers[connection.rpcEndpoint];
   }
@@ -52,38 +51,26 @@ export class BufferingConnection {
     this.accountRequests.length = 0;
 
     const remainingRequests = [...requests];
-    
 
     while (remainingRequests.length > 0) {
-      
       const batchRequests = remainingRequests.splice(0, 100);
       try {
         const accountData = await this.connection.getMultipleAccountsInfo(
-          batchRequests.map((item) => item.accountId??Keypair.generate().publicKey)
+          batchRequests.map(
+            (item) => item.accountId ?? Keypair.generate().publicKey
+          )
         );
         for (const [idx, a] of accountData.entries()) {
           if (a) {
-            batchRequests[idx].cb({
-              accountId: batchRequests[idx].accountId,
-              data: a.data,
-              balance: BigInt(a.lamports)
-            });
+            batchRequests[idx].cb(a);
           } else {
-            batchRequests[idx].cb({
-              accountId: batchRequests[idx].accountId,
-              data: null,
-              balance: BigInt(0)
-            });
+            batchRequests[idx].cb(null);
           }
         }
       } catch (e) {
         for (const id of batchRequests) {
           // console.log("Rejecting all", e);
-          id.cb({
-            accountId: id.accountId,
-            data: null,
-            balance: BigInt(0)
-          });
+          id.cb(null);
         }
       }
     }
@@ -127,13 +114,12 @@ export class BufferingConnection {
   public fetchAccountData = (accountId: PublicKey) => {
     const currentTimestamp = new Date().getTime();
 
-    
     if (!this.firstPendingTimestamp) {
       this.firstPendingTimestamp = currentTimestamp;
     }
 
-    const promise = new Promise<{ accountId: PublicKey; data: Buffer | null, balance: bigint }>((resolve, reject) => {
-      const cb = (val: { accountId: PublicKey; data: Buffer | null, balance: bigint }) => {
+    const promise = new Promise<AccountInfo<Buffer>>((resolve, reject) => {
+      const cb = (val: AccountInfo<Buffer>) => {
         resolve(val);
       };
 
@@ -141,6 +127,6 @@ export class BufferingConnection {
     });
 
     this.scheduleFlush();
-    return promise
+    return promise;
   };
 }

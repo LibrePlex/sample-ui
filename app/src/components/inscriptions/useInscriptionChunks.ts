@@ -38,7 +38,7 @@ export const useInscriptionChunks = (root: PublicKey, dataBytes: number[]) => {
   return {
     refetch,
     chunks: useMemo(() => {
-      return getChunkedData(data?.item?.buffer ? [...data.item.buffer] : [], dataBytes??[]);
+      return getChunkedData(data?.item?.data ? [...data.item.data] : [], dataBytes??[]);
     }, [data, dataBytes]),
   };
 };

@@ -17,13 +17,13 @@ export const useMediaPrefix = (root: PublicKey) => {
   const encoding = useEncodingForInscription(inscriptionV3?.data);
 
   const base64ImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer]
+    () => Buffer.from(inscriptionData?.item?.data ?? []).toString("base64"),
+    [inscriptionData?.item?.data]
   );
 
   const asciiImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("ascii"),
-    [inscriptionData?.item?.buffer]
+    () => Buffer.from(inscriptionData?.item?.data ?? []).toString("ascii"),
+    [inscriptionData?.item?.data]
   );
 
   const prefixOverride = useMemo(

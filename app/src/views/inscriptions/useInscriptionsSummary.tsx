@@ -22,7 +22,7 @@ export const useInscriptionSummary = (internal?: number) => {
   return {
     data: useMemo(() => {
       return data?.item
-        ? decodeInscriptionSummary(program)(data.item.buffer, data.pubkey)
+        ? decodeInscriptionSummary(program)(data.item.data, data.pubkey)
         : undefined;
     }, [program, data]),
     refetch,

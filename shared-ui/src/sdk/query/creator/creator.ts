@@ -48,7 +48,7 @@ export const useCreatorById = (
     try {
       const obj =
         groupKey && q?.data?.item
-          ? decodeCreator(q.data.item.buffer, groupKey)
+          ? decodeCreator(q.data.item.data, groupKey)
           : null;
       return obj;
     } catch (e) {

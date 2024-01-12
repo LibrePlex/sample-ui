@@ -49,7 +49,7 @@ export const ViewLegacyInscription = ({ mint }: { mint: PublicKey }) => {
     isFetching: isFetchingInscriptionData,
   } = useInscriptionDataForRoot(mint);
 
-  const hashOfInscription = useValidationHash(inscriptionData?.item?.buffer);
+  const hashOfInscription = useValidationHash(inscriptionData?.item?.data);
 
   const {
     data: compressedImage,
@@ -63,8 +63,8 @@ export const ViewLegacyInscription = ({ mint }: { mint: PublicKey }) => {
   );
 
   const base64ImageInscription = useMemo(
-    () => Buffer.from(inscriptionData?.item.buffer ?? []).toString("base64"),
-    [inscriptionData?.item?.buffer]
+    () => Buffer.from(inscriptionData?.item.data ?? []).toString("base64"),
+    [inscriptionData?.item?.data]
   );
 
   const hashOk = useMemo(

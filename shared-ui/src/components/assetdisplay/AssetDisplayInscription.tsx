@@ -21,12 +21,12 @@ export const AssetDisplayInscription = ({
   useEffect(() => {
     if (inscription) {
       const url = getBase64FromDatabytes(
-        inscriptionData.item.buffer,
+        inscriptionData.item.data,
         dataType ?? ""
       );
       setCurrentBase64Image(url);
     }
-  }, [inscription, inscriptionData.item.buffer, dataType]);
+  }, [inscription, inscriptionData.item.data, dataType]);
 
   return (
     <img

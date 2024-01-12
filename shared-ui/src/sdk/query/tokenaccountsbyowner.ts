@@ -147,7 +147,7 @@ export const useTokenAccountById = (
   
   const decoded = useMemo(() => {
     try {
-      const obj = q?.data?.item ? AccountLayout.decode(q?.data?.item.buffer) : null;
+      const obj = q?.data?.item ? AccountLayout.decode(q?.data?.item.data) : null;
       return obj;
     } catch (e) {
       return null;

@@ -51,12 +51,12 @@ export const InscriptionImage = ({
       active && setLoading(false);
     };
 
-    myWorker.postMessage(inscriptionData?.item?.buffer);
+    myWorker.postMessage(inscriptionData?.item?.data);
 
     return () => {
       active = false;
     };
-  }, [inscriptionData?.item?.buffer]);
+  }, [inscriptionData?.item?.data]);
 
   // const base64ImageInscription = useMemo(
   //   () => Buffer.from(inscriptionData?.item?.buffer ?? []).toString("base64"),

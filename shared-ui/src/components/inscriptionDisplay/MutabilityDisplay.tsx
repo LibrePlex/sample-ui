@@ -93,7 +93,7 @@ export const MutabilityDisplay = ({
 
         <VStack>
           <VStack>
-            <Heading size="md">FOC Inscription</Heading>
+            <Heading size="md">Inscription</Heading>
           </VStack>
           <HStack>
             <IconButton

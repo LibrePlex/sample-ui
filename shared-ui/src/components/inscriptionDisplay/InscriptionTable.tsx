@@ -20,22 +20,24 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { useMemo, useState } from "react";
 
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
 import {
   SolscanLink,
   getInscriptionV3Pda,
   useInscriptionDataForRoot,
   useInscriptionV3ForRoot,
+  useMint,
   useOffChainMetadataCache,
 } from "../..";
-import { TensorButton } from "../migration/MarketButtons";
+import { TradeButton } from "../migration/MarketButtons";
 import { InscriptionImage } from "./InscriptionImage";
 import { InscriptionV1V2 } from "./InscriptionV1V2";
 import { MutabilityDisplay } from "./MutabilityDisplay";
 import { useUrlPrefixForInscription } from "./useUrlPrefixForInscription";
 import { useMediaPrefix } from "./useMediaPrefix";
 import { ClaimExcessRentTransactionButton } from "./buttons/ClaimExcessRentTransactionButtonAsUauth";
+import { useMetadataTypeForMint } from "../assetdisplay/useMetadataType";
 
 export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const {
@@ -60,21 +62,27 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
   const { mediaType, base64ImageInscription, asciiImageInscription } =
     useMediaPrefix(mint);
 
+  const { connection } = useConnection();
+
+  const metadataType = useMetadataTypeForMint(mint);
+
   const { publicKey } = useWallet();
 
   return (
     <VStack columnGap={2} className="relative">
       <HStack>
         <Heading size="lg">
-          Order #{Number(inscription?.item.order ?? 0).toLocaleString()}
+          #{Number(inscription?.item.order ?? 0).toLocaleString()}
         </Heading>
       </HStack>
+         <HStack>
+          <Heading size='md'>Metadata type: {metadataType}</Heading>
+        </HStack>
       <ClaimExcessRentTransactionButton params={{ mint }} formatting={{}} />
       <MutabilityDisplay inscription={inscription} />
-
-      <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300" >
-        <VStack>
-          
+   
+      <SimpleGrid columns={2} spacing={10} className="min-h-300 h-300">
+        <VStack justifyContent={"center"}>
           {offchainData?.images.square ? (
             <Image
               className="aspect-square rounded-md"
@@ -107,20 +115,20 @@ export const InscriptionTable = ({ mint }: { mint: PublicKey }) => {
             />
           )}
         </VStack>
-        <VStack
-          sx={{ height :"100%"}}
-        >
+      
+        <VStack sx={{ height: "100%" }}>
           {base64ImageInscription ? (
             urlPrefix === "application/text" || urlPrefix === "text/plain" ? (
               <Center
                 sx={{ height: "100%", minHeight: "300px", maxHeight: "300px" }}
               >
-                
                 <Text color="white">{asciiImageInscription}</Text>
               </Center>
             ) : (
-
-              <InscriptionImage root={mint} sx={{ height: "100%", width :"100%"}}/>
+              <InscriptionImage
+                root={mint}
+                sx={{ height: "100%", width: "100%" }}
+              />
             )
           ) : (
             <>

@@ -17,6 +17,7 @@ import { AssetDisplay, CopyPublicKeyButton } from ".";
 import {
   useCollectionById,
   useMetadataByMintId,
+  useMint,
 } from "../sdk";
 import { AttributesDisplayChainRenderer } from "./attributedisplay/AttributesDisplayChainRenderer";
 import { AttributesDisplayDefault } from "./attributedisplay/AttributesDisplayDefault";
@@ -32,14 +33,15 @@ enum View {
 }
 
 export const MintDisplay = ({
-  mint,
+  mint: mintId,
   actions,
 }: {
   mint: PublicKey;
   actions?: ReactNode;
 }) => {
   const { connection } = useConnection();
-  const metadata = useMetadataByMintId(mint, connection);
+
+  const metadata = useMetadataByMintId(mintId, connection);
 
   const [view, setView] = useState<View>(View.Attributes);
 
@@ -57,7 +59,7 @@ export const MintDisplay = ({
   );
   return (
     <VStack gap={8} alignItems="center" width={"100%"} maxWidth={"650px"}>
-      <InscriptionDisplay mintId={mint} />
+      <InscriptionDisplay mintId={mintId} />
       {metadata?.item ? (
         <VStack>
           <HStack
@@ -72,7 +74,7 @@ export const MintDisplay = ({
               aspectRatio={"1/1"}
               align="center"
             >
-              <AssetDisplay asset={metadata.item.asset} mint={mint} />
+              <AssetDisplay asset={metadata.item.asset} mint={mintId} />
               <Heading size="md" noOfLines={1}>
                 {metadata.item.name}
               </Heading>
@@ -190,7 +192,7 @@ export const MintDisplay = ({
                     {metadata.item.asset.chainRenderer ? (
                       <AttributesDisplayChainRenderer
                         asset={metadata.item.asset.chainRenderer}
-                        mint={mint}
+                        mint={mintId}
                       />
                     ) : (
                       <AttributesDisplayDefault

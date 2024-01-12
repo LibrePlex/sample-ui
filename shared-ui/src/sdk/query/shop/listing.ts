@@ -73,7 +73,7 @@ export const useListingById = (groupKey: PublicKey, connection: Connection) => {
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeListing(program)(q.data.item.buffer, groupKey)
+        ? decodeListing(program)(q.data.item.data, groupKey)
         : null;
       return obj;
     } catch (e) {

@@ -56,13 +56,13 @@ export const useInscriptionById = (
             item: updatedInscription[inscriptionId.toBase58()],
           }
         : q?.data?.item
-        ? decodeInscription(program)(q?.data?.item.buffer, inscriptionId)
+        ? decodeInscription(program)(q?.data?.item.data, inscriptionId)
         : null;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [inscriptionId, program, q.data?.item?.buffer.length, updatedInscription]);
+  }, [inscriptionId, program, q.data?.item?.data.length, updatedInscription]);
 
 
   return {

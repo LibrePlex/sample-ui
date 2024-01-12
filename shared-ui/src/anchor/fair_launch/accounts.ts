@@ -60,13 +60,13 @@ export const useDeploymentById = (
     try {
       const obj =
         q?.data?.item && deploymentId
-          ? decodeDeployment(program)(q?.data?.item.buffer, deploymentId)
+          ? decodeDeployment(program)(q?.data?.item.data, deploymentId)
           : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [deploymentId, program, q.data?.item?.buffer.length]);
+  }, [deploymentId, program, q.data?.item?.data.length]);
 
   return {
     data: decoded,
@@ -93,13 +93,13 @@ export const useDeploymentConfigByDeploymentId = (
     try {
       const obj =
         q?.data?.item && deploymentConfigId
-          ? decodeDeploymentConfig(program)(q?.data?.item.buffer, deploymentConfigId)
+          ? decodeDeploymentConfig(program)(q?.data?.item.data, deploymentConfigId)
           : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [deploymentId, program, q.data?.item?.buffer.length]);
+  }, [deploymentId, program, q.data?.item?.data.length]);
 
   return {
     data: decoded,
@@ -139,13 +139,13 @@ export const useHashlistById = (
     try {
       const obj =
         q?.data?.item && hashlistId
-          ? decodeHashlist(program)(q?.data?.item.buffer, hashlistId)
+          ? decodeHashlist(program)(q?.data?.item.data, hashlistId)
           : undefined;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [hashlistId, program, q.data?.item?.buffer.length]);
+  }, [hashlistId, program, q.data?.item?.data.length]);
 
   return {
     data: decoded,

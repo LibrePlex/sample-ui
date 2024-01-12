@@ -95,7 +95,7 @@ export const useMetadataById = (
     try {
       const obj =
         q?.data?.item && metadataKey
-          ? a(q?.data?.item.buffer, metadataKey)
+          ? a(q?.data?.item.data, metadataKey)
           : null;
       return obj;
     } catch (e) {

@@ -3,7 +3,7 @@ import { useInscriptionDataForRoot, useInscriptionV3ForRoot } from "../../sdk";
 import {VStack} from "@chakra-ui/react"
 import React from "react";
 import { InscriptionTable } from "./InscriptionTable";
-import { TensorButton } from "../migration/MarketButtons";
+import { TradeButton } from "../migration/MarketButtons";
 
 export const InscriptionDisplay = ({ mintId }: { mintId: PublicKey }) => {
   

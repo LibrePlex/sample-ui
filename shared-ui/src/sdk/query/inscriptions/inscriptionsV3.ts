@@ -109,13 +109,13 @@ export const useInscriptionV3ById = (
             item: updatedInscription[inscriptionId.toBase58()],
           }
         : q?.data?.item
-        ? decodeInscriptionV3(q?.data?.item.buffer, inscriptionId)
+        ? decodeInscriptionV3(q?.data?.item.data, inscriptionId)
         : null;
       return obj;
     } catch (e) {
       return null;
     }
-  }, [inscriptionId,  q.data?.item?.buffer.length, updatedInscription]);
+  }, [inscriptionId,  q.data?.item?.data.length, updatedInscription]);
 
 
 

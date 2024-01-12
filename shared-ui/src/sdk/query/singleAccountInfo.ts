@@ -28,12 +28,7 @@ export const fetchSingleAccount = (
 
       return {
         pubkey: accountKey,
-        item: result[0]?.data
-          ? {
-              buffer: result[0]?.data,
-              balance: result[0].balance || BigInt(0),
-            }
-          : null,
+        item: result[0]?? null,
       };
     } else {
       return null;
@@ -115,10 +110,9 @@ export const useFetchSingleAccount = (
 
   const key = useMemo(() => accountId?.toBase58() ?? "dummy", [accountId]);
 
-  const q = useQuery<IRpcObject<{
-    buffer: Buffer;
-    balance: bigint;
-  } | null> | null>(key, fetcher, {
+  const q = useQuery<IRpcObject<
+    AccountInfo<Buffer>
+   | null> | null>(key, fetcher, {
     refetchOnMount: false,
     refetchInterval
   });

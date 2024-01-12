@@ -47,7 +47,7 @@ export const useValidator = (id: PublicKey | null, connection: Connection) => {
   const decoded = useMemo(() => {
     try {
       const obj = q?.data?.item
-        ? decodeValidator(program)(q?.data?.item.buffer, id)
+        ? decodeValidator(program)(q?.data?.item.data, id)
         : null;
       return obj;
     } catch (e) {
