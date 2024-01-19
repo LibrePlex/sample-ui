@@ -5,7 +5,9 @@ import {
   InscriptionV3,
   useLegacyMetadataByMintId,
   useMetadataByMintId,
+  useMint,
 } from "../../sdk";
+import { Field, TokenMetadata } from "@solana/spl-token-metadata";
 import { IRpcObject } from "../executor";
 
 import {
@@ -24,6 +26,7 @@ import { getLegacySignerPda } from "../../pdas";
 import { PROGRAM_ID_LEGACY_INSCRIPTION } from "../../pdas/constants";
 import { getLegacyInscriptionPda } from "../../pdas/getLegacyInscriptionPda";
 import { CopyPublicKeyButton } from "../../components/buttons";
+import { Mint } from "@solana/spl-token";
 export const MutabilityDisplay = ({
   inscription,
 }: {
@@ -48,6 +51,16 @@ export const MutabilityDisplay = ({
     connection
   );
 
+  const metadata2022 = useMint(inscription?.item.root, connection);
+
+  const token2022Metadata = useMemo(
+    () =>
+      metadata2022?.item as Mint & {
+        metadata?: TokenMetadata;
+      },
+    [metadata2022]
+  );
+
   const { publicKey } = useWallet();
 
   const legacySigner = useMemo(
@@ -70,24 +83,40 @@ export const MutabilityDisplay = ({
           <Heading size="md">NFT</Heading>
           <SimpleGrid columns={2} columnGap={2}>
             <Text>Name</Text>
-            <Text>{metadata?.item?.data.name.replace(/\0/g, "").trim()}</Text>
+            <Text>
+              {(metadata?.item?.data.name ?? token2022Metadata.metadata?.name)
+                .replace(/\0/g, "")
+                .trim()}
+            </Text>
             <Text>JSON url</Text>
             <a
               target="_blank"
-              href={metadata?.item?.data.uri.replace(/\0/g, "").trim()}
+              href={(
+                metadata?.item?.data.uri ?? token2022Metadata.metadata?.uri
+              )
+                .replace(/\0/g, "")
+                .trim()}
             >
               View
             </a>
             <Text>Mutable</Text>
-            <Text>{metadata?.item?.isMutable ? "YES" : "NO"}</Text>
+            <Text>
+              {metadata?.item
+                ? metadata?.item.isMutable
+                : token2022Metadata?.metadata?.updateAuthority !== undefined
+                ? "YES"
+                : "NO"}
+            </Text>
             <Text>Update auth</Text>
             <Text>
               <CopyPublicKeyButton
-                publicKey={metadata?.item?.updateAuthority.toBase58()}
+                publicKey={(metadata?.item?.updateAuthority ?? token2022Metadata?.metadata?.updateAuthority).toBase58()}
               />
             </Text>
             <Text>Royalties</Text>
-            <Text>{(metadata?.item?.data.sellerFeeBasisPoints/100).toFixed(2)}%</Text>
+            <Text>
+              {((metadata?.item ? metadata?.item?.data.sellerFeeBasisPoints : 0)/ 100).toFixed(2)}%
+            </Text>
           </SimpleGrid>
         </VStack>
 

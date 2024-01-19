@@ -35,12 +35,7 @@ export const decodeMint2022 = (
   pubkey: PublicKey
 ) => {
   try {
-    // console.log({buffer});
-    // const extensionTypes = getExtensionTypes(buffer);
-    // console.log({extensionTypes});
-    // const mint = MintLayout.decode(buffer);
-
-  
+    
     let unpacked: Mint & {metadata?: TokenMetadata} = unpackMint(pubkey, accountInfo, accountInfo.owner);
     const extensionTypes = getExtensionTypes(unpacked.tlvData);
     for (const extensionType of extensionTypes) {
