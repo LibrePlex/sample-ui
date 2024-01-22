@@ -67,7 +67,7 @@ export const DeploymentMintDisplay = ({
         <Box p={3} maxWidth="300px">
           {publicKey ? (
             <Heading size="md">
-              You have no NFTs from this deployment in your wallet.
+              You have {(mintsInWallet?.length ?? 0)>0?mintsInWallet.length : "no NFTs from this deployment in your wallet."}
             </Heading>
           ) : (
             <Heading size="md">Please connect your wallet.</Heading>
