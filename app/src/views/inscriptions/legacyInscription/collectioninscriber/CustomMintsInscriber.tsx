@@ -103,7 +103,7 @@ export const CustomMintsInscriber = () => {
     () =>
       new Set<string>([
         ...inscriptionAccounts.data
-          .filter((item) => item.data)
+          .filter((item) => item?.data)
           .map((item) => item.accountId.toBase58()),
       ]),
     [inscriptionAccounts]
