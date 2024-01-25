@@ -84,7 +84,7 @@ export const MutabilityDisplay = ({
           <SimpleGrid columns={2} columnGap={2}>
             <Text>Name</Text>
             <Text>
-              {(metadata?.item?.data.name ?? token2022Metadata?.metadata?.name)
+              {(metadata?.item?.data.name ?? token2022Metadata?.metadata?.name??"")
                 .replace(/\0/g, "")
                 .trim()}
             </Text>
@@ -92,7 +92,7 @@ export const MutabilityDisplay = ({
             <a
               target="_blank"
               href={(
-                metadata?.item?.data.uri ?? token2022Metadata?.metadata?.uri
+                metadata?.item?.data.uri ?? token2022Metadata?.metadata?.uri ??""
               )
                 .replace(/\0/g, "")
                 .trim()}
@@ -110,7 +110,7 @@ export const MutabilityDisplay = ({
             <Text>Update auth</Text>
             <Text>
               <CopyPublicKeyButton
-                publicKey={(metadata?.item?.updateAuthority ?? token2022Metadata?.metadata?.updateAuthority).toBase58()}
+                publicKey={(metadata?.item?.updateAuthority ?? token2022Metadata?.metadata?.updateAuthority )?.toBase58()}
               />
             </Text>
             <Text>Royalties</Text>
