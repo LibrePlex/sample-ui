@@ -178,13 +178,5 @@ const FairLaunchView = () => {
     </div>
   );
 };
-<Box rowGap={2} display={"flex"} flexDir={"column"}>
-  <Heading size={"lg"}>Native Licensing</Heading>
-  <Text maxW={"500px"}>Licensing built into the asset contracts.</Text>
-  <Text maxW={"500px"}>
-    {
-      '"The holder of this NFT is allowed to print 37 copies of the NFT on a t-shirt of their choice."'
-    }
-  </Text>
-</Box>;
+
 export default FairLaunchView;

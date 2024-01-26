@@ -35,7 +35,7 @@ const FetchFairLaunches: NextApiHandler = async (req, res) => {
   console.log({ ticker });
   try {
     const httpClient = new HttpClient("");
-
+    console.log({a: process.env.PINIT_TICKER_AUTH_STRING});
     const { data, error } = await httpClient.get<IFairLaunchDeploymentIndexed[]>(
       "https://ticker.pinit.io/all",
       {

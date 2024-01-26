@@ -16,6 +16,7 @@ import {
   MintWithTokenAccount,
 } from "@libreplex/shared-ui";
 import { Paginator, usePaginator } from "@app/components/Paginator";
+import { useFakeWallet } from "app/src/hooks/useFakeWallet";
 
 export const DeploymentMintDisplay = ({
   mintsInWallet,
@@ -42,7 +43,7 @@ export const DeploymentMintDisplay = ({
 
   const [narrowScreen] = useMediaQuery("(max-width: 600px)");
 
-  const { publicKey } = useWallet();
+  const { publicKey } = useFakeWallet();
 
   return (
     <VStack>

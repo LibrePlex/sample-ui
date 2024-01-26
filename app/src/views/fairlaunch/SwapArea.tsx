@@ -38,6 +38,7 @@ import { MintTransactionButton } from "./MintTransactionButton";
 import React from "react";
 import { useTokenProgramForDeployment } from "./useTokenProgramForDeployment";
 import { useDeploymentConfigByDeploymentId } from "shared-ui/src/anchor/fair_launch/accounts";
+import { useFakeWallet } from "app/src/hooks/useFakeWallet";
 
 
 // we use this to make sure that each wallet gets a different ordering of 
@@ -72,7 +73,7 @@ export const SwapArea = ({
 
   const { connection } = useConnection();
 
-  const { publicKey } = useWallet();
+  const { publicKey } = useFakeWallet();
 
   const fungibleMint = useMint(fungibleMintId, connection);
 
