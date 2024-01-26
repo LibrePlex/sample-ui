@@ -1,23 +1,21 @@
-import { Button, HStack, Heading, Image, VStack, Text } from "@chakra-ui/react";
+import { Button, HStack, Heading, Image, Text, VStack } from "@chakra-ui/react";
 import {
   CopyPublicKeyButton,
   FairLaunchProgramContext,
   HttpClient,
   IOffchainJson,
+  decodeHashlist,
   getHashlistPda,
   useDeploymentById,
   useFetchSingleAccount,
 } from "@libreplex/shared-ui";
-import NextLink from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { DeployTransactionButton } from "./DeployTransactionButton";
 import { SwapArea } from "./SwapArea";
-import { decodeHashlist } from "@libreplex/shared-ui";
-import { DeployMigratedTransactionButton } from "../legacyImporter/DeployMigratedTransactionButton";
-import React from "react";
+import { TradeButtonSolsniper } from "./TradeButton";
 
 export const DeploymentDetailView = () => {
   const router = useRouter();
@@ -49,9 +47,6 @@ export const DeploymentDetailView = () => {
       active = false;
     };
   }, [deployment?.item?.offchainUrl]);
-
-  const { publicKey } = useWallet();
-
   const hashlistPda = useMemo(
     () => (deployment ? getHashlistPda(deployment.pubkey)[0] : null),
     [deployment]
@@ -108,6 +103,7 @@ export const DeploymentDetailView = () => {
           >
             <Image width="120px" src="/orca-logo.svg" />
           </NextLink>
+
           {deployment?.item && (
             <CopyPublicKeyButton
               publicKey={deployment?.item?.fungibleMint?.toBase58()}
@@ -116,9 +112,11 @@ export const DeploymentDetailView = () => {
         </VStack>
       </HStack>
       <Text>{deployment?.item?.mintTemplate}</Text>
-      
+
+      {deployment?.item && (
+        <TradeButtonSolsniper deploymentId={deployment.pubkey} />
+      )}
       {deployment?.item && <SwapArea deployment={deployment} />}
-      
     </VStack>
   );
 };
