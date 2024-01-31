@@ -26,7 +26,7 @@ import {
   notify,
 } from "@libreplex/shared-ui";
 import { DEPLOYMENT_TYPE_2022 } from "./MintTransactionButton";
-import { getTokenProgramForDeployment } from "./useTokenProgramForDeployment";
+import { getTokenProgramForDeployment } from "./useTokenProgramsForDeployment";
 
 export interface IDeployTransactionButton {
   deployment: IRpcObject<Deployment>;

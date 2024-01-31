@@ -24,7 +24,7 @@ import {
   getProgramInstanceFairLaunch,
   notify,
 } from "@libreplex/shared-ui";
-import { getTokenProgramForDeployment } from "./useTokenProgramForDeployment";
+import { getTokenProgramForDeployment } from "./useTokenProgramsForDeployment";
 import { DEPLOYMENT_TYPE_2022 } from "./MintTransactionButton";
 
 export interface IDeployTransactionButton {

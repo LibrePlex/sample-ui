@@ -95,28 +95,28 @@ export const launchDeployment = async (
     })
   );
 
-  instructions.push(
-    await fairLaunch.methods
-      .deployMigrated()
-      .accounts({
-        deployment: deployment.pubkey,
-        hashlist,
-        payer: wallet.publicKey,
-        fungibleMint: fungibleMint.publicKey,
-        fungibleEscrowTokenAccount,
-        fungibleMetadata,
+  // instructions.push(
+  //   await fairLaunch.methods
+  //     .deployMigrated()
+  //     .accounts({
+  //       deployment: deployment.pubkey,
+  //       hashlist,
+  //       payer: wallet.publicKey,
+  //       fungibleMint: fungibleMint.publicKey,
+  //       fungibleEscrowTokenAccount,
+  //       fungibleMetadata,
 
-        tokenProgram: TOKEN_PROGRAM_ID,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
-        systemProgram: SystemProgram.programId,
-        metadataProgram: PROGRAM_ID_LEGACY_METADATA,
-        sysvarInstructions: new PublicKey(
-          "Sysvar1nstructions1111111111111111111111111"
-        ),
-      })
-      .instruction()
-  );
+  //       tokenProgram: TOKEN_PROGRAM_ID,
+  //       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+  //       inscriptionsProgram: PROGRAM_ID_INSCRIPTIONS,
+  //       systemProgram: SystemProgram.programId,
+  //       metadataProgram: PROGRAM_ID_LEGACY_METADATA,
+  //       sysvarInstructions: new PublicKey(
+  //         "Sysvar1nstructions1111111111111111111111111"
+  //       ),
+  //     })
+  //     .instruction()
+  // );
 
   const blockhash = await connection.getLatestBlockhash();
 

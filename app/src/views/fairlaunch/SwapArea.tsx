@@ -36,30 +36,29 @@ import {
 } from "@libreplex/shared-ui";
 import { MintTransactionButton } from "./MintTransactionButton";
 import React from "react";
-import { useTokenProgramForDeployment } from "./useTokenProgramForDeployment";
+import { useTokenProgramsForDeployment } from "./useTokenProgramsForDeployment";
 import { useDeploymentConfigByDeploymentId } from "shared-ui/src/anchor/fair_launch/accounts";
 import { useFakeWallet } from "app/src/hooks/useFakeWallet";
 
-
-// we use this to make sure that each wallet gets a different ordering of 
+// we use this to make sure that each wallet gets a different ordering of
 // NFTs. This prevents everybody from instinctively hitting the top one.
 // well, they will still hit the top one but the top one will be a different
 // mint in each case depending on the value of this hash (salted with publickey)
 const cyrb53 = (str, seed = 0) => {
-  let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-  for(let i = 0, ch; i < str.length; i++) {
-      ch = str.charCodeAt(i);
-      h1 = Math.imul(h1 ^ ch, 2654435761);
-      h2 = Math.imul(h2 ^ ch, 1597334677);
+  let h1 = 0xdeadbeef ^ seed,
+    h2 = 0x41c6ce57 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
+    ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
   }
-  h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
   h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
   h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
 
   return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
-
 
 export const SwapArea = ({
   deployment,
@@ -77,19 +76,25 @@ export const SwapArea = ({
 
   const fungibleMint = useMint(fungibleMintId, connection);
 
-    const tokenProgram = useTokenProgramForDeployment(deployment);
+  const { fungible, nonFungible } = useTokenProgramsForDeployment(deployment);
 
   const {
     data: mintsInEscrow,
     refetch: refreshEscrow,
     isFetching: isFetchingEscrow,
-  } = useLegacyMintsByWallet(deployment.pubkey, connection, tokenProgram);
+  } = useLegacyMintsByWallet(deployment.pubkey, connection, nonFungible);
+
+  console.log({fungible: fungible.toBase58(), deployment: deployment.item.deploymentType});
+  const {
+    data: fungibleMintsInEscrow,
+  } = useLegacyMintsByWallet(deployment.pubkey, connection, fungible);
+
 
   const {
     data: mintsInMyWallet,
     refetch: refreshWallet,
     isFetching: isFetchingWallet,
-  } = useLegacyMintsByWallet(publicKey, connection, tokenProgram);
+  } = useLegacyMintsByWallet(publicKey, connection, nonFungible);
 
   const hashlistId = useMemo(
     () => (deployment ? getHashlistPda(deployment?.pubkey)[0] : null),
@@ -118,35 +123,31 @@ export const SwapArea = ({
     [mintsInMyWallet, hashlistIndex]
   );
 
-  
   const mintsFromThisDeployerHeldInEscrow = useMemo(
     () =>
       [
         ...mintsInEscrow.filter(
           (item) => hashlistIndex[item.mint.toBase58()] !== undefined
         ),
-      ].sort((a, b) => publicKey ? cyrb53(a.mint.toBase58()+publicKey?.toBase58()) - cyrb53(b.mint.toBase58()+publicKey?.toBase58()): 0),
+      ].sort((a, b) =>
+        publicKey
+          ? cyrb53(a.mint.toBase58() + publicKey?.toBase58()) -
+            cyrb53(b.mint.toBase58() + publicKey?.toBase58())
+          : 0
+      ),
     [mintsInEscrow, hashlistIndex, publicKey]
   );
 
-
-  useEffect(() => {
-    console.log({
-      mintsFromThisDeployer: mintsFromThisDeployerHeldInEscrow,
-      hashlistIndex,
-      data: mintsInEscrow,
-    });
-  }, [mintsFromThisDeployerHeldInEscrow, hashlistIndex, mintsInEscrow]);
-
+  
   const totalSplBalance = useMemo(
     () =>
-      mintsInEscrow
+    fungibleMintsInEscrow
         .filter(
           (item) =>
             item?.mint.toBase58() === deployment?.item?.fungibleMint.toBase58()
         )
         .reduce((a, b) => a + Number(b.tokenAccount.item.amount ?? 0), 0),
-    [mintsInEscrow, deployment?.item?.fungibleMint]
+    [fungibleMintsInEscrow, deployment?.item?.fungibleMint]
   );
 
   const denominator = useMemo(
@@ -154,7 +155,10 @@ export const SwapArea = ({
     [deployment.item.decimals]
   );
 
-  const {data: deploymentConfig} = useDeploymentConfigByDeploymentId(deployment.pubkey, connection);
+  const { data: deploymentConfig } = useDeploymentConfigByDeploymentId(
+    deployment.pubkey,
+    connection
+  );
 
   return (
     <VStack>
@@ -288,14 +292,7 @@ export const SwapArea = ({
       {deployment.item.migratedFromLegacy ? (
         <Text>Inscribed out.</Text>
       ) : (
-        <MintTransactionButton
-          params={{
-            deployment,
-            deploymentConfig
-          }}
-          disableSuccess={false}
-          formatting={{}}
-        />
+        <></>
       )}
 
       <Button

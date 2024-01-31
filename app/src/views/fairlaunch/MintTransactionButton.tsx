@@ -62,6 +62,7 @@ export interface IDeployTransactionButton {
   deploymentConfig: IRpcObject<DeploymentConfig> | undefined;
 }
 
+export const DEPLOYMENT_TYPE_HYBRID = 4;
 export const DEPLOYMENT_TYPE_2022 = 3;
 export const DEPLOYMENT_TYPE_LEGACY = 0;
 

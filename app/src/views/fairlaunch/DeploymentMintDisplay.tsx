@@ -49,7 +49,7 @@ export const DeploymentMintDisplay = ({
     <VStack>
       
     <SimpleGrid columns={narrowScreen ? 1 : 2} gap={2}>
-      <VStack className="border-2 p-2">
+      {/* <VStack className="border-2 p-2">
         <Heading size="md">Your wallet</Heading>
         <Paginator
           onPageChange={setCurrentPageWallet}
@@ -74,8 +74,8 @@ export const DeploymentMintDisplay = ({
             <Heading size="md">Please connect your wallet.</Heading>
           )}
         </Box>
-      </VStack>
-      <VStack className="border-2 p-2">
+      </VStack> */}
+      {/* <VStack className="border-2 p-2">
         <Heading size="md">Escrow</Heading>
         <Text maxW={'200px'}>
           You need{" "}
@@ -97,7 +97,7 @@ export const DeploymentMintDisplay = ({
             deployment={deployment}
           />
         ))}
-      </VStack>
+      </VStack> */}
     </SimpleGrid>
     </VStack>
   );
