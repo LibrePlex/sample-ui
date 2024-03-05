@@ -5,7 +5,6 @@ import {
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useMemo } from "react";
-import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
 import { LegacyMintInscriber } from "./LegacyMintInscriber";
 
 export const MyMintsInscriber = () => {

@@ -28,7 +28,6 @@ export {
   useCollectionsByAuthority,
   useMetadataByAuthority,
   useMetadataByCollection,
-  useMetadataGroupedByCollection,
   useCollectionById,
   useInscriptionById,
   useMetadataById,
@@ -58,5 +57,5 @@ export {
   SquadsProgramProvider,
   useMultiSigById,
   useInscriptionV3ForRoot,
-  useMint
+  useMint,
 } from "./query";

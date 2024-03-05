@@ -132,7 +132,7 @@ export const ClaimExcessRentTransactionButton = (
 
   const lamportDiff = useMemo(() => {
     return inscriptionData?.item && targetLamports
-      ? Number(inscriptionData.item.balance) -
+      ? Number(inscriptionData.item.lamports) -
           Math.max(targetLamports, 0)
       : 0;
   }, [inscriptionData, inscription]);

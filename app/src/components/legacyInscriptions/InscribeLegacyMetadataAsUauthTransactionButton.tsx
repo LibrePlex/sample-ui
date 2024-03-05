@@ -25,6 +25,7 @@ import { getProgramInstanceLegacyInscriptions } from "@libreplex/shared-ui";
 import { getLegacyInscriptionPda } from "@libreplex/shared-ui";
 
 import { getInscriptionV3Pda } from "@libreplex/shared-ui";
+import React from "react";
 
 export interface IInscribeLegacyMint {
   mint: PublicKey;
@@ -77,7 +78,7 @@ export const inscribeLegacyMint = async (
       // legacySigner: legacySigner.toBase58(),
       inscriptionV3: inscriptionV3.toBase58(),
       inscriptionData: inscriptionData.toBase58(),
-      legacyInscription: legacyInscription.toBase58(),
+      legacyInscription: legacyInscription?.toBase58(),
       inscriptionSummary: inscriptionSummary.toBase58(),
       inscriptionRanksCurrentPage: inscriptionRanksCurrentPage.toBase58(),
       inscriptionRanksNextPage: inscriptionRanksNextPage.toBase58(),

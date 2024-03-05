@@ -20,12 +20,20 @@ import {
 } from "@libreplex/shared-ui";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { AccountInfo, PublicKey } from "@solana/web3.js";
 import { useCallback, useMemo, useState } from "react";
-import { useMultipleAccountsById } from "shared-ui/src/sdk/query/metadata/useMultipleAccountsById";
+
 import { MintMigratorRow } from "./MintMigratorRow";
 import { MyMintsInscriber } from "./MyMintsInscriber";
 import { LegacyMintInscriber } from "./LegacyMintInscriber";
+import React from "react";
+import { useQuery } from "react-query";
+
+enum View {
+  WithInscriptions,
+  WithoutInscriptions,
+  All,
+}
 
 export const CustomMintsInscriber = () => {
   const [mintIds, setMintIds] = useState<PublicKey[]>([]);
@@ -39,15 +47,6 @@ export const CustomMintsInscriber = () => {
     connection,
     TOKEN_PROGRAM_ID
   );
-
-  enum View {
-    WithInscriptions,
-    WithoutInscriptions,
-    All,
-  }
-  const fetchMintsFromWallet = () => {
-    setInputTxt(JSON.stringify(data.map((item) => item.item.mint)));
-  };
 
   const processInput = useCallback(() => {
     const _errors: { i: string; e: string }[] = [];
@@ -89,23 +88,42 @@ export const CustomMintsInscriber = () => {
     () =>
       mintIds.map((item) => ({
         mint: item,
-        inscription: getInscriptionPda(item)[0],
+        inscription: getInscriptionPda(item)[0]!,
       })),
     [mintIds]
   );
 
-  const inscriptionAccounts = useMultipleAccountsById(
-    inscriptionIds.map((item) => item.inscription),
-    connection
+  const { data: inscriptionAccounts } = useQuery<{
+    items: { account: AccountInfo<Buffer> | null; id: PublicKey }[];
+  }>(
+    "key",
+    async () => {
+      return {
+        items: await connection
+          .getMultipleAccountsInfo(
+            inscriptionIds.map((item) => item.inscription)
+          )
+          .then((value) => {
+            return value
+              .map((item, idx) => ({
+                account: item,
+                id: inscriptionIds[idx].inscription,
+              }))
+              .filter((item) => item.account?.data);
+          }),
+      };
+    },
+    {
+      refetchOnMount: false,
+      refetchInterval: 1000,
+    }
   );
 
   const inscriptionDict = useMemo(
     () =>
-      new Set<string>([
-        ...inscriptionAccounts.data
-          .filter((item) => item?.data)
-          .map((item) => item.accountId.toBase58()),
-      ]),
+      new Set<string>(
+        ...(inscriptionAccounts?.items.map((item) => item.id.toBase58()) ?? []),
+      ),
     [inscriptionAccounts]
   );
 
@@ -113,7 +131,11 @@ export const CustomMintsInscriber = () => {
     () =>
       new Set(
         inscriptionIds
-          .filter((item) => inscriptionDict.has(item.inscription.toBase58()))
+          .filter(
+            (item) =>
+              item?.inscription &&
+              inscriptionDict.has(item?.inscription?.toBase58())
+          )
           .map((item) => item.mint.toBase58())
       ),
     [inscriptionDict, inscriptionIds]

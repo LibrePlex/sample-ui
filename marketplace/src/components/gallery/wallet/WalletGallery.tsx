@@ -2,13 +2,7 @@ import { HStack, Heading, VStack } from "@chakra-ui/react";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 
-import {
-  SendMintButton,
-  useMetadataGroupedByCollection,
-} from "@libreplex/shared-ui";
-import { useEffect } from "react";
-import { MintCard } from "../../mintcard/MintCard";
-import { ListMintButton } from "./walletcard/ListMintButton";
+
 
 export const WalletGallery = ({
   publicKey,
@@ -19,14 +13,14 @@ export const WalletGallery = ({
 }) => {
   const { connection } = useConnection();
 
-  const { data: groupedMetadata } = useMetadataGroupedByCollection(
-    publicKey,
-    connection
-  );
+  // const { data: groupedMetadata } = useMetadataGroupedByCollection(
+  //   publicKey,
+  //   connection
+  // );
 
-  useEffect(() => {
-    console.log({ groupedMetadata });
-  }, [groupedMetadata]);
+  // useEffect(() => {
+  //   console.log({ groupedMetadata });
+  // }, [groupedMetadata]);
 
   return (
     <VStack
@@ -36,7 +30,7 @@ export const WalletGallery = ({
       style={{ marginTop: 64 }}
       width={"100%"}
     >
-      {groupedMetadata.map((item, id) => (
+      {/* {groupedMetadata.map((item, id) => (
         <VStack
           key={id}
           gap={8}
@@ -74,7 +68,7 @@ export const WalletGallery = ({
             ))}
           </HStack>
         </VStack>
-      ))}
+      ))} */}
     </VStack>
   );
 };

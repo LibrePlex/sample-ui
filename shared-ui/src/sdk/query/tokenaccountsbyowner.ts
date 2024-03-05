@@ -91,7 +91,7 @@ export const fetchTokenAccountsByOwner = <T extends unknown, P extends Idl>(
 });
 
 export const useTokenAccountsByOwner = (
-  owner: PublicKey,
+  owner: PublicKey | null | undefined,
   connection: Connection,
   programId: PublicKey,
 ) => {

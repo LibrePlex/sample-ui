@@ -19,8 +19,8 @@ export {
   useMetadataByCollection,
   useMetadataById,
   useMetadataByMintId,
-  useMetadataGroupedByCollection,
 } from "./metadata/metadata";
+
 
 export type { MintWithTokenAccount as MintWithTokenAccount } from "./mints/useLegacyMintsByWallet";
 

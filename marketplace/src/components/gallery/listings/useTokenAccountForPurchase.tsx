@@ -25,7 +25,7 @@ export const useTokenAccountsForPurchase = (
 
   const {data} = useFetchSingleAccount(publicKey, connection);
 
-  const balance = useMemo(()=>data?.item?.balance,[data])
+  const balance = useMemo(()=>data?.item?.lamports,[data])
 
   useEffect(()=>{
     console.log({balance, publicKey: publicKey.toBase58()});
