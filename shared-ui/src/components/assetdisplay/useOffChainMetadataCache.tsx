@@ -87,7 +87,7 @@ export const useOffChainMetadataCache = (mintId: PublicKey) => {
     if (q.data?.data) {
       const retval: IOffchainJson = {
         images: {
-          square: `https://libreplex.pinit.io/${q.data.data.image}`,
+          square: q.data.data.image,
           url: q.data.data.image,
         },
         name: q.data.data.name,
